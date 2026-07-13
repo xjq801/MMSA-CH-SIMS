@@ -10,7 +10,7 @@
 | 类别 | 判定 | 主要证据 | 后续边界 |
 |---|---|---|---|
 | 研究边界 | PASS | `T0_INPUT_POLICY.md` | 变更必须版本化并重跑受影响实验 |
-| 目录与版本 | PASS | Git、`.gitignore`、`PROJECT_STRUCTURE_POLICY.md`、各区README | 当前未跟踪历史资产不自动移动或删除 |
+| 目录与版本 | PASS | Git基线`847a07c`、`.gitignore`、`PROJECT_STRUCTURE_POLICY.md`、各区README | 历史资产不自动移动或删除；仓库暂无远端 |
 | 环境 | PARTIAL/BLOCKED_M1 | `ENVIRONMENT_LOCK.md`、`requirements-lock.txt`、环境smoke脚本 | 历史环境可用；正式CARM环境和空环境重建待数据门后冻结，当前缺faiss |
 | 数据与存储 | PASS_PRE_DOWNLOAD | `DATA_SOURCE_LEDGER.md`、`data/README.md`、约75GB可用空间 | 数据大小/许可未明，禁止批量下载 |
 | 实验纪律 | PASS | `configs/experiment.bootstrap.yaml`、验证器、测试、实验登记表 | 正式脚本必须接受`--config`并保存运行清单 |
@@ -21,3 +21,5 @@
 ## 开工判定
 
 允许立即进入M1的只读许可核查、数据可行性审计和小型元数据验证。仍禁止批量下载媒体、购买存储、调用付费LLM、训练新模型或宣称正式CARM环境已冻结。
+
+重复验收命令：`.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`。

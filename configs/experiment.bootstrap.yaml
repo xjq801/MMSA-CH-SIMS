@@ -1,0 +1,34 @@
+schema_version: 1
+experiment_id: bootstrap-config-validation
+status: validation_only
+
+protocol:
+  master_plan_version: v1.5
+  task_timepoint: T0
+  unit_of_analysis: video_or_post
+  label_window: dataset_specific_freeze_before_test
+
+data:
+  dataset_id: PRE_M1_NO_DATA
+  dataset_version: pending_m1
+  split_version: pending_m2
+  manifest: DATA_SOURCE_LEDGER.md
+  index_scope: train_only
+
+run:
+  seed: 20260714
+  input_modalities:
+    - title_text
+    - visual_content
+  baseline: config_validation_only
+  primary_metric: jensen_shannon_divergence
+  stop_condition: leakage_check_failure
+  output_dir: results/bootstrap-config-validation
+
+leakage:
+  forbidden_inputs:
+    - target_future_comments
+    - final_engagement
+    - future_retrieval_candidates
+  fit_statistics_on: train_only
+  test_comments_input_allowed: false

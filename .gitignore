@@ -1,0 +1,90 @@
+# Local Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Secrets, credentials, cookies and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*cookie*.txt
+*cookies*.json
+*credential*.json
+*credentials*.json
+*secret*.json
+
+# Raw, processed and sensitive datasets (track only reviewed documentation/manifests)
+data/**
+!data/README.md
+!data/raw/
+!data/raw/README.md
+!data/processed/
+!data/processed/README.md
+!data/manifests/
+!data/manifests/README.md
+!data/manifests/*.manifest.json
+!data/manifests/*.schema.json
+!data/manifests/*.yaml
+!data/manifests/*.yml
+!data/manifests/*.dvc
+raw_data/
+datasets/
+downloads/
+
+# Models, checkpoints and large generated artifacts
+models/
+saved_models/
+checkpoints/
+artifacts/
+predictions/
+embeddings/
+indices/
+*.ckpt
+*.pth
+*.pt
+*.cbm
+*.onnx
+*.safetensors
+
+# Experiment outputs and local services
+logs/
+results/
+wandb/
+mlruns/
+lightning_logs/
+tensorboard/
+
+# Legacy experiment run artifacts (keep only the human-maintained registry)
+experiments/**
+!experiments/EXPERIMENT_REGISTRY.md
+
+# Installers and archives
+installers/
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+~$*

@@ -1,0 +1,145 @@
+{
+  "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "files": [
+    {
+      "bytes": 9334,
+      "fields": [],
+      "license": "ASSET_SPECIFIC_SEE_SOURCE",
+      "relative_path": "README.md",
+      "retrieved_date": "2026-07-14",
+      "sample_count": null,
+      "sample_count_status": "NOT_APPLICABLE",
+      "sha256": "39a1162df89dbf7a50d89435b640043c1397eaa6b1827e63ebbf77584a75d1e3",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/README.md"
+    },
+    {
+      "bytes": 11357,
+      "fields": [],
+      "license": "ASSET_SPECIFIC_SEE_SOURCE",
+      "relative_path": "LICENSE",
+      "retrieved_date": "2026-07-14",
+      "sample_count": null,
+      "sample_count_status": "NOT_APPLICABLE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/LICENSE"
+    },
+    {
+      "bytes": 403915,
+      "fields": [
+        "video_file_id",
+        "source_url_metadata"
+      ],
+      "license": "ASSET_SPECIFIC_SEE_SOURCE",
+      "relative_path": "CSMV/CSMV_rawLinks.xlsx",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 8210,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "cb3a6a1a524faf3665e03bee523f68185a995cd4411f0888387dc1719727a4c3",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/CSMV_rawLinks.xlsx"
+    },
+    {
+      "bytes": 468438,
+      "fields": [
+        "comment_id"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/dev_set.json",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 10727,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "a608dd15aa84f5dbcc652369151d00f0f1779b9fa09c05549fd3d65c71296ec8",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/dev_set.json"
+    },
+    {
+      "bytes": 141,
+      "fields": [
+        "native_emotion",
+        "class_index"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/emotion_label_map.json",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 8,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "6f32900c9cba649fe0a9d6b9a7643492a992e78d9913009c4ddb6e0fe536794c",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/emotion_label_map.json"
+    },
+    {
+      "bytes": 3895749,
+      "fields": [
+        "video_file_id",
+        "comment",
+        "opinion_label",
+        "emotion_label",
+        "hashtag"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/lable_data_dict.json.zip",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 117057,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "1533318195176588482593fc7671cc01a93c2be216702dc25d5f29c02ef6419f",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/lable_data_dict.json.zip"
+    },
+    {
+      "bytes": 58,
+      "fields": [
+        "native_opinion",
+        "class_index"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/opinion_label_map.json",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 3,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "14f9eacac9e6bfa18557a1c53fee20a534edf33a0deacfb59a051503eda795bb",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/opinion_label_map.json"
+    },
+    {
+      "bytes": 937253,
+      "fields": [
+        "comment_id"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/test_set.json",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 21454,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "995ca43a9a26893b575244ae991fbba0e5d19a10dd2ff070fdeb00d31be9d2ff",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/test_set.json"
+    },
+    {
+      "bytes": 3277800,
+      "fields": [
+        "comment_id"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/train_set.json",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 75086,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "feaf2a4f889fafc408d0d5fb118e6dce7e0845e9ba3169b8ca67425b413cd78b",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/train_set.json"
+    },
+    {
+      "bytes": 5432745,
+      "fields": [
+        "video_file_id",
+        "comment_ids"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "relative_path": "CSMV/Comments_Anno/video_to_comment.json",
+      "retrieved_date": "2026-07-14",
+      "sample_count": 8210,
+      "sample_count_status": "VERIFIED_OR_SOURCE_ALIGNED",
+      "sha256": "6126b907d058760b2d1773f230274325b1bde597c96f79e9a87ed8ad1f8829d3",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/video_to_comment.json"
+    }
+  ],
+  "immutable": true,
+  "license": "annotations CC-BY-SA-4.0; code/media/features separately scoped",
+  "schema_version": "immutable-primary-raw-manifest-v1",
+  "source": "official MSA-CRVI repository fixed commit",
+  "source_manifest_sha256": "f7f9a13b3364835650531cf26f6aa6d68f13815c24004fa23387a296b23fdc47",
+  "status": "PRIMARY_HUMAN_GOLD_SOURCE"
+}

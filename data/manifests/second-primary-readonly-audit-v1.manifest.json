@@ -1,0 +1,75 @@
+{
+  "schema": "second-primary-readonly-audit-v1",
+  "audit_date": "2026-07-14",
+  "authorization": "AUTH-00-M1-SECOND-PRIMARY-READONLY-20260714",
+  "audit_mode": "PUBLIC_METADATA_READ_ONLY_NO_DOWNLOAD",
+  "shortlist_count": 3,
+  "deep_audit_count": 1,
+  "downloaded_assets": [],
+  "used_login_or_gating_bypass": false,
+  "used_api_or_paid_service": false,
+  "contacted_authors": false,
+  "candidates": [
+    {
+      "id": "DS-007",
+      "name": "LIRIS-ACCEDE Discrete",
+      "deep_audited": true,
+      "source_urls": [
+        "https://liris-accede.ec-lyon.fr/",
+        "https://liris-accede.ec-lyon.fr/database.php",
+        "https://liris-accede.ec-lyon.fr/files/EULA.pdf",
+        "https://liris.cnrs.fr/Documents/Liris-7059.pdf"
+      ],
+      "revision": "UNKNOWN_LIVE_UNVERSIONED_METADATA_SNAPSHOT_2026-07-14",
+      "license": "MEDIA_PER_ORIGINAL_FILM_CC; ANNOTATIONS_AND_DESCRIPTORS_CC_BY_NC_SA_3_0; EULA_ACADEMIC_ONLY_NO_REDISTRIBUTION",
+      "package_size_bytes": null,
+      "public_scale": "9800 clips; 160 films; clip duration 8-12 seconds; total clips 26:57:08",
+      "split": "PROTOCOL_A_GROUP_BY_FILM_80_FILMS_4900_CLIPS_EACH_TRAIN_TEST; OPTIONAL_40_FILM_2450_CLIP_TRAIN_VALIDATION",
+      "media": "AUDIOVISUAL_CC_MOVIE_EXCERPTS_PER_ITEM_LICENSE_PENDING_PACKAGE_XML",
+      "multi_annotator": "VALENCE_1517_TRUSTED; AROUSAL_2442_TRUSTED; FINAL_RANKS_ONLY",
+      "t0": "CLIP_AUDIO_VISUAL_CONTENT_ONLY; LABELS_GSR_SOURCE_ID_POSITION_AND_UNAUDITED_PRECOMPUTED_FEATURES_EXCLUDED",
+      "construct_mapping": "INDUCED_FELT_VA_HIGH_MATCH_BUT_NOT_DISCRETE_EMPIRICAL_AUDIENCE_DISTRIBUTION",
+      "decision": "NO_GO_CURRENT_AUTHORIZATION_EULA_CONTACT_REQUIRED"
+    },
+    {
+      "id": "DS-008",
+      "name": "PMEmo",
+      "deep_audited": false,
+      "source_urls": [
+        "https://github.com/HuiZhangDB/PMEmo"
+      ],
+      "revision": "REPOSITORY_90289847fcb84e82024c3be1512b0f1d83925a55_DATA_PACKAGE_2018_2019_UNHASHED",
+      "license": "REPOSITORY_SOFTWARE_MIT; DATA_MEDIA_LYRICS_COMMENTS_ANNOTATIONS_UNKNOWN",
+      "package_size_bytes": null,
+      "public_scale": "approximately 1.3 GB; 794 songs; 457 subjects",
+      "split": "UNKNOWN_NOT_STATED_IN_OFFICIAL_README",
+      "media": "MP3_CHORUS_AUDIO_FEATURES_LYRICS_COMMENTS_EDA; FULL_SONGS_EXCLUDED_FOR_COPYRIGHT",
+      "multi_annotator": "457_SUBJECTS; PER_ITEM_COUNTS_AND_DISTRIBUTION_AVAILABILITY_UNKNOWN",
+      "t0": "AUDIO_AND_POTENTIALLY_LYRICS_ONLY; ONLINE_COMMENTS_EXCLUDED_AS_NON_T0_TARGET_ADJACENT",
+      "construct_mapping": "INDUCED_MUSIC_VA_PARTIAL_MATCH_NOT_PUBLIC_VIDEO_DISTRIBUTION",
+      "decision": "NO_GO_LICENSE_SPLIT_AND_LABEL_DISTRIBUTION_UNKNOWN"
+    },
+    {
+      "id": "DS-009",
+      "name": "Emotion6",
+      "deep_audited": false,
+      "source_urls": [
+        "https://openaccess.thecvf.com/content_cvpr_2015/papers/Peng_A_Mixed_Bag_2015_CVPR_paper.pdf"
+      ],
+      "revision": "PAPER_CVPR_2015_DATA_REVISION_AND_CURRENT_OFFICIAL_DISTRIBUTION_UNKNOWN",
+      "license": "UNKNOWN_FLICKR_PER_IMAGE_RIGHTS_NOT_VERIFIED",
+      "package_size_bytes": null,
+      "public_scale": "1980 images; 330 per search category; approximately VGA",
+      "split": "PAPER_RANDOM_7_TO_3_NO_SOURCE_OR_EVENT_GROUP_PROTOCOL",
+      "media": "IMAGE_ONLY",
+      "multi_annotator": "432_UNIQUE_SUBJECTS; 15_SUBJECTS_PER_IMAGE",
+      "t0": "IMAGE_CONTENT_ONLY",
+      "construct_mapping": "SEVEN_BIN_EVOKED_EMOTION_DISTRIBUTION_HIGH_LABEL_MATCH_BUT_IMAGE_ONLY",
+      "decision": "NO_GO_MEDIA_LICENSE_ACCESS_AND_MODALITY"
+    }
+  ],
+  "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+  "formal_split": false,
+  "task20_or_m3_allowed": false
+}

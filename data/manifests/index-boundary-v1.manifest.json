@@ -1,0 +1,13 @@
+{
+  "allowed_fit_split": "train",
+  "dev_test_candidates_in_index": "PROHIBITED",
+  "required_build_order": [
+    "freeze_raw_manifest",
+    "aggregate_by_item",
+    "assign_split",
+    "select_train_only",
+    "build_index"
+  ],
+  "schema_version": "index-boundary-v1",
+  "status": "NOT_BUILT"
+}

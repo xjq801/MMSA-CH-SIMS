@@ -1,0 +1,19 @@
+Decision ID: SCOPE-M1-STEP19-23-20260714
+Date: 2026-07-14
+Basis: USER_PROVIDED
+Source: user-selected TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md v1.5 lines 773-777
+
+19. 分四条独立检索：评论特权监督、公众诱发情绪分布、检索增强情绪预测、可靠性拒绝/缺失模态。
+20. 建立“最相近前作—相同点—不同点—必须对比实验”矩阵。
+21. 检查CARM工作名是否重名；查清前不得用于正式标题。
+22. 冻结研究问题v1、C1—C3上限、H1—H4、主指标和失败条件。
+23. 输出baseline候选清单，记录代码可得性、任务匹配度、许可和预计复现成本。
+
+Agent-disclosed scoping defaults used to execute the user-provided scope:
+- Review type: SCOPING (not systematic and not exhaustive).
+- Date range: inception through 2026-07-14; recent-frontier emphasis on 2023-2026.
+- Languages: English and Chinese.
+- Included: peer-reviewed journal/conference papers, preprints, dataset papers, and official code repositories directly relevant to one of the four search lines.
+- Excluded: speaker-emotion-only work without an audience-response construct; visual crowd-emotion-only work; methods requiring target-video future comments at T0; pure propagation-chain studies; unrelated uses of the CARM acronym except in the name-conflict audit.
+- Evidence rule: bibliographic discovery records are leads; core claims require paper, publisher/proceedings, preprint, or official repository verification.
+- Coverage claim: scoped coverage only. No claim of exhaustive recall, absence of prior work, or novelty verdict.

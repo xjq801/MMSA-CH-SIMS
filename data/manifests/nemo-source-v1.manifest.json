@@ -1,0 +1,24 @@
+{
+  "schema_version": "m1-source-manifest-v1",
+  "source_id": "DS-003",
+  "dataset": "nemo",
+  "upstream_revision": "ACL-Anthology-2022-11-21",
+  "retrieved_date": "2026-07-14",
+  "license_status_at_retrieval": "UNKNOWN: package inspection only; no research use promoted",
+  "raw_root": "data/raw/nemo/ACL-Anthology-2022-11-21",
+  "files": [
+    {
+      "relative_path": "2022.aacl-main.29.Dataset.zip",
+      "source_url": "https://aclanthology.org/attachments/2022.aacl-main.29.Dataset.zip",
+      "retrieved_date": "2026-07-14",
+      "bytes": 2080204,
+      "sha256": "2b0aa740dce78f49197cbf1a4d1467fee93c74bd8b5b83de6add38803fae8ba6"
+    }
+  ],
+  "excluded": [
+    "media",
+    "feature bundles",
+    "persona data",
+    "credentials"
+  ]
+}

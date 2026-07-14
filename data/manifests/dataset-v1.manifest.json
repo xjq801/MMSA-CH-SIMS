@@ -1,0 +1,70 @@
+{
+  "auxiliary_silver": {
+    "formal_test_use": "PROHIBITED",
+    "manifest": "silver-v1.manifest.json",
+    "records": 2787,
+    "sha256": "854c3cf5f1021e99b5f36bd729647ad763647b71bd11153448930034775baa17"
+  },
+  "comment_text_in_release": false,
+  "data_audit_report": {
+    "path": "DATA_AUDIT_REPORT_V1.md",
+    "sha256": "5edc8f5ac719dd63ca416fa99e03aa286d9d96150f99c6ad3927c4c58368510a"
+  },
+  "documentation": [
+    {
+      "path": "DATA_CARD_DATASET_V1.md",
+      "sha256": "e79d5c3ebb0c62f6143e1ab340ae3b92fe92173eaafcefaddd36cdcbdfa008d8"
+    },
+    {
+      "path": "DATASHEET_DATASET_V1.md",
+      "sha256": "e6eaafefc5d8d1444087f32e05523af619ac615d07ce21d24042578bf2f42d23"
+    },
+    {
+      "path": "PRIVACY_STATEMENT.md",
+      "sha256": "5981d477f9c0bfd3e797221e3a0f1f1dad9c0b60a3e3d495fb688f9c17d84fa9"
+    },
+    {
+      "path": "PLATFORM_TERMS_STATEMENT.md",
+      "sha256": "e43c629f94de931c23239fa193ecc294eb0ff158dc56e93d73e73be9999d4327"
+    },
+    {
+      "path": "DATA_RELEASE_BOUNDARY.md",
+      "sha256": "d094bb0913db5388f09e29492e05749c9e15080f1820c3a9bc2bb85d79bc14e2"
+    }
+  ],
+  "formal_model_use_allowed": false,
+  "g1_passed": false,
+  "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "g2_passed": false,
+  "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+  "label_provenance_manifest": {
+    "manifest": "label-provenance-v1.manifest.json",
+    "sha256": "5c2fb9b4758332519c13adf5bd733c0014513f785c3d8c3eb01bd3f5d760ecc5"
+  },
+  "leakage_manifest": {
+    "manifest": "leakage-audit-v1.manifest.json",
+    "sha256": "41a1bca3ce9a1b15a4ea4eef2a09d0f0224e47873dadce09057641d5bcfec6fa"
+  },
+  "primary_human_gold": {
+    "manifest": "human-gold-v1.manifest.json",
+    "records": 8210,
+    "sha256": "20b1608af8ab81abe636b805ff3a307d47365e25b15fa44f040cfc9c0ccc3ef7"
+  },
+  "raw_media_in_release": false,
+  "release_version": "dataset-v1",
+  "schema_version": "dataset-release-manifest-v1",
+  "second_primary": {
+    "manifest": "second-primary-label-map-v1.manifest.json",
+    "status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN"
+  },
+  "sensitive_user_identifiers_in_release": false,
+  "split_manifest": {
+    "manifest": "split-v1.manifest.json",
+    "sha256": "8fd61a15881c7e9065c75fbc1daa0b7cc1c5cbc5009ec61ad75c962bc4bd7454"
+  },
+  "status": "LOCAL_CANDIDATE_G1_BLOCKED",
+  "unlabeled": {
+    "manifest": "unlabeled-v1.manifest.json",
+    "records": 0
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "schema": "light.search_protocol.v1",
+  "review_type": "SCOPING",
+  "protocol_state": "FROZEN",
+  "protocol_lock": {
+    "protocol_sha256": "sha256:9e852d0e8cd2c388eb32d6ce404900ed3a31fe193bb75b979a3299206db213a5",
+    "frozen_at": "2026-07-14"
+  },
+  "question": {
+    "research_question": "Which prior work most directly constrains claims and required baselines for comment-privileged supervision, public-induced affect distributions, retrieval-augmented emotion prediction, and reliable abstention under missing modalities?",
+    "concepts": [
+      "comment privileged supervision",
+      "public-induced affect distribution",
+      "retrieval-augmented emotion prediction",
+      "selective prediction and missing modalities"
+    ],
+    "scope_boundary": "Methods and datasets directly relevant to T0 public-induced audience-affect distribution prediction; speaker-only emotion, visual crowd affect, future target-comment inputs, and propagation-only studies are excluded unless used as an explicit contrast."
+  },
+  "eligibility": {
+    "include": [
+      "Peer-reviewed or preprint work directly relevant to one of the four search lines",
+      "Dataset papers and official code repositories used to verify task, code, or license facts"
+    ],
+    "exclude": [
+      "Speaker-emotion-only or visual-crowd-affect-only work without an audience-response construct",
+      "Methods that require target-video future comments at T0 except as leakage or diagnostic contrasts",
+      "Propagation-only studies and unrelated CARM acronym uses outside the name audit"
+    ],
+    "date_range": "inception through 2026-07-14, with frontier emphasis on 2023-2026",
+    "languages": ["English", "Chinese"],
+    "document_types": ["journal article", "conference paper", "preprint", "dataset paper", "official code repository"]
+  },
+  "scope_decision": {
+    "decision_id": "SCOPE-M1-STEP19-23-20260714",
+    "basis": "USER_PROVIDED",
+    "decided_at": "2026-07-14",
+    "evidence_locator": "references/search/step19-23/scope-decision.txt",
+    "evidence_sha256": "sha256:56e10437dc78952d3d234894f8ddb01cb9d79aafe4ba6b7c50632f9d835b63b2",
+    "selection": {
+      "review_type": "SCOPING",
+      "research_question": "Which prior work most directly constrains claims and required baselines for comment-privileged supervision, public-induced affect distributions, retrieval-augmented emotion prediction, and reliable abstention under missing modalities?",
+      "scope_boundary": "Methods and datasets directly relevant to T0 public-induced audience-affect distribution prediction; speaker-only emotion, visual crowd affect, future target-comment inputs, and propagation-only studies are excluded unless used as an explicit contrast.",
+      "date_range": "inception through 2026-07-14, with frontier emphasis on 2023-2026",
+      "languages": ["English", "Chinese"],
+      "document_types": ["journal article", "conference paper", "preprint", "dataset paper", "official code repository"]
+    }
+  },
+  "sources": [
+    {
+      "source_id": "line1-openalex-crossref-doaj",
+      "family": "bibliographic-index",
+      "status": "SEARCHED",
+      "reason": "Independent three-layer recall for comment-privileged supervision",
+      "query": "learning using privileged information comments multimodal sentiment emotion distillation",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line1_comment_privileged.json",
+      "raw_sha256": "sha256:86d67e7f14146680a109ac5322e186ba30946a9bbe63876d2f7df163fbee92ad",
+      "result_count": 124
+    },
+    {
+      "source_id": "line2-openalex-crossref-doaj",
+      "family": "bibliographic-index",
+      "status": "SEARCHED",
+      "reason": "Independent three-layer recall for public-induced affect distributions",
+      "query": "public induced emotion distribution prediction multimodal audience response",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line2_public_affect_distribution.json",
+      "raw_sha256": "sha256:626139d490fdc7900115a37ca07b937a887c784c00f4d4a83da0b28ef02808b0",
+      "result_count": 138
+    },
+    {
+      "source_id": "line3-openalex-crossref-doaj",
+      "family": "bibliographic-index",
+      "status": "SEARCHED",
+      "reason": "Independent three-layer recall for retrieval-augmented emotion prediction",
+      "query": "retrieval augmented emotion prediction multimodal sentiment",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line3_retrieval_emotion.json",
+      "raw_sha256": "sha256:d9ee2d739fd86c25581bcdde6b7cb5dbb11d5a91133ed2f6abf64896cc9c01c9",
+      "result_count": 124
+    },
+    {
+      "source_id": "line4-openalex-crossref-doaj",
+      "family": "bibliographic-index",
+      "status": "SEARCHED",
+      "reason": "Independent three-layer recall for selective prediction and missing modalities",
+      "query": "selective prediction abstention missing modality multimodal emotion recognition",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line4_reliability_missing.json",
+      "raw_sha256": "sha256:185131671d59b89834cbf5336c5e04036131728f31e21374e770c56271189e3b",
+      "result_count": 114
+    }
+  ],
+  "query_ledger": [
+    {
+      "query_id": "q-line1",
+      "source_id": "line1-openalex-crossref-doaj",
+      "purpose": "Retrieve privileged-information, distillation, and emotion-recognition ancestors",
+      "query": "learning using privileged information comments multimodal sentiment emotion distillation",
+      "eligibility_link": "Maps training-only additional information and emotion prediction",
+      "run_status": "RUN",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line1_comment_privileged.json",
+      "raw_sha256": "sha256:86d67e7f14146680a109ac5322e186ba30946a9bbe63876d2f7df163fbee92ad",
+      "result_count": 124
+    },
+    {
+      "query_id": "q-line2",
+      "source_id": "line2-openalex-crossref-doaj",
+      "purpose": "Retrieve audience-induced affect and distribution-prediction tasks",
+      "query": "public induced emotion distribution prediction multimodal audience response",
+      "eligibility_link": "Maps the public-induced audience-affect construct and distribution target",
+      "run_status": "RUN",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line2_public_affect_distribution.json",
+      "raw_sha256": "sha256:626139d490fdc7900115a37ca07b937a887c784c00f4d4a83da0b28ef02808b0",
+      "result_count": 138
+    },
+    {
+      "query_id": "q-line3",
+      "source_id": "line3-openalex-crossref-doaj",
+      "purpose": "Retrieve external-memory and retrieval-augmented affect methods",
+      "query": "retrieval augmented emotion prediction multimodal sentiment",
+      "eligibility_link": "Maps historical case retrieval, affect prediction, and missing information",
+      "run_status": "RUN",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line3_retrieval_emotion.json",
+      "raw_sha256": "sha256:d9ee2d739fd86c25581bcdde6b7cb5dbb11d5a91133ed2f6abf64896cc9c01c9",
+      "result_count": 124
+    },
+    {
+      "query_id": "q-line4",
+      "source_id": "line4-openalex-crossref-doaj",
+      "purpose": "Retrieve selective prediction and missing-modality robustness methods",
+      "query": "selective prediction abstention missing modality multimodal emotion recognition",
+      "eligibility_link": "Maps abstention, risk-coverage, calibration, and incomplete multimodal emotion prediction",
+      "run_status": "RUN",
+      "searched_at": "2026-07-14",
+      "endpoint": "OpenAlex, Crossref and DOAJ through light-literature-search/domain_map.py",
+      "raw_locator": "references/search/step19-23/raw/line4_reliability_missing.json",
+      "raw_sha256": "sha256:185131671d59b89834cbf5336c5e04036131728f31e21374e770c56271189e3b",
+      "result_count": 114
+    }
+  ],
+  "coverage_audit": {
+    "known_items": [
+      {
+        "item_id": "m2pkd-2023",
+        "title": "Privileged Knowledge Distillation for Dimensional Emotion Recognition in the Wild",
+        "expected_reason": "Direct emotion-recognition use of training-only privileged modalities",
+        "must_retrieve": true,
+        "retrieved": true,
+        "evidence_source_ids": ["line1-openalex-crossref-doaj"],
+        "locator": "references/search/step19-23/raw/line1_comment_privileged.json"
+      },
+      {
+        "item_id": "missmodal-2023",
+        "title": "MissModal: Increasing Robustness to Missing Modality in Multimodal Sentiment Analysis",
+        "expected_reason": "Direct missing-modality multimodal sentiment baseline",
+        "must_retrieve": true,
+        "retrieved": true,
+        "evidence_source_ids": ["line4-openalex-crossref-doaj"],
+        "locator": "references/search/step19-23/raw/line4_reliability_missing.json"
+      }
+    ],
+    "no_known_items_rationale": "Not applicable; two in-scope known items were used for machine-recall checks, while other core anchors were verified by targeted primary-source checks documented in LITERATURE_SEARCH_REPORT.md.",
+    "citation_chaining": [],
+    "no_citation_chaining_rationale": "This is a bounded scoping search, not a systematic review; targeted primary-source verification was used instead of formal citation chaining.",
+    "summary": {
+      "source_coverage_basis": "Four independent query lines each queried OpenAlex, Crossref, and DOAJ, followed by targeted primary-source verification.",
+      "known_item_recall_basis": "M2PKD and MissModal were recovered in their expected query lines.",
+      "citation_yield_basis": "No formal citation-chaining yield is claimed for this scoping search.",
+      "unavailable_impact": "Paid databases and restricted Chinese indexes were not searched; novelty and exhaustive-coverage claims are therefore forbidden."
+    }
+  },
+  "accounting": {
+    "identified": 500,
+    "duplicates_removed": 12,
+    "screened": 488,
+    "screen_excluded": 0,
+    "included": 2,
+    "exclusion_reasons": {},
+    "dedup_method": "Within-line DOI else normalized title/year; then cross-line DOI else normalized title/year. Screened means machine title/abstract candidate review; only two machine-recall known items are counted as included here. Manual primary-source anchors are reported separately."
+  },
+  "stop_rule": {
+    "rule": "Stop after one three-layer multi-index recall round per line and one targeted primary-source verification round, because further broadening increased off-topic noise without changing the claim-boundary families.",
+    "max_rounds": 2,
+    "rounds_completed": 2,
+    "stopped": true,
+    "observed_basis": "All four lines produced a direct anchor and a required-comparison consequence; targeted verification added no new contribution family, while broad automatic rankings remained noisy.",
+    "observed_locator": "LITERATURE_SEARCH_REPORT.md",
+    "observed_sha256": "sha256:d9d4c2893190670217dbb2f8f05d0533399413176f08bf3469a4455105688960"
+  },
+  "coverage_claim": "SCOPING_COVERAGE",
+  "amendments": []
+}

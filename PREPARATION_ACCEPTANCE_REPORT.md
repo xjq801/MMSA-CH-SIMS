@@ -10,7 +10,7 @@
 | 类别 | 判定 | 主要证据 | 后续边界 |
 |---|---|---|---|
 | 研究边界 | PASS | `T0_INPUT_POLICY.md` | 变更必须版本化并重跑受影响实验 |
-| 目录与版本 | PASS | Git基线`847a07c`、`.gitignore`、`PROJECT_STRUCTURE_POLICY.md`、各区README | 历史资产不自动移动或删除；仓库暂无远端 |
+| 目录与版本 | PASS_LOCAL/SYNC_PENDING | Git基线`847a07c`、准备验收提交`1d7a210`、`.gitignore`、`PROJECT_STRUCTURE_POLICY.md`、各区README | `origin`已指向GitHub；两次推送均被HTTPS连接重置，当前本地`main`比`origin/main`领先1个已提交版本；历史资产不自动移动或删除 |
 | 环境 | PARTIAL/BLOCKED_M1 | `ENVIRONMENT_LOCK.md`、`requirements-lock.txt`、环境smoke脚本 | 历史环境可用；正式CARM环境和空环境重建待数据门后冻结，当前缺faiss |
 | 数据与存储 | PASS_PRE_DOWNLOAD | `DATA_SOURCE_LEDGER.md`、`data/README.md`、约75GB可用空间 | 数据大小/许可未明，禁止批量下载 |
 | 实验纪律 | PASS | `configs/experiment.bootstrap.yaml`、验证器、测试、实验登记表 | 正式脚本必须接受`--config`并保存运行清单 |

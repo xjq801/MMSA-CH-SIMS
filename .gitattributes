@@ -1,0 +1,6 @@
+*.md text eol=lf whitespace=-blank-at-eol,-blank-at-eof
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.py text eol=lf
+*.txt text eol=lf

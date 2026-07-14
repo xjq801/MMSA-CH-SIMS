@@ -1,0 +1,7 @@
+{
+  "merge_with_labeled_eval": "PROHIBITED",
+  "records": 0,
+  "schema_version": "label-tier-manifest-v1",
+  "status": "EMPTY_RESERVED_ENTRY_POINT",
+  "tier": "UNLABELED"
+}

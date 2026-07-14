@@ -1,0 +1,28 @@
+{
+  "formal_evaluation_eligible": false,
+  "mixed_tier_loading": "PROHIBITED",
+  "physical_roots": {
+    "HUMAN_GOLD": "data/processed/HUMAN_GOLD",
+    "SILVER": "data/processed/SILVER",
+    "UNLABELED": "data/processed/UNLABELED"
+  },
+  "public_human_test_with_silver": "PROHIBITED",
+  "release_status": "LOCAL_CANDIDATE_G1_BLOCKED",
+  "release_version": "dataset-v1",
+  "schema_version": "label-provenance-v1",
+  "second_primary_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "tiers": [
+    {
+      "manifest": "human-gold-v1.manifest.json",
+      "sha256": "20b1608af8ab81abe636b805ff3a307d47365e25b15fa44f040cfc9c0ccc3ef7"
+    },
+    {
+      "manifest": "silver-v1.manifest.json",
+      "sha256": "854c3cf5f1021e99b5f36bd729647ad763647b71bd11153448930034775baa17"
+    },
+    {
+      "manifest": "unlabeled-v1.manifest.json",
+      "sha256": "300d2209575777d2a34d26d50a0f59adedc5b4e0cd9829394cf24406d016206f"
+    }
+  ]
+}

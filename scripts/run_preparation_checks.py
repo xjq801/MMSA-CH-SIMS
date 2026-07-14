@@ -13,6 +13,13 @@ import sys
 import yaml
 
 from validate_experiment_config import validate
+from validate_protocol_freeze import validate_protocol_freeze
+from validate_m1_public_audit import validate_m1_public_audit
+from validate_literature_freeze import validate_literature_freeze
+from validate_m2_data_engineering import validate_m2_data_engineering
+from validate_m2_release import validate_m2_release
+from validate_second_primary_readonly_audit import validate_second_primary_readonly_audit
+from validate_work_log import validate_work_log
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +36,47 @@ REQUIRED_FILES = [
     "CLAIM_EVIDENCE_MATRIX.md",
     "SECURITY_COMPLIANCE_CHECKLIST.md",
     "RESOURCE_TIME_POLICY.md",
+    "WORK_RECORD_POLICY.md",
+    "WORK_LOG.md",
+    "AGENTS.md",
+    "legacy-asset-lineage.md",
+    "legacy-experiment-classification.md",
+    "research-question-v1.md",
+    "experiment-protocol-v1.md",
+    "leakage-threat-model.md",
+    "M1_PUBLIC_DATA_AUDIT.md",
+    "LABEL_SPACE_MAPPING_DRAFT.md",
+    "DATASET_SELECTION_DECISION.md",
+    "LITERATURE_SEARCH_REPORT.md",
+    "CONTRIBUTION_PRIOR_ART_MATRIX.md",
+    "CARM_NAME_AUDIT.md",
+    "RESEARCH_PROTOCOL_FREEZE_AUDIT.md",
+    "BASELINE_CANDIDATES.md",
+    "DATA_DICTIONARY.md",
+    "M2_DATA_PROTOCOL.md",
+    "SILVER_LABEL_PROTOCOL.md",
+    "LABEL_ERROR_REVIEW_PROTOCOL.md",
+    "NEAR_DUPLICATE_SOURCE_AUDIT.md",
+    "CUC_CANONICAL_AUDIT.md",
+    "configs/silver-label-pipeline-v1.yaml",
+    "M2_LEAKAGE_AUDIT.md",
+    "DATA_AUDIT_REPORT_V1.md",
+    "DATA_CARD_DATASET_V1.md",
+    "DATASHEET_DATASET_V1.md",
+    "PRIVACY_STATEMENT.md",
+    "PLATFORM_TERMS_STATEMENT.md",
+    "DATA_RELEASE_BOUNDARY.md",
+    "G1_G2_EVIDENCE_MATRIX.md",
+    "HANDOFF_10.md",
+    "M1_SECOND_PRIMARY_SHORTLIST_20260714.md",
+    "M1_LIRIS_ACCEDE_DEEP_AUDIT_20260714.md",
+    "HANDOFF_10_SECOND_PRIMARY_READONLY.md",
+    "scripts/validate_second_primary_readonly_audit.py",
+    "scripts/run_m2_leakage_tests.py",
+    "scripts/build_m2_release.py",
+    "scripts/reproduce_m2_minimal.py",
+    "scripts/validate_m2_release.py",
+    "references/search/step19-23/search-protocol.json",
     "references/references.bib",
 ]
 IGNORED_SAMPLES = [
@@ -46,6 +94,63 @@ TRACKED_SAMPLES = [
     "data/manifests/README.md",
     "paper/README.md",
     "references/references.bib",
+    "WORK_RECORD_POLICY.md",
+    "WORK_LOG.md",
+    "AGENTS.md",
+    "legacy-asset-lineage.md",
+    "legacy-experiment-classification.md",
+    "research-question-v1.md",
+    "experiment-protocol-v1.md",
+    "leakage-threat-model.md",
+    "M1_PUBLIC_DATA_AUDIT.md",
+    "LABEL_SPACE_MAPPING_DRAFT.md",
+    "DATASET_SELECTION_DECISION.md",
+    "LITERATURE_SEARCH_REPORT.md",
+    "CONTRIBUTION_PRIOR_ART_MATRIX.md",
+    "CARM_NAME_AUDIT.md",
+    "RESEARCH_PROTOCOL_FREEZE_AUDIT.md",
+    "BASELINE_CANDIDATES.md",
+    "DATA_DICTIONARY.md",
+    "M2_DATA_PROTOCOL.md",
+    "SILVER_LABEL_PROTOCOL.md",
+    "LABEL_ERROR_REVIEW_PROTOCOL.md",
+    "NEAR_DUPLICATE_SOURCE_AUDIT.md",
+    "CUC_CANONICAL_AUDIT.md",
+    "configs/silver-label-pipeline-v1.yaml",
+    "M2_LEAKAGE_AUDIT.md",
+    "DATA_AUDIT_REPORT_V1.md",
+    "DATA_CARD_DATASET_V1.md",
+    "DATASHEET_DATASET_V1.md",
+    "PRIVACY_STATEMENT.md",
+    "PLATFORM_TERMS_STATEMENT.md",
+    "DATA_RELEASE_BOUNDARY.md",
+    "G1_G2_EVIDENCE_MATRIX.md",
+    "HANDOFF_10.md",
+    "M1_SECOND_PRIMARY_SHORTLIST_20260714.md",
+    "M1_LIRIS_ACCEDE_DEEP_AUDIT_20260714.md",
+    "HANDOFF_10_SECOND_PRIMARY_READONLY.md",
+    "data/manifests/canonical-audience-affect-v1.schema.json",
+    "data/manifests/csmv-primary-raw-v1.manifest.json",
+    "data/manifests/csmv-split-v1.manifest.json",
+    "data/manifests/cuc-auxiliary-raw-v1.manifest.json",
+    "data/manifests/cuc-canonical-v1.manifest.json",
+    "data/manifests/human-gold-v1.manifest.json",
+    "data/manifests/silver-v1.manifest.json",
+    "data/manifests/unlabeled-v1.manifest.json",
+    "data/manifests/label-provenance-v1.manifest.json",
+    "data/manifests/second-primary-label-map-v1.manifest.json",
+    "data/manifests/index-boundary-v1.manifest.json",
+    "data/manifests/label-error-review-v1.manifest.json",
+    "data/manifests/leakage-audit-v1.manifest.json",
+    "data/manifests/dataset-v1.manifest.json",
+    "data/manifests/split-v1.manifest.json",
+    "data/manifests/reproducibility-v1.manifest.json",
+    "references/search/step19-23/search-protocol.json",
+    "data/manifests/csmv-source-v1.manifest.json",
+    "data/manifests/inews-source-v1.manifest.json",
+    "data/manifests/nemo-source-v1.manifest.json",
+    "data/manifests/m1-public-audit-v1.manifest.json",
+    "data/manifests/second-primary-readonly-audit-v1.manifest.json",
 ]
 TEXT_SUFFIXES = {".py", ".md", ".txt", ".yaml", ".yml", ".json", ".toml"}
 SKIP_PARTS = {".git", ".venv", "data", "models", "saved_models", "installers", "__pycache__"}
@@ -97,6 +202,13 @@ def main() -> int:
     except Exception as error:  # report exact local validation failure
         config_error = str(error)
     checks["experiment_config"] = {"passed": config_error is None, "error": config_error}
+    checks["work_log"] = validate_work_log()
+    checks["protocol_freeze"] = validate_protocol_freeze()
+    checks["m1_public_audit"] = validate_m1_public_audit()
+    checks["literature_freeze"] = validate_literature_freeze()
+    checks["m2_data_engineering"] = validate_m2_data_engineering()
+    checks["m2_release"] = validate_m2_release()
+    checks["second_primary_readonly_audit"] = validate_second_primary_readonly_audit()
 
     imports = {
         name: importlib.util.find_spec(name) is not None

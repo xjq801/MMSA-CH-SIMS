@@ -1,0 +1,32 @@
+{
+  "fit_scope": "train_only",
+  "formal_split": false,
+  "index_status": "NOT_BUILT",
+  "leakage_gate": "PASS_WITH_LIMITATIONS",
+  "leakage_manifest": "leakage-audit-v1.manifest.json",
+  "leakage_manifest_sha256": "41a1bca3ce9a1b15a4ea4eef2a09d0f0224e47873dadce09057641d5bcfec6fa",
+  "primary_dataset": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "release_version": "split-v1",
+  "schema_version": "split-v1-release",
+  "schemes": {
+    "group_by_video_v1": {
+      "dev": 816,
+      "test": 1675,
+      "train": 5719
+    },
+    "hashtag_heldout_v1": {
+      "dev": 602,
+      "test": 1618,
+      "train": 5990
+    },
+    "topic_heldout_v1": {
+      "not_assigned": 8210
+    }
+  },
+  "second_primary_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "source_manifest": "csmv-split-v1.manifest.json",
+  "source_manifest_sha256": "f6791fd6308f9714731a36e2c41bde810d9155897eff6f655b68b94cc5d7936f",
+  "status": "LOCAL_CANDIDATE_G1_BLOCKED",
+  "time_protocol": "NOT_RELEASED_TIMESTAMPS_ABSENT",
+  "topic_protocol": "BLOCKED_NATIVE_TOPIC_ABSENT"
+}

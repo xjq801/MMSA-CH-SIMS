@@ -1,0 +1,25 @@
+schema_version: silver-label-pipeline-v1
+pipeline_id: cuc-igpe-v2-legacy-import-v1
+status: LEGACY_IMPORTED_WITH_UNKNOWN_TEACHER
+output_tier: SILVER
+teacher_models:
+  - id: UNKNOWN_LEGACY_TEACHER
+    version: UNKNOWN
+    checkpoint_sha256: UNKNOWN
+    role: historical_comment_affect_or_statistical_pipeline
+rules:
+  explicit_binary_label: use_when_present_for_cross_check_only
+  legacy_threshold_fallback:
+    positive_extreme: "> 0.5217"
+    negative_extreme: "< -0.2558"
+    authority: historical_fallback_not_gold_definition
+confidence:
+  field: null
+  status: UNKNOWN_NOT_RECORDED
+versioning:
+  config_version: v1
+  frozen_date: 2026-07-14
+prohibitions:
+  merge_with_public_human_test: true
+  promote_to_human_gold: true
+  tune_mapping_on_test_results: true

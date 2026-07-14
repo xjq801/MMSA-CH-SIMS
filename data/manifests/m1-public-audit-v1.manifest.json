@@ -1,0 +1,191 @@
+{
+  "schema_version": "m1-public-audit-v1",
+  "source_revisions": {
+    "csmv": "99d14240254b1381dde0b9c56add140381f65117",
+    "inews": "a7ad599a257e94f04f796a86d39635adadb5f7cb",
+    "nemo": "ACL-Anthology-2022-11-21"
+  },
+  "source_manifests_verified": true,
+  "csmv": {
+    "comment_records_in_label_archive": 117057,
+    "official_split_comment_counts": {
+      "train": 75086,
+      "dev": 10727,
+      "test": 21454
+    },
+    "official_split_comment_total": 107267,
+    "comment_id_split_overlap": 0,
+    "video_to_comment_video_count": 8210,
+    "unique_video_count_in_official_splits": 8210,
+    "unique_video_counts_by_split": {
+      "train": 8190,
+      "dev": 5833,
+      "test": 7360
+    },
+    "video_overlap_between_official_splits": {
+      "train_dev": 5819,
+      "train_test": 7341,
+      "dev_test": 5332
+    },
+    "video_overlap_all_three": 5319,
+    "required_record_fields": [
+      "comment",
+      "emotion_label",
+      "hashtag",
+      "opinion_label",
+      "video_file_id"
+    ],
+    "missing_video_file_id": 0,
+    "hashtag_types": {
+      "str": 107267
+    },
+    "missing_hashtag": 0,
+    "unique_hashtag_values": 35,
+    "emotion_counts": {
+      "None": 1,
+      "anger": 1641,
+      "anticipation": 16909,
+      "disgust": 9043,
+      "fear": 2248,
+      "joy": 34469,
+      "sadness": 5723,
+      "surprise": 8560,
+      "trust": 28673
+    },
+    "opinion_counts": {
+      "None": 5,
+      "negative": 11859,
+      "neutral": 45426,
+      "positive": 49977
+    },
+    "direct6_retained_rows": 61684,
+    "direct6_dropped_rows": 45583,
+    "direct6_retained_fraction": 0.575051,
+    "group_by_video_constructable": true,
+    "hashtag_held_out_constructable": true,
+    "native_topic_field_present": false,
+    "official_comment_split_is_video_leaky": true
+  },
+  "inews": {
+    "row_count": 11320,
+    "unique_post_count": 2736,
+    "paper_post_count": 2899,
+    "public_post_shortfall_vs_paper": 163,
+    "split_row_counts": {
+      "dev.csv": 155,
+      "test_cold_start_public.csv": 498,
+      "test_generalization_public.csv": 1676,
+      "test_personalization_public.csv": 1641,
+      "train.csv": 7350
+    },
+    "unique_posts_by_file": {
+      "dev.csv": 128,
+      "test_cold_start_public.csv": 354,
+      "test_generalization_public.csv": 1215,
+      "test_personalization_public.csv": 568,
+      "train.csv": 2028
+    },
+    "post_overlap_between_public_files": {
+      "test_cold_start_public.csv|test_personalization_public.csv": 343,
+      "test_generalization_public.csv|train.csv": 1214
+    },
+    "required_fields_common_to_all_csv": [
+      "A",
+      "Annotator_ID",
+      "D",
+      "Description",
+      "Discrete",
+      "Link.Text",
+      "Message",
+      "Page.Category",
+      "Page.Name",
+      "Post_ID",
+      "Relevance",
+      "Source",
+      "User_Prompt",
+      "V",
+      "scene_category.category",
+      "scene_category.confidence",
+      "topic_category.category",
+      "topic_category.confidence"
+    ],
+    "discrete_counts": {
+      "anger": 1062,
+      "contempt": 469,
+      "disgust": 491,
+      "fear": 378,
+      "happy": 1516,
+      "neutral": 3584,
+      "other (please specify in the box below)": 243,
+      "sad": 2223,
+      "surprise": 1354
+    },
+    "vad_range": {
+      "V": [
+        1.0,
+        7.0
+      ],
+      "A": [
+        1.0,
+        7.0
+      ],
+      "D": [
+        1.0,
+        7.0
+      ]
+    },
+    "source_condition_counts": {
+      "The combination of both the text and the image": 6149,
+      "The image accompanying the headline": 1175,
+      "The text of the headline": 3996
+    },
+    "annotations_per_post_min_median_max": [
+      1,
+      4.0,
+      6
+    ],
+    "direct6_retained_rows": 7024,
+    "direct6_dropped_rows": 4296,
+    "direct6_retained_fraction": 0.620495,
+    "direct6_retained_posts": 2509,
+    "direct6_posts_with_no_retained_annotation": 227,
+    "media_file_field_present": false,
+    "post_group_resplit_constructable_for_labels": true
+  },
+  "nemo_plus": {
+    "news_item_count": 1297,
+    "response_counts_by_condition": {
+      "text_responses": 12970,
+      "image_responses": 12970,
+      "textimage_responses": 12970
+    },
+    "total_response_count": 38910,
+    "emotion_counts": {
+      "Amusement": 2818,
+      "Anger": 4965,
+      "Awe": 3340,
+      "Contentment": 5990,
+      "Disgust": 4139,
+      "Excitement": 2791,
+      "Fear": 6390,
+      "Sadness": 8477
+    },
+    "direct6_retained_responses": 23971,
+    "direct6_dropped_responses": 14939,
+    "direct6_retained_fraction": 0.616063,
+    "csv_fields": [
+      "",
+      "Headline",
+      "url",
+      "text_responses",
+      "image_responses",
+      "textimage_responses"
+    ],
+    "archive_entry_count": 28,
+    "image_file_count_in_package": 0,
+    "license_file_count_in_package": 0,
+    "all_image_references_are_anonymous_local_paths": true,
+    "multimodal_input_reproducible_from_package": false,
+    "license_identified": false
+  }
+}

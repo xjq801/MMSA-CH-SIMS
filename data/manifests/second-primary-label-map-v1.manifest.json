@@ -1,0 +1,9 @@
+{
+  "g1_effect": "BLOCKED",
+  "mapping_document": "LABEL_SPACE_MAPPING_DRAFT.md",
+  "mapping_document_sha256": "f7d80b7474753b200dde9dc486f310d1579a784549c492ae6fba6def8c7c78bb",
+  "schema_version": "label-map-manifest-v1",
+  "status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "test_result_tuning_allowed": false,
+  "version": "v1"
+}

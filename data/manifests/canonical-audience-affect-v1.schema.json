@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mmsa://schemas/canonical-audience-affect-v1",
+  "title": "Canonical public-induced audience affect record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset_id",
+    "item_id",
+    "label_tier",
+    "label_source",
+    "available_at_t0",
+    "source_group_id",
+    "source_domain",
+    "topic_id",
+    "publisher_id",
+    "publish_time",
+    "response_count",
+    "emotion_distribution",
+    "opinion_distribution",
+    "distribution_uncertainty",
+    "split"
+  ],
+  "properties": {
+    "schema_version": {"const": "canonical-audience-affect-v1"},
+    "dataset_id": {"type": "string"},
+    "item_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "label_tier": {"enum": ["HUMAN_GOLD", "SILVER", "UNLABELED"]},
+    "label_source": {"type": "string"},
+    "available_at_t0": {"type": "boolean"},
+    "source_group_id": {"type": ["string", "null"]},
+    "source_domain": {"type": ["string", "null"]},
+    "topic_id": {"type": ["string", "null"]},
+    "publisher_id": {"type": ["string", "null"]},
+    "publish_time": {"type": ["string", "null"]},
+    "response_count": {"type": "integer", "minimum": 0},
+    "emotion_distribution": {
+      "type": ["object", "null"],
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "opinion_distribution": {
+      "type": ["object", "null"],
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "distribution_uncertainty": {"type": ["object", "null"]},
+    "split": {
+      "type": "object",
+      "additionalProperties": {"enum": ["train", "dev", "test", "not_assigned"]}
+    },
+    "hashtag_component_id": {"type": ["string", "null"]},
+    "native_label": {"type": ["integer", "number", "string", "null"]},
+    "continuous_affect": {"type": ["number", "null"]},
+    "label_conflict": {"type": "boolean"},
+    "duplicate_source_id": {"type": "boolean"},
+    "missing_time": {"type": "boolean"},
+    "legacy_features": {"type": ["array", "null"], "items": {"type": "number"}},
+    "legacy_features_available_at_t0": {"type": "boolean"},
+    "provenance": {"type": "object"}
+  }
+}

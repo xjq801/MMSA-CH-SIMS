@@ -1,0 +1,12 @@
+{
+  "confidence_status": "UNKNOWN_NOT_RECORDED",
+  "dataset_id": "CUC-IGPE-v2@legacy-2787",
+  "merge_with_human_gold": "PROHIBITED",
+  "path": "data/processed/SILVER/cuc_igpe_v2/canonical.v1.jsonl",
+  "pipeline_config": "configs/silver-label-pipeline-v1.yaml",
+  "records": 2787,
+  "schema_version": "label-tier-manifest-v1",
+  "sha256": "407d68d96071dd11a850be59b42879e725026493d58b44220d4cfb79f571a415",
+  "teacher_model": "UNKNOWN_LEGACY_TEACHER",
+  "tier": "SILVER"
+}

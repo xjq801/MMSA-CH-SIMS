@@ -1,0 +1,10 @@
+{
+  "contains_comment_text": false,
+  "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "merge_with_silver": "PROHIBITED",
+  "path": "data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl",
+  "records": 8210,
+  "schema_version": "label-tier-manifest-v1",
+  "sha256": "c494875fa195f69ae856607be113798046dcc4a53ab4c234730c641d2e2079bb",
+  "tier": "HUMAN_GOLD"
+}

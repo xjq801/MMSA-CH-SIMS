@@ -1,0 +1,66 @@
+{
+  "schema_version": "m1-source-manifest-v1",
+  "source_id": "DS-002",
+  "dataset": "inews",
+  "upstream_revision": "a7ad599a257e94f04f796a86d39635adadb5f7cb",
+  "retrieved_date": "2026-07-14",
+  "license_status_at_retrieval": "CC-BY-NC-SA-4.0; public non-persona release; media excluded",
+  "raw_root": "data/raw/inews/a7ad599a257e94f04f796a86d39635adadb5f7cb",
+  "files": [
+    {
+      "relative_path": "README.md",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/README.md?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 5159,
+      "sha256": "d9616590d01de6de3e9d74a0472c75bf0868bb5586774e9d96fdbc2214028a10"
+    },
+    {
+      "relative_path": "survey_codebook.json",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/survey_codebook.json?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 3109,
+      "sha256": "5d8705cb702b541d2d6e1eeffdd01011ba9aa468243b22931e04360cde7ef09d"
+    },
+    {
+      "relative_path": "dev.csv",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/dev.csv?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 360919,
+      "sha256": "d1985fd70521ccd393d555a374011776d5a0f08f02272a830a9633cdc9561249"
+    },
+    {
+      "relative_path": "test_cold_start_public.csv",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/test_cold_start_public.csv?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 1172002,
+      "sha256": "045a8cb5b7d2424b49760748cc9a0d711f6a5e172328291a8342f72db6ca1113"
+    },
+    {
+      "relative_path": "test_generalization_public.csv",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/test_generalization_public.csv?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 3898213,
+      "sha256": "ace1247d3ffe6bbca4e7812933e90874b9b62920a0078edbdd1eec4af391e3d2"
+    },
+    {
+      "relative_path": "test_personalization_public.csv",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/test_personalization_public.csv?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 3854192,
+      "sha256": "f116ce63a2ed96cb57535edd8f3ac8c6256476d6ca0d0ade35714564e3f3a743"
+    },
+    {
+      "relative_path": "train.csv",
+      "source_url": "https://huggingface.co/datasets/pitehu/inews_public/resolve/a7ad599a257e94f04f796a86d39635adadb5f7cb/train.csv?download=true",
+      "retrieved_date": "2026-07-14",
+      "bytes": 17209148,
+      "sha256": "623fd5879dc05907e9d74e8bb1927feb5a432d833b27caf7234e3a1bf3871899"
+    }
+  ],
+  "excluded": [
+    "media",
+    "feature bundles",
+    "persona data",
+    "credentials"
+  ]
+}

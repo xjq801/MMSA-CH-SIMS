@@ -1,0 +1,24 @@
+{
+  "current_records": 2787,
+  "dataset_id": "CUC-IGPE-v2@legacy-2787",
+  "drift_status": "UNRESOLVED_NO_2815_MANIFEST",
+  "historical_expected_records": 2815,
+  "license_status": "UNKNOWN_LOCAL_ONLY",
+  "output_path": "data/processed/SILVER/cuc_igpe_v2/canonical.v1.jsonl",
+  "output_sha256": "407d68d96071dd11a850be59b42879e725026493d58b44220d4cfb79f571a415",
+  "schema_version": "canonical-dataset-manifest-v1",
+  "stats": {
+    "canonical_records": 2787,
+    "cross_publisher_timestamp_matches": 1,
+    "duplicate_bv_rows": 0,
+    "label_conflicts": 221,
+    "missing_bv": 8,
+    "publish_time_missing": 1904,
+    "publish_time_present": 883,
+    "records_with_bv": 2779,
+    "review_candidates": 100
+  },
+  "t0_feature_status": "LEGACY_48_BLOCKED_NOT_PROVEN_AT_T0",
+  "tier": "SILVER",
+  "unresolved_drift": 28
+}

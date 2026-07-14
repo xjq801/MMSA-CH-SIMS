@@ -1,0 +1,9 @@
+{
+  "formal_model_superiority_evidence": false,
+  "path": "data/processed/SILVER/cuc_igpe_v2/error_review_candidates.v1.jsonl",
+  "purpose": "DATA_DEFECT_DISCOVERY_ONLY",
+  "records": 100,
+  "schema_version": "label-error-review-manifest-v1",
+  "sha256": "c2d2caecde88048c850c0a86656238da003196272b2e1dab686ff474c909df39",
+  "status": "PENDING_HUMAN_REVIEW"
+}

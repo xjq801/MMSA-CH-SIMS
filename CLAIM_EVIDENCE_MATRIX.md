@@ -11,3 +11,14 @@
 | C4 | 方法在跨话题、跨数据、缺失模态场景具有更稳健表现 | OOD、跨数据、缺失模态、中文压力测试；统计与失败案例 | H4、E6—E9、任务50 | TO_VERIFY | 不得宣称泛化 |
 
 状态只能是`TO_VERIFY`、`SUPPORTED_LIMITED`、`SUPPORTED`、`REFUTED`。任何状态变更必须填写结果文件、统计证据和复核日期。
+
+## 2026-07-14 前作约束（不改变实验支持状态）
+
+| Claim/边界 | 已核前作 | 对允许措辞的限制 | 证据文件 |
+|---|---|---|---|
+| C1任务定位 | NEmo+、CSMV/MSA-CRVI、MVIndEmo、iNews | 不得声称首次提出公众诱发情绪或分布预测；只可强调严格T0与group-held-out协议 | `LITERATURE_SEARCH_REPORT.md`、`CONTRIBUTION_PRIOR_ART_MATRIX.md` |
+| C2-H1机制 | LUPI、generalized distillation、M2PKD | teacher/student和训练期特权信息不是贡献；必须做普通KD和特权蒸馏对照 | 同上 |
+| C2-H2机制 | RAMER | 检索增强缺失模态情绪识别已有直接前作；必须做no/random/BM25/CLIP-kNN和RAMER式对照 | 同上 |
+| C3可靠性 | Selective Classification、SelectiveNet、MissModal、IMDer、HRLF | 拒绝和缺失模态鲁棒不是模块级首创；只检验其在public-induced distribution、OOD和自然缺失下的证据 | 同上 |
+
+上述查新只冻结主张上限，不把C1—C3从`TO_VERIFY`升级为`SUPPORTED`；任何有效性表述仍须等待预注册实验与统计证据。

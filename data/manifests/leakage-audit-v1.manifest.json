@@ -1,0 +1,125 @@
+{
+  "checks": {
+    "fit_scope": {
+      "allowed_fit_split": "train",
+      "fit_artifacts_present": false,
+      "passed": true,
+      "severity": "CRITICAL",
+      "status": "PASS_NO_FIT_ARTIFACTS"
+    },
+    "future_candidate_fields": {
+      "forbidden_field_hit_count": 0,
+      "hits": [],
+      "passed": true,
+      "severity": "CRITICAL",
+      "status": "PASS",
+      "unsafe_legacy_feature_rows": 0
+    },
+    "id_intersection": {
+      "cross_split_intersections": {
+        "group_by_video_v1": {
+          "dev_test": 0,
+          "train_dev": 0,
+          "train_test": 0
+        },
+        "hashtag_heldout_v1": {
+          "dev_test": 0,
+          "train_dev": 0,
+          "train_test": 0
+        },
+        "topic_heldout_v1": {
+          "dev_test": 0,
+          "train_dev": 0,
+          "train_test": 0
+        }
+      },
+      "duplicate_item_rows": 0,
+      "passed": true,
+      "severity": "CRITICAL",
+      "status": "PASS"
+    },
+    "index_train_only": {
+      "allowed_fit_split": "train",
+      "dev_test_candidates_in_index": "PROHIBITED",
+      "index_status": "NOT_BUILT",
+      "passed": true,
+      "required_build_order": [
+        "freeze_raw_manifest",
+        "aggregate_by_item",
+        "assign_split",
+        "select_train_only",
+        "build_index"
+      ],
+      "severity": "CRITICAL",
+      "status": "PASS_NOT_BUILT"
+    },
+    "same_video_comment_grouping": {
+      "duplicate_comment_memberships": 0,
+      "missing_label_records": 0,
+      "missing_video_memberships": 0,
+      "official_comment_count": 107267,
+      "official_comment_split_intersections": {
+        "dev_test": 0,
+        "train_dev": 0,
+        "train_test": 0
+      },
+      "passed": true,
+      "sensitive_values_emitted": false,
+      "severity": "CRITICAL",
+      "status": "PASS",
+      "video_groups": 8210,
+      "video_id_mismatches": 0
+    },
+    "source_group_intersection": {
+      "cross_split_intersections": {
+        "group_by_video_v1": {
+          "dev_test": 0,
+          "train_dev": 0,
+          "train_test": 0
+        },
+        "hashtag_heldout_v1": {
+          "dev_test": 0,
+          "train_dev": 0,
+          "train_test": 0
+        },
+        "topic_heldout_v1": {
+          "dev_test": 0,
+          "train_dev": 0,
+          "train_test": 0
+        }
+      },
+      "passed": true,
+      "severity": "CRITICAL",
+      "status": "PASS"
+    },
+    "target_comment_fields": {
+      "hit_count": 0,
+      "hits": [],
+      "passed": true,
+      "severity": "CRITICAL",
+      "status": "PASS"
+    },
+    "time_order": {
+      "evaluated_schemes": [],
+      "limitation": "CSMV publish_time is absent; no chronological split is released or claimed safe.",
+      "passed": true,
+      "severity": "CRITICAL",
+      "status": "NOT_APPLICABLE_NO_TIME_SPLIT"
+    }
+  },
+  "critical_failure_count": 0,
+  "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "g1_passed": false,
+  "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "g2_passed": false,
+  "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+  "gate": "PASS_WITH_LIMITATIONS",
+  "passed": true,
+  "record_count": 8210,
+  "schema_version": "m2-leakage-audit-v1",
+  "scope_limitations": [
+    "Checks are deterministic but not proof that every semantic near-duplicate or same-event leak has been found.",
+    "No CSMV chronological split is evaluated because publish timestamps are unavailable.",
+    "Publisher and media-fingerprint leakage remain unresolved where source metadata/media are unavailable."
+  ]
+}

@@ -7,3 +7,5 @@
 | bootstrap-config-validation | 2026-07-14 | `configs/experiment.bootstrap.yaml` | pending_m1 | pending_m2 | T0 | 验证配置契约，不训练 | 20260714 | JSD | 泄漏检查失败 | VALIDATION_ONLY | 无模型输出 |
 
 允许状态：`PLANNED`、`RUNNING`、`COMPLETED`、`FAILED`、`LEAKAGE_BLOCKED`、`VALIDATION_ONLY`。失败和被阻断的运行不得删除记录。
+
+历史实验不因本表建立而被追认成正式运行。既有代码与结果的证据资格统一见`legacy-experiment-classification.md`；其中目标评论、未来互动、全量图或随机split不合格结果不得补登记为`COMPLETED`。

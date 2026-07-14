@@ -1,0 +1,87 @@
+{
+  "schema_version": "m1-source-manifest-v1",
+  "source_id": "DS-001",
+  "dataset": "csmv",
+  "upstream_revision": "99d14240254b1381dde0b9c56add140381f65117",
+  "retrieved_date": "2026-07-14",
+  "license_status_at_retrieval": "annotations: CC-BY-SA-4.0 per upstream README; media excluded",
+  "raw_root": "data/raw/csmv/99d14240254b1381dde0b9c56add140381f65117",
+  "files": [
+    {
+      "relative_path": "README.md",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/README.md",
+      "retrieved_date": "2026-07-14",
+      "bytes": 9334,
+      "sha256": "39a1162df89dbf7a50d89435b640043c1397eaa6b1827e63ebbf77584a75d1e3"
+    },
+    {
+      "relative_path": "LICENSE",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/LICENSE",
+      "retrieved_date": "2026-07-14",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "relative_path": "CSMV/CSMV_rawLinks.xlsx",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/CSMV_rawLinks.xlsx",
+      "retrieved_date": "2026-07-14",
+      "bytes": 403915,
+      "sha256": "cb3a6a1a524faf3665e03bee523f68185a995cd4411f0888387dc1719727a4c3"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/dev_set.json",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/dev_set.json",
+      "retrieved_date": "2026-07-14",
+      "bytes": 468438,
+      "sha256": "a608dd15aa84f5dbcc652369151d00f0f1779b9fa09c05549fd3d65c71296ec8"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/emotion_label_map.json",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/emotion_label_map.json",
+      "retrieved_date": "2026-07-14",
+      "bytes": 141,
+      "sha256": "6f32900c9cba649fe0a9d6b9a7643492a992e78d9913009c4ddb6e0fe536794c"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/lable_data_dict.json.zip",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/lable_data_dict.json.zip",
+      "retrieved_date": "2026-07-14",
+      "bytes": 3895749,
+      "sha256": "1533318195176588482593fc7671cc01a93c2be216702dc25d5f29c02ef6419f"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/opinion_label_map.json",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/opinion_label_map.json",
+      "retrieved_date": "2026-07-14",
+      "bytes": 58,
+      "sha256": "14f9eacac9e6bfa18557a1c53fee20a534edf33a0deacfb59a051503eda795bb"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/test_set.json",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/test_set.json",
+      "retrieved_date": "2026-07-14",
+      "bytes": 937253,
+      "sha256": "995ca43a9a26893b575244ae991fbba0e5d19a10dd2ff070fdeb00d31be9d2ff"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/train_set.json",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/train_set.json",
+      "retrieved_date": "2026-07-14",
+      "bytes": 3277800,
+      "sha256": "feaf2a4f889fafc408d0d5fb118e6dce7e0845e9ba3169b8ca67425b413cd78b"
+    },
+    {
+      "relative_path": "CSMV/Comments_Anno/video_to_comment.json",
+      "source_url": "https://raw.githubusercontent.com/IEIT-AGI/MSA-CRVI/99d14240254b1381dde0b9c56add140381f65117/CSMV/Comments_Anno/video_to_comment.json",
+      "retrieved_date": "2026-07-14",
+      "bytes": 5432745,
+      "sha256": "6126b907d058760b2d1773f230274325b1bde597c96f79e9a87ed8ad1f8829d3"
+    }
+  ],
+  "excluded": [
+    "media",
+    "feature bundles",
+    "persona data",
+    "credentials"
+  ]
+}

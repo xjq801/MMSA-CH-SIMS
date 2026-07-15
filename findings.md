@@ -430,3 +430,10 @@
 - 前180步会对全部531个长序列系统性丢失尾段；确定性首尾覆盖均匀180步具有更好的时间覆盖，因此冻结为主敏感性，前180只作补充。
 - 初始8项unittest按预期因`csmv_i3d_sequence_protocol`不存在而失败；实现后8/8通过。专项validator同时闭合重复hash、坏shape/空/非float32/非有限值、资源超限和test自适应拒绝。
 - 该协议只关闭序列处理的发表/复现缺口，不关闭资产许可、revision或权利方包身份；维护者证据按用户指令延期。
+
+## 2026-07-16 — 00序列协议复审发现
+
+- `[independent fixity]` 协议manifest SHA-256为`208615d4059afc8c5c2c57a5ffc13eeafa9a71ece861332d9f1cd62bc9c4d5be`，其6个证据文件hash现场闭合。
+- `[independent replay]` 8项单测、8个fail-closed负例、实时泄漏门、负面夹具、19项`-I -S`隔离重放和M2 release均通过，未发现任务10回交夸大。
+- `[publication gate]` 协议未冻结风险已关闭；这使实验处理规则可预注册、可复现，但不提供资产权利或官方身份信用。
+- `[git hygiene]` 审核基线与`origin/main`一致；tracked `.npy`、特征包和超过10 MiB文件均为0。第一次枚举因Git非ASCII路径引号转义报错，使用`core.quotepath=false`后有效重跑。

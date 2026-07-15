@@ -1,9 +1,9 @@
 # HANDOFF_10：M1—M2数据与协议交接
 
 > 提交给：任务00总控审核
-> SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.12 第17节任务10
+> SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.13 第17节任务10
 > 交接日期：2026-07-16
-> 提交状态：00已完成特征预审/G2复审；G1通过，复现陈旧子阻塞关闭，G2收敛为单一CSMV输入资产准入阻塞
+> 提交状态：00已接受I3D序列协议与Git检查点；G1通过，复现陈旧和序列协议子阻塞关闭，G2仅保留CSMV输入资产准入阻塞
 
 ## 请求的审核结论
 
@@ -86,3 +86,11 @@
 - 论文只允许声称冻结I3D视觉表征上的公众诱发受众情绪分布预测；不得声称端到端视频编码、原始帧学习、音视频融合、音频增益或评论文本T0输入。E1/E5/H3按`experiment-protocol-v2.md`实际单输入合同执行。
 - 维护者许可/revision/权利方包身份与fixity证明按用户指令暂记`DEFERRED_PENDING_MAINTAINER_REPLY`。本轮不等待、不催促、不重复检查，也不写成已解决。
 - 门状态保持：G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；全局`formal_split=false`；未创建任务20、未训练、未建立正式索引。
+
+## 2026-07-16 I3D序列协议与Git检查点复审（00已签署）
+
+- 00已签署`TASK00_CSMV_I3D_SEQUENCE_PROTOCOL_AND_GIT_CHECKPOINT_REVIEW_20260716.md`，裁定`ACCEPTED_PREREGISTRATION_ONLY_G2_UNCHANGED`。
+- 00现场复核协议manifest SHA-256=`208615d4059afc8c5c2c57a5ffc13eeafa9a71ece861332d9f1cd62bc9c4d5be`及6个证据文件hash；8项单测、专项validator、泄漏正负门、19项隔离重放、M2 release和综合准备均通过。
+- 正式关闭`I3D_SEQUENCE_PROCESSING_PROTOCOL_UNFROZEN`子缺口；主协议、两级敏感性、资源门和论文主张边界不得按test结果改变。
+- 审核基线`cf6dea18ddb057da91e90d6c0104e3e854f1724a`在复审开始时与`origin/main`一致且工作区干净；tracked `.npy`、特征包和超过10 MiB文件均为0。
+- 维护者证明继续`DEFERRED_PENDING_MAINTAINER_REPLY`。剩余G2缺口只有资产级许可、稳定官方revision、包身份与权利方fixity；`formal_split=false`，任务20仍禁止。

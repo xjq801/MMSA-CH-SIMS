@@ -2683,3 +2683,52 @@ GitHub现具有M1—M2可复现检查点；提交不包含I3D `.npy`、raw/proce
 ### Git状态
 
 内容检查点`f885a59`已推送至`origin/main`。本条日志与回交状态更新尚待一个小型收尾commit；未在本条提前声称其已推送。
+
+## WR-20260716-009 — 00接受I3D序列协议与M1—M2 Git检查点
+
+- 时间：2026-07-16 02:20:00 +08:00
+- 类型：DECISION | REVIEW | TEST | SECURITY | DOC
+- 任务/门：00-总控 / I3D序列协议与任务10阶段回交
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+任务10提交I3D序列协议、论文边界、复现和Git检查点，请求00独立复审。用户此前要求只做可能影响论文发表的工作，并把维护者未回复事项暂时跳过，因此本轮只裁定序列处理的可发表性/可复现性，不检查或催促Issue #5。
+
+### 实际变更
+
+- 新增`TASK00_CSMV_I3D_SEQUENCE_PROTOCOL_AND_GIT_CHECKPOINT_REVIEW_20260716.md`，签署`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`。
+- 接受`FULL_SEQUENCE_DYNAMIC_PADDING_MASK`主协议、`UNIFORM_180_ENDPOINT_INCLUSIVE`主敏感性和`FIRST_180_ONLY_FIXED_DIAGNOSTIC`补充规则，关闭`I3D_SEQUENCE_PROCESSING_PROTOCOL_UNFROZEN`子缺口。
+- 总纲升级为v1.13，并同步`DECISION_LOG.md`、`G1_G2_EVIDENCE_MATRIX.md`、`HANDOFF_10.md`、计划/进度/发现和综合准备必需文件列表。
+- 保留资产级许可、稳定官方revision、权利方包身份和fixity阻塞；维护者证据继续延期。
+
+### 验证与证据
+
+- 协议manifest及6个证据文件SHA-256现场闭合；manifest SHA-256=`208615d4059afc8c5c2c57a5ffc13eeafa9a71ece861332d9f1cd62bc9c4d5be`。
+- `python -m unittest tests.test_csmv_i3d_sequence_protocol -v`：8/8 PASS。
+- 协议manifest重建及专项validator：exit 0，`PASS_PREREGISTRATION_ONLY_G2_UNCHANGED`，8个负例PASS。
+- `run_m2_leakage_tests.py --no-write`：exit 0、Critical=0；`--selftest`：exit 0并输出预期`LEAKAGE_BLOCKED`。
+- `reproduce_m2_minimal.py --public-core`：exit 0，Python 3.8.9 `-I -S`，19项`mismatches=[]`。
+- 修改后`validate_m2_release.py`、`run_preparation_checks.py`、`python -m compileall -q scripts`和`git diff --check`均exit 0；综合准备`blocking_checks=[]`，`formal_model_work_ready=false`。
+- 审核开始时`HEAD=origin/main=cf6dea18ddb057da91e90d6c0104e3e854f1724a`、`origin/main...HEAD=0/0`、工作区干净；安全枚举262个tracked文件，`.npy`、特征包和超过10 MiB文件均为0。
+
+### 影响与边界
+
+序列处理规则已获得00预注册信用，后续不得根据test结果选择或升级协议。论文只允许声称冻结I3D视觉表征上的受众情绪分布预测，不得声称端到端原始帧、音视频融合、音频增益或评论T0输入。
+
+### 风险、问题与阻塞
+
+- 第一次tracked大文件枚举因Git对非ASCII路径的引号转义导致PowerShell `Test-Path`报错；以`git -c core.quotepath=false ls-files`重跑后成功，失败没有删除。
+- 首次整合补丁因`progress.md`预期上下文不匹配而整体拒绝、未部分应用；拆分补丁并读取真实文件尾部后完成。
+- G2仍为`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；任务20未创建。
+
+### 下一步
+
+1. 运行工作日志与综合门最终复核。
+2. 建立并推送00复审小型提交，固定v1.13裁定。
+3. 停止维护者等待类工作；仅在收到实质回复或等价证据后复审剩余资产门。
+
+### Git状态
+
+00复审改动尚未提交、未推送；不得写成已同步。

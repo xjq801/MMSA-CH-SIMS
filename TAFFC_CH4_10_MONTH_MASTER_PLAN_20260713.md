@@ -1,6 +1,6 @@
 # IEEE T-AFFC 第四章研究十个月总纲（项目唯一主路线）
 
-> 版本：v1.12  
+> 版本：v1.13  
 > 冻结日期：2026-07-16  
 > 执行周期：2026-07-13—2027-05-12  
 > 首要目标：形成可直接提交 IEEE Transactions on Affective Computing（T-AFFC）的完整论文、代码、数据说明和证据链。  
@@ -55,6 +55,14 @@
 - “完整模态”统一改称`ALL_AVAILABLE_INPUTS`，只表示某数据协议在T0合法、冻结且实际可得的全部输入。若只有一个内容模态，逐模态增量记`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY`。
 - 随机缺失、缺一/缺二模态和逐模态增量只允许在同一样本实际含至少两个T0合法输入模态的数据协议上运行。CSMV音频分支固定为`NOT_APPLICABLE_AUDIO_UNAVAILABLE_BY_DATASET_DESIGN`；若没有合格协议，H3降为`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL`。
 - 该裁定不放行I3D资产、G2、全局split或任务20；不得声称音视频融合、音频增益、音频缺失鲁棒性、伪音频补齐或端到端原始帧/音频编码改进。
+
+### 0.5 I3D序列处理协议（v1.13，`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`）
+
+- 主协议冻结为`FULL_SEQUENCE_DYNAMIC_PADDING_MASK`：完整保留`float32[T,1024]`序列，batch内右补零并以`True=observed`的布尔mask区分观测；所有split执行同一规则，不允许test自适应。
+- 主敏感性冻结为`UNIFORM_180_ENDPOINT_INCLUSIVE`；`FIRST_180_ONLY_FIXED_DIAGNOSTIC`仅作补充，不得按test表现升级。8,210个必需输入中531个`T>180`、最长1,719，故不能默认前180等同完整序列。
+- 资源合同为确定性长度分桶、`max_batch_size=64`、64 MiB原始输入张量门；若模型激活/梯度造成显存不足，只能确定性减小batch，不能静默截断或改协议。
+- 论文只能声称冻结I3D视觉表征上的受众情绪分布预测，不能声称端到端视频编码、原始帧学习、音视频融合、音频增益或评论正文T0输入。
+- 00仅关闭`I3D_SEQUENCE_PROCESSING_PROTOCOL_UNFROZEN`子缺口。资产级许可、稳定官方revision、本地包身份及权利方fixity仍延期等待外部证据；G2保持`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，`formal_split=false`，任务20继续禁止。
 
 这条路线与第四章的对应关系是：
 
@@ -590,13 +598,14 @@ flowchart TD
 | 2026-07-15 | `REVIEW-00-CSMV-OFFICIAL-ISSUE-5-SENT-20260715`确认正式元数据请求已在官方Issue #5发出 | 公开页面显示官方仓库、Open状态、创建日期与完整许可/fixity/覆盖/schema请求 | 因Issue创建即放行G2；重复创建或提前催促；把未逐字点名I3D写成明确I3D请求 | 正式请求额度已使用；2026-07-22前不得跟进；等待权利方回复，G2不变 |
 | 2026-07-15 | `POLICY-00-EFFICIENCY-FIRST-MIRROR-AND-EXPANDED-ACQUISITION-20260715`允许可信镜像与隔离预取 | 用户明确要求以效率优先，可切换第三方镜像并扩大内部取得范围 | 把下载成功当许可；使用泄露/绕过链接；未核身份即正式训练或发布 | 公开资产可先进入隔离区；法律许可与G门继续fail-closed；CSMV可并行预取候选特征 |
 | 2026-07-16 | `REVIEW-00-AUDIO-MODALITY-PROTOCOL-20260716`裁定音频非主协议/G2硬门 | T-AFFC范围不强制音频；CSMV固定README只发布视觉特征并将音频列为未来补充；任务10 G2无音频条款 | 等待或伪造音频；把结构性无音频写成随机缺失鲁棒性；继续声称完整音视频输入 | 音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`并移出取得路径；E1/E5/H3按实际可得输入条件化；G2与任务20禁令不变 |
+| 2026-07-16 | `REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`接受序列协议与M1—M2 Git检查点 | 8项单测、专项门、19项隔离重放、release/泄漏/安全复核均通过；规则在test结果前冻结 | 默认截断前180；查看test后选规则；把协议PASS写成资产准入 | 主协议完整序列+mask，主敏感性均匀180；关闭协议子缺口但G2与任务20禁令不变 |
 
 ## 15. 后续每项任务的引用格式
 
 从下一项任务起，开工前必须写清：
 
 ```text
-主纲版本：v1.12（2026-07-16）
+主纲版本：v1.13（2026-07-16）
 所属月份/工作包：M? / E?
 服务假设：H?
 数据版本与split：...
@@ -647,7 +656,7 @@ flowchart TD
 每个任务首次回复和每个正式实验必须填写：
 
 ```text
-主纲版本：v1.12（2026-07-16）
+主纲版本：v1.13（2026-07-16）
 任务编号与名称：
 所属月份/工作包：M? / E?
 服务假设：H? / C?
@@ -773,7 +782,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 3.3 当前输入
 
-- 总纲v1.12；
+- 总纲v1.13；
 - `T0_INPUT_POLICY.md`；
 - `DATA_SOURCE_LEDGER.md`；
 - `ENVIRONMENT_LOCK.md`与`requirements-lock.txt`；

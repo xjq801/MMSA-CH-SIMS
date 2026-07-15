@@ -266,5 +266,6 @@
 - [x] 收紧论文主张及E1/E5/H3、Data Card/Datasheet、G门和回交合同。
 - [x] 重建19项公共核心release并完成综合检查、compileall、diff/security审计。
 - [x] 建立M1—M2 Git阶段提交、推送当前分支并回交00复审。
+- [x] 00独立复核并签署`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`；序列协议子缺口关闭，资产G2不变。
 - **维护者状态：** `DEFERRED_PENDING_MAINTAINER_REPLY`；本轮不等待、不催促、不重复检查，不写成已解决。
 - **门状态：** G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；未创建任务20。

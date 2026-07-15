@@ -411,3 +411,10 @@
 - 已更新实验协议v2、Data Card、Datasheet、数据字典、M2协议、发布边界、claim矩阵、G门证据和HANDOFF。
 - 维护者协调=`DEFERRED_PENDING_MAINTAINER_REPLY`，本轮跳过且不冒充解决。下一步重建release、执行全套验证、安全审计与Git阶段检查点。
 - M1—M2内容检查点`f885a59`已成功推送到`origin/main`；最终回交与真实同步记录由后续收尾commit固定。
+
+## 2026-07-16 — 00接受I3D序列协议与M1—M2检查点
+
+- 00独立复核协议manifest及6个证据hash、8项单测、专项validator、泄漏正负门、19项隔离重放、M2 release与综合准备，结果均与任务10回交一致。
+- 签署`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`，正式关闭`I3D_SEQUENCE_PROCESSING_PROTOCOL_UNFROZEN`子缺口。
+- 主协议、均匀180主敏感性、前180补充和论文主张边界已冻结；不得按test结果变更。
+- 维护者证据继续延期。G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；任务20未创建。

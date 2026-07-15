@@ -410,3 +410,4 @@
 - 初始测试因模块缺失exit 1并保留；实现后8/8通过，专项validator=`PASS_PREREGISTRATION_ONLY_G2_UNCHANGED`。
 - 已更新实验协议v2、Data Card、Datasheet、数据字典、M2协议、发布边界、claim矩阵、G门证据和HANDOFF。
 - 维护者协调=`DEFERRED_PENDING_MAINTAINER_REPLY`，本轮跳过且不冒充解决。下一步重建release、执行全套验证、安全审计与Git阶段检查点。
+- M1—M2内容检查点`f885a59`已成功推送到`origin/main`；最终回交与真实同步记录由后续收尾commit固定。

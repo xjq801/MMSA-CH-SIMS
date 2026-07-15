@@ -265,6 +265,6 @@
 - [x] 建立版本化文档、JSON配置、机器manifest、构建器、实现和validator；专项验证通过。
 - [x] 收紧论文主张及E1/E5/H3、Data Card/Datasheet、G门和回交合同。
 - [x] 重建19项公共核心release并完成综合检查、compileall、diff/security审计。
-- [ ] 建立M1—M2 Git阶段提交、推送当前分支并回交00复审。
+- [x] 建立M1—M2 Git阶段提交、推送当前分支并回交00复审。
 - **维护者状态：** `DEFERRED_PENDING_MAINTAINER_REPLY`；本轮不等待、不催促、不重复检查，不写成已解决。
 - **门状态：** G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；未创建任务20。

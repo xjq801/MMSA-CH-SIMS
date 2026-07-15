@@ -38,7 +38,11 @@
 
 ## 4. Git与安全状态
 
-阶段提交与远端push将在最终验证、安全扫描完成后写入本节。当前为`PENDING_LOCAL_VALIDATION_AND_COMMIT`，不得解释为已同步。
+- M1—M2内容检查点commit：`f885a59`（`M1-M2 checkpoint: freeze I3D protocol`）。
+- commit正文明确：G1 PASS；G2 blocked on CSMV asset license/fixity；`formal_split=false`；task20 not created。
+- `git fetch origin`后`origin/main...HEAD=0/1`，随后`git push origin main`成功：`26229c0..f885a59 main -> main`。
+- stage审计：107文件；敏感绝对路径0、密钥模式0、tracked数据/媒体大包0、超过10 MiB文件0；`.npy`、raw/processed大包与junction未进入Git。
+- 本回交及最终工作日志状态由后续小型收尾commit记录；以最终`origin/main` tip为复审入口。
 
 ## 5. 门状态与00请求
 

@@ -2732,3 +2732,45 @@ GitHub现具有M1—M2可复现检查点；提交不包含I3D `.npy`、raw/proce
 ### Git状态
 
 00复审改动尚未提交、未推送；不得写成已同步。
+
+## WR-20260716-010 — 推送00序列协议复审并更正记录时间
+
+- 时间：2026-07-16 01:25:26 +08:00
+- 类型：PROGRESS | FIX | DOC
+- 任务/门：00-总控 / 复审Git收尾
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+WR-20260716-009完成时把人工填写时间误写为`02:20:00 +08:00`，晚于工作站现场时间；依据只追加政策不改写历史记录，需要在本条明确更正，并记录已经实际发生的提交与推送。
+
+### 实际变更
+
+- 保留WR-20260716-009原文，在本条将其真实记录时点更正为本条现场时间附近；该笔误不影响文件、验证结果或门裁定。
+- 创建00复审commit `56205f2ab3075716c8269f8331e7b0b6a6a63759`，标题`Review I3D sequence protocol checkpoint`。
+- fetch确认远端无新提交后，将`main`推送到用户GitHub仓库。
+
+### 验证与证据
+
+- 提交前`git diff --cached --check`：exit 0。
+- `git commit`：exit 0，10 files changed、163 insertions、9 deletions。
+- `git fetch origin`后`origin/main...HEAD=0/1`。
+- `git push origin main`：exit 0，`cf6dea1..56205f2 main -> main`。
+- 推送后`HEAD=56205f2ab3075716c8269f8331e7b0b6a6a63759`，`origin/main...HEAD=0/0`，工作区干净。
+
+### 影响与边界
+
+GitHub已固定00复审与总纲v1.13。推送不改变科学门：G1=`PASS`；G2 blocked；`formal_split=false`；任务20未创建。
+
+### 风险、问题与阻塞
+
+WR-20260716-009时间是记录笔误，已用只追加方式纠正。资产许可、稳定官方revision、包身份和权利方fixity仍待外部实质证据。
+
+### 下一步
+
+运行最终日志/综合门，提交并推送本条收尾记录后停止本轮工作。
+
+### Git状态
+
+00复审commit `56205f2`已推送；本条收尾记录尚未提交、未推送。

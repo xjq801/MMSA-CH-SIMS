@@ -22,3 +22,14 @@
 | C3可靠性 | Selective Classification、SelectiveNet、MissModal、IMDer、HRLF | 拒绝和缺失模态鲁棒不是模块级首创；只检验其在public-induced distribution、OOD和自然缺失下的证据 | 同上 |
 
 上述查新只冻结主张上限，不把C1—C3从`TO_VERIFY`升级为`SUPPORTED`；任何有效性表述仍须等待预注册实验与统计证据。
+
+## 2026-07-16 CSMV输入与主张上限
+
+| 边界 | 冻结证据 | 允许措辞 | 禁止措辞 |
+|---|---|---|---|
+| CSMV内容输入 | `csmv-i3d-sequence-protocol-v1.manifest.json`；8210/8210 shape/fixity | “冻结I3D视觉表征上的公众诱发受众情绪分布预测” | 端到端视频编码、原始帧学习 |
+| 序列处理 | 完整序列主协议；确定性均匀180步主敏感性；前180补充 | 视觉序列处理消融/敏感性 | 多模态增量、看到test后选择规则 |
+| 音频与评论 | `experiment-protocol-v2.md`；00音频复审 | 评论特权监督；音频结构性不可得 | 音视频融合、音频增益、评论文本T0输入 |
+| 资产准入 | 本地fixity已闭合；维护者证明延期 | “本地隔离候选、G2待闭合” | “官方资产已确认”“G2已通过” |
+
+本节只收紧未来论文措辞，不把C1—C4的有效性状态升级为`SUPPORTED`。

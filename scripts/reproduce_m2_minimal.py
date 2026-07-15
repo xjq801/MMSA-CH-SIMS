@@ -19,6 +19,7 @@ OUTPUTS = [
     "data/processed/SILVER/cuc_igpe_v2/canonical.v1.jsonl",
     "data/processed/SILVER/cuc_igpe_v2/error_review_candidates.v1.jsonl",
     "data/manifests/csmv-primary-raw-v1.manifest.json",
+    "data/manifests/csmv-media-lineage-v1.manifest.json",
     "data/manifests/csmv-split-v1.manifest.json",
     "data/manifests/cuc-auxiliary-raw-v1.manifest.json",
     "data/manifests/cuc-canonical-v1.manifest.json",
@@ -69,16 +70,32 @@ def run_checked(command: Sequence[str], env: dict) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--cuc-root", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--cuc-root", type=Path)
+    source.add_argument(
+        "--public-core",
+        action="store_true",
+        help="replay the public benchmark core without the historical CUC source root",
+    )
     args = parser.parse_args()
-    cuc_root = args.cuc_root.resolve()
-    if not cuc_root.is_dir():
+    cuc_root = args.cuc_root.resolve() if args.cuc_root else None
+    if cuc_root is not None and not cuc_root.is_dir():
         raise FileNotFoundError(cuc_root)
 
     before = hashes(OUTPUTS)
     env = clean_environment()
+    build_command = [
+        sys.executable,
+        "-I",
+        "-S",
+        str(ROOT / "scripts" / "build_m2_data_artifacts.py"),
+    ]
+    if args.public_core:
+        build_command.append("--public-core")
+    else:
+        build_command.extend(("--cuc-root", str(cuc_root)))
     commands = [
-        [sys.executable, "-I", "-S", str(ROOT / "scripts" / "build_m2_data_artifacts.py"), "--cuc-root", str(cuc_root)],
+        build_command,
         [sys.executable, "-I", "-S", str(ROOT / "scripts" / "build_m2_release.py")],
     ]
     results = [run_checked(command, env) for command in commands]
@@ -95,7 +112,11 @@ def main() -> int:
         "credential_environment_forwarded": False,
         "raw_inputs_verified_by_manifest": True,
         "commands": [
-            "<PYTHON> -I -S scripts/build_m2_data_artifacts.py --cuc-root <CUC_ROOT>",
+            (
+                "<PYTHON> -I -S scripts/build_m2_data_artifacts.py --public-core"
+                if args.public_core
+                else "<PYTHON> -I -S scripts/build_m2_data_artifacts.py --cuc-root <CUC_ROOT>"
+            ),
             "<PYTHON> -I -S scripts/build_m2_release.py",
         ],
         "command_returncodes": [result["returncode"] for result in results],
@@ -104,6 +125,9 @@ def main() -> int:
         "before_sha256": before,
         "after_sha256": after,
         "boundary": "This is a clean isolated process replay, not a fresh OS/container dependency installation; the pipeline is standard-library-only.",
+        "replay_scope": "PUBLIC_BENCHMARK_CORE" if args.public_core else "FULL_WITH_CUC_SOURCE",
+        "frozen_auxiliary_inputs_verified": args.public_core,
+        "status": "PASS_CURRENT_CSMV_SOURCE_GROUP_SPLIT" if passed else "REPLAY_FAILED",
     }
     path = MANIFEST_ROOT / "reproducibility-v1.manifest.json"
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")

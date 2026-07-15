@@ -109,17 +109,17 @@
   },
   "critical_failure_count": 0,
   "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
-  "g1_passed": false,
-  "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "g1_passed": true,
+  "g1_status": "PASS",
   "g2_passed": false,
-  "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+  "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
   "gate": "PASS_WITH_LIMITATIONS",
   "passed": true,
   "record_count": 8210,
   "schema_version": "m2-leakage-audit-v1",
   "scope_limitations": [
-    "Checks are deterministic but not proof that every semantic near-duplicate or same-event leak has been found.",
+    "Official CSMV URL metadata identifies source-platform video families, but raw-media fingerprint equivalence beyond that identifier is not claimed.",
     "No CSMV chronological split is evaluated because publish timestamps are unavailable.",
-    "Publisher and media-fingerprint leakage remain unresolved where source metadata/media are unavailable."
+    "Publisher identity is unavailable and therefore cannot be used as an additional grouping key."
   ]
 }

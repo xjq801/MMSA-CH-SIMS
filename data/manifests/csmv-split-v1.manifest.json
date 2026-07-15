@@ -1,26 +1,32 @@
 {
   "counts": {
     "group_by_video_v1": {
-      "dev": 816,
+      "dev": 837,
       "test": 1675,
-      "train": 5719
+      "train": 5698
     },
     "hashtag_heldout_v1": {
-      "dev": 602,
-      "test": 1618,
-      "train": 5990
+      "dev": 327,
+      "test": 672,
+      "train": 7211
     },
     "topic_heldout_v1": {
       "not_assigned": 8210
     }
   },
   "created_from": "aggregated video records before any index or fit",
+  "cross_split_source_groups": 0,
   "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "duplicate_source_group_count": 202,
+  "duplicate_source_rows": 404,
   "future_index_scope": "TRAIN_ONLY",
   "group_overlap_allowed": false,
   "hashtag_split_salt": "mmsa-csmv-hashtag-heldout-v1",
   "index_status": "NOT_BUILT",
+  "media_lineage_manifest": "csmv-media-lineage-v1.manifest.json",
   "schema_version": "split-v1",
+  "source_group_count": 8008,
+  "split_basis": "official raw-link source-platform video family before any index or fit",
   "topic_status": "BLOCKED_NATIVE_TOPIC_ABSENT",
-  "video_split_salt": "mmsa-csmv-group-by-video-v1"
+  "video_split_salt": "mmsa-csmv-source-family-group-v1"
 }

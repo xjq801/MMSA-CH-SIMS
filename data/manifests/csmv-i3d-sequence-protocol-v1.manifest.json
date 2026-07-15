@@ -1,0 +1,95 @@
+{
+  "evidence_files": [
+    {
+      "path": "CSMV_I3D_SEQUENCE_PROTOCOL_V1.md",
+      "sha256": "e584ecb136c50050a8ac29d06df1236cf4750c07e265526684e27323b272515d"
+    },
+    {
+      "path": "configs/csmv-i3d-sequence-protocol-v1.json",
+      "sha256": "42a7384a6bf2a3c4a18578942decb6ac8afde0ffbf5899cb1f7c111b3c86179d"
+    },
+    {
+      "path": "scripts/csmv_i3d_sequence_protocol.py",
+      "sha256": "0ecb92fff40f00492283ced2d85917ef746cbd9628013d2bf5c67199ac463017"
+    },
+    {
+      "path": "scripts/build_csmv_i3d_sequence_protocol_manifest.py",
+      "sha256": "e2e34830f6d3d6342d02e4bb121ba734648778a4d0a511634d3ad80b7e9d8704"
+    },
+    {
+      "path": "scripts/validate_csmv_i3d_sequence_protocol.py",
+      "sha256": "eda1d9f369128602d3b8589189af4fcb7bc6ec5a6190b4f1288ab4e4a3d1e51f"
+    },
+    {
+      "path": "tests/test_csmv_i3d_sequence_protocol.py",
+      "sha256": "b5bd760a972bd03fbb5879efa25664ef983210fcaed92c48629f82a8467bb4ff"
+    }
+  ],
+  "external_attestation": "DEFERRED_PENDING_MAINTAINER_REPLY",
+  "freeze_date": "2026-07-16",
+  "gate_state": {
+    "formal_split": false,
+    "g1": "PASS",
+    "g2": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+    "task20_created": false
+  },
+  "length_profile": {
+    "equal_180": 4,
+    "greater_than_180": 531,
+    "max": 1719,
+    "maximum_single_input_bytes": 7041024,
+    "median_nearest_rank": 43,
+    "min": 6,
+    "p90_nearest_rank": 133,
+    "p95_nearest_rank": 211,
+    "p99_nearest_rank": 339,
+    "required_samples": 8210
+  },
+  "paper_claim_contract": {
+    "allowed": "PUBLIC_INDUCED_AUDIENCE_AFFECT_DISTRIBUTION_FORECASTING_ON_FROZEN_I3D_VISUAL_REPRESENTATIONS",
+    "audio": "STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED",
+    "e1": "ALL_AVAILABLE_INPUTS_EQUALS_I3D_ONLY",
+    "e5": "NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY",
+    "h3": "NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL_UNLESS_ANOTHER_PROTOCOL_QUALIFIES",
+    "prohibited": [
+      "END_TO_END_VIDEO_ENCODING",
+      "RAW_FRAME_LEARNING",
+      "AUDIO_VISUAL_FUSION",
+      "AUDIO_GAIN",
+      "COMMENT_TEXT_AS_T0_STUDENT_INPUT"
+    ]
+  },
+  "protocol": {
+    "batching": {
+      "bucket_boundaries": [
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024,
+        2048
+      ],
+      "input_tensor_cap_bytes": 67108864,
+      "max_batch_size": 64,
+      "max_padded_steps": 16384,
+      "policy": "DETERMINISTIC_LENGTH_BUCKETS_DYNAMIC_PADDING"
+    },
+    "main": "FULL_SEQUENCE_DYNAMIC_PADDING_MASK",
+    "mask_true_means": "OBSERVED_TIMESTEP",
+    "primary_sensitivity": "UNIFORM_180_ENDPOINT_INCLUSIVE",
+    "randomness": "NONE",
+    "same_rule_all_splits": true,
+    "supplementary_sensitivity": "FIRST_180_ONLY_FIXED_DIAGNOSTIC",
+    "test_adaptation_allowed": false
+  },
+  "schema_version": "csmv-i3d-sequence-protocol-manifest-v1",
+  "selection_basis": "PRE_TEST_INPUT_LENGTH_AUDIT_ONLY",
+  "source_quarantine_manifest": {
+    "content_tree_sha256": "35be2d18e1d2413ba3765034cdb454baa5e3496d49c540c9be00e81bbc2c1942",
+    "coverage": "8210_OF_8210",
+    "path": "data/manifests/csmv-i3d-quarantine-v1.manifest.json",
+    "sha256": "425829cf3271ce3c695a011e75b9efa94c4efab76458fda9f902e6eeb9c99c1e"
+  },
+  "status": "PREREGISTERED_BEFORE_TEST_RESULTS"
+}

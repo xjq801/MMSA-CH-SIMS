@@ -5,6 +5,6 @@
   "path": "data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl",
   "records": 8210,
   "schema_version": "label-tier-manifest-v1",
-  "sha256": "c494875fa195f69ae856607be113798046dcc4a53ab4c234730c641d2e2079bb",
+  "sha256": "434eb1f84153be2f71d8db79351acc78cb2cae28691b4d4189f5165f22178869",
   "tier": "HUMAN_GOLD"
 }

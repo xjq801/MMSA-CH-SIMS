@@ -9,10 +9,17 @@ import json
 import math
 import os
 import re
+import sys
 import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+
+# Python isolated mode removes the script directory from sys.path. Re-add only
+# this reviewed local directory; site-packages and user-site code remain off.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from csmv_media_lineage import load_mapping, summarize_mapping
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,7 +29,7 @@ MANIFEST_ROOT = ROOT / "data" / "manifests"
 PROCESSED_ROOT = ROOT / "data" / "processed"
 CSMV_EMOTIONS = ["anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust"]
 CSMV_OPINIONS = ["negative", "neutral", "positive"]
-VIDEO_SPLIT_SALT = "mmsa-csmv-group-by-video-v1"
+VIDEO_SPLIT_SALT = "mmsa-csmv-source-family-group-v1"
 HASHTAG_SPLIT_SALT = "mmsa-csmv-hashtag-heldout-v1"
 
 
@@ -142,6 +149,21 @@ def build_csmv() -> dict:
             if value not in (None, ""):
                 group["hashtags"].add(stable_id("csmv-hashtag-v1", str(value)))
 
+    official_video_ids = {
+        value[:-4] if value.endswith(".mp4") else value for value in grouped
+    }
+    raw_link_path = CSMV_ROOT / "CSMV" / "CSMV_rawLinks.xlsx"
+    raw_link_rows = load_mapping(raw_link_path)
+    mapping_summary = summarize_mapping(raw_link_rows, official_video_ids)
+    if not mapping_summary["mapping_valid"]:
+        raise ValueError("CSMV official ID-to-source-URL mapping failed validation")
+    media_by_internal_id = {
+        row["internal_video_id"]: row for row in raw_link_rows
+    }
+    source_family_counts = Counter(
+        row["source_platform_video_id"] for row in raw_link_rows
+    )
+
     union_find = UnionFind()
     for group in grouped.values():
         hashtags = sorted(group["hashtags"])
@@ -149,10 +171,23 @@ def build_csmv() -> dict:
             union_find.find(value)
         for value in hashtags[1:]:
             union_find.union(hashtags[0], value)
+    source_family_hashtags = defaultdict(set)
+    for video_id, group in grouped.items():
+        internal_video_id = video_id[:-4] if video_id.endswith(".mp4") else video_id
+        source_family_hashtags[
+            media_by_internal_id[internal_video_id]["source_group_id"]
+        ].update(group["hashtags"])
+    for hashtags in source_family_hashtags.values():
+        values = sorted(hashtags)
+        for value in values[1:]:
+            union_find.union(values[0], value)
 
     records = []
     for video_id, group in grouped.items():
         item_id = stable_id("csmv-video-v1", video_id)
+        internal_video_id = video_id[:-4] if video_id.endswith(".mp4") else video_id
+        media_lineage = media_by_internal_id[internal_video_id]
+        source_group_id = media_lineage["source_group_id"]
         hashtags = sorted(group["hashtags"])
         component = union_find.find(hashtags[0]) if hashtags else None
         emotion_dist, emotion_uncertainty = distribution(group["emotion"], CSMV_EMOTIONS)
@@ -165,7 +200,7 @@ def build_csmv() -> dict:
                 "label_tier": "HUMAN_GOLD",
                 "label_source": "csmv_public_human_comment_annotations",
                 "available_at_t0": False,
-                "source_group_id": item_id,
+                "source_group_id": source_group_id,
                 "source_domain": "tiktok",
                 "topic_id": None,
                 "publisher_id": None,
@@ -183,12 +218,14 @@ def build_csmv() -> dict:
                 "native_label": None,
                 "continuous_affect": None,
                 "label_conflict": False,
-                "duplicate_source_id": False,
+                "duplicate_source_id": source_family_counts[
+                    media_lineage["source_platform_video_id"]
+                ] > 1,
                 "missing_time": True,
                 "legacy_features": None,
                 "legacy_features_available_at_t0": False,
                 "split": {
-                    "group_by_video_v1": stable_split(item_id, VIDEO_SPLIT_SALT),
+                    "group_by_video_v1": stable_split(source_group_id, VIDEO_SPLIT_SALT),
                     "hashtag_heldout_v1": stable_split(component, HASHTAG_SPLIT_SALT) if component else "not_assigned",
                     "topic_heldout_v1": "not_assigned",
                 },
@@ -197,6 +234,9 @@ def build_csmv() -> dict:
                     "source_revision": CSMV_REVISION,
                     "aggregation_version": "csmv-video-distribution-v1",
                     "comment_text_exported": False,
+                    "media_lineage_version": "csmv-media-lineage-v1",
+                    "media_mapping_workbook_sha256": sha256_file(raw_link_path),
+                    "source_group_basis": "official_raw_link_source_platform_video_id_sha256",
                 },
             }
         )
@@ -207,6 +247,53 @@ def build_csmv() -> dict:
     split_summary = {}
     for scheme in ("group_by_video_v1", "hashtag_heldout_v1", "topic_heldout_v1"):
         split_summary[scheme] = dict(sorted(Counter(record["split"][scheme] for record in records).items()))
+
+    source_group_splits = defaultdict(set)
+    for record in records:
+        source_group_splits[record["source_group_id"]].add(
+            record["split"]["group_by_video_v1"]
+        )
+    cross_split_source_groups = sum(
+        len(values) > 1 for values in source_group_splits.values()
+    )
+    if cross_split_source_groups:
+        raise ValueError("CSMV source-platform video family crosses group_by_video_v1")
+
+    lineage_entries = []
+    records_by_item = {record["item_id"]: record for record in records}
+    for row in raw_link_rows:
+        video_id = row["internal_video_id"] + ".mp4"
+        item_id = stable_id("csmv-video-v1", video_id)
+        record = records_by_item[item_id]
+        lineage_entries.append(
+            {
+                "item_id": item_id,
+                "source_group_id": row["source_group_id"],
+                "source_url_sha256": row["source_url_sha256"],
+                "duplicate_source_id": record["duplicate_source_id"],
+                "split": record["split"]["group_by_video_v1"],
+            }
+        )
+    lineage_entries.sort(key=lambda value: value["item_id"])
+    write_json(
+        MANIFEST_ROOT / "csmv-media-lineage-v1.manifest.json",
+        {
+            "schema_version": "csmv-media-lineage-v1",
+            "dataset_id": "CSMV@" + CSMV_REVISION,
+            "source_revision": CSMV_REVISION,
+            "source_mapping_file": "CSMV/CSMV_rawLinks.xlsx",
+            "source_mapping_sha256": sha256_file(raw_link_path),
+            "mapping_semantics": "internal_video_id_to_source_platform_url",
+            "internal_platform_id_equality_required": False,
+            "source_group_derivation": "sha256(csmv-source-platform-video-v1|URL path video ID)",
+            "raw_urls_exported": False,
+            "stats": {
+                **mapping_summary,
+                "cross_split_source_groups": cross_split_source_groups,
+            },
+            "entries": lineage_entries,
+        },
+    )
 
     raw_file_meta = {
         "train_set.json": (75086, ["comment_id"]),
@@ -250,10 +337,16 @@ def build_csmv() -> dict:
             "schema_version": "split-v1",
             "dataset_id": "CSMV@" + CSMV_REVISION,
             "created_from": "aggregated video records before any index or fit",
+            "split_basis": "official raw-link source-platform video family before any index or fit",
             "video_split_salt": VIDEO_SPLIT_SALT,
             "hashtag_split_salt": HASHTAG_SPLIT_SALT,
             "counts": split_summary,
             "group_overlap_allowed": False,
+            "source_group_count": len(source_group_splits),
+            "duplicate_source_group_count": mapping_summary["source_family_duplicate_groups"],
+            "duplicate_source_rows": mapping_summary["source_family_duplicate_rows"],
+            "cross_split_source_groups": cross_split_source_groups,
+            "media_lineage_manifest": "csmv-media-lineage-v1.manifest.json",
             "topic_status": "BLOCKED_NATIVE_TOPIC_ABSENT",
             "index_status": "NOT_BUILT",
             "future_index_scope": "TRAIN_ONLY",
@@ -535,20 +628,55 @@ def build_cuc(cuc_root: Path) -> dict:
     return stats
 
 
-def write_fixed_manifests() -> None:
-    mapping = ROOT / "LABEL_SPACE_MAPPING_DRAFT.md"
-    write_json(
-        MANIFEST_ROOT / "second-primary-label-map-v1.manifest.json",
-        {
-            "schema_version": "label-map-manifest-v1",
-            "version": "v1",
-            "status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
-            "mapping_document": "LABEL_SPACE_MAPPING_DRAFT.md",
-            "mapping_document_sha256": sha256_file(mapping),
-            "test_result_tuning_allowed": False,
-            "g1_effect": "BLOCKED",
-        },
+def verify_frozen_auxiliary() -> dict:
+    """Verify, but do not rebuild, the local-only CUC silver tier.
+
+    The public benchmark core must remain reproducible when the historical CUC
+    source root is unavailable.  CUC is therefore an immutable auxiliary input
+    in this mode, never a prerequisite for rebuilding the public HUMAN_GOLD
+    benchmark artifacts.
+    """
+    canonical_manifest = json.loads(
+        (MANIFEST_ROOT / "cuc-canonical-v1.manifest.json").read_text(encoding="utf-8")
     )
+    silver_manifest = json.loads(
+        (MANIFEST_ROOT / "silver-v1.manifest.json").read_text(encoding="utf-8")
+    )
+    review_manifest = json.loads(
+        (MANIFEST_ROOT / "label-error-review-v1.manifest.json").read_text(encoding="utf-8")
+    )
+    auxiliary_manifest = MANIFEST_ROOT / "cuc-auxiliary-raw-v1.manifest.json"
+    if not auxiliary_manifest.is_file():
+        raise FileNotFoundError(auxiliary_manifest)
+
+    references = (
+        (
+            canonical_manifest["output_path"],
+            canonical_manifest["output_sha256"],
+        ),
+        (silver_manifest["path"], silver_manifest["sha256"]),
+        (review_manifest["path"], review_manifest["sha256"]),
+    )
+    for relative, expected in references:
+        path = ROOT / relative
+        if not path.is_file() or sha256_file(path) != expected:
+            raise RuntimeError("FROZEN_AUXILIARY_FIXITY_FAILURE:{}".format(relative))
+    if silver_manifest.get("tier") != "SILVER":
+        raise RuntimeError("FROZEN_AUXILIARY_TIER_FAILURE")
+    return canonical_manifest["stats"]
+
+
+def write_fixed_manifests() -> None:
+    second_path = MANIFEST_ROOT / "second-primary-label-map-v1.manifest.json"
+    second = json.loads(second_path.read_text(encoding="utf-8"))
+    if second.get("status") != "FROZEN_00_APPROVED" or second.get("g1_effect") != "PASS":
+        raise RuntimeError("SECOND_PRIMARY_NOT_FROZEN")
+    second_provenance = MANIFEST_ROOT / second["manifest"]
+    if (
+        not second_provenance.is_file()
+        or sha256_file(second_provenance) != second["manifest_sha256"]
+    ):
+        raise RuntimeError("SECOND_PRIMARY_MANIFEST_FIXITY_FAILURE")
     unlabeled = PROCESSED_ROOT / "UNLABELED"
     unlabeled.mkdir(parents=True, exist_ok=True)
     write_json(
@@ -597,14 +725,32 @@ def write_fixed_manifests() -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--cuc-root", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--cuc-root", type=Path)
+    source.add_argument(
+        "--public-core",
+        action="store_true",
+        help="rebuild public HUMAN_GOLD artifacts while verifying frozen CUC auxiliary bytes",
+    )
     args = parser.parse_args()
     for tier in ("HUMAN_GOLD", "SILVER", "UNLABELED"):
         (PROCESSED_ROOT / tier).mkdir(parents=True, exist_ok=True)
     csmv = build_csmv()
-    cuc = build_cuc(args.cuc_root.resolve())
+    cuc = verify_frozen_auxiliary() if args.public_core else build_cuc(args.cuc_root.resolve())
     write_fixed_manifests()
-    print(json.dumps({"schema": "m2-build-summary-v1", "csmv": csmv, "cuc": cuc}, ensure_ascii=False, indent=2, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "schema": "m2-build-summary-v1",
+                "replay_scope": "PUBLIC_BENCHMARK_CORE" if args.public_core else "FULL_WITH_CUC_SOURCE",
+                "csmv": csmv,
+                "cuc": cuc,
+            },
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+    )
     return 0
 
 

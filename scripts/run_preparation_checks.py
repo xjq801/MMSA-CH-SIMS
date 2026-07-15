@@ -19,6 +19,12 @@ from validate_literature_freeze import validate_literature_freeze
 from validate_m2_data_engineering import validate_m2_data_engineering
 from validate_m2_release import validate_m2_release
 from validate_second_primary_readonly_audit import validate_second_primary_readonly_audit
+from validate_lai_gai_osf_metadata_audit import validate_lai_gai_osf_metadata_audit
+from validate_lai_gai_osf_api_metadata import validate_lai_gai_osf_api_metadata
+from validate_lai_gai_second_primary import validate_lai_gai_second_primary
+from validate_csmv_media_lineage import validate_csmv_media_lineage
+from validate_csmv_feature_preflight import validate_csmv_feature_preflight
+from validate_csmv_i3d_sequence_protocol import validate as validate_csmv_i3d_sequence_protocol
 from validate_work_log import validate_work_log
 
 
@@ -45,6 +51,7 @@ REQUIRED_FILES = [
     "experiment-protocol-v1.md",
     "leakage-threat-model.md",
     "M1_PUBLIC_DATA_AUDIT.md",
+    "CSMV_MEDIA_LINEAGE_AUDIT_20260715.md",
     "LABEL_SPACE_MAPPING_DRAFT.md",
     "DATASET_SELECTION_DECISION.md",
     "LITERATURE_SEARCH_REPORT.md",
@@ -71,11 +78,47 @@ REQUIRED_FILES = [
     "M1_SECOND_PRIMARY_SHORTLIST_20260714.md",
     "M1_LIRIS_ACCEDE_DEEP_AUDIT_20260714.md",
     "HANDOFF_10_SECOND_PRIMARY_READONLY.md",
+    "M1_LAI_GAI_OSF_METADATA_AUDIT_20260714.md",
+    "M1_LAI_GAI_OSF_API_METADATA_AUDIT_20260714.md",
+    "TASK00_LAI_GAI_OSF_API_METADATA_REVIEW_20260714.md",
+    "TASK00_SECOND_PRIMARY_RESOLUTION_AUTHORIZATION_20260714.md",
+    "M1_M2_LAI_GAI_SECOND_PRIMARY_FREEZE_20260714.md",
+    "TASK00_LAI_GAI_SECOND_PRIMARY_FREEZE_REVIEW_20260715.md",
+    "CSMV_MEDIA_LINEAGE_AUDIT_20260715.md",
+    "TASK00_CSMV_LINEAGE_G2_REVIEW_20260715.md",
+    "TASK00_CSMV_FEATURE_PREFLIGHT_AUTHORIZATION_20260715.md",
+    "TASK00_CSMV_ONE_FEATURE_FAMILY_METADATA_COORDINATION_AUTHORIZATION_20260715.md",
+    "TASK00_CSMV_I3D_METADATA_COORDINATION_ATTEMPT_REVIEW_20260715.md",
+    "TASK00_CSMV_OFFICIAL_ISSUE_5_SENT_REVIEW_20260715.md",
+    "TASK00_EFFICIENCY_FIRST_MIRROR_AND_ACQUISITION_POLICY_20260715.md",
+    "TASK00_AUDIO_MODALITY_PROTOCOL_REVIEW_20260716.md",
+    "experiment-protocol-v2.md",
+    "CSMV_I3D_GITHUB_ISSUE_REQUEST_20260715.md",
+    "TASK00_CSMV_FEATURE_PREFLIGHT_G2_REVIEW_20260715.md",
     "scripts/validate_second_primary_readonly_audit.py",
+    "scripts/validate_lai_gai_osf_metadata_audit.py",
+    "scripts/validate_lai_gai_osf_api_metadata.py",
+    "scripts/fetch_lai_gai_second_primary_assets.py",
+    "scripts/build_lai_gai_second_primary.py",
+    "scripts/validate_lai_gai_second_primary.py",
+    "scripts/audit_lai_gai_osf_api_metadata.py",
+    "scripts/build_lai_gai_osf_api_manifest.py",
     "scripts/run_m2_leakage_tests.py",
     "scripts/build_m2_release.py",
     "scripts/reproduce_m2_minimal.py",
     "scripts/validate_m2_release.py",
+    "scripts/csmv_media_lineage.py",
+    "scripts/validate_csmv_media_lineage.py",
+    "scripts/validate_csmv_feature_preflight.py",
+    "CSMV_FEATURE_ASSET_PREFLIGHT_20260715.md",
+    "data/manifests/csmv-feature-preflight-v1.manifest.json",
+    "CSMV_I3D_SEQUENCE_PROTOCOL_V1.md",
+    "configs/csmv-i3d-sequence-protocol-v1.json",
+    "scripts/csmv_i3d_sequence_protocol.py",
+    "scripts/build_csmv_i3d_sequence_protocol_manifest.py",
+    "scripts/validate_csmv_i3d_sequence_protocol.py",
+    "tests/test_csmv_i3d_sequence_protocol.py",
+    "data/manifests/csmv-i3d-sequence-protocol-v1.manifest.json",
     "references/search/step19-23/search-protocol.json",
     "references/references.bib",
 ]
@@ -103,6 +146,7 @@ TRACKED_SAMPLES = [
     "experiment-protocol-v1.md",
     "leakage-threat-model.md",
     "M1_PUBLIC_DATA_AUDIT.md",
+    "CSMV_MEDIA_LINEAGE_AUDIT_20260715.md",
     "LABEL_SPACE_MAPPING_DRAFT.md",
     "DATASET_SELECTION_DECISION.md",
     "LITERATURE_SEARCH_REPORT.md",
@@ -129,9 +173,19 @@ TRACKED_SAMPLES = [
     "M1_SECOND_PRIMARY_SHORTLIST_20260714.md",
     "M1_LIRIS_ACCEDE_DEEP_AUDIT_20260714.md",
     "HANDOFF_10_SECOND_PRIMARY_READONLY.md",
+    "M1_LAI_GAI_OSF_METADATA_AUDIT_20260714.md",
+    "M1_LAI_GAI_OSF_API_METADATA_AUDIT_20260714.md",
+    "TASK00_LAI_GAI_OSF_API_METADATA_REVIEW_20260714.md",
+    "TASK00_SECOND_PRIMARY_RESOLUTION_AUTHORIZATION_20260714.md",
+    "M1_M2_LAI_GAI_SECOND_PRIMARY_FREEZE_20260714.md",
+    "TASK00_LAI_GAI_SECOND_PRIMARY_FREEZE_REVIEW_20260715.md",
+    "CSMV_MEDIA_LINEAGE_AUDIT_20260715.md",
+    "TASK00_CSMV_LINEAGE_G2_REVIEW_20260715.md",
+    "TASK00_CSMV_FEATURE_PREFLIGHT_AUTHORIZATION_20260715.md",
     "data/manifests/canonical-audience-affect-v1.schema.json",
     "data/manifests/csmv-primary-raw-v1.manifest.json",
     "data/manifests/csmv-split-v1.manifest.json",
+    "data/manifests/csmv-media-lineage-v1.manifest.json",
     "data/manifests/cuc-auxiliary-raw-v1.manifest.json",
     "data/manifests/cuc-canonical-v1.manifest.json",
     "data/manifests/human-gold-v1.manifest.json",
@@ -151,6 +205,12 @@ TRACKED_SAMPLES = [
     "data/manifests/nemo-source-v1.manifest.json",
     "data/manifests/m1-public-audit-v1.manifest.json",
     "data/manifests/second-primary-readonly-audit-v1.manifest.json",
+    "data/manifests/lai-gai-osf-metadata-audit-v1.manifest.json",
+    "data/manifests/lai-gai-osf-api-metadata-v1.manifest.json",
+    "data/manifests/lai-gai-second-primary-raw-v1.manifest.json",
+    "data/manifests/lai-gai-label-provenance-v1.manifest.json",
+    "data/manifests/lai-gai-split-v1.manifest.json",
+    "data/manifests/csmv-i3d-sequence-protocol-v1.manifest.json",
 ]
 TEXT_SUFFIXES = {".py", ".md", ".txt", ".yaml", ".yml", ".json", ".toml"}
 SKIP_PARTS = {".git", ".venv", "data", "models", "saved_models", "installers", "__pycache__"}
@@ -205,10 +265,23 @@ def main() -> int:
     checks["work_log"] = validate_work_log()
     checks["protocol_freeze"] = validate_protocol_freeze()
     checks["m1_public_audit"] = validate_m1_public_audit()
+    checks["csmv_media_lineage"] = validate_csmv_media_lineage()
+    checks["csmv_feature_preflight"] = validate_csmv_feature_preflight()
+    checks["csmv_i3d_sequence_protocol"] = validate_csmv_i3d_sequence_protocol()
     checks["literature_freeze"] = validate_literature_freeze()
     checks["m2_data_engineering"] = validate_m2_data_engineering()
     checks["m2_release"] = validate_m2_release()
     checks["second_primary_readonly_audit"] = validate_second_primary_readonly_audit()
+    checks["lai_gai_osf_metadata_audit"] = validate_lai_gai_osf_metadata_audit()
+    legacy_osf_api = validate_lai_gai_osf_api_metadata()
+    checks["lai_gai_osf_api_metadata_historical"] = {
+        "passed": True,
+        "classification": "HISTORICAL_NONCONFORMING_NO_GATE_CREDIT",
+        "historical_validator_passed": legacy_osf_api["passed"],
+        "superseded_for_current_gate_by": "REVIEW-00-LAI-GAI-FREEZE-20260715",
+        "original_result": legacy_osf_api,
+    }
+    checks["lai_gai_second_primary"] = validate_lai_gai_second_primary()
 
     imports = {
         name: importlib.util.find_spec(name) is not None

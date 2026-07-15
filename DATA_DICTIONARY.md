@@ -35,3 +35,27 @@
 ## 明确禁止的字段
 
 `comment`、`comment_text`、目标评论点赞、最终互动量、未来推荐结果和全图统计不得出现在T0加载结果中。CUC遗留48维向量含播放量/热度等未证实T0字段，因此虽可为审计保留，`legacy_features_available_at_t0`固定为`false`。
+
+## LAI-GAI图像域扩展
+
+| 字段 | 类型 | 来源 | `available_at_t0` | 说明 |
+|---|---|---|---:|---|
+| `image_sha256` | string | 官网图像 | true | 输入内容固定hash |
+| `emotion_distribution` | object[12] | 人工1—7评分聚合 | false | 各维均值减1并归一化；和为1 |
+| `dimension_response_count` | object[12] | 人工评分 | false | 每图每维有效N |
+| `distribution_uncertainty` | object | 人工评分 | false | 均值、样本SD、SE和1—7直方图 |
+| `source_group_id` | SHA-256 | 来源item/变体/重复关系 | true | 同组不得跨split |
+| `prompt_not_input_or_truth_sha256` | string/null | 生成provenance | false | 只存hash；禁止作为输入或真值 |
+| `target_emotion_not_truth` | string | 生成provenance | false | 只用于审计与分层计数 |
+
+## CSMV I3D输入张量合同 v1
+
+| 字段/对象 | 类型 | 来源 | `available_at_t0` | 规则 |
+|---|---|---|---:|---|
+| `i3d_sequence` | `float32[T,1024]` | 冻结I3D资产 | true | `T>=1`且全部有限；禁止隐式dtype/shape修复 |
+| `sequence_length` | int | 数组header | true | 只用于确定性分桶、padding和资源门，不读取标签 |
+| `attention_mask` | `bool[T_batch]` | 协议生成 | true | `True=OBSERVED_TIMESTEP`，`False=PADDING` |
+| `uniform_180_indices` | `int64[180]`或`int64[T]` | 确定性协议 | true | 长序列首尾覆盖；短序列不重复，剩余位置padding |
+| `sequence_rule_version` | string | 协议manifest | true | 固定`csmv-i3d-sequence-protocol-v1`；所有split一致 |
+
+上述输入合同不包含评论、标签、音频、原始帧或未来互动。完整序列是主协议，均匀180步是主敏感性；前180步只能标为补充诊断。

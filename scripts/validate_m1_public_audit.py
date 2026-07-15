@@ -28,7 +28,10 @@ REQUIRED_DOCUMENTS = {
         "第二人工标注主集尚未冻结",
     ],
     "DATA_SOURCE_LEDGER.md": [
-        "CANONICAL_LABELS_READY_MEDIA_PENDING",
+        "I3D_QUARANTINE_8210_COVERAGE_EXTERNAL_ATTESTATION_DEFERRED",
+        "DEFERRED_PENDING_MAINTAINER_REPLY",
+        "csmv-i3d-quarantine-v1.manifest.json",
+        "csmv-i3d-sequence-protocol-v1.manifest.json",
         "NO_GO_PRIMARY_MEDIA_REPRO",
         "NO_GO_PRIMARY_LICENSE_MEDIA",
         "SILVER_ONLY_SOURCE_UNAVAILABLE",
@@ -84,10 +87,54 @@ def validate_m1_public_audit() -> dict:
             errors.append("m1-public-audit-v1.manifest.json: source manifests not verified")
         if not report.get("csmv", {}).get("official_comment_split_is_video_leaky"):
             errors.append("m1-public-audit-v1.manifest.json: CSMV leakage evidence missing")
+        csmv = report.get("csmv", {})
+        if csmv.get("raw_link_row_count") != 8210:
+            errors.append("m1-public-audit-v1.manifest.json: CSMV raw-link row drift")
+        if not csmv.get("raw_link_ids_cover_official_videos"):
+            errors.append("m1-public-audit-v1.manifest.json: CSMV raw-link ID coverage drift")
+        if csmv.get("raw_link_row_id_url_path_mismatch") != 2644:
+            errors.append("m1-public-audit-v1.manifest.json: CSMV raw-link mapping drift")
+        if csmv.get("raw_link_mapping_semantically_consistent") is not True:
+            errors.append("m1-public-audit-v1.manifest.json: CSMV mapping validity drift")
+        if csmv.get("raw_link_internal_platform_id_equality_required") is not False:
+            errors.append("m1-public-audit-v1.manifest.json: CSMV ID semantics drift")
+        if csmv.get("raw_link_unique_source_platform_ids") != 8008:
+            errors.append("m1-public-audit-v1.manifest.json: CSMV source-family drift")
+        if csmv.get("raw_link_duplicate_source_groups") != 202:
+            errors.append("m1-public-audit-v1.manifest.json: CSMV duplicate-family drift")
         if report.get("nemo_plus", {}).get("image_file_count_in_package") != 0:
             errors.append("m1-public-audit-v1.manifest.json: NEmo+ media finding drift")
 
-    for script in ("scripts/fetch_m1_public_assets.py", "scripts/audit_m1_public_assets.py"):
+    i3d_manifest_path = ROOT / "data" / "manifests" / "csmv-i3d-quarantine-v1.manifest.json"
+    if not i3d_manifest_path.is_file():
+        errors.append("missing manifest: csmv-i3d-quarantine-v1.manifest.json")
+    else:
+        i3d = json.loads(i3d_manifest_path.read_text(encoding="utf-8"))
+        if i3d.get("schema_version") != "csmv-i3d-quarantine-v1":
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: wrong schema_version")
+        if i3d.get("acquisition_status") != "QUARANTINE_ACQUIRED":
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: acquisition status drift")
+        coverage = i3d.get("coverage", {})
+        if coverage.get("required_video_file_ids") != 8210:
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: required coverage drift")
+        if coverage.get("matched_video_file_ids") != 8210 or coverage.get("missing_video_file_ids") != 0:
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: observed coverage drift")
+        if len(i3d.get("required_files", [])) != 8210:
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: per-file fixity count drift")
+        if i3d.get("schema", {}).get("schema_error_count") != 0:
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: feature schema drift")
+        if i3d.get("verdict", {}).get("formal_use_ready") is not False:
+            errors.append("csmv-i3d-quarantine-v1.manifest.json: formal-use boundary drift")
+
+    for script in (
+        "scripts/fetch_m1_public_assets.py",
+        "scripts/audit_m1_public_assets.py",
+        "scripts/csmv_media_lineage.py",
+        "scripts/validate_csmv_media_lineage.py",
+        "scripts/validate_csmv_feature_preflight.py",
+        "scripts/audit_csmv_i3d_asset.py",
+        "scripts/load_csmv_i3d.py",
+    ):
         if not (ROOT / script).is_file():
             errors.append(f"missing script: {script}")
     return {"passed": not errors, "errors": errors}

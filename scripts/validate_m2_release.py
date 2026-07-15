@@ -1,4 +1,4 @@
-"""Acceptance checks for M2 steps 34--39 without claiming G1/G2 pass."""
+"""Acceptance checks for M2 steps 34--39 and the written G1/G2 gate state."""
 
 from __future__ import annotations
 
@@ -13,6 +13,8 @@ MANIFEST_ROOT = ROOT / "data" / "manifests"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_m2_leakage_tests import run_live  # noqa: E402
+from validate_csmv_feature_preflight import validate_csmv_feature_preflight  # noqa: E402
+from validate_csmv_i3d_sequence_protocol import validate as validate_i3d_sequence_protocol  # noqa: E402
 
 
 REQUIRED = [
@@ -28,6 +30,17 @@ REQUIRED = [
     "DATA_RELEASE_BOUNDARY.md",
     "G1_G2_EVIDENCE_MATRIX.md",
     "HANDOFF_10.md",
+    "TASK00_CSMV_LINEAGE_G2_REVIEW_20260715.md",
+    "TASK00_CSMV_FEATURE_PREFLIGHT_G2_REVIEW_20260715.md",
+    "TASK00_CSMV_ONE_FEATURE_FAMILY_METADATA_COORDINATION_AUTHORIZATION_20260715.md",
+    "CSMV_FEATURE_ASSET_PREFLIGHT_20260715.md",
+    "scripts/validate_csmv_feature_preflight.py",
+    "data/manifests/csmv-feature-preflight-v1.manifest.json",
+    "CSMV_I3D_SEQUENCE_PROTOCOL_V1.md",
+    "configs/csmv-i3d-sequence-protocol-v1.json",
+    "scripts/csmv_i3d_sequence_protocol.py",
+    "scripts/validate_csmv_i3d_sequence_protocol.py",
+    "data/manifests/csmv-i3d-sequence-protocol-v1.manifest.json",
     "data/manifests/leakage-audit-v1.manifest.json",
     "data/manifests/dataset-v1.manifest.json",
     "data/manifests/split-v1.manifest.json",
@@ -80,12 +93,14 @@ def validate_m2_release() -> dict:
     provenance = read_json(MANIFEST_ROOT / "label-provenance-v1.manifest.json")
     checks["honest_release_state"] = {
         "passed": (
-            dataset.get("status") == "LOCAL_CANDIDATE_G1_BLOCKED"
+            dataset.get("status") == "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED"
             and dataset.get("formal_model_use_allowed") is False
-            and dataset.get("g1_passed") is False
+            and dataset.get("g1_passed") is True
+            and dataset.get("g1_status") == "PASS"
             and dataset.get("g2_passed") is False
+            and dataset.get("g2_status") == "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE"
             and split.get("formal_split") is False
-            and split.get("status") == "LOCAL_CANDIDATE_G1_BLOCKED"
+            and split.get("status") == "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED"
             and provenance.get("formal_evaluation_eligible") is False
             and provenance.get("mixed_tier_loading") == "PROHIBITED"
         ),
@@ -97,6 +112,9 @@ def validate_m2_release() -> dict:
 
     references = [
         dataset["primary_human_gold"],
+        dataset["csmv_media_lineage"],
+        dataset["csmv_input_asset_preflight"],
+        dataset["csmv_i3d_sequence_protocol"],
         dataset["auxiliary_silver"],
         dataset["split_manifest"],
         dataset["label_provenance_manifest"],
@@ -111,6 +129,9 @@ def validate_m2_release() -> dict:
         "references_checked": len(manifest_hashes),
     }
 
+    checks["csmv_feature_preflight"] = validate_csmv_feature_preflight()
+    checks["csmv_i3d_sequence_protocol"] = validate_i3d_sequence_protocol()
+
     document_hashes = []
     for reference in dataset.get("documentation", []):
         path = ROOT / reference["path"]
@@ -121,28 +142,39 @@ def validate_m2_release() -> dict:
     }
 
     reproducibility = read_json(MANIFEST_ROOT / "reproducibility-v1.manifest.json")
+    current_mismatches = []
+    for relative, expected in reproducibility.get("after_sha256", {}).items():
+        path = ROOT / relative
+        actual = sha256_file(path) if path.is_file() else "MISSING"
+        if actual != expected:
+            current_mismatches.append(relative)
     checks["reproducibility"] = {
         "passed": (
             reproducibility.get("passed") is True
-            and reproducibility.get("mode") == "PYTHON_ISOLATED_STDLIB_ONLY"
-            and reproducibility.get("command_returncodes") == [0, 0]
-            and reproducibility.get("mismatches") == []
+            and reproducibility.get("status") == "PASS_CURRENT_CSMV_SOURCE_GROUP_SPLIT"
+            and reproducibility.get("replay_scope") == "PUBLIC_BENCHMARK_CORE"
+            and reproducibility.get("frozen_auxiliary_inputs_verified") is True
+            and reproducibility.get("mismatches", []) == []
+            and current_mismatches == []
             and reproducibility.get("credential_environment_forwarded") is False
         ),
+        "status": reproducibility.get("status"),
         "outputs_checked": reproducibility.get("outputs_checked"),
-        "mismatches": reproducibility.get("mismatches"),
+        "mismatches": current_mismatches,
+        "current_replay_passed": reproducibility.get("passed") is True and not current_mismatches,
     }
 
     matrix = (ROOT / "G1_G2_EVIDENCE_MATRIX.md").read_text(encoding="utf-8")
     handoff = (ROOT / "HANDOFF_10.md").read_text(encoding="utf-8")
     checks["gate_evidence_and_handoff"] = {
         "passed": (
-            "BLOCKED_SECOND_PRIMARY_NOT_FROZEN" in matrix
-            and "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN" in matrix
-            and "提交给：任务00总控审核" in handoff
+            "G1=`PASS`" in matrix
+            and "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE" in matrix
+            and "REVIEW-00-CSMV-FEATURE-PREFLIGHT-G2-20260715" in matrix
+            and "00已确认" in handoff
             and "不创建任务20" in handoff
         ),
-        "g1_claimed_pass": False,
+        "g1_claimed_pass": True,
         "g2_claimed_pass": False,
     }
 
@@ -151,10 +183,10 @@ def validate_m2_release() -> dict:
         "schema": "m2-release-check-v1",
         "passed": passed,
         "steps_34_39_local_package_ready": passed,
-        "g1_passed": False,
-        "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+        "g1_passed": passed,
+        "g1_status": "PASS" if passed else "VALIDATION_FAILED",
         "g2_passed": False,
-        "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
         "checks": checks,
     }
 

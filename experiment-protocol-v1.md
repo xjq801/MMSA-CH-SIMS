@@ -1,6 +1,6 @@
 # Experiment Protocol v1
 
-> 状态：FROZEN_v1
+> 状态：SUPERSEDED_BY_EXPERIMENT_PROTOCOL_V2
 > 冻结日期：2026-07-14
 > 适用：任务10之后所有数据、模型、检索和评测工作
 

@@ -7,14 +7,14 @@
     "UNLABELED": "data/processed/UNLABELED"
   },
   "public_human_test_with_silver": "PROHIBITED",
-  "release_status": "LOCAL_CANDIDATE_G1_BLOCKED",
+  "release_status": "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED",
   "release_version": "dataset-v1",
   "schema_version": "label-provenance-v1",
-  "second_primary_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "second_primary_status": "FROZEN_00_APPROVED",
   "tiers": [
     {
       "manifest": "human-gold-v1.manifest.json",
-      "sha256": "20b1608af8ab81abe636b805ff3a307d47365e25b15fa44f040cfc9c0ccc3ef7"
+      "sha256": "5d73c0858bd169cdb30fbee1f508157f843e16f94dd9fd087b8f73990d33ef4a"
     },
     {
       "manifest": "silver-v1.manifest.json",

@@ -1,9 +1,28 @@
 {
-  "g1_effect": "BLOCKED",
-  "mapping_document": "LABEL_SPACE_MAPPING_DRAFT.md",
-  "mapping_document_sha256": "f7d80b7474753b200dde9dc486f310d1579a784549c492ae6fba6def8c7c78bb",
-  "schema_version": "label-map-manifest-v1",
-  "status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "schema_version": "label-map-manifest-v2",
+  "version": "lai-gai-label-map-v1",
+  "status": "FROZEN_00_APPROVED",
+  "review_id": "REVIEW-00-LAI-GAI-FREEZE-20260715",
+  "g1_effect": "PASS",
+  "source_space": "12 human 1-7 induced-affect intensity ratings",
+  "canonical_space": [
+    "amusement",
+    "awe",
+    "anger",
+    "attachment_love",
+    "craving",
+    "disgust",
+    "excitement",
+    "fear",
+    "joy",
+    "neutral",
+    "nurturant_love",
+    "sadness"
+  ],
+  "primary_metric": "Jensen-Shannon divergence",
+  "mapping_rule": "For each image and emotion, mean available 1-7 ratings; subtract scale floor 1; normalize the 12 nonnegative intensities to sum 1.",
   "test_result_tuning_allowed": false,
-  "version": "v1"
+  "prompt_or_target_category_used_as_truth": false,
+  "manifest": "lai-gai-label-provenance-v1.manifest.json",
+  "manifest_sha256": "198b9930596074af01ed3d37db92a3fd57db9cca1bfb9d2d96e8c3e581cd94cd"
 }

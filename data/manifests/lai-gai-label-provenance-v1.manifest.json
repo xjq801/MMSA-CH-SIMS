@@ -1,0 +1,28 @@
+{
+  "schema": "lai-gai-label-provenance-v1",
+  "status": "FROZEN_00_APPROVED",
+  "review_id": "REVIEW-00-LAI-GAI-FREEZE-20260715",
+  "tier": "HUMAN_GOLD",
+  "truth_source": "independent human induced-affect ratings",
+  "retained_images": 847,
+  "valid_response_rows": 63682,
+  "valid_participants_study_scoped": 2557,
+  "filter": {
+    "consent": "YES",
+    "useData": "Yes",
+    "rating_cat": "0"
+  },
+  "rejected_rows": {
+    "useData": 1272
+  },
+  "continuous_distribution_rule": "For each image and emotion, mean available 1-7 ratings; subtract scale floor 1; normalize the 12 nonnegative intensities to sum 1.",
+  "uncertainty": "Per-emotion N, sample SD, standard error, and 1-7 histogram retained.",
+  "prompt_or_target_as_truth": false,
+  "prompt_available_to_model": false,
+  "target_emotion_available_to_model": false,
+  "raw_ai_flag_conflict_images": 49,
+  "human_label_and_silver_merge": "PROHIBITED",
+  "serialization": "UTF-8_LF",
+  "canonical_path": "data/processed/HUMAN_GOLD/lai-gai-v1/canonical.jsonl",
+  "canonical_sha256": "ad58c268e34adf02bd8e639338069d34576e1d9602f819a2cc6fa89be6836818"
+}

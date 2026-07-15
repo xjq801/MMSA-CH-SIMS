@@ -6,8 +6,8 @@
 
 - 泄漏门：`PASS_WITH_LIMITATIONS`
 - Critical失败数：0
-- G1：`BLOCKED_SECOND_PRIMARY_NOT_FROZEN`
-- G2：`NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN`
+- G1：`PASS`
+- G2：`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`
 
 ## 检查结果
 
@@ -24,9 +24,9 @@
 
 ## 边界
 
-- Checks are deterministic but not proof that every semantic near-duplicate or same-event leak has been found.
+- Official CSMV URL metadata identifies source-platform video families, but raw-media fingerprint equivalence beyond that identifier is not claimed.
 - No CSMV chronological split is evaluated because publish timestamps are unavailable.
-- Publisher and media-fingerprint leakage remain unresolved where source metadata/media are unavailable.
+- Publisher identity is unavailable and therefore cannot be used as an additional grouping key.
 
 时间顺序检查当前为`NOT_APPLICABLE_NO_TIME_SPLIT`：这表示未发布时间split，不表示时间安全已被证明。
 任何后续新增time split、索引、拟合状态或候选字段都必须重新运行本门。

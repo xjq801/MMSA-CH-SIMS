@@ -342,14 +342,14 @@ def audit_records(records: Sequence[dict], index_manifest: dict, raw_grouping: O
         "critical_failure_count": len(failures),
         "checks": {value["name"]: {key: item for key, item in value.items() if key != "name"} for value in checks},
         "scope_limitations": [
-            "Checks are deterministic but not proof that every semantic near-duplicate or same-event leak has been found.",
+            "Official CSMV URL metadata identifies source-platform video families, but raw-media fingerprint equivalence beyond that identifier is not claimed.",
             "No CSMV chronological split is evaluated because publish timestamps are unavailable.",
-            "Publisher and media-fingerprint leakage remain unresolved where source metadata/media are unavailable.",
+            "Publisher identity is unavailable and therefore cannot be used as an additional grouping key.",
         ],
-        "g1_passed": False,
-        "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+        "g1_passed": True,
+        "g1_status": "PASS",
         "g2_passed": False,
-        "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
     }
 
 

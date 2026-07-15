@@ -25,7 +25,7 @@
 |---|---|---|
 | H1 | CSMV与第二公开人工主集上的JS/NLL；评论特权teacher vs最强content-only | 对两主集最强content-only均无稳定改善，或提升只来自随机划分 |
 | H2 | learned retrieval vs no/random/BM25/CLIP-kNN；AURC/ECE | 随机检索同样好，或跨话题/平台下校准和分布误差更差 |
-| H3 | 全模态、单模态、随机/自然缺失 | 不优于简单late fusion、zero-fill或近期缺失模态基线 |
+| H3（条件性） | 仅对同一样本至少两个实际T0输入模态比较`ALL_AVAILABLE_INPUTS`、单模态、随机/自然缺失 | 不优于简单late fusion/zero-fill/近期缺失模态基线；无合格协议则`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL` |
 | H4（增强） | NEmo+上的`p_TI-p_T`、`p_TI-p_I` | 无法超过独立预测两个分布后相减的简单基线；数据门不过则不启用 |
 
 ## 4. 指标、统计与成功门
@@ -47,3 +47,11 @@
 ## 6. 一致性结论
 
 `research-question-v1.md`与`experiment-protocol-v1.md`的实质内容与总纲v1.5一致，本轮无需改主协议正文。查新只收紧表述上限：增加M2PKD、NEmo+、RAMER和选择性预测/缺失模态前作作为后续强制对照，不改变主指标和假设。
+
+## 7. v1.12输入合同收紧（2026-07-16）
+
+- 当前权威实验入口为`experiment-protocol-v2.md`；v1仅保留历史追溯。
+- CSMV主张收紧为冻结I3D视觉表征上的公众诱发受众情绪分布预测；端到端视频、原始帧、音视频融合、音频增益与评论文本T0输入均禁止。
+- I3D主序列规则与180步敏感性规则已在任何训练/test结果前冻结于`CSMV_I3D_SEQUENCE_PROTOCOL_V1.md`；其选择只依据8210个输入shape和资源上限。
+- E1在CSMV上为I3D单输入的`ALL_AVAILABLE_INPUTS`；E5/H3缺失模态实验无资格时使用既定`NOT_APPLICABLE`，不能把两种序列处理写成两种模态。
+- 音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`；资产外部证明=`DEFERRED_PENDING_MAINTAINER_REPLY`。G1=`PASS`，G2、`formal_split=false`与任务20禁令不变。

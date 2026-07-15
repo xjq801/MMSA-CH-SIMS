@@ -37,27 +37,34 @@ def render_data_audit(leakage: dict, human: dict, silver: dict, split: dict, cuc
 
 ## 结论
 
-- 发布级别：`LOCAL_CANDIDATE_G1_BLOCKED`，不是正式benchmark发布。
+- 发布级别：`LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED`，尚未达到G2。
 - 泄漏自动门：`{leakage_gate}`，Critical失败数 `{failures}`。
-- G1：`BLOCKED_SECOND_PRIMARY_NOT_FROZEN`。
-- G2：`NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN`。
+- G1：`PASS`；LAI-GAI已冻结为第二人工跨域图像主集。
+- G2：`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`。
 
 ## 数据闭环
 
 | 层级 | 数据 | 记录数 | 定位 |
 |---|---|---:|---|
-| HUMAN_GOLD | CSMV视频级人工评论经验分布 | {human_records} | 唯一当前公开人工主集 |
+| HUMAN_GOLD | CSMV视频级人工评论经验分布 | {human_records} | 视频主集；承担H1/H2 |
+| HUMAN_GOLD | LAI-GAI图像级人工诱发情绪分布 | 847 | 第二跨域图像主集；承担OOD/校准/H3边界 |
 | SILVER | CUC-IGPE-v2遗留银标canonical | {silver_records} | 辅助、本地、不得并入人工test |
 | UNLABELED | 预留入口 | 0 | 当前为空 |
 
 CSMV的`group_by_video_v1`为train/dev/test `{group_counts}`；`hashtag_heldout_v1`为 `{hashtag_counts}`。原生topic和发布时间缺失，因此topic/time协议未发布。
 
+## CSMV I3D输入协议
+
+- 本地候选输入的文件树、逐文件hash、`float32[T,1024]` schema与8210/8210覆盖已闭合；资产许可、稳定官方revision及权利方包身份/fixity仍为`DEFERRED_PENDING_MAINTAINER_REPLY`，不获得G2信用。
+- 任何训练/test结果前已冻结完整序列+动态padding/mask主协议，以及首尾覆盖的确定性均匀180步主敏感性；前180只作补充。所有split同规则，禁止test自适应。
+- 论文主张只限冻结I3D视觉表征上的公众诱发受众情绪分布预测；音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`，评论不是T0学生输入。
+
 ## 已证实问题
 
 - CUC历史2815与当前2787相差 `{drift}` 条，缺少2815原始manifest，去向未解释。
 - CUC有 `{conflicts}` 条标签冲突、`{missing_time}` 条缺发布时间；许可仍为`UNKNOWN_LOCAL_ONLY`。
-- CSMV媒体、发布者和媒体指纹未纳入本地包，语义近重复、同源事件和发布者捷径不能声明已查全。
-- 第二人工多模态主集未冻结，故dataset-v1/split-v1只能是本地候选。
+- CSMV官方URL表是内部`video_file_id`到平台源视频URL的映射；内部ID与平台ID不要求相等。8,210条映射形成8,008个源视频族，202个重复族已在全部已发布split中保持零交叉。
+- 原始媒体、发布者和媒体内容指纹未纳入本地包；因此只声明官方URL元数据可识别的同源族已闭合，不外推到不可观察的内容级近重复。G2仍待00书面复审，全局split保持非正式、任务20不放行。
 
 ## 泄漏边界
 
@@ -86,12 +93,16 @@ def build_release() -> dict:
     csmv_split = read_json(MANIFEST_ROOT / "csmv-split-v1.manifest.json")
     cuc = read_json(MANIFEST_ROOT / "cuc-canonical-v1.manifest.json")
     second = read_json(MANIFEST_ROOT / "second-primary-label-map-v1.manifest.json")
+    feature_preflight_path = MANIFEST_ROOT / "csmv-feature-preflight-v1.manifest.json"
+    feature_preflight = read_json(feature_preflight_path)
+    sequence_protocol_path = MANIFEST_ROOT / "csmv-i3d-sequence-protocol-v1.manifest.json"
+    sequence_protocol = read_json(sequence_protocol_path)
 
     provenance_path = MANIFEST_ROOT / "label-provenance-v1.manifest.json"
     provenance = {
         "schema_version": "label-provenance-v1",
         "release_version": "dataset-v1",
-        "release_status": "LOCAL_CANDIDATE_G1_BLOCKED",
+        "release_status": "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED",
         "tiers": [
             {"manifest": name, "sha256": sha256_file(MANIFEST_ROOT / name)}
             for name in ("human-gold-v1.manifest.json", "silver-v1.manifest.json", "unlabeled-v1.manifest.json")
@@ -112,7 +123,7 @@ def build_release() -> dict:
     split_release = {
         "schema_version": "split-v1-release",
         "release_version": "split-v1",
-        "status": "LOCAL_CANDIDATE_G1_BLOCKED",
+        "status": "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED",
         "formal_split": False,
         "primary_dataset": human["dataset_id"],
         "second_primary_status": second["status"],
@@ -147,12 +158,27 @@ def build_release() -> dict:
     dataset = {
         "schema_version": "dataset-release-manifest-v1",
         "release_version": "dataset-v1",
-        "status": "LOCAL_CANDIDATE_G1_BLOCKED",
+        "status": "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED",
         "formal_model_use_allowed": False,
-        "g1_passed": False,
-        "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+        "g1_passed": True,
+        "g1_status": "PASS",
         "g2_passed": False,
-        "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+        "csmv_media_lineage": {"manifest": "csmv-media-lineage-v1.manifest.json", "sha256": sha256_file(MANIFEST_ROOT / "csmv-media-lineage-v1.manifest.json")},
+        "csmv_input_asset_preflight": {
+            "manifest": "csmv-feature-preflight-v1.manifest.json",
+            "sha256": sha256_file(feature_preflight_path),
+            "status": feature_preflight["status"],
+            "formal_model_input_allowed": feature_preflight["formal_model_input_allowed"],
+        },
+        "csmv_i3d_sequence_protocol": {
+            "manifest": "csmv-i3d-sequence-protocol-v1.manifest.json",
+            "sha256": sha256_file(sequence_protocol_path),
+            "status": sequence_protocol["status"],
+            "main": sequence_protocol["protocol"]["main"],
+            "primary_sensitivity": sequence_protocol["protocol"]["primary_sensitivity"],
+            "formal_asset_use_allowed": False,
+        },
         "primary_human_gold": {"manifest": "human-gold-v1.manifest.json", "sha256": sha256_file(MANIFEST_ROOT / "human-gold-v1.manifest.json"), "records": human["records"]},
         "second_primary": {"manifest": "second-primary-label-map-v1.manifest.json", "status": second["status"]},
         "auxiliary_silver": {"manifest": "silver-v1.manifest.json", "sha256": sha256_file(MANIFEST_ROOT / "silver-v1.manifest.json"), "records": silver["records"], "formal_test_use": "PROHIBITED"},

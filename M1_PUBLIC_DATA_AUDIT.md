@@ -2,8 +2,8 @@
 
 > 版本：v1.0
 > 审计日期：2026-07-14
-> 范围：总纲 v1.5 第17节任务10步骤11—18
-> 结论：CSMV小型标注包可审计且可按视频重划分；iNews与NEmo+当前均不能作为可复现的第二多模态主集，G1继续阻塞。
+> 范围：总纲 v1.7 第17节任务10步骤11—18及第二主集收口增量
+> 结论：CSMV小型标注包可审计且可按视频重划分；iNews与NEmo+历史No-Go保留；后续LAI-GAI跨域图像路径已正式冻结并使G1通过。
 
 ## 1. 下载边界与可复现入口
 
@@ -24,7 +24,7 @@
 - 论文入口：NeurIPS 2024 Datasets and Benchmarks；官方仓库：`IEIT-AGI/MSA-CRVI`。
 - 仓库根`LICENSE`为Apache-2.0；README另称代码MIT、annotations为CC BY-SA 4.0。标注下载依据是README中针对annotations的明确声明；代码许可的MIT/Apache不一致保持为已知限制。
 - TikTok媒体、原始URL和Google Drive特征不因仓库/标注许可自动获得再分发权。本轮不下载媒体或特征，相关权利、体量、版本和SHA保持`PENDING/UNKNOWN`。
-- 官方`CSMV_rawLinks.xlsx`已按固定commit下载并核hash；表格工具两次因上游theme中的非法OpenXML百分比值无法导入，因此URL清单的行级覆盖率仍为`PENDING`，不据此宣称媒体可恢复。
+- 官方`CSMV_rawLinks.xlsx`已按固定commit下载并核hash。Strict OOXML解析确认8210个内部`video_file_id`对正式集合100%覆盖。复核字段语义后确认：表内`ID`是内部ID，URL路径ID是平台源视频ID，二者不要求相等；旧“2644行错配”是跨命名空间误判。真实风险是202个重复源视频族（404条样本），现已按源族重建split并实现零跨split，详见`CSMV_MEDIA_LINEAGE_AUDIT_20260715.md`。
 
 ### 2.2 标签结构与聚合单位
 
@@ -90,3 +90,17 @@
 | G2/L2 | **NOT_EVALUATED / BLOCKED_BY_G1** | 尚无两个公开集正式split，尚未形成全部样本lineage与零失败泄漏测试 |
 
 未过G1/G2前，不创建任务20，不训练CARM，不下载大媒体/特征包，不调用付费LLM或API。
+
+## 7. 2026-07-15冻结增量（取代本报告旧门状态，不改写历史审计事实）
+
+- LAI-GAI已按`REVIEW-00-LAI-GAI-FREEZE-20260715`冻结为第二人工跨域图像主集；847图、63682合规人工响应、379组、594/127/126正式split。
+- G1由`BLOCKED`更新为`PASS`。iNews/NEmo+的历史No-Go不变，也不再承担当前第二主集角色。
+- 00已接受CSMV媒体元数据lineage与同源split修复，并独立确认19项公共核心复现当前PASS；复现陈旧子阻塞已关闭。G2现为`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`。正式特征资产准入关闭前，全局`formal_split=false`，任务20仍禁止。
+
+## 8. 2026-07-15 CSMV特征资产预审与复现修复增量
+
+- 按`AUTH-00-CSMV-FEATURE-ASSET-PREFLIGHT-RO-20260715`只读访问官方固定README链接的公开Drive目录；匿名GET为HTTP 200，未登录、未使用API、未下载`.npy`或媒体。
+- README可固定I3D/VideoMAE发布声明、`.npy`逐`video_file_id`命名规则和公开目录定位；但Drive初始页面未公开文件树、数量、大小、更新时间、checksum或资产级许可，实际8210覆盖不可验证。
+- 预审裁定为`NO_GO_PENDING_ASSET_METADATA_AND_LICENSE`，详见`CSMV_FEATURE_ASSET_PREFLIGHT_20260715.md`。不能根据“页面可达”推断特征可用于正式研究。
+- 工程复现子门已独立修复：`reproduce_m2_minimal.py --public-core`不依赖CUC历史源根，在`-I -S`模式重建当前CSMV source-family、split、泄漏与release；19项输出before/after及现场hash漂移0。
+- 00复审前不自行修改G2、全局`formal_split=false`或任务20禁令。

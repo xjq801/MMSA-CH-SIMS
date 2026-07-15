@@ -216,3 +216,197 @@
 - PMEmo裁定`NO_GO_LICENSE_SPLIT_AND_LABEL_DISTRIBUTION_UNKNOWN`；Emotion6裁定`NO_GO_MEDIA_LICENSE_ACCESS_AND_MODALITY`。
 - 新增短名单、深审、00回交、只读manifest和专项validator，并将专项门接入综合准备检查；未下载数据/媒体/特征，未联系作者、调用API/付费服务或修改G门。
 - G1=`BLOCKED_SECOND_PRIMARY_NOT_FROZEN`、G2=`NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN`、`formal_split=false`，继续禁止任务20/M3。
+
+### 阶段14：G1/G2缺口修复与止损决策（2026-07-14）
+- **状态：** in_progress
+- 用户明确要求完善所有尚未通过项；该授权允许继续本地修复和公开候选研究，但不自动构成机构EULA签署、作者联系、付费资源或大数据下载授权。
+- 00总控已完成GitHub同步：`main`与`origin/main`均为`26229c0`，开始本阶段时工作区干净。
+- 已重新读取总纲、G1/G2矩阵、数据可行性与许可矩阵；确认核心硬阻塞仍是第二公开人工主集，不是校验脚本或状态字段。
+- `planning-with-files-zh`会话恢复脚本因Windows GBK无法编码特殊符号退出1；恢复摘要已显示15条未同步消息，实际Git与规划文件已覆盖这些事实。按失败协议不重复原命令。
+- 已扩展只读候选核验：VCE构念/多人分布匹配，但媒体依赖美国Fair Use且标注无音频；LAI-GAI v05公开847张AI生成图像和N=2470真人诱发评分，论文明确OSF含raw data，但仅单图且逐资产许可仍待核。
+- 已修复CSMV URL清单读取：新增Strict OOXML解析，不加载损坏theme；8210行ID对正式视频集合100%覆盖，专项validator通过。
+- 同一审计发现2644行表ID与URL路径ID不一致、200行URL重复；因此关闭的是“不可读”问题，不是媒体可复现问题。CSMV媒体状态升级为更精确的`MEDIA_MAPPING_BLOCKED`。
+- 已生成`G1_G2_REMEDIATION_REPORT_20260714.md`，给出三条止损路径。推荐由00批准LAI-GAI作为图像跨域第二人工主集；该选择保持人工分布与JS指标，但需要正式修改第二主集模态范围。
+- 当前等待用户/00选择；未下载新数据/媒体/特征，未调用API/付费服务，未联系作者，未改变G1/G2、`formal_split=false`或任务20禁令。
+- 回归完成：M1专项、18条工作记录、综合准备检查、全脚本编译和Git空白检查均通过；`blocking_checks=[]`表示本地验收器无故障，不等于G1/G2通过。正式模型环境仍按预期`BLOCKED_M1`。
+
+### 阶段15：LAI-GAI范围变更与下载前准入审计（2026-07-14）
+- **状态：** in_progress（00范围变更与只读审计授权已完成；等待任务10执行）
+- 用户明确回复“同意路径1”，授权把LAI-GAI推进为图像跨域第二人工主集方向；该授权不自动等于G1/G2通过，也不自动授权下载图像/raw data。
+- 已向00源任务`019f5c27-10fa-7e13-857d-77505594f7fc`发送范围变更请求：保留构念、HUMAN_GOLD、T0和JS，禁止生成prompt作为真值；只申请核OSF三个组件的公开元数据。
+- 00已将总纲升级为v1.6并登记`SC-20260714-01`：第二集降级为跨域图像/缺失模态验证角色，CSMV继续承担完整视频多模态与H1/H2主证据；生成prompt只作provenance。
+- 00已签发`AUTH-00-LAI-GAI-OSF-META-RO-20260714`，任务10只可核OSF `V8DKM/8P572/K8XVH`公开网页展示的license/revision/file tree/size/hash/gating；禁止下载、API、登录、训练和正式split。
+- 尝试读取总纲要求00维护的`DECISION_LOG.md`与`RISK_REGISTER.md`时发现文件不存在；任务10不越权伪建总控权威记录，改为任务10范围变更请求交00接管。
+- 当前继续保持G1/G2 blocked、`formal_split=false`、任务20禁止；范围批准和只读授权均不等于资产准入或阶段门通过。
+- 任务10已完成公开网页只读审计：V8DKM无可用页面行、8P572安全打开错误、K8XVH HTTP 403；全部关键资产字段保持`UNKNOWN_NOT_VISIBLE_ON_PUBLIC_PAGE`，裁定`NO_GO_PENDING_ASSET_METADATA`。
+- 00以`REVIEW-00-LAI-GAI-META-20260714`接受该合规No-Go交付。当前不扩权；建议的元数据专用OSF API方案须用户明确批准，任务10在此之前停止。
+- 用户随后明确回复“批准”；00签发`AUTH-00-LAI-GAI-OSF-API-META-RO-20260714`，仅允许三个节点、`api.osf.io`、匿名GET、100请求/5 MiB和元数据关系遍历，不跟随资产下载链接。
+### LAI-GAI路径1公开网页元数据审计（2026-07-14）
+
+- **状态：** complete_with_blocker
+- 已按`SC-20260714-01`和`AUTH-00-LAI-GAI-OSF-META-RO-20260714`核验OSF `V8DKM`、`8P572`、`K8XVH`公开网页。
+- 合规读取未获得节点级asset license、revision、file tree、size、hash、gating或公开字段说明；全部保持`UNKNOWN_NOT_VISIBLE_ON_PUBLIC_PAGE`。
+- 新增`M1_LAI_GAI_OSF_METADATA_AUDIT_20260714.md`、机器清单和专项验证脚本；裁定`NO_GO_PENDING_ASSET_METADATA`。
+- 未下载、预览或流式读取任何数据资产，未使用API/登录/Cookie，未构建标签映射或split。
+- 专项验证、20条工作记录校验、综合准备检查、脚本编译与Git差异检查均exit 0；综合门仍诚实返回`formal_model_work_ready=false`。
+- G1/G2与`formal_split=false`保持不变；下一步须由00另行批准明确的最小元数据取得方案。
+### LAI-GAI限额OSF元数据API审计启动（2026-07-14）
+
+- **状态：** in_progress
+- 用户已明确批准，00签发`AUTH-00-LAI-GAI-OSF-API-META-RO-20260714`。
+- 已冻结匿名串行GET、`api.osf.io`、三个节点、≤100请求、≤5 MiB、请求间隔≥1秒及只跟随返回的元数据关系边界。
+- 将先建立fail-closed采集器和raw Git忽略预检，再执行API；不访问任何asset content/download/render链接。
+- 首次采集在网络阶段结束后的manifest序列化处因代码误用小写`false`触发`NameError`；已停止，不重复网络请求，将从既有Git忽略raw响应离线重建。
+- 已从既有raw响应离线重建manifest：26次GET、382,394B、全部HTTP 200；没有重复网络请求。
+- `V8DKM`为9文件/22,108,737B/9 checksum，`8P572`为137文件/1,122,196,956B/137 checksum；三节点均public且CC BY 4.0。
+- `K8XVH`授权文件列表返回空`data`数组，图像文件树/size/checksum未闭合，裁定`NO_GO_PENDING_IMAGE_COMPONENT_FILE_TREE`并停止访问。
+- 新增API审计报告和边界validator；待运行专项及综合验收后回交00。
+- 专项validator首次运行exit 1：除速率外所有边界通过；第2→3次请求UTC间隔0.996519秒，低于1秒硬下限。已保留失败，不采用容差或重跑网络。
+- 最终综合准备检查按预期exit 1，唯一阻塞为LAI-GAI API边界validator；`m1_read_only_work_ready=false`、`formal_model_work_ready=false`。
+- 23条工作记录校验、全脚本编译与Git差异检查通过；当前等待00复审，API访问保持停止。
+- 00以`REVIEW-00-LAI-GAI-OSF-API-20260714`完成复审：保留26个响应及节点矩阵为`OBSERVED_WITH_PROTOCOL_DEVIATION`，但0.996519秒违反硬门且`K8XVH`文件树为空，不授予G门信用。
+- API授权已关闭为`CLOSED_NONCONFORMING_NO_RERUN_AUTHORIZED`；不批准重跑或继续探索，专项validator与综合准备门的失败必须保留。
+- 最终review closure机器检查通过；25条工作记录连续有效，综合准备唯一阻塞仍为`lai_gai_osf_api_metadata`。
+- 已向00源任务回交请求/响应证据、三节点矩阵、速率硬门失败和No-Go裁定；发送工具返回同一任务ID。
+
+### 阶段17：第二人工跨域图像主集恢复（2026-07-14）
+
+- **状态：** in_progress
+- 用户要求继续解决第二主集；本阶段不把“无论如何”解释为可绕过许可、标签真实性或00退出门。
+- LAI-GAI授权已关闭且禁止重跑，保持原No-Go证据不动；后续改审新的公开人工图像候选。
+- 优先评估现有证据中媒体权利链较清楚、每图多人评分密度高的OASIS；先做无需登录、无需资产下载的官方来源、许可、版本、文件树、标签粒度和split威胁审计。
+- 未授权登录、付费服务、作者联系、大数据下载、模型训练、正式split或任务20。
+
+### 阶段17：第二主集收口授权与候选重开（2026-07-14）
+
+- 用户明确要求完成第二主集，00新建`AUTH-00-SECOND-PRIMARY-RESOLUTION-20260714`，允许从公开、免费、无需登录的官方入口获取完成准入所需的元数据和数据资产。
+- 旧LAI-GAI审计失败和关闭状态保持历史有效；本轮不继承旧授权，也不重跑旧26请求，只补核心图像定位和图像—评分关系。
+- 首轮官方检索确认LAI-GAI站点另有`Dataset files`、Data Card与样例入口；同时确认情感OASIS为900张开放图像、N=822 VA人工规范候选，需继续核现行资产与许可链。
+- 已更新阶段17执行顺序：LAI-GAI抢救→OASIS替代→其他候选；任何候选仍须通过来源、许可、revision、文件树、HUMAN_GOLD、T0和泄漏硬门。
+- 官网已定位公开直链`/media/all_images.zip`，且图片详情页提供文件名、目标情绪、prompt和评分样本量；旧K8XVH空列表不再是唯一资产定位路径。
+- 官网ZIP的HEAD请求超时但下载页正常；已停止重复HEAD。既有OSF manifest显示评分节点含可用的逐研究CSV、最终逐图汇总、README、prompt与目标情感表，下一步从本地raw元数据恢复公开下载定位，只取最小必要文件。
+- 已从既有Git忽略raw元数据离线定位12个最小评分文件及其OSF file ID/大小/SHA-256，预计约27.18 MB；将跳过`.RData`和其余重复中间产物。
+
+### 阶段17完成：LAI-GAI第二主集冻结候选（2026-07-14）
+
+- **状态：** ready_for_00_freeze_review
+- 新独立授权下未重跑旧26个OSF请求；从既有raw元数据取得并核验12项最小评分资产，从官网图片浏览器闭合并取得847张公开图像。
+- 847张图均通过解码、size、SHA-256与dHash固定；评分侧按`consent=YES/useData=Yes/rating_cat=0`保留63682个逐图人工反应，每图58—96，图像—参与者重复0。
+- 12个人工1—7诱发情绪强度按预注册规则减去量表下界1后归一化为连续分布；保留各维N、SD、SE与直方图。prompt、目标类别和生成模型字段不作真值或输入。
+- source item、文化/性别/年龄变体、同prompt、精确与dHash近重复并成379个group；确定性split为594/127/126，三个split均覆盖12类，group/精确/近重复跨split均0。
+- 新增抓取、构建、专项验证脚本及raw/canonical/split/label provenance manifest；专项validator输出`LAI_GAI_SECOND_PRIMARY_READY`且全部检查通过。
+- 原始图像、逐人响应及canonical均在Git忽略目录；tracked文件不含参与者ID、Prolific ID、人口统计、设备、完成日期或prompt正文。
+- 已同步Data Card、Datasheet、隐私、条款、发布边界、标签映射、数据字典、数据源台账、G1/G2矩阵和交接文件。全局G1/G2、`formal_split`和任务20仍等待00书面复审，不由任务10自行放行。
+- 已完成12个最小评分文件下载，官方大小/SHA-256全部匹配，合计27,838,544 bytes；raw目录经`git check-ignore`确认不跟踪。
+- 首次CSV/XLSX结构画像在JSON输出阶段因Windows GBK无法编码Unicode列名而exit 1；未修改数据，后续固定UTF-8输出后重跑。
+- UTF-8重跑成功：六项研究共94,292条逐图人工评分，原始表结构一致并含12维离散情感；同时发现参与者/Prolific标识和人口学字段，确认raw必须私有隔离，canonical只保留图像级聚合与非识别性provenance。
+- 汇总表944/943行大于官网847图，下一步必须以实际图像ZIP和`is_ai/used_in_study`交集确定最终样本，不能直接全收。
+- 保守过滤`is_AI=1 && useData=Yes`后已有802张AI图、60,562条人工评分、每图58–96人；数据规模门基本关闭。`Sim.`与空`useData`暂不纳入，待预处理notebook核语义。
+- README 1/1页文本读取完成，确认六项研究CSV是官方清洗输出，但未解释`useData`；系统无Poppler，视觉通道未审且不影响本次字段血缘判断。
+- 系统PATH未提供Poppler的`pdfinfo/pdftotext`，README首轮PDF读取未启动；将改用工作区`pypdf`做文本层读取，视觉版式不作为本次数据字段判断依据。
+### 阶段17：LAI-GAI 预处理代码核验续（2026-07-14）
+
+- 已取得并校验官方总预处理 Notebook；hash 与已冻结公开 OSF 文件元数据一致。
+- 已确认逐图人工评分汇总、跨研究参与者编号隔离、AI 文件识别及 prompt 仅作来源字段的实现逻辑。
+- `useData` 的同意/排除规则仍需精确核验；在规则闭合前继续采用最保守 `Yes` 筛选，不把 `Sim.` 或空值自动解释为同意。
+### 阶段17：官方清洗输出与图片取得状态（2026-07-14）
+
+- 六个分研究预处理 Notebook 与六个 `S*_data_out.csv` 已全部按公开元数据 size/SHA-256 闭合。
+- 正式第二主集候选已收敛为 802 张、58,432 条清洗后 HUMAN_GOLD 评分；不再把 847 张资产总数误写为全部有标签。
+- 单包 ZIP 官方连接因约 11 KiB/s 吞吐和中途失败未完成；局部文件保留供续传证据，但不参与处理。下一步从同一官网的逐图公开 URL 取得资产。
+- 逐图官方路径已完成847张资产取得，合计86,947,800 bytes；四方文件名集合一致、解码零失败。阶段样本数已按最终汇总更正为847张，每图54--93名合格评分者。
+
+### 阶段17正式收口：第二主集冻结与G1通过（2026-07-15）
+
+- 00签署`REVIEW-00-LAI-GAI-FREEZE-20260715`：LAI-GAI=`FROZEN_00_APPROVED`，G1=`PASS`。
+- 唯一权威版本为`LAI-GAI@v05-2026-03-11`：847图、63,682条合规人工响应、379组、split 594/127/126；266组并行试算及其canonical已删除。
+- 重建脚本固定跨平台LF并保持响应行数与逐维N分栏；重建exit 0，canonical SHA-256=`ad58c268e34adf02bd8e639338069d34576e1d9602f819a2cc6fa89be6836818`。
+- LAI-GAI专项、M2数据工程、M2 release build/validate、工作记录、脚本编译与Git空白检查均通过；M2状态为`LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED`。
+- G2=`BLOCKED_CSMV_MEDIA_MAPPING_AND_GLOBAL_SEMANTIC_AUDITS`，全局`formal_split=false`；CSMV 2,644行ID—路径错配及200行URL重复关闭前，不创建任务20、不训练、不建正式索引。
+- 旧`lai_gai_osf_api_metadata`专项仍按事实exit 1；综合准备检查将完整失败对象标为`HISTORICAL_NONCONFORMING_NO_GATE_CREDIT`并由新冻结复审取代其当前门作用，因此`blocking_checks=[]`、`m1_read_only_work_ready=true`。正式模型环境仍因faiss/G2边界保持未就绪。
+
+### 阶段18：CSMV媒体lineage与同源split本地收口（2026-07-15）
+
+- 撤销旧的“2,644行ID—URL路径错配”判断：两列分别是内部ID与平台ID，不存在相等约束；官方固定工作簿hash保持不变。
+- 识别8,008个源视频族、202个重复族/404条；修复前100个video split和115个hashtag split同源交叉均已量化。
+- 构建器现按源族hash设置`source_group_id`和`duplicate_source_id`，所有split先满足同源约束；新计数为video 5698/837/1675、hashtag 7211/327/672。
+- `validate_csmv_media_lineage.py`普通与`-I -S`隔离运行均exit 0；全局泄漏live门Critical=0，负面selftest按预期输出`LEAKAGE_BLOCKED`并exit 0。
+- M1审计、M2数据工程、release构建/验证均exit 0；dataset状态为`LOCAL_CANDIDATE_G1_PASS_G2_REVIEW_PENDING`，G2等待00书面复审，全局`formal_split=false`。
+- 历史CUC外部只读源目录本轮未在有限路径找到；一次D盘全盘检索20秒超时，未重跑全量复现器。CSMV专项已从固定raw工作簿在stdlib隔离环境闭合，不以此掩盖全量复现源目录缺口。
+
+### 阶段18复审：00接受CSMV lineage但不放行G2（2026-07-15）
+
+- 00独立复跑CSMV专项普通/`-I -S`、全局泄漏live门与负面selftest，全部符合任务10报告；正式接受2644行为命名空间误判以及8008源族/202重复族的split修复。
+- 00现场对`reproducibility-v1.after_sha256`与当前18项文件重算，发现9项不一致；旧release validator未现场重算hash，故旧复现PASS不能覆盖本次新split。
+- CSMV标签与URL元数据lineage已经闭合，但正式模型输入的视频/特征资产许可、revision、文件树、体量与hash仍UNKNOWN，不能构造合法固定的正式多模态测试输入。
+- 签署`REVIEW-00-CSMV-LINEAGE-G2-20260715`：G1继续PASS，G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_REPRODUCIBILITY_STALE`，全局`formal_split=false`，任务20禁止。
+- 签发`AUTH-00-CSMV-FEATURE-ASSET-PREFLIGHT-RO-20260715`：只读预审官方特征页面元数据，禁止登录/API/下载/访问TikTok；同时授权本地公共benchmark核心隔离复现与现场hash门修复。
+
+### 阶段19：CSMV特征预审与公共核心复现（2026-07-15）
+
+- **状态：** reviewed_repro_closed_asset_admissibility_blocked
+- [x] 固定README commit/hash与官方Drive folder locator；匿名页面GET为HTTP 200，未使用登录、Cookie、API或第三方镜像。
+- [x] 公开首屏没有I3D/VideoMAE文件列表、大小、更新时间、checksum或许可；三族矩阵及8210覆盖全部按证据记`UNKNOWN`，未选择下载族。
+- [x] 新增特征预审manifest、报告与validator；专项exit 0代表“诚实No-Go合同有效”，不代表资产可用。
+- [x] `--public-core`只重建CSMV HUMAN_GOLD主线并核验冻结CUC辅助字节；历史CUC外部根不再阻塞公开benchmark复现。
+- [x] Python `-I -S`下两条命令均exit 0；19项before/after SHA-256一致，`mismatches=[]`，凭证/代理环境未传入子进程。
+- [x] release validator对manifest记录逐项现场重算，当前19项漂移0；旧9项漂移已实质关闭。
+- [x] 00独立复跑19项隔离复现、release现场hash和泄漏正负门；确认漂移0并关闭复现陈旧子阻塞。
+- [x] 00签署`REVIEW-00-CSMV-FEATURE-PREFLIGHT-G2-20260715`：G2收敛为`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`。
+- [x] 00签发`AUTH-00-CSMV-ONE-FEATURE-FAMILY-METADATA-COORDINATION-20260715`：允许一次请求和一次跟进，可收≤5MiB纯元数据，不下载`.npy`或媒体。
+- [ ] 取得权利方许可/revision/manifest/schema/8210覆盖并再次申请资产准入复审。
+- **外部缺口：** 一个选定特征族的资产级许可、revision、相对文件名/bytes/SHA-256 manifest、schema和8210覆盖；后续效率政策已允许官方或可信镜像的隔离预取，但正式使用仍禁止。
+## 2026-07-15 — CSMV I3D 元数据协调发送受阻
+
+- 00 已关闭 `REPRODUCIBILITY_STALE`：当前公共核心 19 项隔离重放与现场 hash 均为零漂移。
+- 00 已将 G2 收敛为 `BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，并授权通过一个官方渠道请求 I3D 纯元数据。
+- 已定位官方 GitHub Issues、检索重复主题并尝试创建请求；GitHub 集成返回 403，未产生 Issue 或任何外部写入。
+- 已落盘 `CSMV_I3D_METADATA_COORDINATION_20260715.md`；下一步需用户手工提交，或为连接器补足对该公开仓库创建 Issue 的权限。
+
+## 2026-07-15 — CSMV I3D 官方元数据请求已成功发出
+
+- 用户已在官方 `IEIT-AGI/MSA-CRVI` 仓库创建公开 Issue #5；匿名现场核验为 Open，创建日期为2026-07-15。
+- 正文满足单一渠道协调授权的六类字段要求，并明确不在独立许可/fixity复审前下载特征。
+- 当前从“发送权限阻塞”转为“等待权利方实质回复”；2026-07-22前不得跟进，之后至多在同一Issue跟进一次。
+- 00签署`REVIEW-00-CSMV-OFFICIAL-ISSUE-5-SENT-20260715`：正式请求额度已使用；公开正文覆盖准入字段但未逐字点名I3D，若执行唯一一次跟进须在同一Issue明确I3D优先范围。
+- G2仍为 `BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，未创建任务20。
+
+## 2026-07-15 — CSMV官方GitHub仓库直接克隆验证
+
+- HTTPS浅克隆约20秒成功，HEAD为固定上游`99d142...`，pack约4.97 MiB；无需用户代下载。
+- 提交共10文件、canonical blob 14,436,790 bytes；与既有固定快照逐文件一致。
+- `CSMV/`只有标注、split、映射和URL表；`.npy`与Git LFS pointer均为0，I3D/VideoMAE特征不在GitHub仓库内。
+- 新增`CSMV_GITHUB_CLONE_AUDIT_20260715.md`；G2资产阻塞和下载边界不变。
+- 00复审接受该次尝试为`ACCEPTED_NO_EXTERNAL_WRITE_AUTHORIZATION_UNCONSUMED`：403不是维护者拒绝，一次正式请求额度仍在；已落盘可直接手工提交的`CSMV_I3D_GITHUB_ISSUE_REQUEST_20260715.md`，且只允许同一渠道二选一恢复。
+
+## 2026-07-15 — 效率优先镜像与扩展取得政策
+
+- 用户明确允许切换第三方镜像并扩大项目内部下载范围；总纲升级为v1.11并签署`POLICY-00-EFFICIENCY-FIRST-MIRROR-AND-EXPANDED-ACQUISITION-20260715`。
+- 网络取得改为本机代理优先、必要时直连或可信镜像；公开大包、媒体和特征可先进入Git忽略隔离区，不再逐包等待内部下载授权。
+- 法律许可不能由项目自行扩大；未知许可资产只标`QUARANTINE_ACQUIRED`，不得正式训练、建索引、发布或获得G门信用。
+- 当前CSMV可在等待Issue #5回复期间并行预取候选特征，但G2、`formal_split=false`和任务20禁令不变。
+
+## 2026-07-15 — CSMV I3D用户本地包隔离接入
+
+- 用户提供本机I3D特征包；源目录保持不变，项目通过Git忽略的`data/raw/csmv/features/visual_feature/I3D` directory junction只读接入，没有重复复制2.56 GiB数据，tracked材料不记录绝对源路径。
+- 全量核验9,942个`.npy`：总计2,752,998,144 bytes，全部为`float32[T,1024]`，`T=6—1719`，schema错误0。
+- 官方`video_to_comment.json`要求的8,210个`video_file_id`全部命中，缺失0；包内另有1,732个非当前标签集文件。
+- 8,210个必需文件的相对路径、bytes、shape、dtype和SHA-256已写入`csmv-i3d-quarantine-v1.manifest.json`；全包内容树SHA-256=`35be2d18e1d2413ba3765034cdb454baa5e3496d49c540c9be00e81bbc2c1942`。
+- 新只读加载器支持官方`video_file_id`与canonical `item_id`，采用mmap且禁止pickle；当前仅`QUARANTINE_ACQUIRED`，未训练、未建索引。
+- 本地文件树、体量、schema、fixity和覆盖已闭合；资产级许可、稳定官方revision和权利方attestation仍待Issue #5与00复审，G2暂不改变。
+
+## 2026-07-16 — 00音频模态与协议边界复审
+
+- 00联读任务10复审请求、交接、G门矩阵、Data Card、Datasheet，并复核T-AFFC General CFP、CSMV固定README和NeurIPS 2024正式入口。
+- 签署`REVIEW-00-AUDIO-MODALITY-PROTOCOL-20260716`：音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`，不是G2/任务20独立前置条件，移出后续取得关键路径。
+- 总纲升为v1.12；E1改为实际单输入与`ALL_AVAILABLE_INPUTS`，E5/H3只在同一样本至少两个实际T0输入模态时有资格运行。
+- CSMV音频分支=`NOT_APPLICABLE_AUDIO_UNAVAILABLE_BY_DATASET_DESIGN`；单模态协议的逐模态增量=`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY`；全项目无合格协议时H3=`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL`。
+- G1仍`PASS`，G2仍`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，全局`formal_split=false`，未创建任务20、未训练、未建正式索引。
+
+## 2026-07-16 — I3D序列协议与论文边界冻结
+
+- 已建立`CSMV_I3D_SEQUENCE_PROTOCOL_V1.md`、JSON配置、机器manifest、确定性实现/构建器/validator和8项单元测试。
+- 主协议完整保留序列并使用动态padding/mask；主敏感性确定性均匀180步；前180固定为补充。
+- 初始测试因模块缺失exit 1并保留；实现后8/8通过，专项validator=`PASS_PREREGISTRATION_ONLY_G2_UNCHANGED`。
+- 已更新实验协议v2、Data Card、Datasheet、数据字典、M2协议、发布边界、claim矩阵、G门证据和HANDOFF。
+- 维护者协调=`DEFERRED_PENDING_MAINTAINER_REPLY`，本轮跳过且不冒充解决。下一步重建release、执行全套验证、安全审计与Git阶段检查点。

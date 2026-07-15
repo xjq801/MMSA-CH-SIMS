@@ -64,7 +64,28 @@
     "group_by_video_constructable": true,
     "hashtag_held_out_constructable": true,
     "native_topic_field_present": false,
-    "official_comment_split_is_video_leaky": true
+    "official_comment_split_is_video_leaky": true,
+    "raw_link_row_count": 8210,
+    "raw_link_unique_row_ids": 8210,
+    "raw_link_missing_id_count": 0,
+    "raw_link_missing_url_count": 0,
+    "raw_link_https_count": 8210,
+    "raw_link_hosts": {
+      "www.tiktok.com": 8210
+    },
+    "raw_link_duplicate_url_rows": 200,
+    "raw_link_duplicate_url_path_id_rows": 202,
+    "raw_link_row_id_url_path_mismatch": 2644,
+    "raw_link_row_ids_missing_from_official": 0,
+    "official_video_ids_missing_from_raw_links": 0,
+    "raw_link_ids_cover_official_videos": true,
+    "raw_link_mapping_semantically_consistent": true,
+    "raw_link_mapping_semantics": "INTERNAL_VIDEO_ID_TO_SOURCE_PLATFORM_URL",
+    "raw_link_internal_platform_id_equality_required": false,
+    "raw_link_unique_source_platform_ids": 8008,
+    "raw_link_duplicate_source_groups": 202,
+    "raw_link_duplicate_source_rows": 404,
+    "raw_link_source_family_grouped_split_required": true
   },
   "inews": {
     "row_count": 11320,

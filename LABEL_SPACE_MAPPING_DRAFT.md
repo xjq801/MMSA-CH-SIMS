@@ -1,8 +1,8 @@
 # 公开数据标签空间映射草案
 
-> 版本：draft-v0.1
-> 日期：2026-07-14
-> 状态：只用于M1选择门与损失审计；不是冻结的`label-provenance-v1`。
+> 版本：v1.0-frozen
+> 日期：2026-07-15
+> 状态：CSMV历史映射保留；LAI-GAI映射已由00正式冻结，机器权威见`lai-gai-label-provenance-v1.manifest.json`。
 
 ## 1. 映射原则
 
@@ -26,6 +26,7 @@
 | iNews | contempt / neutral / other | `UNMAPPABLE` | 保留原生空间；不强行映射 |
 | NEmo+ | Anger / Fear / Sadness / Disgust | 对应小写同名 | 直接保留 |
 | NEmo+ | Amusement / Awe / Contentment / Excitement | `UNMAPPABLE` | 不将awe或contentment强制等同joy |
+| LAI-GAI | 12个1—7强度：amusement/awe/anger/attachment love/craving/disgust/excitement/fear/joy/neutral/nurturant love/sadness | 12维连续分布 | 每维均值减量表下界1后归一化；不压缩到direct6主目标 |
 
 CSMV的opinion positive/neutral/negative是独立三极性任务，可保留为数据集内兼容目标；它不与iNews的VAD或NEmo+八类自动等价。
 
@@ -45,5 +46,6 @@ iNews的不可映射行占37.95%，且8.30%的post会完全消失；因此direct
 - iNews是受试参与者看到新闻帖截图后的个体VAD/离散反应，具有实验标注者与模态条件；不是平台自然评论分布。
 - NEmo+是受试者在T、I、TI三种实验条件下的诱发情绪，主题集中于美国枪支暴力新闻；其条件差分有独立科学含义。
 - MVIndEmo是评论模型推断并按点赞加权的自动聚合，不属于人工金标空间。
+- LAI-GAI是独立受试者对单图的诱发情绪强度，属于跨域图像`HUMAN_GOLD`；prompt与目标类别仅描述生成意图，不能替代人类反应。
 
-正式映射冻结前必须先确定第二主集、统计单位、类别保留策略与主指标；不得查看test结果后改变映射。
+LAI-GAI映射版本固定为`lai-gai-label-map-v1`，主指标保持Jensen–Shannon divergence；任何修改必须形成新版本，禁止查看test结果后改变映射。

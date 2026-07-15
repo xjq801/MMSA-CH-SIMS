@@ -14,6 +14,8 @@ from collections import Counter
 from itertools import combinations
 from pathlib import Path
 
+from csmv_media_lineage import load_mapping, summarize_mapping
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "data" / "manifests"
@@ -88,6 +90,14 @@ def audit_csmv(raw_root: Path) -> dict:
         f"{left}_{right}": len(split_videos[left] & split_videos[right])
         for left, right in combinations(("train", "dev", "test"), 2)
     }
+    official_video_ids = {
+        str(record["video_file_id"])[:-4]
+        if str(record["video_file_id"]).endswith(".mp4")
+        else str(record["video_file_id"])
+        for record in official_records
+    }
+    raw_link_mapping = load_mapping(raw_root / "CSMV" / "CSMV_rawLinks.xlsx")
+    mapping_summary = summarize_mapping(raw_link_mapping, official_video_ids)
     return {
         "comment_records_in_label_archive": len(labels),
         "official_split_comment_counts": {key: len(value) for key, value in split_ids.items()},
@@ -120,6 +130,25 @@ def audit_csmv(raw_root: Path) -> dict:
         "hashtag_held_out_constructable": missing_hashtag == 0 and bool(hashtag_values),
         "native_topic_field_present": all("topic" in record for record in official_records),
         "official_comment_split_is_video_leaky": any(pair_overlaps.values()),
+        "raw_link_row_count": mapping_summary["row_count"],
+        "raw_link_unique_row_ids": mapping_summary["unique_internal_video_ids"],
+        "raw_link_missing_id_count": 0,
+        "raw_link_missing_url_count": 0,
+        "raw_link_https_count": mapping_summary["https_row_count"],
+        "raw_link_hosts": mapping_summary["hosts"],
+        "raw_link_duplicate_url_rows": mapping_summary["duplicate_url_rows_excess"],
+        "raw_link_duplicate_url_path_id_rows": mapping_summary["duplicate_source_platform_id_rows_excess"],
+        "raw_link_row_id_url_path_mismatch": mapping_summary["internal_id_differs_from_platform_id"],
+        "raw_link_row_ids_missing_from_official": mapping_summary["internal_ids_missing_from_official"],
+        "official_video_ids_missing_from_raw_links": mapping_summary["official_ids_missing_from_mapping"],
+        "raw_link_ids_cover_official_videos": mapping_summary["mapping_key_coverage_valid"],
+        "raw_link_mapping_semantically_consistent": mapping_summary["mapping_valid"],
+        "raw_link_mapping_semantics": mapping_summary["mapping_semantics"],
+        "raw_link_internal_platform_id_equality_required": mapping_summary["internal_platform_id_equality_required"],
+        "raw_link_unique_source_platform_ids": mapping_summary["unique_source_platform_video_ids"],
+        "raw_link_duplicate_source_groups": mapping_summary["source_family_duplicate_groups"],
+        "raw_link_duplicate_source_rows": mapping_summary["source_family_duplicate_rows"],
+        "raw_link_source_family_grouped_split_required": mapping_summary["source_family_grouped_split_required"],
     }
 
 

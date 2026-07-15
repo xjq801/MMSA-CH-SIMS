@@ -1,0 +1,41 @@
+{
+  "all_splits_same_rule": true,
+  "batching": {
+    "bucket_boundaries": [32, 64, 128, 256, 512, 1024, 2048],
+    "input_tensor_cap_bytes": 67108864,
+    "max_batch_size": 64,
+    "max_padded_steps": 16384,
+    "policy": "DETERMINISTIC_LENGTH_BUCKETS_DYNAMIC_PADDING"
+  },
+  "dtype": "float32",
+  "feature_dimension": 1024,
+  "freeze_date": "2026-07-16",
+  "gates": {
+    "formal_split": false,
+    "g1": "PASS",
+    "g2": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE"
+  },
+  "invalid_input_policy": "REJECT_EMPTY_BAD_SHAPE_NON_FLOAT32_OR_NONFINITE",
+  "main_protocol": "FULL_SEQUENCE_DYNAMIC_PADDING_MASK",
+  "mask_dtype": "bool",
+  "mask_true_means": "OBSERVED_TIMESTEP",
+  "observed_input_profile": {
+    "count_equal_180": 4,
+    "count_greater_than_180": 531,
+    "max_temporal_steps": 1719,
+    "min_temporal_steps": 6,
+    "required_samples": 8210
+  },
+  "padding": {
+    "direction": "RIGHT",
+    "value": 0.0
+  },
+  "primary_sensitivity": "UNIFORM_180_ENDPOINT_INCLUSIVE",
+  "randomness": "NONE",
+  "schema_version": "csmv-i3d-sequence-protocol-v1",
+  "selection_basis": "PRE_TEST_INPUT_LENGTH_AUDIT_ONLY",
+  "split_specific_overrides": {},
+  "supplementary_sensitivity": "FIRST_180_ONLY_FIXED_DIAGNOSTIC",
+  "target_steps_for_sensitivity": 180,
+  "test_adaptation_allowed": false
+}

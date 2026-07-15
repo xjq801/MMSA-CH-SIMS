@@ -1,11 +1,12 @@
-schema_version: 1
+schema_version: 2
 experiment_id: bootstrap-config-validation
 status: validation_only
 
 protocol:
-  master_plan_version: v1.5
+  master_plan_version: v1.12
+  experiment_protocol_version: v2
   task_timepoint: T0
-  unit_of_analysis: video_or_post
+  unit_of_analysis: dataset_native_content_item
   label_window: dataset_specific_freeze_before_test
 
 data:
@@ -18,12 +19,27 @@ data:
 run:
   seed: 20260714
   input_modalities:
-    - title_text
     - visual_content
   baseline: config_validation_only
   primary_metric: jensen_shannon_divergence
   stop_condition: leakage_check_failure
   output_dir: results/bootstrap-config-validation
+
+representation_contract:
+  family: I3D
+  state: QUARANTINE_ONLY_PENDING_G2_ASSET_ADMISSION
+  sequence_protocol: configs/csmv-i3d-sequence-protocol-v1.json
+  main_rule: FULL_SEQUENCE_DYNAMIC_PADDING_MASK
+  primary_sensitivity: UNIFORM_180_ENDPOINT_INCLUSIVE
+  test_adaptation_allowed: false
+  all_splits_same_rule: true
+
+modality_contract:
+  policy: ACTUAL_AVAILABLE_INPUTS_ONLY
+  structurally_unavailable:
+    - audio
+  missing_modality_experiment_eligible: false
+  not_applicable_reason: NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY
 
 leakage:
   forbidden_inputs:

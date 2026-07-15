@@ -39,6 +39,7 @@ def validate_m2_data_engineering() -> dict:
         "data/manifests/canonical-audience-affect-v1.schema.json",
         "data/manifests/csmv-primary-raw-v1.manifest.json",
         "data/manifests/csmv-split-v1.manifest.json",
+        "data/manifests/csmv-media-lineage-v1.manifest.json",
         "data/manifests/cuc-auxiliary-raw-v1.manifest.json",
         "data/manifests/cuc-canonical-v1.manifest.json",
         "data/manifests/human-gold-v1.manifest.json",
@@ -116,18 +117,31 @@ def validate_m2_data_engineering() -> dict:
             and distributions_valid
             and all(len(values) == 1 for values in component_splits.values())
             and forbidden_hits == 0
+            and len({record["source_group_id"] for record in human}) == 8008
+            and sum(record["duplicate_source_id"] for record in human) == 404
+            and all(
+                len({record["split"]["group_by_video_v1"] for record in human if record["source_group_id"] == group_id}) == 1
+                for group_id in {record["source_group_id"] for record in human}
+            )
         ),
         "records": len(human),
         "response_total": response_total,
         "hashtag_components": len(component_splits),
         "cross_split_hashtag_components": sum(len(values) > 1 for values in component_splits.values()),
         "forbidden_text_field_hits": forbidden_hits,
+        "source_groups": len({record["source_group_id"] for record in human}),
+        "duplicate_source_rows": sum(record["duplicate_source_id"] for record in human),
     }
 
     split_manifest = read_json(MANIFEST_ROOT / "csmv-split-v1.manifest.json")
     index_manifest = read_json(MANIFEST_ROOT / "index-boundary-v1.manifest.json")
     checks["split_before_index"] = {
-        "passed": split_manifest["index_status"] == "NOT_BUILT" and index_manifest["allowed_fit_split"] == "train",
+        "passed": (
+            split_manifest["index_status"] == "NOT_BUILT"
+            and index_manifest["allowed_fit_split"] == "train"
+            and split_manifest.get("source_group_count") == 8008
+            and split_manifest.get("cross_split_source_groups") == 0
+        ),
         "index_status": split_manifest["index_status"],
     }
 
@@ -158,7 +172,11 @@ def validate_m2_data_engineering() -> dict:
 
     mapping = read_json(MANIFEST_ROOT / "second-primary-label-map-v1.manifest.json")
     checks["second_primary_mapping"] = {
-        "passed": mapping["status"] == "BLOCKED_SECOND_PRIMARY_NOT_FROZEN" and mapping["test_result_tuning_allowed"] is False,
+        "passed": (
+            mapping["status"] == "FROZEN_00_APPROVED"
+            and mapping.get("g1_effect") == "PASS"
+            and mapping["test_result_tuning_allowed"] is False
+        ),
         "status": mapping["status"],
     }
     review = read_json(MANIFEST_ROOT / "label-error-review-v1.manifest.json")
@@ -171,10 +189,10 @@ def validate_m2_data_engineering() -> dict:
         "schema": "m2-data-engineering-check-v1",
         "passed": passed,
         "m2_local_artifacts_ready": passed,
-        "g1_passed": False,
-        "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+        "g1_passed": passed,
+        "g1_status": "PASS" if passed else "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
         "g2_passed": False,
-        "g2_status": "NOT_EVALUATED_G1_BLOCKED",
+        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
         "checks": checks,
     }
 

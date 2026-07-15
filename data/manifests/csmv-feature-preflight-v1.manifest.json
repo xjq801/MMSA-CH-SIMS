@@ -1,0 +1,107 @@
+{
+  "schema_version": "csmv-feature-preflight-v1",
+  "authorization": "AUTH-00-CSMV-FEATURE-ASSET-PREFLIGHT-RO-20260715",
+  "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "status": "QUARANTINE_ACQUIRED_LICENSE_REVISION_ATTESTATION_PENDING",
+  "g2_asset_credit": false,
+  "formal_model_input_allowed": false,
+  "official_snapshot": {
+    "repository": "IEIT-AGI/MSA-CRVI",
+    "commit": "99d14240254b1381dde0b9c56add140381f65117",
+    "readme_relative_path": "README.md",
+    "readme_sha256": "39a1162df89dbf7a50d89435b640043c1397eaa6b1827e63ebbf77584a75d1e3",
+    "public_feature_folder_id": "1kSM9J6WdykcJxsfpSTAeE-FyuebUzy9z"
+  },
+  "anonymous_public_page_observation": {
+    "observed_date": "2026-07-15",
+    "method": "ANONYMOUS_HTTPS_GET_PUBLIC_FOLDER_PAGE",
+    "final_host": "drive.google.com",
+    "http_status": 200,
+    "response_bytes": 293616,
+    "response_sha256": "d5acdb81b2326b1455a537ff2eb92771dc7b6c18ec33304487343a3e171f5e40",
+    "feature_name_hits_in_initial_html": {
+      "I3D": 0,
+      "VideoMAE": 0,
+      "VideoMAEv2": 0,
+      "R(2+1)D": 0,
+      ".npy": 0
+    },
+    "interpretation": "PUBLIC_PAGE_REACHABLE_BUT_ASSET_LIST_METADATA_NOT_EXPOSED_IN_INITIAL_HTML",
+    "revision_stability": "UNKNOWN_DYNAMIC_PAGE_RESPONSE"
+  },
+  "license": {
+    "code": "README_MIT_ROOT_LICENSE_APACHE_2_0_CONFLICT_RETAINED",
+    "annotations": "CC-BY-SA-4.0",
+    "visual_features": "UNKNOWN_NOT_EXPLICITLY_COVERED",
+    "raw_media": "UNKNOWN_NOT_COVERED"
+  },
+  "feature_families": [
+    {
+      "family": "I3D",
+      "release_claim": "README_SAYS_RELEASED",
+      "file_tree": "LOCAL_QUARANTINE_MANIFEST_VERIFIED",
+      "file_count": 9942,
+      "required_csmv_file_count": 8210,
+      "extra_file_count": 1732,
+      "total_bytes": 2752998144,
+      "public_checksum_count": 0,
+      "local_required_checksum_count": 8210,
+      "local_content_tree_sha256": "35be2d18e1d2413ba3765034cdb454baa5e3496d49c540c9be00e81bbc2c1942",
+      "observed_schema": "float32[T,1024]",
+      "asset_revision": "UNKNOWN",
+      "asset_license": "UNKNOWN"
+    },
+    {
+      "family": "VideoMAE_OR_VIDEOMAEV2",
+      "release_claim": "README_SAYS_VIDEOMAE_RELEASED_BUT_NAMING_DIFFERS_FROM_SCHEMATIC_VIDEOMAEV2",
+      "file_tree": "UNKNOWN_NOT_PAGE_EXPOSED",
+      "file_count": null,
+      "total_bytes": null,
+      "public_checksum_count": 0,
+      "asset_revision": "UNKNOWN",
+      "asset_license": "UNKNOWN"
+    },
+    {
+      "family": "R(2+1)D",
+      "release_claim": "DESCRIBED_IN_SCHEMATIC_NOT_CONFIRMED_AS_CURRENTLY_RELEASED",
+      "file_tree": "UNKNOWN_NOT_PAGE_EXPOSED",
+      "file_count": null,
+      "total_bytes": null,
+      "public_checksum_count": 0,
+      "asset_revision": "UNKNOWN",
+      "asset_license": "UNKNOWN"
+    }
+  ],
+  "coverage": {
+    "required_video_file_ids": 8210,
+    "readme_naming_claim": "FEATURE_FILENAMES_CORRESPOND_TO_VIDEO_FILE_ID",
+    "asset_keys_observed": 9942,
+    "verified_coverage_count": 8210,
+    "missing_required_count": 0,
+    "extra_asset_keys": 1732,
+    "coverage_status": "LOCAL_QUARANTINE_8210_OF_8210_VERIFIED"
+  },
+  "minimal_family_decision": {
+    "selected_family": "I3D",
+    "status": "SELECTED_FOR_QUARANTINE_AUDIT_ONLY",
+    "observed_download_bytes": 2752998144,
+    "observed_workspace_bytes": 2753015726,
+    "reason": "The user supplied a locally acquired package. All 8,210 required keys and float32[T,1024] headers are verified, but license, stable revision, and rights-holder fixity attestation remain unresolved."
+  },
+  "network_or_asset_actions": {
+    "drive_api_used": false,
+    "login_or_cookie_used": false,
+    "feature_files_downloaded_by_codex": 0,
+    "feature_files_acquired_from_user_local_package": 9942,
+    "local_integration_method": "READ_ONLY_DIRECTORY_JUNCTION_IN_GIT_IGNORED_QUARANTINE",
+    "media_urls_visited": 0,
+    "training_started": false
+  },
+  "local_quarantine_manifest": {
+    "path": "data/manifests/csmv-i3d-quarantine-v1.manifest.json",
+    "sha256": "425829cf3271ce3c695a011e75b9efa94c4efab76458fda9f902e6eeb9c99c1e",
+    "acquisition_status": "QUARANTINE_ACQUIRED",
+    "quarantine_integrity_ready": true,
+    "formal_use_ready": false
+  }
+}

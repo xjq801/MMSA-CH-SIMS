@@ -1,0 +1,2100 @@
+{
+  "admission_checks": {
+    "all_nodes_public": true,
+    "component_license_complete": true,
+    "file_tree_and_size_complete": false,
+    "minimum_observed_interval_seconds": 0.996519,
+    "no_branch_stops": true,
+    "public_checksum_fixity_complete": false,
+    "rate_interval_compliant": false
+  },
+  "audit_date": "2026-07-14",
+  "audit_mode": "ANONYMOUS_BOUNDED_OSF_METADATA_API_GET_ONLY",
+  "authorization": "AUTH-00-LAI-GAI-OSF-API-META-RO-20260714",
+  "review": {
+    "authorization_status": "CLOSED_NONCONFORMING_NO_RERUN_AUTHORIZED",
+    "dataset_status": "NO_GO_00_REVIEWED_NOT_FROZEN",
+    "evidence_class": "OBSERVED_WITH_PROTOCOL_DEVIATION_NO_GATE_CREDIT",
+    "review_decision": "ACCEPTED_AS_NONCONFORMING_OBSERVATION_NO_GATE_CREDIT",
+    "review_id": "REVIEW-00-LAI-GAI-OSF-API-20260714"
+  },
+  "download_authorized": false,
+  "downloaded_or_previewed_assets": false,
+  "followed_download_content_render_html_upload": false,
+  "formal_split": false,
+  "g1_status": "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
+  "g2_status": "NOT_ELIGIBLE_G1_BLOCKED_AND_SEMANTIC_AUDITS_OPEN",
+  "limits": {
+    "allowed_host": "api.osf.io",
+    "allowed_nodes": [
+      "V8DKM",
+      "8P572",
+      "K8XVH"
+    ],
+    "max_requests": 100,
+    "max_response_bytes": 5242880,
+    "min_interval_seconds": 1.0
+  },
+  "nodes": [
+    {
+      "branch_stops": [],
+      "date_modified": "2026-03-07T12:09:14.185446",
+      "files": [
+        {
+          "checksum": {
+            "md5": "a409463a9446e7f2b1938fe12e483730",
+            "sha256": "9b29802e9a71e34097eecd5608dd26e4d168010ccf4892eb7ca076ced5afc6b5"
+          },
+          "date_modified": "2025-03-12T11:23:35.860830",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Authors_Roles_preregistration.docx",
+          "size_bytes": 19651
+        },
+        {
+          "checksum": {
+            "md5": "7aca2dcdab280b14ca436160493fbbe1",
+            "sha256": "e0fab554786967bc4872b32e6067847064e7bb923e8c9b89e19f13d9e7fa1b40"
+          },
+          "date_modified": "2025-06-20T08:48:48.001803",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Ms_AI_Affective_Images_20062025.pdf",
+          "size_bytes": 2242372
+        },
+        {
+          "checksum": {
+            "md5": "3ad09e6002ace30b034039d59f3bf6c0",
+            "sha256": "502ec87bb90c5b157414b5bb49f88990319a6e9d176016139e26be71e0945432"
+          },
+          "date_modified": "2025-11-30T19:21:53.057125",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Ms_AI_Affective_Images_30112025_OSF.docx",
+          "size_bytes": 9309547
+        },
+        {
+          "checksum": {
+            "md5": "e6fade50605e5a258d834b1f7530abdf",
+            "sha256": "69e9afca9c022d3f418183970ccf1f4c23da2a20f248ca67b9f110e8298ae1b5"
+          },
+          "date_modified": "2025-06-18T06:10:30.145168",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Ms_AI_Affective_Images_Supp20062025.docx",
+          "size_bytes": 308313
+        },
+        {
+          "checksum": {
+            "md5": "f2cc93bbabf4355fedc8d9ce82e40929",
+            "sha256": "b2094fd8133c2b79ab681cd365f2e05c8712f699a3607b2a6fcd37b48a963201"
+          },
+          "date_modified": "2025-11-30T14:55:30.228831",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Ms_AI_Affective_Images_Supp_30112025.docx",
+          "size_bytes": 1287606
+        },
+        {
+          "checksum": {
+            "md5": "e465c5535d0d72d28667e5d6a6f92dda",
+            "sha256": "e9b440f00032217e05e6823f7711a82de89f37334e93ef2eb4622c6001e3c8f0"
+          },
+          "date_modified": "2026-03-07T12:08:55.167348",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Published_paper_behnke-et-al-2026-AMPPS.pdf",
+          "size_bytes": 6020311
+        },
+        {
+          "checksum": {
+            "md5": "b0471e2cb988e9d8ec86159c74df0daf",
+            "sha256": "4315fc2f2abdcca8cc0126776768cfaf38a6102f51a79a3731d91abf2b6b6935"
+          },
+          "date_modified": "2025-03-12T11:26:11.318736",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Random_order_preregistration.Rmd",
+          "size_bytes": 3748
+        },
+        {
+          "checksum": {
+            "md5": "54443f407943ae17c220ffaae1629fda",
+            "sha256": "7478a81f943b8e8137278fbd2cea8904f2c120afb2be9c7a8a0a433dacd07007"
+          },
+          "date_modified": "2025-03-12T11:12:18.206661",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Results Mock_preregistration.docx",
+          "size_bytes": 31861
+        },
+        {
+          "checksum": {
+            "md5": "b6cb672dae6ea0da815c435234e15841",
+            "sha256": "ee1ccda752c15c98055cb10d8840456b22b68a9b3cb247352c8e0535014d2897"
+          },
+          "date_modified": "2026-03-03T06:42:55.721151",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/poster_SAS_qr.pdf",
+          "size_bytes": 2885328
+        }
+      ],
+      "license": {
+        "name": "CC-By Attribution 4.0 International",
+        "status": "PRESENT",
+        "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+      },
+      "node_access": "HTTP_200_JSON",
+      "node_id": "V8DKM",
+      "providers": [
+        "osfstorage"
+      ],
+      "public": true,
+      "summary": {
+        "checksum_file_count": 9,
+        "file_count": 9,
+        "folder_count": 0,
+        "known_size_file_count": 9,
+        "total_known_size_bytes": 22108737,
+        "unknown_size_file_count": 0
+      }
+    },
+    {
+      "branch_stops": [],
+      "date_modified": "2026-03-11T20:48:23.318238",
+      "files": [
+        {
+          "checksum": {
+            "md5": "52e86c286007a1c44c90d77f284ff190",
+            "sha256": "5b94058110374ea8cb68f4925cdba80ec010c74dc1a634abe430ccf4e2078216"
+          },
+          "date_modified": "2025-11-30T13:23:34.509629",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/.RData",
+          "size_bytes": 382289902
+        },
+        {
+          "checksum": {
+            "md5": "8c637ec3e7b18577724b6cee96d9e183",
+            "sha256": "e397e9861fb322b157fad8c544a074c52c31b85b0c5689db997fd1e59983457b"
+          },
+          "date_modified": "2025-11-30T13:22:35.912862",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/.Rhistory",
+          "size_bytes": 17337
+        },
+        {
+          "checksum": {
+            "md5": "3590c85dd20ef499bbdff4033fef0817",
+            "sha256": "3cbe46365d36193669936a83d6972aa65199891f45d9e1f9b9d8eddd0d26b506"
+          },
+          "date_modified": "2025-11-14T08:19:58.472290",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/1README.pdf",
+          "size_bytes": 64158
+        },
+        {
+          "checksum": {
+            "md5": "51ab0fa5b0a971f7ddec5559930d6c4b",
+            "sha256": "78b4b9d657f4560ced6b0fd42d2d5d40ea74f6ec2217a44cbd1f38678c85dc55"
+          },
+          "date_modified": "2025-11-14T08:42:31.271817",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3.ipynb",
+          "size_bytes": 305396
+        },
+        {
+          "checksum": {
+            "md5": "9ddb6de8fe75293ea16bdbd3cc319afb",
+            "sha256": "d55034d5736b241d34af2a46bb57501d0dc8a4287e733fd5d70fcd92f3b9a7a1"
+          },
+          "date_modified": "2026-02-26T06:49:20.330976",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3_all.ipynb",
+          "size_bytes": 864040
+        },
+        {
+          "checksum": {
+            "md5": "c964f051485a4452c5216fa73dca3341",
+            "sha256": "516702dd8c45cc0356680ca681cd892eceb79d94053b8cee3461fe3eb08e0c62"
+          },
+          "date_modified": "2025-11-14T08:19:58.473920",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3_s2.ipynb",
+          "size_bytes": 239757
+        },
+        {
+          "checksum": {
+            "md5": "e525550e75456988ea5d085939d8430a",
+            "sha256": "07f5cba945c8ee4aac1d9d87d1261f9f817fe93221cf11bd784f390e91204a25"
+          },
+          "date_modified": "2025-11-14T08:19:58.592458",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3_s3.ipynb",
+          "size_bytes": 318553
+        },
+        {
+          "checksum": {
+            "md5": "df9c1c14e74c3fdcf0fae1a71185d1b9",
+            "sha256": "c53986f38078bba88bdab6c342efca29ceb4bc8898794e7418c9a5713b3cfbf1"
+          },
+          "date_modified": "2025-11-14T08:19:53.028886",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3_s4.ipynb",
+          "size_bytes": 260818
+        },
+        {
+          "checksum": {
+            "md5": "a07a949d5f691d1d0c6d5f5e493478cf",
+            "sha256": "0eb5c4ad51083ef11dccff7896fa03e57fda63baa33cf82e493a406cadc2f906"
+          },
+          "date_modified": "2025-11-14T08:19:51.028232",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3_s5.ipynb",
+          "size_bytes": 266645
+        },
+        {
+          "checksum": {
+            "md5": "c3450e9de2eec03a044a7c5e83a3e039",
+            "sha256": "cbaa2ae8cf711a3e808595f0e5f419f51390a7b15179c0283665e4e4dc60b2f2"
+          },
+          "date_modified": "2025-11-14T08:19:53.024594",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/AIPS_preprocv3_s6.ipynb",
+          "size_bytes": 303294
+        },
+        {
+          "checksum": {
+            "md5": "4ba1398c799b97ae1a8ce5634609b6d0",
+            "sha256": "4c33b64aca367e3837b904a136a4817d45fa4fc013bf3f9005dc401589772ec9"
+          },
+          "date_modified": "2025-06-17T13:44:33.074156",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/MMA_model_S1.Rmd",
+          "size_bytes": 10854
+        },
+        {
+          "checksum": {
+            "md5": "880e133b43a2103e35a4b8263390bee3",
+            "sha256": "f7e6ab3ee391cc18ed0c1eb30bad1d83efdc388cbc48a9b44f5fd7907e0ddb9b"
+          },
+          "date_modified": "2025-06-17T13:44:37.283091",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/MMA_model_S3.Rmd",
+          "size_bytes": 9673
+        },
+        {
+          "checksum": {
+            "md5": "a08a95c2e9ac44baecb4edc1537c1f34",
+            "sha256": "d905f35fe1fbc3180911ae19138f0814f60ed371a5873fb477c0ad37434e8b13"
+          },
+          "date_modified": "2025-11-30T13:08:46.777900",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/MMA_model_S34.Rmd",
+          "size_bytes": 8899
+        },
+        {
+          "checksum": {
+            "md5": "2942b7a8844f4ee042e33775cfa42acc",
+            "sha256": "e34c01e20adda018461f60e6d86afd66831b987f026a637b4b54649101a5d802"
+          },
+          "date_modified": "2025-11-30T13:08:46.234803",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/MMA_model_S5.Rmd",
+          "size_bytes": 11050
+        },
+        {
+          "checksum": {
+            "md5": "c2100398712cb677b8cd0ae593c45523",
+            "sha256": "a7332532d689a7fadaf40ee0d144f4c199602b391159e659fc667d97601af749"
+          },
+          "date_modified": "2025-11-30T13:08:46.805043",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/MMA_model_S6.Rmd",
+          "size_bytes": 4078
+        },
+        {
+          "checksum": {
+            "md5": "7049d0c007890f967cfa0d9aec700bae",
+            "sha256": "ec89afbb07d6663fc1dd6e9de639d902a2f59848f7e4b4bc93836410520302df"
+          },
+          "date_modified": "2025-11-14T08:19:50.704122",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/MMA_model_power.Rmd",
+          "size_bytes": 10189
+        },
+        {
+          "checksum": {
+            "md5": "3bcc670939e29518414a103a55a5ec20",
+            "sha256": "f64d7f587f74e9447b799320c70df3742cdcaac56391c66fd13b1fff0d25e1cc"
+          },
+          "date_modified": "2025-11-14T08:20:30.673737",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1233b45_data_out.csv",
+          "size_bytes": 26644751
+        },
+        {
+          "checksum": {
+            "md5": "7e981bdae427003513539508edf76b6e",
+            "sha256": "1a34114160e5c3e56f0761bef5959a099596d4a611a544bba886d1d2e18da036"
+          },
+          "date_modified": "2025-11-14T08:20:28.396023",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1233b4_data_out.csv",
+          "size_bytes": 23274013
+        },
+        {
+          "checksum": {
+            "md5": "c1fb4d25ced14438609f4eba9fbcd785",
+            "sha256": "43bd973f951a1fb31e02b857a481fe51ea45eb8c87975daa5a5c59a2d1b27aa9"
+          },
+          "date_modified": "2025-11-14T08:20:26.345952",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1233b_data_out.csv",
+          "size_bytes": 20531527
+        },
+        {
+          "checksum": {
+            "md5": "9b311264e5a9ea45647aecae66c388be",
+            "sha256": "10c771e2f1ce33f605a761aa258aef2195ebd06e135203c53f60a5c8d41a70ed"
+          },
+          "date_modified": "2025-11-14T08:20:28.197258",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S12345_data_out.csv",
+          "size_bytes": 22856267
+        },
+        {
+          "checksum": {
+            "md5": "c1fb4d25ced14438609f4eba9fbcd785",
+            "sha256": "43bd973f951a1fb31e02b857a481fe51ea45eb8c87975daa5a5c59a2d1b27aa9"
+          },
+          "date_modified": "2025-11-14T08:20:26.572635",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1234_data_out.csv",
+          "size_bytes": 20531527
+        },
+        {
+          "checksum": {
+            "md5": "08d50b7ad7ba97a4e0df3d25b62572fd",
+            "sha256": "5095a8de9728b49a4bd5b4120998a89fa0d1900c6c287d7def22b4b493393104"
+          },
+          "date_modified": "2025-07-16T08:27:52.392188",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S123_data_out.csv",
+          "size_bytes": 18269135
+        },
+        {
+          "checksum": {
+            "md5": "7f8da5a7badecaa6565a1fdece18bffc",
+            "sha256": "f01a2817a06cd532713f81a1a231b4520c8b7f5aeb4a8b59337bafc07018950c"
+          },
+          "date_modified": "2025-11-14T08:20:10.273490",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S12_data_out.csv",
+          "size_bytes": 9444879
+        },
+        {
+          "checksum": {
+            "md5": "144c7e99e2a1086059a8dc7499b5156f",
+            "sha256": "76a81977262a95476cedabe800115d01916c0e05455604b56f0e397d90f2cc0e"
+          },
+          "date_modified": "2025-06-17T13:46:17.481514",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S13_data_with_cult_match_recoded.csv",
+          "size_bytes": 5005510
+        },
+        {
+          "checksum": {
+            "md5": "6c3d4851ad91f5cde2b50aa3538526e9",
+            "sha256": "8f431da717f08e57d86db5853ab2f9a19b73646ef8980f712de2584e5430a2bf"
+          },
+          "date_modified": "2025-06-17T13:44:54.037485",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_1_620.txt",
+          "size_bytes": 67041562
+        },
+        {
+          "checksum": {
+            "md5": "346ca6e49f64fc23c2a6db0504a86e5c",
+            "sha256": "6395ba68b2ef5e4e8c60fddd057630795c1feca63d6a6c88ce219b1d7b9213ae"
+          },
+          "date_modified": "2025-06-17T13:44:48.132391",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_AI_position.csv",
+          "size_bytes": 2152
+        },
+        {
+          "checksum": {
+            "md5": "c20d2e063c9a696938b806b2c991e8b2",
+            "sha256": "13e914a16b22a0587a83acd17b24ddc8ffe90bd9f1a9db4da5c8ebf231602c53"
+          },
+          "date_modified": "2025-11-14T08:19:57.954698",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_comparison_distribution.csv",
+          "size_bytes": 2596
+        },
+        {
+          "checksum": {
+            "md5": "426ef48aa215d030e4b9b9f3e3c308db",
+            "sha256": "199836ab5e6e3ed77db55fcad59c7fd8d7343c7b334cb3552aa8ce9f896bbcd2"
+          },
+          "date_modified": "2025-06-17T13:44:56.437241",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_comparison_means_adjusted.csv",
+          "size_bytes": 11481
+        },
+        {
+          "checksum": {
+            "md5": "9caaaa5bd7b7531b0360231b4858fe88",
+            "sha256": "25630856894e1333fade11f57d5b3b5305f50707a4259d0bb458871f81628262"
+          },
+          "date_modified": "2025-06-17T13:45:00.212925",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_data.csv",
+          "size_bytes": 6101405
+        },
+        {
+          "checksum": {
+            "md5": "764fb3bf280dcf48856930ffbf8d51f7",
+            "sha256": "ffddf2a198b167a6bf6efa2ad2028cbee5a57caf164fae4b9863fb85cc9d25e5"
+          },
+          "date_modified": "2025-06-17T13:45:02.733965",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_data_mlm.csv",
+          "size_bytes": 838140
+        },
+        {
+          "checksum": {
+            "md5": "12408a09861ad0284d897db62c9b15a3",
+            "sha256": "fcc2bfa257b9baf3bd4562ca294b8166d7675cc944c1f3cd972162b4b9fb2cbc"
+          },
+          "date_modified": "2025-06-17T13:45:02.991209",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_data_mlm_2.csv",
+          "size_bytes": 870208
+        },
+        {
+          "checksum": {
+            "md5": "846bcf6fc7deccebc3cb0e71717a80ff",
+            "sha256": "ca273024aef645f237f35bbf170a42cf093a30cc183901aab3c82149272f49ac"
+          },
+          "date_modified": "2025-06-17T13:45:06.567340",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_data_out.csv",
+          "size_bytes": 6295145
+        },
+        {
+          "checksum": {
+            "md5": "16ed7cc2b279a092b737b55eb6873443",
+            "sha256": "24e3fff9512bf046feb854cd7aea1a3c69c0f5ba960e37540a2ce6f1d5cf77a5"
+          },
+          "date_modified": "2025-06-17T13:45:07.774972",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_data_out_recoded.csv",
+          "size_bytes": 6525203
+        },
+        {
+          "checksum": {
+            "md5": "0e1755be04f36d092f8e07017ae9e289",
+            "sha256": "f486681929fdace5855e98f8829ef936a770809b0a450ba3c253c15d221e551d"
+          },
+          "date_modified": "2025-06-17T13:45:11.836951",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_data_with_diff.csv",
+          "size_bytes": 1049003
+        },
+        {
+          "checksum": {
+            "md5": "952ca08005fbb8888ce715db6d1f3cf5",
+            "sha256": "a21e72a0b4eb5713c4be57f081e56651fdbe435b50caed347b50d13ecefc7280"
+          },
+          "date_modified": "2025-06-17T13:45:14.868774",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_pilot.txt",
+          "size_bytes": 869269
+        },
+        {
+          "checksum": {
+            "md5": "d30d8daf95b4d9b293a2fa4be09d8234",
+            "sha256": "b736fd2b3a1aee21e471d2e81de7c33ce114b796ba95f724eb57f8cdcfbeb05a"
+          },
+          "date_modified": "2025-11-14T08:19:59.050031",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S1_pilot_data.csv",
+          "size_bytes": 63777
+        },
+        {
+          "checksum": {
+            "md5": "2bbca976fd3dbcf36e8656598ef34c17",
+            "sha256": "abcff68cd8a66e2441d1be886d9b8148f01ee7f473c7cbe95054db84941a49b9"
+          },
+          "date_modified": "2025-06-17T13:45:22.984695",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_1_280.txt",
+          "size_bytes": 37985902
+        },
+        {
+          "checksum": {
+            "md5": "a2db11c42ad23128214751efc8285cae",
+            "sha256": "3109f95021edca880dbffac93cb2b3b2ffc8ddab9f96df2ac1733fc2dca89788"
+          },
+          "date_modified": "2025-06-17T13:45:19.843096",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_281_300.txt",
+          "size_bytes": 3155914
+        },
+        {
+          "checksum": {
+            "md5": "41a1244a114af51d75d694e53e7ed08c",
+            "sha256": "0a532815437d6fc8e7b314ad81ca02112fc9267edf6ab2a49e8b377214a1df89"
+          },
+          "date_modified": "2025-06-17T13:45:24.109453",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_data.csv",
+          "size_bytes": 3214253
+        },
+        {
+          "checksum": {
+            "md5": "c2e0bebcc4e47fe21364eed2ebe91a0f",
+            "sha256": "ed87aca1e3ac7c54d60e9c8b004d9bee9d7e8d0b76f1a0dc3be1b6af22ef21c8"
+          },
+          "date_modified": "2025-06-17T13:45:26.283507",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_data_1.csv",
+          "size_bytes": 2964919
+        },
+        {
+          "checksum": {
+            "md5": "53dac4a6dac82158e22056f5108d64cb",
+            "sha256": "49e2d69609852bf5c2938cde856ba7807733b7b70dedb4beb4ad60a99240ab3a"
+          },
+          "date_modified": "2025-06-17T13:45:26.946983",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_data_2.csv",
+          "size_bytes": 199682
+        },
+        {
+          "checksum": {
+            "md5": "c492477f3b544b2fc689972c529a264f",
+            "sha256": "b92a048fd586139f69c748e2809b13d1d74ba6d93f2cee3ec44a34359ba8d933"
+          },
+          "date_modified": "2025-06-17T13:45:29.186623",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_data_out.csv",
+          "size_bytes": 3128194
+        },
+        {
+          "checksum": {
+            "md5": "1910bec7e4453a058cc1a2d04ae021b6",
+            "sha256": "543bee7b72a67602921e86135a38f98f580b2b4f78290fba207b35870d9d0131"
+          },
+          "date_modified": "2025-06-17T13:45:35.225176",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_pilot0.txt",
+          "size_bytes": 1907714
+        },
+        {
+          "checksum": {
+            "md5": "6f63605684bff79afaa28b6ba05fdb2f",
+            "sha256": "5f1fbcf178c0582aad16b8af8886a705174da3ff82e8041565506a333e73627e"
+          },
+          "date_modified": "2025-06-17T13:45:36.384142",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_pilot01.txt",
+          "size_bytes": 236269
+        },
+        {
+          "checksum": {
+            "md5": "e0ff9eb7cac2cbfbf4da45b2449defb2",
+            "sha256": "bf72bcef11256263ce38a0477323f1885d351a0da27656a715577354cb8d8117"
+          },
+          "date_modified": "2025-06-17T13:45:38.785948",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_pilot1.txt",
+          "size_bytes": 638848
+        },
+        {
+          "checksum": {
+            "md5": "16cd3e8de6de9aa2adf63a179cc4b3f5",
+            "sha256": "b68a9b93fbf00d5d8d5638edf4a7e4ccc7ff534a9bec76736c8926a1c9b2ce6f"
+          },
+          "date_modified": "2025-06-17T13:45:30.454834",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_pilot_data.csv",
+          "size_bytes": 41473
+        },
+        {
+          "checksum": {
+            "md5": "83a9d68c5052b7b05ef491fd70f6948e",
+            "sha256": "a197352852533b9f161d09b9c475662d2afe35c71e3178e541baf22e0817c9b2"
+          },
+          "date_modified": "2025-06-17T13:45:33.266115",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S2_pilot_datax.csv",
+          "size_bytes": 14583
+        },
+        {
+          "checksum": {
+            "md5": "a7d27521bd765c25f00f6c14b1016f03",
+            "sha256": "ef84269912806b637bb30ba05f45f3b20a652f7d3e6ae41bc388ece8e15bda64"
+          },
+          "date_modified": "2025-11-14T08:19:57.973223",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S34_data_mlm.csv",
+          "size_bytes": 1741976
+        },
+        {
+          "checksum": {
+            "md5": "0448968c34887c484c00300efe673f22",
+            "sha256": "c20308a96c276484fffcee10751132a49a472215f09a7593171f3802f02b906a"
+          },
+          "date_modified": "2025-11-14T08:20:11.919709",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S34_data_out.csv",
+          "size_bytes": 10939938
+        },
+        {
+          "checksum": {
+            "md5": "88f3c449b445a099fd33484db3243e40",
+            "sha256": "a1a77f8f65554e20b4686822d7d9f7f94665ac9b0fd80d221be0b441d6e02419"
+          },
+          "date_modified": "2025-06-17T13:45:40.014588",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_AF_data.csv",
+          "size_bytes": 1719259
+        },
+        {
+          "checksum": {
+            "md5": "0fcbac0e80fecee05b85da76e1be7be0",
+            "sha256": "b62c7af61e66bcae47cf554cddf6bdb57c29ba4245641b8d13f70860da58293e"
+          },
+          "date_modified": "2025-06-17T13:45:42.895832",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_AF_pilot.txt",
+          "size_bytes": 22302755
+        },
+        {
+          "checksum": {
+            "md5": "12098b132fb25c781018a71cc25434a9",
+            "sha256": "eac128e38fba783b3624d0626953c6c2611bee286e3bfc6fed5d89fc0d8221cc"
+          },
+          "date_modified": "2025-06-17T13:45:44.763483",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_AS_data.csv",
+          "size_bytes": 1399552
+        },
+        {
+          "checksum": {
+            "md5": "91b638034a41875b4ad1a3f5ebcc6e47",
+            "sha256": "468677a90b1c12827b25e36a6547865681c2f422bae4e812fd8be8f48356e6bf"
+          },
+          "date_modified": "2025-06-17T13:45:46.777827",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_AS_pilot.txt",
+          "size_bytes": 18306098
+        },
+        {
+          "checksum": {
+            "md5": "d7bd02cf2c4436e836ab52e755615826",
+            "sha256": "74df1a867af6acec5055d6b1e7b550624db1d6d8d421e15f547fb1ff4467f79b"
+          },
+          "date_modified": "2025-06-17T13:46:04.801190",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_EUNA_data.csv",
+          "size_bytes": 1726200
+        },
+        {
+          "checksum": {
+            "md5": "c99c0e5dc8d05c6d41beac889df9cf1f",
+            "sha256": "1b0714401b47296d49d579d0591aec8645290491c6308045ec6ece2d0d618e14"
+          },
+          "date_modified": "2025-06-17T13:46:07.403432",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_EUNA_pilot.txt",
+          "size_bytes": 22437393
+        },
+        {
+          "checksum": {
+            "md5": "84602352f7ed70cb91102fe129060675",
+            "sha256": "193db0b10f2c949c31da2017cf8df5feb3d2d92fe787e5ae5d543dae8642de20"
+          },
+          "date_modified": "2025-06-17T13:46:10.462534",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_SA_data.csv",
+          "size_bytes": 1667214
+        },
+        {
+          "checksum": {
+            "md5": "fa32635754ccd245c2be6bf252c063c5",
+            "sha256": "b33847b751625ff3b6a41b086698448e0f80186264cfd129a0c1e971fb12744b"
+          },
+          "date_modified": "2025-06-17T13:46:14.372876",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_SA_pilot.txt",
+          "size_bytes": 22043810
+        },
+        {
+          "checksum": {
+            "md5": "21f7fdc1fb64c595b37e44651b83964d",
+            "sha256": "17fcf975262b1d6d6abf84fef2b73247fd27238d16fd25d5728ac33051ba6841"
+          },
+          "date_modified": "2025-06-17T13:45:47.413034",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_comparison_distribution.csv",
+          "size_bytes": 2587
+        },
+        {
+          "checksum": {
+            "md5": "3a643c13d50311c0224307e71f419dd2",
+            "sha256": "c8d4ce93a4d308c6e7549634c49a81d576b3fbe89e7361a4ab806f26862d171a"
+          },
+          "date_modified": "2025-06-17T13:45:49.795955",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_comparison_means_adjusted.csv",
+          "size_bytes": 64038
+        },
+        {
+          "checksum": {
+            "md5": "36e9a5c99780be5af48c851d73964078",
+            "sha256": "bef13b032bf58032d50a25c285f160f0c301db47bce7460fdbaad57cef2953a7"
+          },
+          "date_modified": "2025-06-17T13:45:50.388888",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_data.csv",
+          "size_bytes": 7871771
+        },
+        {
+          "checksum": {
+            "md5": "bd506280482d5f51400b4483208aad1e",
+            "sha256": "85047eb7cfb24cae92fa374e7b463bd3de9c714ce6004072b64c69b308f7b828"
+          },
+          "date_modified": "2025-06-17T13:45:54.450460",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_data_mlm.csv",
+          "size_bytes": 1193626
+        },
+        {
+          "checksum": {
+            "md5": "9503c56686cc0ee42b501b14fe054164",
+            "sha256": "8ee8ed78e9b6de56dd71f979ed3889f55d9d954fa4cd1d86ed5643d6fb84beb1"
+          },
+          "date_modified": "2025-06-17T13:45:54.146750",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_data_out.csv",
+          "size_bytes": 8375758
+        },
+        {
+          "checksum": {
+            "md5": "b4d9c47fc156c7eccc7c667dd43e7d0c",
+            "sha256": "6845ea577d7cda836fba33654c0a2d72572f95cff9fc5ca40a118b615520cca5"
+          },
+          "date_modified": "2025-06-17T13:45:58.232930",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_data_out_recoded.csv",
+          "size_bytes": 7988628
+        },
+        {
+          "checksum": {
+            "md5": "bf8cf1f0c3305fcfa323725a31d4cf5e",
+            "sha256": "8ae66200a13f72c8db12fcef253c18698127597463a3edaa9c1174e9da2a545b"
+          },
+          "date_modified": "2025-06-17T13:46:02.070989",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S3_data_with_indiv_diff.csv",
+          "size_bytes": 1691109
+        },
+        {
+          "checksum": {
+            "md5": "2198659c4e6e6b42b21242349f9f7290",
+            "sha256": "fff2968bf2b4708c5a44346431e0a818a52b25517a0b7a06c483fdc37f7e172f"
+          },
+          "date_modified": "2025-11-14T08:19:59.275867",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S4_data.csv",
+          "size_bytes": 2527435
+        },
+        {
+          "checksum": {
+            "md5": "dde53a9079df30ba3249bbef5fa0a620",
+            "sha256": "cf134f4012bcb82e9ff6460d22486e4d544de9a1bca3a015747223aa6c4b9a64"
+          },
+          "date_modified": "2025-11-14T08:19:48.704249",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S4_data1.csv",
+          "size_bytes": 743837
+        },
+        {
+          "checksum": {
+            "md5": "5df7c5586da46cfe0499789230c64e04",
+            "sha256": "4fa877d46db50fc7944298b34478c3d8d256a240732e0caf1b0110f54d416090"
+          },
+          "date_modified": "2025-11-14T08:19:54.128497",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S4_data2.csv",
+          "size_bytes": 1275046
+        },
+        {
+          "checksum": {
+            "md5": "a4ae6b641c65f8ad3365eb0d36b67421",
+            "sha256": "ad5b4bdd4a789c62bd771ab3edfe285df05c6611c2a3d4fda9e4f3c876c25eba"
+          },
+          "date_modified": "2025-11-14T08:19:51.943627",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S4_data3.csv",
+          "size_bytes": 198518
+        },
+        {
+          "checksum": {
+            "md5": "e3702a236e6005cc1046d1f2dd5ebe0c",
+            "sha256": "6cba9d538339e817dfba06631a5960fb19e68a054dbebc1dde39fd98127c261f"
+          },
+          "date_modified": "2025-11-14T08:19:56.902653",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S4_data4.csv",
+          "size_bytes": 2050588
+        },
+        {
+          "checksum": {
+            "md5": "03e77e5095aa933d59e06277a1062ad2",
+            "sha256": "e2d2135f536cb906963e43ca95cc977281981906195e8d7a87bed99db176170f"
+          },
+          "date_modified": "2025-11-14T08:19:58.179972",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S4_data_out.csv",
+          "size_bytes": 2585709
+        },
+        {
+          "checksum": {
+            "md5": "656dee89a542dc54f64364366e0a4a22",
+            "sha256": "a1dd9a8a2f4f902ea4b90ad0076f4d1ff587e15fc130ef753d64195d3a32901b"
+          },
+          "date_modified": "2025-11-14T08:19:58.220417",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S5_data.csv",
+          "size_bytes": 2289998
+        },
+        {
+          "checksum": {
+            "md5": "7609e35eec44f0ec3c5b7863cc827849",
+            "sha256": "5460ad2ad516f80bb6379f056af015fd6f53b7ada3c9f9ee5a514b7b9e29cddb"
+          },
+          "date_modified": "2025-11-14T08:19:51.023951",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S5_data1.csv",
+          "size_bytes": 512938
+        },
+        {
+          "checksum": {
+            "md5": "a4ae6b641c65f8ad3365eb0d36b67421",
+            "sha256": "ad5b4bdd4a789c62bd771ab3edfe285df05c6611c2a3d4fda9e4f3c876c25eba"
+          },
+          "date_modified": "2025-11-14T08:19:54.121871",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S5_data3.csv",
+          "size_bytes": 198518
+        },
+        {
+          "checksum": {
+            "md5": "e3702a236e6005cc1046d1f2dd5ebe0c",
+            "sha256": "6cba9d538339e817dfba06631a5960fb19e68a054dbebc1dde39fd98127c261f"
+          },
+          "date_modified": "2025-11-14T08:19:58.495688",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S5_data4.csv",
+          "size_bytes": 2050588
+        },
+        {
+          "checksum": {
+            "md5": "8223f400e5a57cc437ab5b06374cb411",
+            "sha256": "4ff7ec844cbdefd5258a259fc0db598a2c3c9384b2e3b0213f855a727c1f8001"
+          },
+          "date_modified": "2025-11-14T08:19:53.108736",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S5_data_mlm.csv",
+          "size_bytes": 505443
+        },
+        {
+          "checksum": {
+            "md5": "a95b74d64a863332c4df4ec4d514a75e",
+            "sha256": "b271d97e75413f329d7a55db45ce77bc3dabd230a0b732e9fdb2c1979b0e98cb"
+          },
+          "date_modified": "2025-11-14T08:19:57.449735",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S5_data_out.csv",
+          "size_bytes": 2212420
+        },
+        {
+          "checksum": {
+            "md5": "1fc5e085bdec186020535f103ef338e1",
+            "sha256": "1d7b8707f960d7370b30bda7418394bf453fa72407a4f51194d00a026ab93a05"
+          },
+          "date_modified": "2025-11-14T08:20:00.455195",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S6_data.csv",
+          "size_bytes": 3197326
+        },
+        {
+          "checksum": {
+            "md5": "4870402e5309747fe062d39daf5b41af",
+            "sha256": "4a674b0c3a4bfa5a5f2e6bb73b446d2be2d86987479b60298ab0ad00a0c1e969"
+          },
+          "date_modified": "2025-11-14T08:19:58.523427",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S6_data1.csv",
+          "size_bytes": 2439890
+        },
+        {
+          "checksum": {
+            "md5": "2a893185c2d9768ceaa05ac2b72fb6d5",
+            "sha256": "34dd409bb1f28e72e89b160ebfcdf7a6f5fd803cefc6d7f69b214b88ad0870aa"
+          },
+          "date_modified": "2025-11-14T08:19:56.335097",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S6_data2.csv",
+          "size_bytes": 136941
+        },
+        {
+          "checksum": {
+            "md5": "b4797d5db4ebe45f7595c79245f73061",
+            "sha256": "842d8edf6886a348ee4093a97bdcd75e6d13aa5fbe83b21548b66001ab1a5605"
+          },
+          "date_modified": "2025-11-14T08:19:52.281886",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S6_data_mlm.csv",
+          "size_bytes": 735378
+        },
+        {
+          "checksum": {
+            "md5": "caec966cbd2828055738dc35cd5f8c72",
+            "sha256": "60e860abae84d5e6fe9c2ed522d65ae5415e88cfc2d006ce858b2568849a2e1d"
+          },
+          "date_modified": "2025-11-14T08:20:00.477930",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/S6_data_out.csv",
+          "size_bytes": 3149818
+        },
+        {
+          "checksum": {
+            "md5": "6181ff22bafce045922d0dd29e85a78e",
+            "sha256": "2646096929556e7655753d8f95a8022193fb82189f1f85758f2f08bd4d0c5278"
+          },
+          "date_modified": "2025-11-30T15:20:56.434082",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/SupplementaryData_30112025.xlsx",
+          "size_bytes": 373539
+        },
+        {
+          "checksum": {
+            "md5": "d7c626ee0067dc347e76905a3770a097",
+            "sha256": "2484cfe35262c4f4b7a585bb963b308b55deeba3dfe245efbc31c853bc8faabd"
+          },
+          "date_modified": "2025-11-14T08:19:58.463541",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table 2.csv",
+          "size_bytes": 2953
+        },
+        {
+          "checksum": {
+            "md5": "045d6aa67afd0f5139b93eda93f9ad69",
+            "sha256": "1d3a083eaa9f9c75fa3748ca7c6c8c232467d3bea55ae584982cee9399933e85"
+          },
+          "date_modified": "2025-06-17T13:46:27.230810",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table 2_1.csv",
+          "size_bytes": 1172
+        },
+        {
+          "checksum": {
+            "md5": "29c8c32db8adcb229824ebcb2a076f8c",
+            "sha256": "33c3954274eb4af94fd3b6d0d2df7d56627a8e8de0c5329893a41ba4085af1cd"
+          },
+          "date_modified": "2025-11-14T08:19:55.249520",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table 3.xlsx",
+          "size_bytes": 61662
+        },
+        {
+          "checksum": {
+            "md5": "d3ae586ec1cd9b5a922c23275b58afbc",
+            "sha256": "3dea6eeb83df2e75d4317f162e5ac332432941ccb5ef921996158d9477f9adc7"
+          },
+          "date_modified": "2025-11-14T08:20:01.349783",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table_2_age.csv",
+          "size_bytes": 3350
+        },
+        {
+          "checksum": {
+            "md5": "ddf844cc0659346112fcc3bf4ed1f36f",
+            "sha256": "47324071cb5a9a2328947de8c3a16707ee01729dd0b4ccdaa94c83c54ea93c93"
+          },
+          "date_modified": "2025-11-14T08:20:00.186176",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table_2_culture_matched.csv",
+          "size_bytes": 4003
+        },
+        {
+          "checksum": {
+            "md5": "c7f0d9ef270c48be21fbb40c5a96792d",
+            "sha256": "12d3edc8625f5c456fd057a1c8d9f4080a1a6bcb487265960f670486ac42b37a"
+          },
+          "date_modified": "2025-11-14T08:20:00.244895",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table_2_gender.csv",
+          "size_bytes": 3339
+        },
+        {
+          "checksum": {
+            "md5": "c2796fddfbd20e9e8db536bb671ac28d",
+            "sha256": "00513a2cb43cf9a64ff216be8261dcaeb01a1536767269cbecc5cde238d4c278"
+          },
+          "date_modified": "2025-11-14T08:19:54.645090",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table_age_groups.csv",
+          "size_bytes": 7481
+        },
+        {
+          "checksum": {
+            "md5": "1ae64fd757c12f32d8ff0e76b0abf3de",
+            "sha256": "9ce69603423624fe17b229d3e54a0662f15adde0297a479d174c6c70161b976f"
+          },
+          "date_modified": "2025-11-14T08:19:55.265926",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table_overall_stats.csv",
+          "size_bytes": 1161
+        },
+        {
+          "checksum": {
+            "md5": "7a009026064c8f39f1407fa731b14074",
+            "sha256": "b1faed590ddb98eaf855eec67f043312159c7a542b6abac42099676ecbfe9bfc"
+          },
+          "date_modified": "2025-11-14T08:19:54.673826",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/Table_sex1_vs_sex2.csv",
+          "size_bytes": 3549
+        },
+        {
+          "checksum": {
+            "md5": "61c15e6f6cec0579dad5b1fbefde8017",
+            "sha256": "e9cf4ff5d3a86930b4be01bc586d12867ce25cc21cf1885ff7b619379989751d"
+          },
+          "date_modified": "2025-11-14T08:19:57.988775",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/comparison_correlations.csv",
+          "size_bytes": 3938
+        },
+        {
+          "checksum": {
+            "md5": "7ff3ac26babc837d438aa835589267e1",
+            "sha256": "bd379788474a613571aa04ffef9a6849f013fb4497ff6b7eb5c4da33cf076078"
+          },
+          "date_modified": "2025-11-14T08:19:56.323056",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/comparison_diff_stats.csv",
+          "size_bytes": 6556
+        },
+        {
+          "checksum": {
+            "md5": "829aa62e342ac910ffc62f81ab9444dc",
+            "sha256": "a5174a469fd6db2d8e0c764201eff9e0842839a8f7e55adc877197189bb7ee2e"
+          },
+          "date_modified": "2025-11-14T08:19:56.326032",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/comparison_diff_stats_all.csv",
+          "size_bytes": 6560
+        },
+        {
+          "checksum": {
+            "md5": "e241f2a23e5d60f84fcd7fac0f27682c",
+            "sha256": "df24a2fcc84af1abfcbd9d078bc0f99f2ff718a3d03c32bb5e710a31308326dd"
+          },
+          "date_modified": "2025-11-14T08:19:58.433829",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/comparison_diff_stats_culture.csv",
+          "size_bytes": 6521
+        },
+        {
+          "checksum": {
+            "md5": "d3c3f367fcccbe953332032e7a480c06",
+            "sha256": "c2ac045bc451f27ba6beddf100b7d6c71d124b14b9996e7b50fd086a6e5214c1"
+          },
+          "date_modified": "2025-11-14T08:19:56.844970",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/comparison_response_distribution_summary.csv",
+          "size_bytes": 2610
+        },
+        {
+          "checksum": {
+            "md5": "36d33f5fb68c06b7bea4be3beb11c363",
+            "sha256": "1a8dd859c57945b615575dea3fd104a94a94f1138f17394569888830b1c2e7f1"
+          },
+          "date_modified": "2025-11-14T08:19:50.699615",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/comparison_summary.csv",
+          "size_bytes": 7505
+        },
+        {
+          "checksum": {
+            "md5": "154a245c8a6a1cd49be680aee105e217",
+            "sha256": "40b1bd64c3146ba58daa9afbefa684c47826b64dea7250e60fb89ad84520d738"
+          },
+          "date_modified": "2025-11-14T08:19:59.016748",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S1.csv",
+          "size_bytes": 84885
+        },
+        {
+          "checksum": {
+            "md5": "0924c72137fb63fa6225bdb00c73a1fd",
+            "sha256": "8ba80539e94e720cf6c2f2edcd6beb3ef94fae20586fee97be774d07099346e9"
+          },
+          "date_modified": "2025-07-16T08:23:45.796133",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S123.csv",
+          "size_bytes": 510557
+        },
+        {
+          "checksum": {
+            "md5": "e405b351ca072a6b9a48ef29a0d47d19",
+            "sha256": "06484820af46251486330fb478cc8e3b9e5e1c0bec0e42d34b60bb3d323cc524"
+          },
+          "date_modified": "2025-11-14T08:19:47.541770",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S1233b45.csv",
+          "size_bytes": 744937
+        },
+        {
+          "checksum": {
+            "md5": "bc64c55d6d22fb8d6f6b5c931f8b92f9",
+            "sha256": "9cb15b36234a2e87935f59ff93477a3e9e8fd5483c8fcacdda2874292ab6b553"
+          },
+          "date_modified": "2025-11-14T08:19:51.032700",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S1233b45_2.csv",
+          "size_bytes": 745058
+        },
+        {
+          "checksum": {
+            "md5": "2a0c9fa2e908728600946e19ef1f67dc",
+            "sha256": "4163687d198ab1c440bce907488df8ed523144618f14bc62f2e03c5995936324"
+          },
+          "date_modified": "2025-11-14T08:19:48.828034",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S1233b45_emotion_corr_sorted.csv",
+          "size_bytes": 6499
+        },
+        {
+          "checksum": {
+            "md5": "e3b77cb34ed9ad2663c3c71f82005d14",
+            "sha256": "8b10f2a378ebbe6a9c0d0c8911fb2f4e8fe127c91e33609455b0e7835a9dbca3"
+          },
+          "date_modified": "2025-11-30T13:13:49.830123",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S123456.csv",
+          "size_bytes": 834668
+        },
+        {
+          "checksum": {
+            "md5": "29365789fcc1b945128fef3eb47dad73",
+            "sha256": "eab3cf70cd04bd4330789d37e582ea309f48863972c1f50baa7b3f490274b061"
+          },
+          "date_modified": "2026-03-11T20:48:23.022246",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S123456_desc.csv",
+          "size_bytes": 941319
+        },
+        {
+          "checksum": {
+            "md5": "ccf5275f3eb55b6b47b353802bdbc19e",
+            "sha256": "541f418a3f465ba9776e0817f5ada4af9c7ee6514320e85640ed47170137cc60"
+          },
+          "date_modified": "2025-11-14T08:19:51.932495",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S123456_emotion_corr_sorted.csv",
+          "size_bytes": 6513
+        },
+        {
+          "checksum": {
+            "md5": "462ea1b7e3c63cf85eae20694d2e2eec",
+            "sha256": "176ab12a405b55a920ad137938b9267b0941980c6001e69e16c081594c60082a"
+          },
+          "date_modified": "2025-07-16T08:23:46.947281",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S123_desc.csv",
+          "size_bytes": 700066
+        },
+        {
+          "checksum": {
+            "md5": "176ffaf6d3f785e2ddf04770592a244e",
+            "sha256": "e074bab28434e6ccddccbc9abf72021b985861a56139f64ae4d720c484a2a2fd"
+          },
+          "date_modified": "2025-11-14T08:19:56.950793",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S123_emotion_corr_sorted.csv",
+          "size_bytes": 6533
+        },
+        {
+          "checksum": {
+            "md5": "b28fc756766431f57e9529196e5cc1bf",
+            "sha256": "acb9a15e15171783bbca93cbab81e3e59656d378d32902e24f974303d9156ed2"
+          },
+          "date_modified": "2025-11-14T08:19:54.622611",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S2.csv",
+          "size_bytes": 18418
+        },
+        {
+          "checksum": {
+            "md5": "54cc1452e81375e7f2e379f0b5939767",
+            "sha256": "80f0cb48c7db5b425e48d3a1c68ce1847b0c75dad26d1430880cd198ebc6c9f7"
+          },
+          "date_modified": "2025-06-17T13:44:20.045981",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S3.csv",
+          "size_bytes": 105310
+        },
+        {
+          "checksum": {
+            "md5": "82a46b52034013ba406fcd78a3539aea",
+            "sha256": "c0a6001a1dd784c1824509652d212b3ec08d7c9b565a4fcb0268281b0c06bcc6"
+          },
+          "date_modified": "2025-11-14T08:19:49.886384",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S3b.csv",
+          "size_bytes": 46734
+        },
+        {
+          "checksum": {
+            "md5": "82a46b52034013ba406fcd78a3539aea",
+            "sha256": "c0a6001a1dd784c1824509652d212b3ec08d7c9b565a4fcb0268281b0c06bcc6"
+          },
+          "date_modified": "2025-11-14T08:19:51.929788",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S4.csv",
+          "size_bytes": 46734
+        },
+        {
+          "checksum": {
+            "md5": "84abcad91dcf7cdff611cffed2237ca9",
+            "sha256": "655dc27ec50904a600741e48082d578a9a04d1137072256f8a72c316a8eb1e10"
+          },
+          "date_modified": "2025-11-14T08:19:50.876092",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S5.csv",
+          "size_bytes": 46584
+        },
+        {
+          "checksum": {
+            "md5": "0ee82071245a4cebf4caa4490e777881",
+            "sha256": "91460aada71c718cf0ad1f2db5cdce57fa51a82ed02d4ff939e53de3647481b1"
+          },
+          "date_modified": "2025-11-14T08:19:51.992443",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_S6.csv",
+          "size_bytes": 65598
+        },
+        {
+          "checksum": {
+            "md5": "1af8c010201330e423426d186a99c28c",
+            "sha256": "e9877bfcc35c2485a342096ded04c9144a5bea3e76cc7efa388203d2ce51e90f"
+          },
+          "date_modified": "2025-11-14T08:19:51.027610",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/image_emotion_means_updated.csv",
+          "size_bytes": 508054
+        },
+        {
+          "checksum": {
+            "md5": "c3489b7d0265cc4c06d09d7dfb23df43",
+            "sha256": "540dcc71b14e398baf3b69e98189e3d621597290d485519d6e3d9fcfa726d807"
+          },
+          "date_modified": "2025-11-14T08:19:48.824170",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/osf_tree.ipynb",
+          "size_bytes": 12467
+        },
+        {
+          "checksum": {
+            "md5": "1b32dc1c55d948a4cca4b2192395e970",
+            "sha256": "6327fdc1b81bb13523ed199659c1f7feb28fc2bd8d5c5692c391f1ba4bdd892f"
+          },
+          "date_modified": "2025-07-16T08:23:52.984658",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/prompt_dict.csv",
+          "size_bytes": 398926
+        },
+        {
+          "checksum": {
+            "md5": "03b7c4ca51dfa9d103dcf23b051c0bc7",
+            "sha256": "9c3cb346890d478091f8a7a3c212fe8678a139237752aee95583a071f2e50545"
+          },
+          "date_modified": "2025-11-07T08:44:04.721190",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/radar_by_category_with_image.zip",
+          "size_bytes": 179425693
+        },
+        {
+          "checksum": {
+            "md5": "4f1ef1688c4949bb4d4e929289db7c44",
+            "sha256": "64c0c2b4e30515b30963d7e82fba35c5a0b8414153f0996cbadba169da063d18"
+          },
+          "date_modified": "2025-11-14T08:20:14.265929",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study4_pilot.txt",
+          "size_bytes": 12013603
+        },
+        {
+          "checksum": {
+            "md5": "785cb406c68c8a5883bf2992f7222ea1",
+            "sha256": "ab9d435c6d766ac43a0888b4ba816054f72ae2b93ba71e1cc89ee25903395820"
+          },
+          "date_modified": "2025-11-14T08:20:26.506534",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study4_pilot2.txt",
+          "size_bytes": 20381461
+        },
+        {
+          "checksum": {
+            "md5": "de827e835086f987928fc323953e1c4d",
+            "sha256": "43f06cb9a1f74c71f03655ff64d1434ebfced178b626416cd6a3bd0712541633"
+          },
+          "date_modified": "2025-11-14T08:20:06.115974",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study5_pilot.txt",
+          "size_bytes": 8144068
+        },
+        {
+          "checksum": {
+            "md5": "10f49c94fd51bc474cc1804be67e1b75",
+            "sha256": "17c1d3cb71152046b62b31c4930ee52613f300e18cbb48e7bd1010010f2f0a9d"
+          },
+          "date_modified": "2025-11-14T08:20:25.350796",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study5_pilot2.txt",
+          "size_bytes": 18700163
+        },
+        {
+          "checksum": {
+            "md5": "26384985f5a51709b775a639e3b87e1b",
+            "sha256": "76afac7ec22182d20020ab8ac1280588012ac76ff42cb679a683de2c1e702436"
+          },
+          "date_modified": "2025-11-14T08:20:00.461989",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study5_pilot3.txt",
+          "size_bytes": 3141362
+        },
+        {
+          "checksum": {
+            "md5": "c74d30fa16dbeccb4442bdee405af195",
+            "sha256": "da23987904ed053b550e46a297bd53a3f9db2f69ce12b183eee566b669fdd32d"
+          },
+          "date_modified": "2025-11-14T08:20:31.156404",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study6_pilot.txt",
+          "size_bytes": 38773172
+        },
+        {
+          "checksum": {
+            "md5": "71e94324446bfe5b84827e8332957b2c",
+            "sha256": "749fc9dc670e5709e6badcccfe6f0c5b5566c58aed6f9b608de99eeb6d332c61"
+          },
+          "date_modified": "2025-11-14T08:19:56.915368",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/study6_pilot2.txt",
+          "size_bytes": 2185704
+        },
+        {
+          "checksum": {
+            "md5": "51d105e9d7b084470b1aa08c7e5ab9ad",
+            "sha256": "b821ee8b199b8ddb361e0fd6ee390f6867069516e45841b085f9b5cbb039d646"
+          },
+          "date_modified": "2025-11-14T08:20:00.215809",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/target_emotions.csv",
+          "size_bytes": 23746
+        },
+        {
+          "checksum": {
+            "md5": "f338e4f3083b5aa56d70bb124211d6e8",
+            "sha256": "29fcd96ee393c9f6d06485c1343b121247cc9a206da79878e2b8642430de2755"
+          },
+          "date_modified": "2025-11-14T08:19:53.000063",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/target_emotions0.csv",
+          "size_bytes": 11856
+        },
+        {
+          "checksum": {
+            "md5": "e148cc264b6a1a98d8a6e9cafd2234de",
+            "sha256": "6793a1a582b00e735c88afaa38198ca102244875ca2fd4df3f2e71af81f1a0ab"
+          },
+          "date_modified": "2025-06-17T13:46:37.599407",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/target_emotions2.csv",
+          "size_bytes": 36771
+        },
+        {
+          "checksum": {
+            "md5": "51b686677d5cd1f8e713d4ef8d9b1dc7",
+            "sha256": "f47f1fc589af87337aabdc0b980a47149dae473b9cfd7acebc9ad59a863b28be"
+          },
+          "date_modified": "2025-11-14T08:19:58.487058",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats.csv",
+          "size_bytes": 4018
+        },
+        {
+          "checksum": {
+            "md5": "79d25b33b054b025ab21f8709a3e871a",
+            "sha256": "b248635307c4f6d23cbaa84a63832dffd4c739560ee52fdaf407a4be3344dfd7"
+          },
+          "date_modified": "2025-11-14T08:19:55.290511",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_S1.csv",
+          "size_bytes": 4171
+        },
+        {
+          "checksum": {
+            "md5": "51b686677d5cd1f8e713d4ef8d9b1dc7",
+            "sha256": "f47f1fc589af87337aabdc0b980a47149dae473b9cfd7acebc9ad59a863b28be"
+          },
+          "date_modified": "2025-11-14T08:19:55.314247",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_S3.csv",
+          "size_bytes": 4018
+        },
+        {
+          "checksum": {
+            "md5": "27c13f5ea10c381f589014f0de5fa203",
+            "sha256": "ffbc76d9e175811f3d5ba1e54a0121945ff0f2d40dd3756eab8a2c7314b879b6"
+          },
+          "date_modified": "2025-11-14T08:19:56.460885",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_S33b.csv",
+          "size_bytes": 4046
+        },
+        {
+          "checksum": {
+            "md5": "27c13f5ea10c381f589014f0de5fa203",
+            "sha256": "ffbc76d9e175811f3d5ba1e54a0121945ff0f2d40dd3756eab8a2c7314b879b6"
+          },
+          "date_modified": "2025-11-14T08:19:55.851711",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_S34.csv",
+          "size_bytes": 4046
+        },
+        {
+          "checksum": {
+            "md5": "05943157ec23fc4fbc6d9e65d250a6ac",
+            "sha256": "1387ae0908d70332ea076fa2e931ad997cbfb1a3b6175c8970db647fd9dea299"
+          },
+          "date_modified": "2025-11-14T08:19:55.263158",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_S3b.csv",
+          "size_bytes": 4004
+        },
+        {
+          "checksum": {
+            "md5": "05943157ec23fc4fbc6d9e65d250a6ac",
+            "sha256": "1387ae0908d70332ea076fa2e931ad997cbfb1a3b6175c8970db647fd9dea299"
+          },
+          "date_modified": "2025-11-14T08:19:54.667444",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_S4.csv",
+          "size_bytes": 4004
+        },
+        {
+          "checksum": {
+            "md5": "7d1762711ef8c0909ea8640e1e2c0ad7",
+            "sha256": "a85a87c53fa2be2ef55c00c032bc00e33dc3c9d479cc2861682c7346f235e219"
+          },
+          "date_modified": "2025-11-14T08:19:58.773910",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_comparison_stats_culture.csv",
+          "size_bytes": 3355
+        },
+        {
+          "checksum": {
+            "md5": "6e6d4b8de17aae912b8bfb205e22d540",
+            "sha256": "9ce785b4819f831ee282c9cdc82a8430081c5cf2daecf500c11e19457a94cf2c"
+          },
+          "date_modified": "2025-11-14T08:19:54.625031",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_emotion_with_max.csv",
+          "size_bytes": 12336
+        },
+        {
+          "checksum": {
+            "md5": "87dfd497b70db74872d0100dddfa434c",
+            "sha256": "e0e563e293dbeedf1d71a8fa1ef9d66e1486e0c24c4f87a01f11db360c28d6b2"
+          },
+          "date_modified": "2025-11-14T08:19:54.628383",
+          "kind": "file",
+          "provider": "osfstorage",
+          "relative_path": "/targeted_summary_by_emotion.csv",
+          "size_bytes": 7553
+        }
+      ],
+      "license": {
+        "name": "CC-By Attribution 4.0 International",
+        "status": "PRESENT",
+        "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+      },
+      "node_access": "HTTP_200_JSON",
+      "node_id": "8P572",
+      "providers": [
+        "osfstorage"
+      ],
+      "public": true,
+      "summary": {
+        "checksum_file_count": 137,
+        "file_count": 137,
+        "folder_count": 0,
+        "known_size_file_count": 137,
+        "total_known_size_bytes": 1122196956,
+        "unknown_size_file_count": 0
+      }
+    },
+    {
+      "branch_stops": [],
+      "date_modified": "2025-11-07T12:53:59.832314",
+      "files": [],
+      "license": {
+        "name": "CC-By Attribution 4.0 International",
+        "status": "PRESENT",
+        "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+      },
+      "node_access": "HTTP_200_JSON",
+      "node_id": "K8XVH",
+      "providers": [
+        "osfstorage"
+      ],
+      "public": true,
+      "summary": {
+        "checksum_file_count": 0,
+        "file_count": 0,
+        "folder_count": 0,
+        "known_size_file_count": 0,
+        "total_known_size_bytes": 0,
+        "unknown_size_file_count": 0
+      }
+    }
+  ],
+  "read_score_contents_or_built_mapping_split": false,
+  "rejected_links": [],
+  "requests": [
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "V8DKM",
+      "outcome": "HTTP_200",
+      "parent_request": null,
+      "request_kind": "node",
+      "request_url": "https://api.osf.io/v2/nodes/v8dkm/",
+      "requested_at_utc": "2026-07-14T13:43:25.567516Z",
+      "response_bytes": 6941,
+      "response_sha256": "a088c1bfb45cb81ff5a1a4db36852743347ffd662cc8a7e853712dcb0e8fa272",
+      "sequence": 1
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "V8DKM",
+      "outcome": "HTTP_200",
+      "parent_request": null,
+      "request_kind": "providers",
+      "request_url": "https://api.osf.io/v2/nodes/v8dkm/files/",
+      "requested_at_utc": "2026-07-14T13:43:26.575555Z",
+      "response_bytes": 957,
+      "response_sha256": "675566f7e8b1053f9d0f49dc72099821e20d0ef291a54ada0eac9a5ef9916dd8",
+      "sequence": 2
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": null,
+      "request_kind": "node",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/",
+      "requested_at_utc": "2026-07-14T13:43:27.572074Z",
+      "response_bytes": 4659,
+      "response_sha256": "f020a733bebf6da01d3953392d0689abed45f1dff15d0b95fab31eeb3c5b29cb",
+      "sequence": 3
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": null,
+      "request_kind": "providers",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/",
+      "requested_at_utc": "2026-07-14T13:43:28.584587Z",
+      "response_bytes": 957,
+      "response_sha256": "c0c088425f0dbb7e985c8e4070f97c190604355c6eebd656d4e8c854589a1665",
+      "sequence": 4
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "K8XVH",
+      "outcome": "HTTP_200",
+      "parent_request": null,
+      "request_kind": "node",
+      "request_url": "https://api.osf.io/v2/nodes/k8xvh/",
+      "requested_at_utc": "2026-07-14T13:43:29.589928Z",
+      "response_bytes": 4632,
+      "response_sha256": "61dbddc776dd321c724e7127ab9c42d4e96ec63d3bd931502a0789266edc4404",
+      "sequence": 5
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "K8XVH",
+      "outcome": "HTTP_200",
+      "parent_request": null,
+      "request_kind": "providers",
+      "request_url": "https://api.osf.io/v2/nodes/k8xvh/files/",
+      "requested_at_utc": "2026-07-14T13:43:30.600217Z",
+      "response_bytes": 957,
+      "response_sha256": "33a8fddee3cdb0e31db1226cc37635e87de891eb0167c269b2bf2adad1da367d",
+      "sequence": 6
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "V8DKM",
+      "outcome": "HTTP_200",
+      "parent_request": 1,
+      "request_kind": "license",
+      "request_url": "https://api.osf.io/v2/licenses/563c1cf88c5e4a3877f9e96a/",
+      "requested_at_utc": "2026-07-14T13:43:31.633763Z",
+      "response_bytes": 13121,
+      "response_sha256": "32fb3d7b32be0843803f96424fe7739f69574481211a2d323e16f8da8536c635",
+      "sequence": 7
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "V8DKM",
+      "outcome": "HTTP_200",
+      "parent_request": 2,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/v8dkm/files/osfstorage/",
+      "requested_at_utc": "2026-07-14T13:43:32.654953Z",
+      "response_bytes": 19641,
+      "response_sha256": "2e6b90c90e3e9f63a22c927dc2a6b0641656a62bd86634407d93980a8265eaad",
+      "sequence": 8
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 3,
+      "request_kind": "license",
+      "request_url": "https://api.osf.io/v2/licenses/563c1cf88c5e4a3877f9e96a/",
+      "requested_at_utc": "2026-07-14T13:43:33.951443Z",
+      "response_bytes": 13121,
+      "response_sha256": "32fb3d7b32be0843803f96424fe7739f69574481211a2d323e16f8da8536c635",
+      "sequence": 9
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 4,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/",
+      "requested_at_utc": "2026-07-14T13:43:35.263087Z",
+      "response_bytes": 21649,
+      "response_sha256": "fe9a73c60e6e490548c40fb7434d1405ab571455b5bfb473979134fe0efb0bba",
+      "sequence": 10
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "K8XVH",
+      "outcome": "HTTP_200",
+      "parent_request": 5,
+      "request_kind": "license",
+      "request_url": "https://api.osf.io/v2/licenses/563c1cf88c5e4a3877f9e96a/",
+      "requested_at_utc": "2026-07-14T13:43:37.322384Z",
+      "response_bytes": 13121,
+      "response_sha256": "32fb3d7b32be0843803f96424fe7739f69574481211a2d323e16f8da8536c635",
+      "sequence": 11
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "K8XVH",
+      "outcome": "HTTP_200",
+      "parent_request": 6,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/k8xvh/files/osfstorage/",
+      "requested_at_utc": "2026-07-14T13:43:38.543747Z",
+      "response_bytes": 128,
+      "response_sha256": "337a5845bf62ccbe2bee6d47834c9d6317bc033ab935af60bc66d75c688ef71a",
+      "sequence": 12
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 10,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=2",
+      "requested_at_utc": "2026-07-14T13:43:39.558492Z",
+      "response_bytes": 21701,
+      "response_sha256": "ec181a738178345f0d423f1e6b905ae172e955a08a67c86eb70fd2bdf96bca71",
+      "sequence": 13
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 13,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=3",
+      "requested_at_utc": "2026-07-14T13:43:40.798654Z",
+      "response_bytes": 21475,
+      "response_sha256": "77954e9b8918eb05fcc05d45d6728d9336f416362ba2ae3700567bf2378138a7",
+      "sequence": 14
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 14,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=4",
+      "requested_at_utc": "2026-07-14T13:43:41.915349Z",
+      "response_bytes": 20709,
+      "response_sha256": "b2d3715d20a14541a09a89d49a999651367c4f3ece341637286ca2126ca8c635",
+      "sequence": 15
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 15,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=5",
+      "requested_at_utc": "2026-07-14T13:43:43.037475Z",
+      "response_bytes": 20812,
+      "response_sha256": "e1c9cb42bb18fa37ea76c69d8f49a6759e68669c53a1a385778957d6fbbfed48",
+      "sequence": 16
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 16,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=6",
+      "requested_at_utc": "2026-07-14T13:43:44.188725Z",
+      "response_bytes": 20756,
+      "response_sha256": "84c0c32d0d46972424625f7585556eeaeac27006d750476ad97d5bb63dbbf29d",
+      "sequence": 17
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 17,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=7",
+      "requested_at_utc": "2026-07-14T13:43:45.338397Z",
+      "response_bytes": 20876,
+      "response_sha256": "bec9855c0911a28b85a0d8ba8ecf63eeee033647ba7b729292d75beb3afcffe6",
+      "sequence": 18
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 18,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=8",
+      "requested_at_utc": "2026-07-14T13:43:46.357762Z",
+      "response_bytes": 20796,
+      "response_sha256": "15e72199844b63e33252854a5979bd3226c31c1c9fc277999205d4d36432f7c3",
+      "sequence": 19
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 19,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=9",
+      "requested_at_utc": "2026-07-14T13:43:47.363691Z",
+      "response_bytes": 21094,
+      "response_sha256": "77866561fb5333bc6ac49984bf25c881aab79585729dd0104a176734ce0d903b",
+      "sequence": 20
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 20,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=10",
+      "requested_at_utc": "2026-07-14T13:43:48.364102Z",
+      "response_bytes": 21621,
+      "response_sha256": "9de51da2d22943540e4402f2d0f26ee75fea85215bdb619c3bdf1cd7bbd2cdd9",
+      "sequence": 21
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 21,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=11",
+      "requested_at_utc": "2026-07-14T13:43:49.643531Z",
+      "response_bytes": 20758,
+      "response_sha256": "4d9c4b4784d50ee0a079c45128d4323348a64f36549acf2c1bbdc86494940c4e",
+      "sequence": 22
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 22,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=12",
+      "requested_at_utc": "2026-07-14T13:43:50.741983Z",
+      "response_bytes": 21738,
+      "response_sha256": "4f7ed963d381f5e217da5a7b93ce2d8bef8ee7405ab1cf6f95dde228c9280356",
+      "sequence": 23
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 23,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=13",
+      "requested_at_utc": "2026-07-14T13:43:51.897323Z",
+      "response_bytes": 21696,
+      "response_sha256": "95ed08607f6791afe45a39dabf9a039fbb5377dea7fe614e3be60138c5046d8b",
+      "sequence": 24
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 24,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=14",
+      "requested_at_utc": "2026-07-14T13:43:52.916304Z",
+      "response_bytes": 21813,
+      "response_sha256": "75cd0f4f2fa7706ce36bfca8b12ca374c127e8089c118f957004d18923585f52",
+      "sequence": 25
+    },
+    {
+      "content_type": "application/vnd.api+json; charset=utf-8",
+      "http_status": 200,
+      "method": "GET",
+      "node_id": "8P572",
+      "outcome": "HTTP_200",
+      "parent_request": 25,
+      "request_kind": "file_list",
+      "request_url": "https://api.osf.io/v2/nodes/8p572/files/osfstorage/?page=15",
+      "requested_at_utc": "2026-07-14T13:43:53.924140Z",
+      "response_bytes": 6665,
+      "response_sha256": "70e855611be4bf285251754fcd781aa7ed0f79589f339e436061077c61e130fd",
+      "sequence": 26
+    }
+  ],
+  "schema": "lai-gai-osf-api-metadata-v1",
+  "second_primary_frozen": false,
+  "task20_or_m3_allowed": false,
+  "usage": {
+    "global_stop": null,
+    "raw_run_relative_path": "data/raw/lai-gai/osf-api-metadata/20260714T134325Z",
+    "request_count": 26,
+    "response_bytes": 382394
+  },
+  "used_head_or_range": false,
+  "used_login_cookie_token_proxy_or_mirror": false,
+  "verdict": "NO_GO_PENDING_RATE_INTERVAL_AND_IMAGE_COMPONENT_FILE_TREE"
+}

@@ -34,9 +34,9 @@
 
 本节只收紧未来论文措辞，不把C1—C4的有效性状态升级为`SUPPORTED`。
 
-## 2026-07-16 IJCV独立claim合同
+## 2026-07-16 IJCV独立claim合同（已迁出归档）
 
-> 下列J-claims只属于条件IJCV论文，不得与T-AFFC的C1—C4合并为同一稿件贡献。状态变更仍须结果文件、统计证据和00复核。
+> 下列J-claims是总纲v1.14时期的历史快照，已随`SC-20260716-03`迁至独立IJCV项目。本项目不得执行、更新或把它们计入当前claim集合；T-AFFC当前claim集合只有C1—C4。表内`TO_VERIFY`仅记录迁出时状态，不代表本项目仍有对应待办。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
 |---|---|---|---|---|---|
@@ -44,4 +44,4 @@
 | J-C2 | 显式分歧建模能改善区间/选择性可靠性且分布误差非劣 | 可识别的观察者分歧estimand、coverage/NLL/Brier/AURC、softmax/Dirichlet/ensemble对照 | JH2、J4—J5、任务25 | TO_VERIFY | 不得把预测熵等同观察者分歧或认知不确定性 |
 | J-C3 | 分布几何保持能在标签空间不完全同构时支持跨域视觉迁移 | 预注册跨域estimand、数据集特定head、source-only/fine-tune/域适配对照 | JH3、J6/J8、任务25 | TO_VERIFY | 不得声称统一标签空间或跨域有效 |
 
-IJCV边界：评论教师、train-only受众记忆和CARM路由不进入J-C1—J-C3；T-AFFC稿不得把J-C1—J-C3的主实验或主表改名复用。`IJCV_TAFFC_DUAL_TRACK_FEASIBILITY_AND_PLAN_20260716.md`和总纲第18节是两稿分界事实源。
+迁出边界：J-C1—J-C3及其后续证据只在`D:\MMSA-CH-SIMS - IJCV方向`维护；本项目不得把其主实验、主表或方法改名复用。历史方案文件仅用于解释范围变化，当前执行事实源为T-AFFC总纲v1.15。

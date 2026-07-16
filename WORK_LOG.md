@@ -2868,3 +2868,48 @@ GitHub已固定总纲v1.14与IJCV—T-AFFC两稿分界。同步不改变G1/G2、
 ### Git状态
 
 内容commit `d817357`已推送。本条真实同步记录仍需一个小型收尾commit与推送。
+
+## WR-20260716-013 — 迁出IJCV方向并恢复T-AFFC单路线总纲
+
+- 时间：2026-07-16 13:05:00 +08:00
+- 类型：DECISION | DOC | SCOPE
+- 任务/门：00-总控 / 项目职责分离
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+用户明确要求当前项目继续完成原定T-AFFC路线，并先把完整总纲交给新建的IJCV方向项目。执行前已确认独立IJCV项目保有未删减v1.14、上下文交接、独立分支和启动任务，因此本批次只调整当前项目的活动SSOT与相关台账，不删除历史决策。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升级为v1.15，首要目标恢复为2027-05-12前完成T-AFFC CARM论文、代码、数据说明和证据链。
+- 从当前活动总纲移除第18节IJCV执行合同、J0—J2、JH1—JH3、任务25/65、IJCV日历、投稿门和活动参考链接；保留`SC-20260716-02`作为历史决策，并新增`SC-20260716-03`迁出裁定。
+- 更新`HANDOFF_10.md`与`AGENTS.md`，明确任务10及本项目后续任务只执行T-AFFC第17节任务树。
+- 将`IJCV_TAFFC_DUAL_TRACK_FEASIBILITY_AND_PLAN_20260716.md`标记为当前项目只读归档；更新`CLAIM_EVIDENCE_MATRIX.md`、`DECISION_LOG.md`和`RISK_REGISTER.md`，把J-claims和IJCV数据/方法/日程风险迁至独立项目，同时保留跨项目重复发表控制。
+- 更新`task_plan.md`与`progress.md`，记录项目职责分离完成。
+
+### 验证与证据
+
+- 独立项目检查：`git -C "D:\MMSA-CH-SIMS - IJCV方向" status --short --branch`显示`codex/ijcv-j0...origin/codex/ijcv-j0`且无修改；最新提交为`c64c954 Record IJCV J0 task creation`。
+- 独立项目文件检查：未删减`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`仍为v1.14且包含第18节；`IJCV_PROJECT_CONTEXT_HANDOFF_20260716.md`存在。
+- `git diff --check`：exit 0。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，修改前日志63条、`errors=[]`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`m1_read_only_work_ready=true`、`formal_model_work_ready=false`。
+- 搜索活动SSOT与台账：IJCV相关命中仅为迁出说明、历史决策和归档claim/risk，不存在活动第18节或任务25/65启动规格。
+
+### 影响与边界
+
+当前项目唯一活动路线为T-AFFC CARM。该范围分离不改变任何科学门：G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；任务20未创建。独立IJCV项目可读取v1.14和交接材料，但不得反向覆盖本项目v1.15。
+
+### 风险、问题与阻塞
+
+CSMV I3D资产级许可、稳定revision和权利方身份/fixity证明仍等待外部证据；按用户要求暂不因维护者未回复而扩展工作。跨项目共享仍需通过已提交Git状态和书面交接，避免并发修改实验核心及未来重复发表。
+
+### 下一步
+
+提交并推送当前项目v1.15职责分离检查点。之后继续按T-AFFC总纲处理任务10的G2资产阻塞；G2正式通过前不创建任务20。
+
+### Git状态
+
+本条记录追加时改动尚未提交或推送，不写成已同步。

@@ -2913,3 +2913,42 @@ CSMV I3D资产级许可、稳定revision和权利方身份/fixity证明仍等待
 ### Git状态
 
 本条记录追加时改动尚未提交或推送，不写成已同步。
+
+## WR-20260716-014 — 推送T-AFFC单路线v1.15检查点
+
+- 时间：2026-07-16 13:10:00 +08:00
+- 类型：GIT | PROGRESS
+- 任务/门：00-总控 / 项目职责分离Git收尾
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+WR-20260716-013已完成IJCV迁出与T-AFFC单路线v1.15的文件、台账和验证。本条只记录已经实际发生的内容提交与GitHub同步，不改变研究范围或科学门。
+
+### 实际变更
+
+- 创建内容commit `db89c99`，标题`Refocus master plan on T-AFFC track`。
+- 将当前`main`推送到`origin/main`，远端由`0d779d6`前进至`db89c99`。
+
+### 验证与证据
+
+- 提交前`git diff --cached --check`：exit 0。
+- 内容commit：10 files changed、100 insertions、146 deletions。
+- `git push origin main`：exit 0，输出`0d779d6..db89c99 main -> main`。
+
+### 影响与边界
+
+GitHub上的当前项目已固定T-AFFC-only总纲v1.15。独立IJCV项目仍保持`codex/ijcv-j0@c64c954`，未被本次推送修改。G1/G2、`formal_split=false`和任务20禁令均未变化。
+
+### 风险、问题与阻塞
+
+无新增Git同步阻塞。唯一论文关键外部阻塞仍为CSMV I3D资产许可、revision及权利方身份/fixity证明。
+
+### 下一步
+
+完成本条日志的收尾提交和推送；之后当前项目只按T-AFFC总纲v1.15推进。
+
+### Git状态
+
+内容commit `db89c99`已推送；本条日志本身尚未提交或推送。

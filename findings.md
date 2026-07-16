@@ -437,3 +437,30 @@
 - `[independent replay]` 8项单测、8个fail-closed负例、实时泄漏门、负面夹具、19项`-I -S`隔离重放和M2 release均通过，未发现任务10回交夸大。
 - `[publication gate]` 协议未冻结风险已关闭；这使实验处理规则可预注册、可复现，但不提供资产权利或官方身份信用。
 - `[git hygiene]` 审核基线与`origin/main`一致；tracked `.npy`、特征包和超过10 MiB文件均为0。第一次枚举因Git非ASCII路径引号转义报错，使用`core.quotepath=false`后有效重跑。
+
+## 2026-07-16 — 用户提供的IJCV专刊截图观察（待官方源核验）
+
+- `[secondary-source screenshot]` 截图标题为IJCV专刊“Social, Emotional, and Cognitive Visual Intelligence”，强调视觉系统从识别可观察实体走向理解人的情感、认知状态、社会行为与交互。
+- `[scope overlap]` 截图列出的范围与当前项目直接重叠的条目包括：情感/行为/主观状态视觉建模，群体行为与人—智能体交互理解，面向情境与主观感知的视觉理解，社会感知多模态/基础模型，迁移与弱监督学习，以及主观视觉理解的数据集、基准和评价指标。
+- `[secondary-source dates]` 截图声称截稿为2026-12-15、首轮通知2027-04-01、修回截止2027-06-01、最终通知2027-07-15、预计出版2027年8—9月；这些动态字段在改总纲前必须由Springer/IJCV官方页当天核验。
+- `[submission-boundary screenshot]` 截图明确称稿件必须原创、未公开发表且不得同时投往其他期刊或会议；因此“同时考虑两刊”只能指并行规划两篇实质不同论文或顺序转投，不能把同一稿件同时提交T-AFFC与IJCV。
+- `[untrusted-content boundary]` 截图来自公众号二次转述，只作为候选线索，不作为正式截止日、栏目规则或投稿许可的唯一依据。
+
+## 2026-07-16 — IJCV/Springer官方页面核验
+
+- `[official collection]` Springer Nature官方专刊页确认名称为“Social, Emotional, and Cognitive Visual Intelligence”，参与期刊为International Journal of Computer Vision，当前`Open for submissions`，投稿截止日为2026-12-15。
+- `[official conceptual fit]` 专刊把核心问题定义为从视觉观察推断情感、意图、信念和主观体验，并强调这些对象具有潜在性、情境依赖、社会根植性和多种合理解释；技术挑战明确包括歧义/不确定性、长时与社会上下文、主观评价方法。
+- `[official direct-overlap topics]` 与当前项目直接匹配的官方条目为：主观视觉理解与概率/不确定性、社会感知的多模态与跨模态学习、迁移/域适配/泛化/预测学习、主观标签与观察者差异的benchmark/评价，以及真实条件鲁棒性与负责任视觉系统。
+- `[official technical bar]` 专刊特别鼓励“新的计算机视觉方法”或“对人本视觉理解的显著技术洞见”。因此仅在冻结I3D特征上训练一般分布预测头，scope虽匹配但IJCV方法性不足；必须增加以视觉表征/视觉—社会语义关系为核心、可由判别实验验证的技术贡献。
+- `[official journal scope]` IJCV regular article上限为25个journal pages，定位是具有广泛兴趣的重大技术进展；期刊范围包括视觉解释、机器学习/统计方法、图像检索、视频分析、多媒体、人机交互和与人类知觉的联系。
+- `[official originality rule]` IJCV投稿指南明确：工作不得已经发表，也不得同时在其他地方审议。因此同一稿件不能同时投T-AFFC与IJCV；双路线必须是两篇研究问题、主要贡献和关键实验实质不同的论文，或采用顺序转投。
+- `[official fee fact]` IJCV指南称无投稿费/常规发表费，开放获取为可选且选择后产生APC；具体OA金额本轮未核验，保持`UNKNOWN`。
+- `[volatile-field boundary]` 官方专刊页仅核实2026-12-15投稿截止；截图中的2027-04-01首轮通知、2027-06-01修回截止、2027-07-15最终通知与2027年8—9月出版未在本轮官方页面正文找到，暂标`UNVERIFIED_SECONDARY_SOURCE_ONLY`，不得写成总纲硬时间门。
+
+## 2026-07-16 — IJCV近邻方法与创新边界
+
+- 视觉情绪分布学习不是空白方向。CVPR 2021的Progressive Circular Learning已把情绪分布的环形结构编码进损失；SAMNet/TIP 2022已使用多主观分支、affective memory、subjectivity loss与集合匹配；AAAI 2025的MFRN已从低层频域与高层语义图两侧做特征精炼。因此，“预测分布 + 主观性 + 情感记忆”不能直接构成IJCV新颖性。
+- CVPR 2024 MART已覆盖遮蔽式情感表征与时间分布蒸馏，CVPR 2025 KAD已覆盖无监督跨域视觉情感识别与分布偏移。IJCV路线若只做冻结I3D后接一个分布头，方法贡献不足以匹配IJCV官方技术门槛。
+- IJCV候选论文必须与T-AFFC的CARM解耦：不使用评论教师、受众响应记忆或CARM可靠性路由作为主贡献；改为研究“视觉表征空间如何保持人工主观响应分布的几何结构，并区分观察者分歧与跨域不确定性”。
+- 可检验的IJCV核心只保留三件事：响应分布几何对齐的视觉表征学习、主观分歧/认知不确定性的分解与校准、跨图像—视频/跨域的分布几何保持。任何组件若不能在至少两个独立人工分布数据集上相对强基线取得稳定证据，即触发止损，不以堆叠模块挽救。
+- 数据侧必须至少有两个可从像素训练或微调的人工主观分布数据集；CSMV冻结I3D只能作为视频迁移或外部有效性补充，不能独自支撑IJCV视觉方法主张。

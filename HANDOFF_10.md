@@ -1,7 +1,7 @@
 # HANDOFF_10：M1—M2数据与协议交接
 
 > 提交给：任务00总控审核
-> SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.13 第17节任务10
+> SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.14 第17节任务10；IJCV条件数据门另见第18节
 > 交接日期：2026-07-16
 > 提交状态：00已接受I3D序列协议与Git检查点；G1通过，复现陈旧和序列协议子阻塞关闭，G2仅保留CSMV输入资产准入阻塞
 

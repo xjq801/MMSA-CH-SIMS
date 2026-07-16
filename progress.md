@@ -418,3 +418,18 @@
 - 签署`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`，正式关闭`I3D_SEQUENCE_PROCESSING_PROTOCOL_UNFROZEN`子缺口。
 - 主协议、均匀180主敏感性、前180补充和论文主张边界已冻结；不得按test结果变更。
 - 维护者证据继续延期。G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；任务20未创建。
+
+## 2026-07-16 — 启动IJCV专刊适配与双论文路线评估
+
+- 用户提供三张专刊征稿截图并授权：若有希望，详细设计兼顾T-AFFC与IJCV的研究微调方案并写入总纲。
+- 已启用期刊匹配、研究方案与文件化规划流程；当前只完成截图结构化观察，尚未把二次转述当作官方事实。
+- 下一步以Springer/IJCV官方页核验范围、截止日期和重复投稿规则，再决定是否升级总纲。
+
+## 2026-07-16 — IJCV—T-AFFC条件双论文路线已写入总纲
+
+- 官方核验确认IJCV专刊范围强匹配主观视觉情绪分布、观察者差异、不确定性和跨域泛化，固定截稿为2026-12-15；同稿不得同时在其他地方审议。
+- 近邻审计确认PC Loss、SAMNet和MFRN已覆盖情绪分布结构、主观分支/affective memory及特征精炼；当前冻结I3D+CARM不能原样满足IJCV视觉方法门。
+- 总纲升为v1.14并裁定`CONDITIONAL_GO_TWO_DISTINCT_PAPERS`：IJCV独立研究响应分布几何驱动视觉表征；T-AFFC保留评论teacher、反应memory与可靠性路由。
+- 新建`IJCV_TAFFC_DUAL_TRACK_FEASIBILITY_AND_PLAN_20260716.md`，冻结J0/J1/J2、JH1—JH3、J0—J9、公平基线、双线日历、两稿共享/隔离和十项IJCV Go标准。
+- IJCV不等待CSMV维护者回复；LAI-GAI之外须在2026-08-12前再冻结至少一个像素级人工分布集。CSMV仅在G2通过后作可选视频外验，任务20禁令不变。
+- 总纲条件增加任务25与65，但本轮不创建；只有J0/J2分别通过后才创建。下一步完成工作日志、机器检查、Git提交与同步。

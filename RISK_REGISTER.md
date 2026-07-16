@@ -1,7 +1,7 @@
 # 项目风险登记
 
 > 维护任务：00-总控与决策  
-> 当前快照：2026-07-15  
+> 当前快照：2026-07-16  
 > 规则：风险关闭必须链接到可复核证据；`UNKNOWN`不能按通过处理。
 
 | 风险ID | 风险 | 当前证据 | 影响 | 当前控制 | 状态/恢复条件 |
@@ -13,3 +13,7 @@
 | `R-LEAK-001` | 生成prompt或目标类别形成标签捷径 | 预设目标与人类最高评分并非完全一致 | T0输入泄漏、人工真值被伪标签替代 | prompt只存hash/provenance，目标类别标为非真值，二者均禁止进入模型；专项字段与负面门通过 | CLOSED_FOR_LAI_GAI_V1；映射或输入合同升版时重开 |
 | `R-DATA-003` | CSMV正式视频/特征输入资产许可与固定性未知 | README仅明确annotations许可；TikTok媒体与Google Drive特征未取得资产级license/revision/file tree/size/hash | 无法构造合法、固定、可追溯的CSMV正式多模态测试输入 | Issue #5等待权利方回复；效率政策允许从官方或可信镜像隔离预取候选特征并核hash/覆盖，但不外推许可、不用于正式模型 | BLOCKING_G2；关闭条件为选定特征族许可/revision/manifest/schema与8210覆盖闭合 |
 | `R-REPRO-001` | source-family修复后复现manifest陈旧 | 旧18输出manifest的记录hash与当时9项文件不一致；旧validator未现场重算 | 不能证明当前split可从manifest隔离重建，可能把旧PASS误作新PASS | 公共核心隔离重放扩为19项；validator现场重算；00独立重跑 | CLOSED_20260715；19项当前零漂移，后续任一漂移继续fail-closed |
+| `R-IJCV-001` | 当前CARM视觉方法性不足且与VEDL近邻撞车 | 专刊强调新CV方法；PC Loss、SAMNet、MFRN已覆盖分布结构、主观分支/affective memory和特征精炼 | scope匹配但可能因增量性/应用层建模被拒 | 独立IJCV合同改为响应分布几何视觉表征；J0近邻矩阵、J1强基线、J2单变量证据硬门 | OPEN_BLOCKING_IJCV；J2前不得写成可投稿 |
+| `R-IJCV-002` | 缺少第二个像素可得、许可固定的人工主观分布集 | LAI-GAI已冻结；Flickr_LDL/Twitter_LDL/Emotion6/OASIS/NEmo+仍需逐资产准入 | 单一847图小集不足以支撑IJCV视觉方法与泛化主张 | 2026-08-12前执行J0；至少再冻结一个像素人工集；CSMV只作可选外验 | OPEN_BLOCKING_J0；失败则停止IJCV专刊冲刺 |
+| `R-INTEGRITY-001` | IJCV与T-AFFC形成一稿多投或重复发表 | 两路线共享研究构念与部分数据基础；IJCV明确禁止稿件同时在别处审议 | 直接伦理拒稿、撤稿或声誉风险 | 主问题/方法/主表/claim-evidence/文稿物理隔离；任务65做重叠审计；投稿时披露相关稿 | CONTROLLED_OPEN；任一重叠Critical即双稿至少一稿No-Go |
+| `R-SCHEDULE-001` | IJCV 2026-12-15固定截稿压缩方法与复现周期 | 从2026-07-16起不足五个月；J0数据、强基线、五种子与写作均未完成 | 为赶截稿跳过公平基线、统计或许可门 | J0 08-12、J1 09-12、J2 11-15；任一失败即止损；T-AFFC顺延到2027-05 | OPEN_HIGH；不得通过加班承诺替代阶段证据 |

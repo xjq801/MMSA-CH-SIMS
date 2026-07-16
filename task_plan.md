@@ -269,3 +269,13 @@
 - [x] 00独立复核并签署`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`；序列协议子缺口关闭，资产G2不变。
 - **维护者状态：** `DEFERRED_PENDING_MAINTAINER_REPLY`；本轮不等待、不催促、不重复检查，不写成已解决。
 - **门状态：** G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；未创建任务20。
+
+### 阶段21：IJCV专刊适配与双论文路线重构（2026-07-16）
+
+- [x] 恢复项目上下文、检查Git与读取三张用户截图
+- [x] 核验IJCV/Springer官方专刊范围、日期、文章类型与重复投稿规则
+- [x] 对照当前研究对象、数据、输入、贡献与证据，形成适配/拒稿风险判断
+- [x] 设计T-AFFC与IJCV共享主干、独立问题、独立方法增量、独立实验和文本重叠边界
+- [x] 将双路线、时间门、止损条件和任务树影响写入总纲及决策/风险/进度材料
+- [ ] 运行一致性、工作日志与综合准备检查，提交并同步GitHub
+- **状态：** validation_and_delivery

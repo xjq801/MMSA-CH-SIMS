@@ -2868,3 +2868,55 @@ GitHub已固定总纲v1.14与IJCV—T-AFFC两稿分界。同步不改变G1/G2、
 ### Git状态
 
 内容commit `d817357`已推送。本条真实同步记录仍需一个小型收尾commit与推送。
+
+## WR-20260716-013 — 建立IJCV新项目上下文交接与J0执行边界
+
+- 时间：2026-07-16 13:35:18 +08:00
+- 类型：PROGRESS | DECISION | DOC | GIT
+- 任务/门：00-IJCV总控 / J0启动准备
+- 状态：完成待任务创建与Git同步
+- 负责人：Codex
+
+### 背景与目标
+
+用户在Codex中新建`D:\MMSA-CH-SIMS - IJCV方向`项目，要求汇总原项目“总纲”与“10-M1–M2 数据与协议”的对话、提取总纲和关键进展，并把任务与边界告知新项目，使其可在不重新探索历史的前提下接手IJCV方向。
+
+### 实际变更
+
+- 确认新项目存在且基线为`origin/main@0d779d6`，初始没有Codex任务；创建隔离分支`codex/ijcv-j0`。
+- 新增`IJCV_PROJECT_CONTEXT_HANDOFF_20260716.md`，以锚定式结构摘要保留用户目标、关键纠错、研究对象、数据/协议数值、门状态、双稿边界、IJCV方法/JH、J0—J2日历、必读文件、首轮动作与接手自检问题。
+- 将新项目`AGENTS.md`改为IJCV专线规则：当前只做J0，J0前不得训练/创建任务25；T-AFFC链只读；IJCV新增物使用独立目录；两稿不得共享主贡献/主表/正文。
+- 保留原SSOT`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.14，并以第0.6/18节及双路线方案为IJCV权威合同。
+
+### 验证与证据
+
+- 建分支前`git status --short --branch`：`main...origin/main`且工作区干净。
+- `git log -3`确认`HEAD=origin/main=0d779d6`，包含双路线内容提交`d817357`。
+- 新项目目录已存在完整SSOT、LAI-GAI/CSMV审计、决策/风险/claim台账、脚本和验证器；`.env`存在但未读取或记录其内容。
+- `validate_work_log.py`：exit 0，64条、`errors=[]`、latest=`WR-20260716-013`。
+- 首次默认`run_preparation_checks.py`：exit 1，`blocking_checks=[csmv_feature_preflight,m2_release]`；根因为独立克隆未复制Git忽略区的I3D资产，现场`local_npy_files=0`。该失败按事实保留，不复制大包、不弱化旧门。
+- 新增`scripts/validate_ijcv_project_handoff.py`后首次专项运行exit 1：交接语义已存在但缺少验证器要求的精确句`J0未通过不得创建任务25`；补入该硬边界后须重跑。该失败没有被删除或放宽为模糊匹配。
+- `git diff --check`在首次批次无格式错误；专项门、日志门与py_compile须在补句后最终重跑。
+- 补句后`scripts/validate_ijcv_project_handoff.py`：exit 0，required files/13个关键术语/4项AGENTS合同/敏感片段检查全部通过；状态保持`ijcv_j0=NOT_YET_REVIEWED`、`task25_created=false`。
+- 最终`validate_work_log.py`：exit 0，64条、`errors=[]`、latest=`WR-20260716-013`；`py_compile`与`git diff --check`均exit 0。
+
+### 影响与边界
+
+新项目获得可独立读取的上下文和明确的J0职责。没有创建任务25/65、没有训练、没有下载资产、没有修改数据/split/模型。源项目`D:\MMSA-CH-SIMS`及其`main`工作树未修改。
+
+### 风险、问题与阻塞
+
+- 尝试读取notLoaded的任务10线程时，线程读取接口返回`invalid arguments`；没有把接口失败解释为聊天不存在。交接内容改由当前任务中的全部委派记录、已提交SSOT、`HANDOFF_10.md`、`WORK_LOG.md`和权威台账交叉恢复。
+- 新项目与源项目共享同一Git远端，因此必须使用独立分支和目录前缀，避免两个项目并发修改同一文件。
+- 继承的全量准备检查在新克隆缺少本地I3D时失败；这是环境/资产差异，不是J0失败。已建立不要求CSMV raw资产的专项交接门，并在AGENTS/交接中冻结边界。
+- J0仍未通过；第二像素人工集、新颖性差异矩阵与预注册尚未完成。
+
+### 下一步
+
+1. 运行新项目验证并提交/推送`codex/ijcv-j0`。
+2. 在Codex新项目中创建“00-IJCV总控与J0启动”任务，以本交接文件和自检问题作为首条提示。
+3. 新任务先报告理解与两个优先数据候选，再进入只读J0核验。
+
+### Git状态
+
+当前位于`codex/ijcv-j0`；交接文件、AGENTS和本条日志尚未提交、未推送。

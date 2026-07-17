@@ -59,3 +59,9 @@
 - 本地3070 Ti + PyTorch CUDA预检通过，I3D必需8210 hash/覆盖无漂移；GPU smoke只评dev并完成。
 - 通过红测新增进程内只读序列缓存，消除每epoch重复打开I3D文件；全量两epoch由旧路径外推的长时运行降至20.8秒实测。
 - 全量测试增至53项通过；下一步先提交固定clean commit，再执行12-trial dev选择与冻结selection后的test一次评测。
+
+## 2026-07-17 任务7完成
+
+- 缓存优化提交`14027a0`后，以clean commit执行全量temporal-attention 12-trial dev搜索，13分30秒完成并冻结selection。
+- 按冻结selection执行唯一一次test，91秒完成；1675条预测、manifest、指标和test负门复核通过，无本机路径。
+- baseline-table、执行审计、实验登记、G3草案与计划状态已更新；任务7标记为`COMPLETED_VIA_REIMPLEMENTATION_STRONG_BASELINE_SINGLE_SEED`，非VC-CSA官方复现。

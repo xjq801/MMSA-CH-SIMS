@@ -1,6 +1,6 @@
 # 任务20 G3证据草案
 
-> 当前裁定：`NOT_READY_REMOTE_GPU_RUNTIME_AND_FORMAL_RUNS_INCOMPLETE`  
+> 当前裁定：`NOT_READY_REMAINING_FORMAL_COMPARISONS_AND_FINAL_G3_PACKAGE_INCOMPLETE`  
 > 本文件不修改G门，不代表00已验收。
 
 ## 已闭合证据
@@ -14,12 +14,12 @@
 - 冻结I3D pooled MLP与temporal-attention完整runner；两者CPU工程smoke与同seed一致性验证。
 - pooled与temporal的test路径均固定为train拟合、dev早停、test仅前向一次；test数据不会进入epoch选择。
 - 任务6/7/8/9不可运行或不适用根因、baseline-table-v1及失败状态。
+- 本地3070 Ti正式环境、temporal-attention 12-trial dev选择与冻结selection后的单种子test一次评测；任务7以`REIMPLEMENTATION_STRONG_BASELINE`闭合，VC-CSA官方复现失败状态保留。
 
 ## 未闭合证据
 
-- 可用远端GPU运行时；公开CUDA wheel已校验上传并输出安装成功，但实例随后失联，最小矩阵仍未验证。
-- 12-trial正式dev选择、单种子完整run、预注册test一次评测。
-- temporal-attention正式run和与最低基线的2000次视频级paired bootstrap。
+- 远端A30运行时仍未就绪，但任务7已由用户明确授权的本地3070 Ti完成；其余需要GPU的正式比较仍需逐项确认环境与资产边界。
+- temporal-attention与最低基线的2000次视频级paired bootstrap及任务50五种子统计。
 - 正式baseline-table数值与可交00的最终G3包。
 
 ## 止损边界

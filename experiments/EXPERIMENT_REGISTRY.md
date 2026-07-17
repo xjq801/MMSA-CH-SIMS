@@ -15,6 +15,8 @@
 | task20-temporal-attention-local-cpu-smoke-b | 2026-07-17 | `configs/task20/tuning-plan-v1.json` | dataset-v1 + restricted I3D local read-only | group_by_video_v1 train/dev smoke subset | T0 | 同seed独立复跑 | 20260717 | JSD | 预测/指标/选择hash不一致 | VALIDATION_ONLY | `results/task20-temporal-attention-smoke-local-cpu-v2/` |
 | task20-remote-a30-runtime-remediation | 2026-07-17 | isolated Python 3.8 execution environment | 无数据输入 | 不适用 | 不适用 | 校验公开CUDA wheel并安装后执行最小矩阵 | 20260717 | 不适用 | 实例失联前未完成CUDA smoke | FAILED | `TASK20_BASELINE_EXECUTION_AUDIT.md` |
 | task20-legacy48-native-rerun-v1 | 2026-07-17 | `configs/task20/legacy-48-native-rerun-v1.json` | CUC-IGPE-v2@legacy-local，2787条 | legacy48_publisher_hash_v1 train/dev/test | LEGACY_POST_HOC_NON_T0 | CatBoost/HGB/LightGBM各12-trial原生二分类兼容重跑 | 20260717 | Macro-F1 | dev选择后test每模型一次 | COMPLETED | `results/task20/legacy48-native-rerun-v1/`（本机忽略）/ `TASK20_BASELINE_EXECUTION_AUDIT.md` |
+| task20-temporal-attention-formal-dev-v1 | 2026-07-17 | `configs/task20/tuning-plan-v1.json` | dataset-v1 + restricted I3D local read-only | group_by_video_v1 train/dev=5698/837 | T0 | 12-trial frozen full-sequence temporal attention dev选择 | 20260717 | JSD | patience 20 / max 200 epoch | COMPLETED | `results/task20/temporal-attention-formal-dev-task7-v1/`（本机忽略） |
+| task20-temporal-attention-formal-test-v1 | 2026-07-17 | frozen dev selection SHA256 `dce53eeb...c97dfbf` | dataset-v1 + restricted I3D local read-only | group_by_video_v1 test=1675 | T0 | 选中配置一次性test前向，无test适配 | 20260717 | JSD | frozen config；test一次 | COMPLETED | `results/task20/temporal-attention-formal-test-task7-v1/`（本机忽略）/ `TASK20_BASELINE_EXECUTION_AUDIT.md` |
 
 允许状态：`PLANNED`、`RUNNING`、`COMPLETED`、`FAILED`、`LEAKAGE_BLOCKED`、`VALIDATION_ONLY`。失败和被阻断的运行不得删除记录。
 

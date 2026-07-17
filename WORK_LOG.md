@@ -3783,3 +3783,93 @@ pooled与temporal模型的test路径现在不会用test选择epoch；temporal强
 ### Git状态
 
 本条写入时改动尚未提交或推送，工作区非clean；所有I3D与`results/`产物保持Git忽略。
+
+## WR-20260717-021 — 完成任务7强视觉基线正式单种子运行
+
+- 时间：2026-07-17 23:27:02 +08:00
+- 类型：PROGRESS | EXPERIMENT | TEST | DOC
+- 任务/门：20-M3 / 总纲任务20第7项
+- 状态：完成（强视觉重实现）；官方VC-CSA复现失败状态保留
+- 负责人：Codex
+
+### 背景与目标
+
+在固定官方snapshot缺少VC-CSA模型代码、且官方目标评论输入不符合T0合同的前提下，按任务7“至少一个官方/强基线”分支完成冻结I3D temporal-attention强视觉重实现的正式dev选择与单种子test一次评测。运行必须绑定clean commit、train-only拟合、dev调参和不可适配的test路径。
+
+### 实际变更
+
+- dev正式run绑定clean提交`14027a088de2ad1e003ff58fe523aa57718ab1e5`，本地3070 Ti、PyTorch 2.4.1+cu121、float32、AMP关闭，`group_by_video_v1`为5698 train/837 dev。
+- 完整执行冻结12-trial搜索，按JSD、NLL、Brier、参数量选择trial 4：hidden=128、dropout=0.3、learning_rate=0.001、best epoch=5；dev JSD=0.177014。
+- 冻结`selection.json` SHA-256 `dce53eeb8f3d618d2ed6e09fecc49164a0e6ac72b5254a065ebf4f493c97dfbf`；随后仅一次启动test runner，使用train拟合、dev早停、test前向，未再搜索或适配。
+- test共1675条预测；JSD=0.182668、NLL=1.715192、EMD=0.162983、Brier=0.227379、ECE=0.053885、ACE=0.054004、AURC=0.175399、Macro-F1=0.137048、Balanced Accuracy=0.148577。
+- test重训产生的dev JSD与冻结selection完全一致；test predictions SHA-256为`ca7276b759248ef0c8fcc17ee1ea98bafcb88d41161d4e1feec6251d698bba9f`，metrics SHA-256为`05f4785cc084bfc8ebe04a8f1d035ac81c97d127347dc4712cd1fe25fa2aeb7e`，manifest SHA-256为`0f5949a8dce4922dcb2559054370288f1e037408b722d3b68b0d0432c0539186`。
+- 更新`BASELINE_TABLE_V1.md`、`TASK20_BASELINE_EXECUTION_AUDIT.md`、`experiments/EXPERIMENT_REGISTRY.md`、`TASK20_G3_EVIDENCE_DRAFT.md`及`.planning/task20-m3/`三份规划记录。
+
+### 验证与证据
+
+- dev runner：exit 0，12/12 trial、`status=COMPLETED`、耗时约13分30秒、`fit_scope=train_only`、`test_visible_during_selection=false`、git dirty=false。
+- dev bundle核查：selection hash冻结、manifest提交一致、路径扫描`PASS`；8210必需I3D hash/覆盖在test前再次预检通过。
+- test runner：exit 0，唯一冻结配置、`evaluation_split=test`、`test_adaptation=false`、`smoke=false`、`redistribution=PROHIBITED`、耗时约91秒。
+- test bundle核查：1675条predictions、1条trial、frozen selection输入hash一致、路径扫描`PASS`；未发现本机路径或原始I3D序列。
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，53项全部通过。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`与`git diff --check`：exit 0。
+
+### 影响与边界
+
+任务7以`COMPLETED_VIA_REIMPLEMENTATION_STRONG_BASELINE_SINGLE_SEED`闭合。VC-CSA官方复现仍为`FAILED_OFFICIAL_CODE_ABSENT_AND_TARGET_COMMENT_INPUT_MISMATCH`，不得删除或改写。单种子数值可进入baseline-table-v1的受限正式行，但任务50五种子统计与正式paired bootstrap尚未完成，不能写成最终论文优越性结论。
+
+### 风险、问题与阻塞
+
+- 运行继续受`DEFERRED_ACCEPTED_RISK`约束；I3D许可、官方revision和权利方包身份/fixity仍未知。若权利方否认或8210 hash/覆盖漂移，立即标记`ASSET_INVALIDATED_DO_NOT_REPORT`。
+- 本地run bundle含模型权重与标准化器，只供内部复核，保持Git忽略且禁止提交、发布或再分发。
+
+### 下一步
+
+1. 运行工作日志验证、准备检查、全量测试与diff check，提交并推送聚合证据，不提交`results/`。
+2. 后续任务15/16/18继续完成其余正式比较、paired bootstrap、重复运行与最终G3包。
+
+### Git状态
+
+本条写入时聚合文档和日志尚未提交或推送，工作区非clean；正式run bundle保持Git忽略。
+
+## WR-20260717-022 — 完成任务7证据批次提交前门禁
+
+- 时间：2026-07-17 23:30:59 +08:00
+- 类型：TEST | VALIDATION
+- 任务/门：20-M3 / 任务7提交前门禁
+- 状态：验证通过
+- 负责人：Codex
+
+### 背景与目标
+
+对任务7正式run的聚合证据、baseline-table更新、实验登记、G3草案和工作记录执行提交前完整门禁；本条只记录验证事实。
+
+### 实际变更
+
+- 未修改模型、selection、test结果、总纲、G门或数据manifest；仅追加本次验证记录。
+
+### 验证与证据
+
+- 两个正式dev/test `run-manifest.json`均通过`configs/task20/run-manifest.schema.json`校验，`RUN_MANIFEST_SCHEMA=PASS count=2`。
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，53项全部通过。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`与`git diff --check`：exit 0。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，86条记录、最新`WR-20260717-021`、`passed=true`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`secret_scan.hits=[]`；默认环境继续诚实报告无faiss。
+- `.\.venv-task20\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`secret_scan.hits=[]`、`formal_model_work_ready=true`。
+- Git diff仅涉及任务7聚合文档、实验登记、G3草案、规划和WORK_LOG；`results/`与I3D资产未出现。
+
+### 影响与边界
+
+任务7证据批次达到当前仓库提交门要求；验证不升级I3D资产权利状态，不替代任务50统计或00的G3验收。
+
+### 风险、问题与阻塞
+
+无新增失败。`DEFERRED_ACCEPTED_RISK`、VC-CSA官方复现失败和剩余任务15–18工作继续保留。
+
+### 下一步
+
+复跑因本条新增而变化的工作日志/准备检查，随后有意提交并推送任务7聚合证据；继续排除所有run bundle。
+
+### Git状态
+
+本条写入时尚未提交或推送，工作区非clean。

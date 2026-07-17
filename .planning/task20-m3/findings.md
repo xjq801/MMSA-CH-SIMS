@@ -65,3 +65,10 @@
 - 全量5698 train/837 dev单epoch旧路径耗时30.4秒、峰值CUDA显存154 MiB；静态调用审计显示20-epoch trial会重复触发约13万次序列访问，瓶颈是重复文件打开而非GPU算力。
 - 新增只在当前进程内的只读序列memoization，先以缺API红测证明测试有效；每个底层I3D文件只加载一次，不写磁盘、不改变标准化统计、模型、预算或split。
 - 优化后全量两epoch耗时20.8秒，预计12-trial常见早停总耗时20–60分钟；无需租新实例，且继续满足禁止I3D外传边界。
+
+## 任务7正式强基线结果
+
+- dev运行绑定clean commit `14027a0`，12/12 trial完成；选中trial 4（hidden=128、dropout=0.3、lr=0.001、best epoch=5），冻结selection hash为`dce53eeb...c97dfbf`，dev JSD=0.177014。
+- 唯一test运行使用同一seed和冻结selection，train拟合/dev早停/test一次前向；重训dev JSD与冻结值完全一致，1675条预测完整，test JSD=0.182668。
+- test其余指标：NLL 1.715192、EMD 0.162983、Brier 0.227379、ECE 0.053885、ACE 0.054004、AURC 0.175399、Macro-F1 0.137048、Balanced Accuracy 0.148577。
+- task7以强视觉重实现单种子结果闭合；VC-CSA官方代码缺失/目标评论输入不匹配失败保持不变。结果仍受accepted asset risk约束，并待任务50五种子统计。

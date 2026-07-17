@@ -1,0 +1,32 @@
+schema: light.passport.v3
+project: MMSA-CH-SIMS T-AFFC 总控
+pipeline: TAFFC-CARM-00-60
+created: "2026-07-17T13:55:00+08:00"
+updated: "2026-07-17T12:38"
+current_stage: 20
+state_revision: 3
+state_hash: "sha256:69b177923f55aaeeef3fa5517b7cecaa8f04953761a6e436b9fd7d43319939f3"
+evidence_state: PLANNED
+next_action: run or resume stage 20 (light-experiment-coding)
+delivery_status: IN_PROGRESS
+delivery_authorization_id: ~
+stages:
+  - stage: 10
+    status: delivered
+    node_kind: pipeline
+    evidence_state: PLANNED
+    skill: light-data-engineering
+    input: TAFFC总纲v1.16与公开数据
+    output: G1/G2协议数据证据与正式split
+    artifacts: [TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md, HANDOFF_10.md, G1_G2_EVIDENCE_MATRIX.md, data/manifests/dataset-v1.manifest.json, data/manifests/split-v1.manifest.json]
+    gate: {type: confirm, result: PASS, notes: G1 PASS; G2 protocol/data PASS with accepted asset risk, evidence_state: PLANNED, fresh: false}
+  - stage: 20
+    depends_on: [10]
+    status: in_progress
+    node_kind: pipeline
+    evidence_state: PLANNED
+    skill: light-experiment-coding
+    input: 冻结dataset/split/label与I3D协议
+    output: 统一评测器、强基线与G3证据
+    artifacts: [configs/task20-baseline-v1.yaml, scripts/task20_baseline.py, tests/test_task20_baseline.py]
+    gaps: [faiss unavailable in isolated environment]

@@ -3154,3 +3154,49 @@ WR-20260717-003已完成G2拆分、机器合同重建与验证。本条记录随
 
 ### Git状态
 当前未提交、未推送；本条记录与本批次代码/配置变更待同一提交。
+
+## WR-20260717-006 — 压缩旧总控上下文并建立新总控交接包
+
+- 时间：2026-07-17 14:10:00 +08:00
+- 类型：DOC | PROGRESS | DECISION | TEST
+- 任务/门：00-总控 / 跨项目总控迁移
+- 状态：完成待创建新项目
+- 负责人：Codex
+
+### 背景与目标
+
+用户指出旧总控对话上下文过长，要求创建新的Codex项目承担00总控责任，并完整总结本次对话、提取总纲和已有项目进展。迁移必须基于提交后的真实状态，不能覆盖任务20并发未提交工作，也不能把完整原始聊天写入仓库。
+
+### 实际变更
+
+- 读取任务20线程`019f6e2e-f781-7270-bb45-af8272ff5a5c`，发现第一批改动未提交；要求任务20自行验证、提交和推送。任务20完成commit `5522619`并报告工作区clean。
+- 新建`TOTAL_CONTROL_HANDOFF_20260717.md`，用结构化锚定摘要保存用户纠偏、研究目标、C1—C3/H1—H4、数据唯一版本、G门、任务树、线程ID、已验证证据、IJCV隔离、网络政策、Git纪律、风险与最近三步。
+- 建立`.light/passport.yaml`、`project_card.md`、`decision_log.md`、`version_history.md`、`terminology.md`和S00→S01交接链；passport登记任务10已交付、任务20进行中。
+- 更新`progress.md`记录总控迁移准备。未修改总纲、G门、数据manifest、任务20代码或实验结果。
+
+### 验证与证据
+
+- 任务20回交：commit `5522619`已推送`origin/main`；单测3/3、compileall、diff check和工作日志验证通过，工作区clean；faiss仍为`BLOCKED_M1`。
+- `light-memory-pm/scripts/pm.py --selftest`首次exit 1：本机技能布局无法导入`passport`，错误`ModuleNotFoundError: No module named 'passport'`；该失败保留。
+- 改用`light-orchestrator/scripts/passport.py init/append-stage`：均exit 0；首次append把字符串传给整数`--stage`而exit 2，改用10/20后成功。
+- `passport.py validate`：exit 0、verdict WARN；警告stage 10的PASS未携带passport内部hash/timestamp，仅能作迁移台账，不能替代原G门科学证据。
+- `handoff_contract.py --card .light/handoff/S01-total-control-migration.md --as-of 2026-07-17`：首次因root parent/验证措辞/动作措辞不足exit 1；补建S00链路根并补全证据后最终exit 0、`handoff contract PASS`。
+- `git diff --check`：exit 0。
+
+### 影响与边界
+
+新总控无需读取原始超长聊天即可恢复关键事实，但仍必须刷新Git、WORK_LOG、passport与任务线程现实。`.light`账本是跨会话状态入口，不替代总纲、machine manifest或G门证据。旧总控当前不归档，用户只授权迁移责任，未要求删除或归档历史任务。
+
+### 风险、问题与阻塞
+
+`pm.py audit/resume`在当前安装布局不可用，故不能声称完整memory-pm审计通过；底层passport与独立handoff合同已作为诚实降级。任务20正式环境faiss仍未闭合。I3D资产风险、IJCV项目隔离和G3前禁止任务30均保持。
+
+### 下一步
+
+1. 提交并推送总控交接包。
+2. 创建独立的新总控Codex项目，传入完整交接与自传播要求。
+3. 记录新项目ID并把最终入口交给用户。
+
+### Git状态
+
+本条与交接文件在记录时尚未提交或推送；新总控项目尚未创建。

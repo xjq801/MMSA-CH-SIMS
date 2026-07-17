@@ -458,3 +458,11 @@
 - 已创建Codex任务`20-M3 基线与统一评测`，任务ID=`019f6e2e-f781-7270-bb45-af8272ff5a5c`，绑定总纲v1.16与上述提交。
 - 任务20已收到环境锁定、统一配置/run/prediction manifest、加载器、指标与最小基线的首批工作要求；当前faiss缺失由任务20先行解决。
 - 维护者证明不再作为启动等待项；I3D风险披露、禁止再分发、hash/覆盖漂移止损继续有效。
+
+## 2026-07-17 — 旧总控上下文压缩与新总控迁移准备
+
+- 用户因旧总控对话过长，要求创建新项目承担00总控责任并完整交接。
+- 任务20第一批已由其自身提交为`5522619`并推送，迁移前主分支恢复clean；正式环境仍因faiss缺失为`BLOCKED_M1`。
+- 新建`TOTAL_CONTROL_HANDOFF_20260717.md`，压缩保存用户纠偏、总纲、研究边界、数据、门状态、任务树、线程、风险、网络政策和下一步。
+- 建立`.light/passport.yaml`、项目卡、决策/版本/术语台账以及S00→S01交接链；底层passport验证为WARN（历史G门未附passport内部hash/timestamp），S01交接合同PASS。
+- `light-memory-pm`封装器因本机技能布局缺`_shared/passport`导入失败，未伪报完整pm audit通过；改用底层`passport.py`和独立handoff validator。

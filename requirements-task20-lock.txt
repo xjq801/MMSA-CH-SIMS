@@ -1,2 +1,12 @@
-# Independent task-20 environment addition; base versions remain in requirements-lock.txt.
+# Direct dependency lock for the independent task-20 environment.
+# Install torch from https://download.pytorch.org/whl/cu121.
+catboost==1.2.10
 faiss-cpu==1.7.4
+jsonschema==4.23.0
+lightgbm==4.5.0
+MMSA==2.2.1
+numpy==1.24.4
+PyYAML==6.0.3
+scikit-learn==1.3.2
+torch==2.4.1+cu121
+transformers==4.30.2

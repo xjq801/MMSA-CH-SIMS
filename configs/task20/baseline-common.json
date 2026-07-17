@@ -1,0 +1,42 @@
+{
+  "schema_version": "task20-experiment-v1",
+  "experiment_id": "20-M3-minimum-baselines-v1",
+  "protocol": {
+    "master_plan_version": "v1.16",
+    "task_timepoint": "T0",
+    "test_adaptation_allowed": false
+  },
+  "data": {
+    "dataset_manifest": "data/manifests/dataset-v1.manifest.json",
+    "split_manifest": "data/manifests/split-v1.manifest.json",
+    "label_provenance_manifest": "data/manifests/label-provenance-v1.manifest.json",
+    "split_scheme": "group_by_video_v1",
+    "fit_scope": "train_only",
+    "input_features": [],
+    "class_order": ["anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust"],
+    "distribution_field": "emotion_distribution"
+  },
+  "model": {"id": "overall_mean", "family": "constant_or_group_statistic"},
+  "evaluation": {
+    "primary_metric": "jensen_shannon_divergence",
+    "secondary_metrics": [
+      "negative_log_likelihood",
+      "earth_movers_distance",
+      "macro_f1",
+      "balanced_accuracy",
+      "brier_score",
+      "expected_calibration_error",
+      "adaptive_calibration_error",
+      "aurc_js"
+    ]
+  },
+  "run": {
+    "seed": 20260717,
+    "dev_scope": "selection_only",
+    "test_scope": "preregistered_final_evaluation_only"
+  },
+  "asset_boundary": {
+    "i3d_status": "DEFERRED_ACCEPTED_RISK",
+    "redistribution": "PROHIBITED"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task20-run-manifest-v1",
+  "type": "object",
+  "required": ["schema_version", "run_id", "experiment_id", "model", "fit_scope", "split_scheme", "config", "inputs", "code", "git", "status", "asset_admissibility"],
+  "properties": {
+    "schema_version": {"const": "task20-run-manifest-v1"},
+    "fit_scope": {"const": "train_only"},
+    "split_scheme": {"const": "group_by_video_v1"},
+    "status": {"enum": ["CREATED_NOT_RUN", "COMPLETED", "FAILED", "LEAKAGE_BLOCKED", "NOT_APPLICABLE"]},
+    "asset_admissibility": {"const": "DEFERRED_ACCEPTED_RISK"}
+  }
+}

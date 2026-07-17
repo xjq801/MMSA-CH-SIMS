@@ -224,10 +224,14 @@ SECRET_PATTERNS = {
 }
 
 
+def should_skip_secret_scan(relative_path: Path) -> bool:
+    return any(part in SKIP_PARTS or part.startswith(".venv-") for part in relative_path.parts)
+
+
 def secret_hits():
     hits = []
     for path in ROOT.rglob("*"):
-        if not path.is_file() or any(part in SKIP_PARTS for part in path.relative_to(ROOT).parts):
+        if not path.is_file() or should_skip_secret_scan(path.relative_to(ROOT)):
             continue
         if path.suffix.lower() not in TEXT_SUFFIXES and path.name not in {".env", ".env.example"}:
             continue

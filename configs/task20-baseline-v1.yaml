@@ -1,28 +1,5 @@
-schema_version: task20-baseline-v1
-experiment_id: 20-M3-baseline
-master_plan_version: v1.16
-task_timepoint: T0
-dataset_manifest: data/manifests/dataset-v1.manifest.json
-split_manifest: data/manifests/split-v1.manifest.json
-label_provenance_manifest: data/manifests/label-provenance-v1.manifest.json
-fit_scope: train_only
-dev_scope: calibration_or_selection_only
-test_scope: preregistered_final_evaluation_only
-baselines:
-  - overall_mean
-  - empirical_distribution
-  - majority_class
-primary_metric: jensen_shannon_divergence
-secondary_metrics:
-  - mean_absolute_error
-  - argmax_accuracy
-forbidden_inputs:
-  - comment_text
-  - target_comments
-  - final_engagement
-  - future_retrieval_candidates
-teacher: excluded
-memory: excluded
-full_carm: excluded
-i3d_asset_status: DEFERRED_ACCEPTED_RISK
-publication_or_redistribution_of_i3d: prohibited
+schema_version: task20-config-pointer-v1
+status: SUPERSEDED_BY_FROZEN_JSON_SCHEMA
+canonical_config: configs/task20/baseline-common.json
+canonical_schema: configs/task20/experiment.schema.json
+run_manifest_schema: configs/task20/run-manifest.schema.json

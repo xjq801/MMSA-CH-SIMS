@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task20-prediction-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "sample_id", "split", "class_order", "true_distribution", "predicted_distribution", "confidence", "rejection_score", "model_id", "config_id"],
+  "properties": {
+    "schema_version": {"const": "task20-prediction-v1"},
+    "sample_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["dev", "test"]},
+    "class_order": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "true_distribution": {"type": "array", "minItems": 2, "items": {"type": "number", "minimum": 0.0, "maximum": 1.0}},
+    "predicted_distribution": {"type": "array", "minItems": 2, "items": {"type": "number", "minimum": 0.0, "maximum": 1.0}},
+    "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "rejection_score": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "model_id": {"type": "string", "minLength": 1},
+    "config_id": {"type": "string", "minLength": 1}
+  }
+}

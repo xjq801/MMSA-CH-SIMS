@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task20-experiment-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "experiment_id", "protocol", "data", "model", "evaluation", "run", "asset_boundary"],
+  "properties": {
+    "schema_version": {"const": "task20-experiment-v1"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "protocol": {
+      "type": "object", "additionalProperties": false,
+      "required": ["master_plan_version", "task_timepoint", "test_adaptation_allowed"],
+      "properties": {
+        "master_plan_version": {"const": "v1.16"},
+        "task_timepoint": {"const": "T0"},
+        "test_adaptation_allowed": {"const": false}
+      }
+    },
+    "data": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dataset_manifest", "split_manifest", "label_provenance_manifest", "split_scheme", "fit_scope", "input_features", "class_order", "distribution_field"],
+      "properties": {
+        "dataset_manifest": {"type": "string"},
+        "split_manifest": {"type": "string"},
+        "label_provenance_manifest": {"type": "string"},
+        "split_scheme": {"const": "group_by_video_v1"},
+        "fit_scope": {"const": "train_only"},
+        "input_features": {"type": "array", "maxItems": 0},
+        "class_order": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string"}},
+        "distribution_field": {"type": "string"}
+      }
+    },
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "family"],
+      "properties": {
+        "id": {"enum": ["overall_mean", "topic_mean", "empirical_distribution", "majority_class"]},
+        "family": {"const": "constant_or_group_statistic"}
+      }
+    },
+    "evaluation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["primary_metric", "secondary_metrics"],
+      "properties": {
+        "primary_metric": {"const": "jensen_shannon_divergence"},
+        "secondary_metrics": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "run": {
+      "type": "object", "additionalProperties": false,
+      "required": ["seed", "dev_scope", "test_scope"],
+      "properties": {
+        "seed": {"type": "integer"},
+        "dev_scope": {"const": "selection_only"},
+        "test_scope": {"const": "preregistered_final_evaluation_only"}
+      }
+    },
+    "asset_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["i3d_status", "redistribution"],
+      "properties": {
+        "i3d_status": {"const": "DEFERRED_ACCEPTED_RISK"},
+        "redistribution": {"const": "PROHIBITED"}
+      }
+    }
+  }
+}

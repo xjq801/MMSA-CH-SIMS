@@ -3243,3 +3243,287 @@ WR-20260717-006已形成完整压缩交接与`.light`记忆骨架。本条记录
 ### Git状态
 
 交接commit `e6c48c6`已推送；本条创建记录与progress追加尚未提交或推送。
+## WR-20260717-008 — 完成任务20第1至5项
+- 时间：2026-07-17 16:10:00 +08:00
+- 类型：PROGRESS | FEATURE | TEST | ENVIRONMENT
+- 任务/门：20-M3 / 任务20第1至5项
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+用户将本轮范围明确收敛到总纲 v1.16 第17节任务20第1至5项：复核任务10交接；建立独立正式环境；冻结统一配置与run manifest；建立统一loader；实现总体均值、主题均值、经验分布和多数类基线。
+
+### 实际变更
+- 冻结 `HANDOFF_10.md`、dataset/split/label-provenance/leakage manifests 的SHA-256和正式 `group_by_video_v1` split。
+- 通过本机7890代理完成 `.venv-task20`；新增 `TASK20_ENVIRONMENT_LOCK.md` 并扩充 `requirements-task20-lock.txt`。
+- 新增 `configs/task20/experiment.schema.json`、`baseline-common.json`、`run-manifest.schema.json` 与 `scripts/task20_contracts.py`；四个基线变体只改变 `model` 字段。
+- 扩展 `scripts/task20_baseline.py` 的canonical loader、topic mean资格门、topic mean拟合/预测和统一四基线runner；新增 `scripts/run_task20_minimum_baselines.py`。
+- 新增/扩展 `tests/test_task20_contracts.py` 与 `tests/test_task20_baseline.py`；更新 `.planning/task20-m3/`。旧YAML配置保留为canonical JSON/schema指针。
+
+### 验证与证据
+- 环境锁：Python 3.8.9、PyTorch 2.4.1+cu121/CUDA 12.1、Transformers 4.30.2、faiss 1.7.4、sklearn 1.3.2、CatBoost 1.2.10、LightGBM 4.5.0、MMSA 2.2.1；CUDA/GPU可用。
+- `\.\.venv-task20\Scripts\python.exe scripts\environment_smoke.py --profile formal-carm`：exit 0，`passed=true`；`pip check`无破损依赖。
+- 测试先后保留三类失败：缺少新API；canonical混合split被误拒；run manifest暴露绝对路径。分别补最小实现、改为验证后筛选split、改为仓库相对路径并禁止仓库外路径。
+- `\.\.venv-task20\Scripts\python.exe -m unittest -v tests.test_task20_baseline tests.test_task20_contracts`：exit 0，10项通过；compileall exit 0。
+- 正式CSMV train/dev smoke：5698/837，`shared_sample_ids=true`；总体均值、经验分布、多数类完成；主题均值=`NOT_APPLICABLE_NATIVE_TOPIC_ABSENT`。未查看test。
+- smoke run manifest schema校验通过；run manifest SHA-256=`2a8c5001b9be03bb33c4bf53cda0c38395b4104b835ff1a5054a2c4c5e1327e8`，metrics SHA-256=`4970b2495b16fca407937aded873e079f2fb778e69dd8299124e56abab4f3924`。
+
+### 影响与边界
+任务20第1至5项已形成可复核实现。常数/分组统计基线冻结 `input_features=[]`，不读取评论或I3D；四基线共享sample ID、split与class order。smoke dev数字仅验证实现，不进入论文表格。第6至18项未启动，未修改总纲或G门。
+
+### 风险、问题与阻塞
+I3D许可、官方revision、权利方身份/fixity仍未知；环境就绪不等于资产权利闭环。CSMV原生topic完全缺失，因此主题均值只能诚实登记不适用，不能伪造主题。首次faiss单包导入因空环境缺NumPy失败，首次formal-carm smoke因缺MMSA失败，两次失败均已保留并按根因补齐。
+
+### 下一步
+等待用户授权后再执行任务20第6项及以后；本轮仅完成并验证第1至5项。
+
+### Git状态
+本条与第1至5项代码/配置/规划变更尚未提交或推送。
+
+## WR-20260717-009 — 修复任务20独立环境的准备检查误报
+- 时间：2026-07-17 16:20:00 +08:00
+- 类型：FIX | TEST | VALIDATION | ENVIRONMENT
+- 任务/门：20-M3 / 第1至5项交付门
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+任务20第1至5项完成后，交付前运行项目准备检查。首次检查发现密钥扫描器遍历了新建的 `.venv-task20` 第三方依赖目录并产生误报；本批次要求在不放宽密钥检测规则的前提下修复扫描边界并重新关闭正式准备门。
+
+### 实际变更
+- 新增 `tests/test_preparation_checks.py`，以临时目录同时放置命名虚拟环境和真实源码，验证扫描器跳过 `.venv-task20`、但继续报告真实源码命中。
+- 更新 `scripts/run_preparation_checks.py`，新增 `should_skip_secret_scan()`，在既有精确排除项之外仅排除 `.venv-*` 命名虚拟环境；`SECRET_PATTERNS` 未修改。
+- 向 `.planning/task20-m3/findings.md` 与 `progress.md` 追加首次失败、根因、修复和最终门状态。
+
+### 验证与证据
+- 修复前 `\.\.venv-task20\Scripts\python.exe scripts\run_preparation_checks.py`：exit 1，唯一 `blocking_checks=["secret_scan"]`；命中来自 `.venv-task20` 第三方依赖，未发现项目密钥。
+- 新回归测试修复前：exit 1，结果同时包含 `.venv-task20\\dependency.py` 与 `src\\application.py`，准确复现目录边界缺失。
+- 修复后 `\.\.venv-task20\Scripts\python.exe -m unittest -v tests.test_preparation_checks`：exit 0，1项通过。
+- `\.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，19项通过。
+- 修复后 `\.\.venv-task20\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`secret_scan.hits=[]`、`formal_carm_environment.classification=READY_FOR_REVIEW`、`formal_model_work_ready=true`。
+
+### 影响与边界
+项目扫描器不再把任务20独立虚拟环境中的第三方测试常量误判为仓库密钥，同时保留对真实项目源码的原有扫描强度。未修改总纲、G门、数据manifest、split、标签、基线算法或受限资产；第6至18项仍未启动。
+
+### 风险、问题与阻塞
+I3D许可、官方revision、权利方包身份/fixity仍未知，资产接受风险没有因环境或准备门通过而解决。若权利方否认或固定hash/8210覆盖漂移，仍须立即标记 `ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+运行工作日志验证、最终准备检查、compileall与diff check，确认第1至5项可交付；未经新授权不推进第6至18项。
+
+### Git状态
+本条、扫描器修复及任务20第1至5项全部改动尚未提交或推送。
+
+## WR-20260717-010 — 推进任务20第6至18项并记录远端GPU运行时阻塞
+
+- 时间：2026-07-17 17:00:00 +08:00
+- 类型：FEATURE | TEST | VALIDATION | ENVIRONMENT | DECISION
+- 任务/门：20-M3 / 任务20第6至18项
+- 状态：部分完成，正式高算力运行阻塞
+- 负责人：Codex
+
+### 背景与目标
+
+用户授权继续执行总纲v1.16任务20第6至18项，并要求高算力实验优先使用其租用GPU；若GPU不可用立即报告。执行继续遵守train-only拟合、dev选择、test仅按预注册规则评测和I3D禁止再分发边界。
+
+### 实际变更
+
+- 新增`scripts/task20_metrics.py`与`scripts/task20_evaluation.py`，实现JS、NLL、EMD、Macro-F1、Balanced Accuracy、Brier、ECE、ACE、AURC-JS、预测标准、E0和视频级paired bootstrap。
+- 新增`configs/task20/prediction.schema.json`与`tuning-plan-v1.json`；五个可运行模型族均冻结12 trial，dev按JS选择，NLL/Brier/参数量依次tie-break，test选择期不可见。
+- 新增`scripts/task20_models.py`、`task20_training.py`、`build_task20_i3d_pooled.py`和`run_task20_pooled_mlp.py`；实现I3D mean/std不可逆汇总、train-only standardizer、pooled MLP、masked temporal attention、早停和run bundle。
+- 新增`tests/test_task20_evaluation.py`、`test_task20_models.py`、`test_task20_training.py`；扩展最低基线到九项指标与标准预测输出。
+- 新增`TASK20_BASELINE_EXECUTION_AUDIT.md`、`BASELINE_TABLE_V1.md`、`TASK20_G3_EVIDENCE_DRAFT.md`，并更新实验登记与`.planning/task20-m3/`。
+- 官方revision只读审计发现无VC-CSA模型代码且官方输入依赖目标评论；legacy 48维数据无正式split、非T0且为SILVER二分类，均按任务17保留失败根因，不生成或复用不合格数值。
+
+### 验证与证据
+
+- 指标/合同首轮红测因缺模块失败；随后AURC同置信度置换测试真实失败并修复为tie-group同时进入覆盖曲线。
+- 神经训练红测因float32 softmax在`1e-8`容差下误拒失败；修复为验证后按`1e-6`接受并归一化，不放宽负值/NaN/明显非概率输入。
+- `\.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，35项通过。
+- I3D汇总首次前台命令在3分钟超时，但后台进程真实完成；最终缓存8210条、2048维、train/dev/test=`5698/837/1675`，SHA-256=`3bb7b6bb6620b7b7d4738ad207f7c20eef9c2d9990cfeafa164807910eb8d5ea`，不含标签或原序列。
+- 首次pooled-MLP CPU smoke完成后run manifest schema复核因缺`config`/`code`失败；保留失败目录，补hash provenance后新目录schema校验通过。
+- 两次独立CPU smoke使用同seed，predictions SHA-256均为`b0ef9a6a979d938f22609b1ed486446aca9541e637dc7b9f15d68e047c0adf86`，metrics SHA-256均为`2f2019b230761cb9a21d3cfa890717991c1e926c04d66067632679d0b55d5d0c`；仅证明同环境工程复跑。
+- 租用A30硬件预检可见约24GB显存且空闲；新Conda Python 3.8环境已建立，但两条官方Torch安装通道各在10分钟窗口内无有效进度。平台自带Torch 1.3.1/CUDA 10.1可枚举A30，但最小CUDA矩阵运算30秒未完成；正式状态=`REMOTE_GPU_RUNTIME_UNAVAILABLE_ENVIRONMENT_NOT_READY`。
+
+### 影响与边界
+
+第10至14项实现闭合；第6、7项完成可复核失败审计；第8、9项实现与不适用性合同已建立；第15至18项已有smoke、表格和G3草案。未查看test、未运行正式12-trial或单种子完整实验，CPU smoke不进入论文表格。未上传I3D序列、junction、本机路径或可逆受限资产，未修改总纲、G门或数据manifest。
+
+### 风险、问题与阻塞
+
+远端GPU硬件可见但训练运行时不可用，正式高算力实验暂停并已立即向用户报告。I3D许可、官方revision、权利方包身份/fixity仍未知；权利方否认或固定hash/8210覆盖漂移时仍须标记`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 等待用户提供/切换到带Ampere兼容PyTorch/CUDA的可用镜像或新实例，再立即复核最小CUDA矩阵运算。
+2. 运行冻结的12-trial dev选择、单种子完整run与同seed复跑；选择冻结后才执行test一次评测。
+3. 计算2000次视频级paired bootstrap，更新正式baseline-table-v1并提交最终G3证据给00。
+
+### Git状态
+
+本条与任务20第1至18项当前代码、配置、测试、规划和审计材料均尚未提交或推送。
+
+## WR-20260717-011 — 验证任务20第6至18项阶段交付并暂停正式GPU运行
+
+- 时间：2026-07-17 17:10:00 +08:00
+- 类型：TEST | VALIDATION | HANDOFF
+- 任务/门：20-M3 / 第6至18项阶段交付
+- 状态：验证通过，GPU阻塞待用户更换运行时
+- 负责人：Codex
+
+### 背景与目标
+
+WR-20260717-010已记录统一评测、模型代码、smoke与远端GPU运行时失败。本条只记录交付前真实门禁和暂停边界，避免把部分完成写成任务20或G3已完成。
+
+### 实际变更
+
+- 未新增算法或数据变更；保持正式高算力运行暂停。
+- 一次性远端认证辅助文件和CUDA smoke辅助文件已从工作区删除；认证值未写入Git、工作日志、配置或run bundle。
+
+### 验证与证据
+
+- `\.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，75条，最新`WR-20260717-010`。
+- `\.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，35项通过。
+- `\.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`与`git diff --check`：exit 0。
+- 默认`.venv`与任务20`.venv-task20`分别运行`scripts/run_preparation_checks.py`：均exit 0、`blocking_checks=[]`、`secret_scan.hits=[]`；任务20环境`formal_model_work_ready=true`。
+- 最终工作区只包含任务20代码、配置、测试、规划、实验登记、审计与工作日志改动；未修改总纲、G门或数据manifest。
+
+### 影响与边界
+
+第6至18项现有实现可安全交付审查，但正式12-trial、单种子完整run、test一次性评测、正式bootstrap和最终G3提交仍未发生。不得把本阶段状态写成任务20全部完成。
+
+### 风险、问题与阻塞
+
+唯一新增执行阻塞为租用A30的PyTorch/CUDA运行时不可用；GPU硬件可枚举不等于可训练。I3D权利/fixity未知风险继续保留。
+
+### 下一步
+
+用户更换到Ampere兼容、可执行最小CUDA矩阵运算的PyTorch镜像或新实例后，从冻结tuning plan继续，不重新定义实验。
+
+### Git状态
+
+全部改动尚未提交或推送，工作区非clean。
+
+## WR-20260717-012 — 修复test早停泄漏并完成temporal-attention可运行合同
+
+- 时间：2026-07-17 23:10:00 +08:00
+- 类型：FIX | FEATURE | TEST | ENVIRONMENT
+- 任务/门：20-M3 / 任务20第7、8、12、15、17、18项
+- 状态：部分完成；正式GPU运行仍阻塞
+- 负责人：Codex
+
+### 背景与目标
+
+继续执行任务20第6至18项：在不传输受限I3D资产的前提下修复租用A30运行时，并补齐强视觉基线runner与train/dev/test负门。
+
+### 实际变更
+
+- 分层诊断远端Conda、PyTorch、网络与磁盘；确认PyPI超时而官方PyTorch索引和国内镜像可达。公开PyTorch 1.13.1/CUDA 11.7 wheel在本机下载并计算SHA-256，分段上传后在远端重组；双端长度均为1,801,800,326字节，SHA-256均为`bbf9546f0d0d8b51263ca479637b426a88335fca0034f42cec63d4d32dee05af`，远端输出确认wheel安装成功。
+- 依赖安装期间远端通道异常结束，后续TCP端口不可连接；未执行成功的CUDA矩阵smoke，环境继续登记`REMOTE_GPU_RUNTIME_UNAVAILABLE_ENVIRONMENT_NOT_READY`。未上传原始I3D `.npy`、标签、本机路径或可逆受限资产。
+- 在`tests/test_task20_pooled_runner.py`先新增失败回归测试，证明原`run_task20_pooled_mlp.py`会让test进入早停路径；正式test此前未运行。修复后固定为train拟合、dev早停、test仅前向一次，并记录冻结dev selection输入hash。
+- 在`tests/test_task20_training.py`和`tests/test_task20_temporal_runner.py`先新增失败测试，再扩展`task20_training.py`和新增`run_task20_temporal_attention.py`：流式train-only时序标准化、冻结完整序列动态padding、确定性批计划、12-trial/dev选择、test负门、预测/指标/模型/环境/manifest/失败产物。
+- `task20_models.py`固定`CUBLAS_WORKSPACE_CONFIG=:4096:8`；新增红测验证该确定性合同。
+- 更新`TASK20_BASELINE_EXECUTION_AUDIT.md`、`BASELINE_TABLE_V1.md`、`TASK20_G3_EVIDENCE_DRAFT.md`、`experiments/EXPERIMENT_REGISTRY.md`和`.planning/task20-m3/`状态；未修改总纲或G门。
+
+### 验证与证据
+
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，44项全部通过。
+- temporal runner在固定32个train、16个dev、1 trial、2 epochs、CPU条件下独立smoke两次；两次`predictions.jsonl` SHA-256均为`5d66b46ca21386d3cd8be6838d4c80cc343a24243a9673b16c8abaf4c9739971`，`metrics.json`均为`023519d164a893a91a6b2754c1641506b6e25f96f68d5b9d67eee2af27e63f82`，`selection.json`均为`cdac127a4a9bf238b8cf295f80ee08e0d019d02feebbe4e7adf519f39cffb9f8`。
+- 两个temporal smoke的`run-manifest.json`均通过`configs/task20/run-manifest.schema.json`；`python -m compileall -q scripts tests` exit 0。
+- 最终远端端口复查失败；未启动12-trial、正式test或正式bootstrap。
+
+### 影响与边界
+
+pooled与temporal模型的test路径现在不会用test选择epoch；temporal强视觉基线具备端到端工程运行能力。所有smoke数字仅作实现验证，不进入论文表。I3D许可、官方revision、权利方身份/fixity继续未知；资产风险状态未改变。
+
+### 风险、问题与阻塞
+
+租用A30实例当前不可连接，CUDA最小矩阵未验证；完整序列temporal模型又受原始I3D不得上传边界约束。正式dev选择、完整run、一次性test、2000次paired bootstrap和最终G3包仍未完成。
+
+### 下一步
+
+1. 等待租用GPU恢复或更换实例后先完成CUDA最小矩阵和远端依赖锁，再运行pooled MLP正式dev选择。
+2. 对temporal完整序列正式运行，需使用合法既有I3D环境；不得通过上传原始`.npy`绕过资产边界。
+3. 正式运行完成后再执行一次性test、paired bootstrap、冻结baseline-table-v1和最终G3证据。
+
+### Git状态
+
+本批次改动待验证后有意提交；写入时尚未提交或推送，工作区非clean。
+
+## WR-20260717-013 — 更正WR-20260717-012时间字段
+
+- 时间：2026-07-17 15:08:07 +08:00
+- 类型：DOC
+- 任务/门：20-M3 / 工作记录纠错
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+`WR-20260717-012`的时间字段误写为当日未来时间；按只追加政策不改写原记录，追加本条更正。
+
+### 实际变更
+
+仅声明`WR-20260717-012`的正确记录时间为`2026-07-17 15:08:07 +08:00`；其余行为、文件、验证结果和Git状态不变。
+
+### 验证与证据
+
+- `Get-Date -Format 'yyyy-MM-dd HH:mm:ss zzz'`：`2026-07-17 15:08:07 +08:00`。
+
+### 影响与边界
+
+只更正日志时间，不改变实验、资产、G门或结论。
+
+### 风险、问题与阻塞
+
+无新增风险；远端GPU阻塞沿用`WR-20260717-012`。
+
+### 下一步
+
+继续执行提交前项目门禁。
+
+### Git状态
+
+本条与`WR-20260717-012`同批待提交，尚未推送。
+
+## WR-20260717-014 — 完成任务20本批次提交前门禁并更正测试总数
+
+- 时间：2026-07-17 15:09:35 +08:00
+- 类型：TEST | VALIDATION | DOC
+- 任务/门：20-M3 / 提交前门禁
+- 状态：验证通过；正式GPU运行仍阻塞
+- 负责人：Codex
+
+### 背景与目标
+
+对`WR-20260717-012`所述实现执行项目规定的完整提交前门禁，并按只追加政策更正其中记录早于最终测试发现的测试总数。
+
+### 实际变更
+
+- `WR-20260717-012`记录的44项测试是当时运行结果；加入两个smoke/test策略负门后，最终测试总数为46项，原记录不回改。
+- 尝试清理操作系统临时目录中的公开wheel和隔离SSH辅助环境时，递归删除命令被执行策略拒绝；临时内容不在仓库内、不含项目数据或认证值，未改用跨shell破坏性命令绕过。
+
+### 验证与证据
+
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，46项全部通过。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`：exit 0。
+- `git diff --check`：exit 0。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，78条、最新`WR-20260717-013`、`passed=true`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`secret_scan.hits=[]`；默认环境仍诚实报告`formal_model_work_ready=false`，原因是默认`.venv`无faiss，不冒充任务20独立环境。
+
+### 影响与边界
+
+本批代码、配置、文档和日志通过当前项目门禁。默认环境状态未被改写；任务20独立环境仍需单独复核。临时公开运行时文件不属于Git交付物。
+
+### 风险、问题与阻塞
+
+远端实例不可连接，正式实验仍未运行。操作系统临时目录清理被策略拒绝，但不影响仓库安全扫描或实验边界。
+
+### 下一步
+
+1. 用`.venv-task20`补跑准备检查，确认独立正式环境状态。
+2. 刷新diff/status并有意提交、推送本批次。
+
+### Git状态
+
+本条写入时尚未提交或推送，工作区非clean。

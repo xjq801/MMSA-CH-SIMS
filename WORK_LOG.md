@@ -3693,3 +3693,43 @@ pooled与temporal模型的test路径现在不会用test选择epoch；temporal强
 ### Git状态
 
 本条写入时尚未提交或推送，工作区非clean；`results/`继续保持忽略。
+
+## WR-20260717-019 — 提交并同步任务20第6项重跑批次
+
+- 时间：2026-07-17 22:40:53 +08:00
+- 类型：PROGRESS | SYNC
+- 任务/门：20-M3 / 总纲任务20第6项
+- 状态：实现批次已提交并推送
+- 负责人：Codex
+
+### 背景与目标
+
+将已通过门禁的任务6 native legacy配置、运行器、测试、聚合结果文档、规划与工作记录作为有意提交同步到`main`。
+
+### 实际变更
+
+- 提交`02a82b6d9e16463759cd5477580a7fab3917e465`，提交说明为`feat(task20): rerun native legacy baselines`，共11个文件、913行新增、11行删除。
+- 使用本机一次性代理配置推送`main`；远端`origin/main`从`98d81787cc4dff79dec716ca35f4d76742c730b7`前进到`02a82b6d9e16463759cd5477580a7fab3917e465`。
+- 总纲、G门、00授权文件、数据manifest、原始48维资产、`results/`run bundle和I3D资产均未进入提交。
+
+### 验证与证据
+
+- `git push origin main`使用一次性本机代理：exit 0，输出`main -> main`。
+- `git rev-parse HEAD`与`git rev-parse origin/main`均为`02a82b6d9e16463759cd5477580a7fab3917e465`。
+- 推送后`git status --short --branch`为`## main...origin/main`。
+
+### 影响与边界
+
+任务6独立legacy原生兼容重跑已可在远端仓库审计；本次同步不升级其CSMV统一结果资格，不改变I3D未知权利/fixity状态或任何G门。
+
+### 风险、问题与阻塞
+
+租用A30仍不可连接；CSMV正式高算力运行仍阻塞。任务6低Recall与非T0/SILVER/版本漂移限制保持不变。
+
+### 下一步
+
+复跑日志验证与准备检查，将本条同步记录作为日志收尾提交推送，并确认最终工作区clean。
+
+### Git状态
+
+实现提交已推送；本条日志尚待收尾提交与同步。

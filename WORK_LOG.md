@@ -3873,3 +3873,43 @@ pooled与temporal模型的test路径现在不会用test选择epoch；temporal强
 ### Git状态
 
 本条写入时尚未提交或推送，工作区非clean。
+
+## WR-20260717-023 — 提交并同步任务7正式强基线证据
+
+- 时间：2026-07-17 23:32:45 +08:00
+- 类型：PROGRESS | SYNC
+- 任务/门：20-M3 / 总纲任务20第7项
+- 状态：任务7证据已提交并推送
+- 负责人：Codex
+
+### 背景与目标
+
+将已通过门禁的任务7单种子强视觉基线聚合证据、baseline-table、实验登记、G3草案、规划和工作日志同步到`main`；run bundle继续只保留本机。
+
+### 实际变更
+
+- 提交`aa9140fc873d582a5b3f7920a4637dc4b6fbaa2e`，提交说明为`docs(task20): record strong baseline formal run`，共8个文件、129行新增、12行删除。
+- 使用本机一次性代理配置推送`main`；远端`origin/main`从`14027a088de2ad1e003ff58fe523aa57718ab1e5`前进到`aa9140fc873d582a5b3f7920a4637dc4b6fbaa2e`。
+- 总纲、G门、00授权文件、数据manifest、I3D `.npy`、模型权重、预测、standardizer和`results/`均未进入提交。
+
+### 验证与证据
+
+- `git push origin main`使用一次性本机代理：exit 0，输出`main -> main`。
+- `git rev-parse HEAD`与`git rev-parse origin/main`均为`aa9140fc873d582a5b3f7920a4637dc4b6fbaa2e`。
+- 推送后`git status --short --branch`为`## main...origin/main`。
+
+### 影响与边界
+
+任务7的官方复现失败证据与替代强基线单种子正式结果已在远端仓库可审计；同步不等于任务50五种子统计完成，不改变资产风险或G门。
+
+### 风险、问题与阻塞
+
+I3D权利/fixity未知和`DEFERRED_ACCEPTED_RISK`继续保留；正式run bundle只在本机内部复核，禁止再分发。
+
+### 下一步
+
+复跑工作日志验证与准备检查，提交并推送本条同步记录，确认最终工作区clean。后续继续任务15–18剩余工作。
+
+### Git状态
+
+任务7证据提交已推送；本条同步记录尚待日志收尾提交。

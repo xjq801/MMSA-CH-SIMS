@@ -1,5 +1,6 @@
 {
-  "formal_evaluation_eligible": false,
+  "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
+  "formal_evaluation_eligible": true,
   "mixed_tier_loading": "PROHIBITED",
   "physical_roots": {
     "HUMAN_GOLD": "data/processed/HUMAN_GOLD",
@@ -7,7 +8,7 @@
     "UNLABELED": "data/processed/UNLABELED"
   },
   "public_human_test_with_silver": "PROHIBITED",
-  "release_status": "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED",
+  "release_status": "PROTOCOL_DATA_G2_PASS_ASSET_RISK_ACCEPTED",
   "release_version": "dataset-v1",
   "schema_version": "label-provenance-v1",
   "second_primary_status": "FROZEN_00_APPROVED",

@@ -348,8 +348,10 @@ def audit_records(records: Sequence[dict], index_manifest: dict, raw_grouping: O
         ],
         "g1_passed": True,
         "g1_status": "PASS",
-        "g2_passed": False,
-        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+        "g2_passed": True,
+        "g2_status": "PASS_WITH_ACCEPTED_ASSET_RISK",
+        "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+        "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
     }
 
 

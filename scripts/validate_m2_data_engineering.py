@@ -191,8 +191,10 @@ def validate_m2_data_engineering() -> dict:
         "m2_local_artifacts_ready": passed,
         "g1_passed": passed,
         "g1_status": "PASS" if passed else "BLOCKED_SECOND_PRIMARY_NOT_FROZEN",
-        "g2_passed": False,
-        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+        "g2_passed": passed,
+        "g2_status": "PASS_WITH_ACCEPTED_ASSET_RISK" if passed else "VALIDATION_FAILED",
+        "g2_protocol_data": "PASS_WITH_LIMITATIONS" if passed else "VALIDATION_FAILED",
+        "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
         "checks": checks,
     }
 

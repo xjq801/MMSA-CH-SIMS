@@ -1,8 +1,8 @@
 # G1/G2逐条证据矩阵
 
 > 审核对象：任务10 / M1—M2
-> 版本日期：2026-07-16
-> 总体结论：00已接受CSMV命名空间纠正与同源split修复，G1=`PASS`；`REVIEW-00-CSMV-FEATURE-PREFLIGHT-G2-20260715`独立确认19项公共核心复现当前零漂移，`REPRODUCIBILITY_STALE`已关闭。用户随后提供I3D兼容本地包，任务10已在隔离区现场闭合文件树、体量、逐文件hash、schema及8210/8210覆盖；`REVIEW-00-CSMV-I3D-SEQUENCE-PROTOCOL-20260716`又正式关闭序列处理未冻结子缺口。但资产级许可、稳定官方revision与权利方fixity attestation仍待外部证据，G2维持`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，全局`formal_split=false`，不放行任务20。
+> 版本日期：2026-07-17
+> 总体结论：G1=`PASS`；2026-07-17非资产复审确认无第二个技术阻塞。用户随后书面接受I3D资产外部证明延期风险，00依据`SC-20260717-01`裁定G2=`PASS_WITH_ACCEPTED_ASSET_RISK`：`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`，`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`，`formal_split=true`，任务20获准创建。
 
 ## G1（最低合格）
 
@@ -27,7 +27,7 @@
 | 音频是否为正式输入硬门 | **NOT_REQUIRED_WITH_DISCLOSED_LIMITATION（00已确认）** | `TASK10_AUDIO_MODALITY_FEASIBILITY_REVIEW_REQUEST_20260716.md`、`TASK00_AUDIO_MODALITY_PROTOCOL_REVIEW_20260716.md`、CSMV固定README、NeurIPS 2024论文、T-AFFC General CFP | 音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`并移出G2/取得关键路径；不得据此声称音频实验、随机缺失鲁棒性或自动放行G2 |
 | I3D序列处理预注册与可复现 | **PASS_PROTOCOL_ONLY（00已确认）** | `CSMV_I3D_SEQUENCE_PROTOCOL_V1.md`、`csmv-i3d-sequence-protocol-v1.manifest.json`、`TASK00_CSMV_I3D_SEQUENCE_PROTOCOL_AND_GIT_CHECKPOINT_REVIEW_20260716.md`、专项validator与8项单元测试 | 主协议完整序列+mask；主敏感性确定性均匀180步；531个超长样本与资源上限已冻结；00已关闭协议未冻结子缺口，但此PASS不授予资产许可或G2信用 |
 
-**G2总判定：`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`。** 00已正式关闭复现陈旧和序列协议未冻结两个子阻塞；本地相对文件名/体量/逐文件hash、特征schema和8210键覆盖也已闭合。剩余实质缺口仅为资产级许可、稳定官方revision以及权利方对包身份和fixity的确认；在00另行裁定前，任务20继续禁止。
+**G2总判定：`PASS_WITH_ACCEPTED_ASSET_RISK`。** `G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`；本地相对文件名/体量/逐文件hash、特征schema、8210键覆盖、泄漏门、复现和序列协议均已闭合。资产级许可、稳定官方revision及权利方包身份/fixity保持`DEFERRED_ACCEPTED_RISK`，不计作已解决；用户授权其不再阻塞内部任务20。
 
 维护者外部证明现按用户指令标记`DEFERRED_PENDING_MAINTAINER_REPLY`：暂时跳过协调，不等待、不催促、不重复检查；延期不等于缺口关闭。
 
@@ -35,7 +35,7 @@
 
 用户要求暂时忽略CSMV I3D资产准入并检查G2。00现场复核结论为`PASS_NON_ASSET_G2_REQUIREMENTS_WITH_LIMITATIONS`：排除资产级许可、稳定官方revision与权利方包身份/fixity证明后，G2其余数据血缘、标签隔离、T0评论隔离、泄漏正负门、第二主集、I3D序列协议、19项隔离复现和M2本地发布包均通过，未发现第二个非资产阻塞。详细证据见`TASK00_G2_NON_ASSET_COUNTERFACTUAL_REVIEW_20260717.md`。
 
-该结果是反事实范围判断，不是正式放行。现行总纲与机器合同未修改，故正式G2仍为`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，`formal_split=false`、`formal_model_use_allowed=false`，任务20不创建。若以后决定承担资产不确定性，必须先书面修改门定义并将风险明确记录为`DEFERRED_ACCEPTED_RISK`，不得把未知许可写成已通过。
+该反事实检查随后由用户正式转化为`SC-20260717-01`范围变更：总纲和机器合同已修改，G2=`PASS_WITH_ACCEPTED_ASSET_RISK`，ASSET_ADMISSIBILITY=`DEFERRED_ACCEPTED_RISK`，`formal_split=true`，任务20获准创建。未知许可仍不得写成已通过。
 
 ## 止损执行
 

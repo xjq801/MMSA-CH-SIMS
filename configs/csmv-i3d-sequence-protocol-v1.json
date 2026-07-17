@@ -9,11 +9,15 @@
   },
   "dtype": "float32",
   "feature_dimension": 1024,
-  "freeze_date": "2026-07-16",
+  "freeze_date": "2026-07-17",
   "gates": {
-    "formal_split": false,
+    "formal_split": true,
     "g1": "PASS",
-    "g2": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE"
+    "g2": "PASS_WITH_ACCEPTED_ASSET_RISK",
+    "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+    "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
+    "asset_redistribution_allowed": false,
+    "task20_authorized": true
   },
   "invalid_input_policy": "REJECT_EMPTY_BAD_SHAPE_NON_FLOAT32_OR_NONFINITE",
   "main_protocol": "FULL_SEQUENCE_DYNAMIC_PADDING_MASK",

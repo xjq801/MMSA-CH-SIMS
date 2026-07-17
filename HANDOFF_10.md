@@ -1,18 +1,18 @@
 # HANDOFF_10：M1—M2数据与协议交接
 
 > 提交给：任务00总控审核
-> SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.15 第17节任务10；本项目只执行T-AFFC路线
-> 交接日期：2026-07-16
-> 提交状态：00已接受I3D序列协议与Git检查点；G1通过，复现陈旧和序列协议子阻塞关闭，G2仅保留CSMV输入资产准入阻塞
+> SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.16 第17节任务10；本项目只执行T-AFFC路线
+> 交接日期：2026-07-17
+> 提交状态：任务10已完成；G1=`PASS`，G2=`PASS_WITH_ACCEPTED_ASSET_RISK`，任务20已获创建授权
 
 ## 请求的审核结论
 
-00已确认以下状态，且未放行任务20：
+00已确认以下状态，并依据`SC-20260717-01`放行任务20：
 
 - 步骤34—39本地可执行交付是否达到任务10文档与自动化要求；
 - G1=`PASS`；
 - LAI-GAI=`FROZEN_00_APPROVED`，唯一正式split为379组、594/127/126；
-- CSMV媒体元数据lineage与同源split已由00接受；`REVIEW-00-CSMV-FEATURE-PREFLIGHT-G2-20260715`又关闭当前复现陈旧子阻塞；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；全局`formal_split=false`。
+- CSMV媒体元数据lineage与同源split已由00接受；复现陈旧和序列协议子阻塞关闭；`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`；`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`；全局`formal_split=true`。
 
 本轮新增已获00裁定证据：
 
@@ -94,3 +94,10 @@
 - 正式关闭`I3D_SEQUENCE_PROCESSING_PROTOCOL_UNFROZEN`子缺口；主协议、两级敏感性、资源门和论文主张边界不得按test结果改变。
 - 审核基线`cf6dea18ddb057da91e90d6c0104e3e854f1724a`在复审开始时与`origin/main`一致且工作区干净；tracked `.npy`、特征包和超过10 MiB文件均为0。
 - 维护者证明继续`DEFERRED_PENDING_MAINTAINER_REPLY`。剩余G2缺口只有资产级许可、稳定官方revision、包身份与权利方fixity；`formal_split=false`，任务20仍禁止。
+
+## 2026-07-17 G2风险接受与任务20正式放行
+
+- 用户明确要求修改总纲并放行20；00签署`TASK00_G2_RISK_ACCEPTANCE_AND_TASK20_AUTHORIZATION_20260717.md`。
+- 正式状态：G1=`PASS`；G2=`PASS_WITH_ACCEPTED_ASSET_RISK`；G2协议/数据=`PASS_WITH_LIMITATIONS`；资产准入=`DEFERRED_ACCEPTED_RISK`；`formal_split=true`。
+- 任务20已获创建授权，可使用固定I3D本地包进行内部基线训练、统一评测和train-only索引；不得再分发I3D或声称权利方已确认。
+- 任务10完成并停止修改数据协议。后续若资产被权利方否认或hash/覆盖漂移，按授权文件止损并回到任务10。

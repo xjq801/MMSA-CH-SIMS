@@ -2,11 +2,11 @@
   "evidence_files": [
     {
       "path": "CSMV_I3D_SEQUENCE_PROTOCOL_V1.md",
-      "sha256": "e584ecb136c50050a8ac29d06df1236cf4750c07e265526684e27323b272515d"
+      "sha256": "cffef48f488a92c50bbaa5ce5433e2412e7660bc2744d532a93134e46e742bbc"
     },
     {
       "path": "configs/csmv-i3d-sequence-protocol-v1.json",
-      "sha256": "42a7384a6bf2a3c4a18578942decb6ac8afde0ffbf5899cb1f7c111b3c86179d"
+      "sha256": "7e0339ff605d80b806d8acbea2c0f63c01463d94207a9c6ff60cb2eb306fc549"
     },
     {
       "path": "scripts/csmv_i3d_sequence_protocol.py",
@@ -14,24 +14,27 @@
     },
     {
       "path": "scripts/build_csmv_i3d_sequence_protocol_manifest.py",
-      "sha256": "e2e34830f6d3d6342d02e4bb121ba734648778a4d0a511634d3ad80b7e9d8704"
+      "sha256": "37b19f532f87a00dd1f7cf51caf254b984b6dc2302c216afa29ad1bdc4fdc9a4"
     },
     {
       "path": "scripts/validate_csmv_i3d_sequence_protocol.py",
-      "sha256": "eda1d9f369128602d3b8589189af4fcb7bc6ec5a6190b4f1288ab4e4a3d1e51f"
+      "sha256": "2ed042583dd4af92aa05e7989693155a9a3337985b8448dd24835dc2cfa54d9b"
     },
     {
       "path": "tests/test_csmv_i3d_sequence_protocol.py",
       "sha256": "b5bd760a972bd03fbb5879efa25664ef983210fcaed92c48629f82a8467bb4ff"
     }
   ],
-  "external_attestation": "DEFERRED_PENDING_MAINTAINER_REPLY",
+  "external_attestation": "DEFERRED_ACCEPTED_RISK",
   "freeze_date": "2026-07-16",
   "gate_state": {
-    "formal_split": false,
+    "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
+    "asset_redistribution_allowed": false,
+    "formal_split": true,
     "g1": "PASS",
-    "g2": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
-    "task20_created": false
+    "g2": "PASS_WITH_ACCEPTED_ASSET_RISK",
+    "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+    "task20_authorized": true
   },
   "length_profile": {
     "equal_180": 4,

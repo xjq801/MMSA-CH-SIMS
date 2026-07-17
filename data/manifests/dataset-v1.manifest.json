@@ -1,4 +1,5 @@
 {
+  "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
   "auxiliary_silver": {
     "formal_test_use": "PROHIBITED",
     "manifest": "silver-v1.manifest.json",
@@ -7,16 +8,19 @@
   },
   "comment_text_in_release": false,
   "csmv_i3d_sequence_protocol": {
-    "formal_asset_use_allowed": false,
+    "internal_asset_use_allowed_under_accepted_risk": true,
     "main": "FULL_SEQUENCE_DYNAMIC_PADDING_MASK",
     "manifest": "csmv-i3d-sequence-protocol-v1.manifest.json",
     "primary_sensitivity": "UNIFORM_180_ENDPOINT_INCLUSIVE",
-    "sha256": "208615d4059afc8c5c2c57a5ffc13eeafa9a71ece861332d9f1cd62bc9c4d5be",
+    "redistribution_allowed": false,
+    "sha256": "27f27c413016c4911fcf0f19904b7796d75b12b22747c5e769a3603970754cf5",
     "status": "PREREGISTERED_BEFORE_TEST_RESULTS"
   },
   "csmv_input_asset_preflight": {
-    "formal_model_input_allowed": false,
+    "internal_model_input_allowed_under_accepted_risk": true,
     "manifest": "csmv-feature-preflight-v1.manifest.json",
+    "preflight_formal_model_input_allowed": false,
+    "redistribution_allowed": false,
     "sha256": "e1dc40a3dd617e03935088ddd5f148de206e2f2ca659c39e53594dd74d624f03",
     "status": "QUARANTINE_ACQUIRED_LICENSE_REVISION_ATTESTATION_PENDING"
   },
@@ -26,16 +30,16 @@
   },
   "data_audit_report": {
     "path": "DATA_AUDIT_REPORT_V1.md",
-    "sha256": "a3922d2793074d56f40711d56988b12e20645b638c3720ac27ec1828b60e9008"
+    "sha256": "bb8b93585568b4b4017e5e8bd7a2ae0748c783aad0061a8e5e52ddcdacf8d37b"
   },
   "documentation": [
     {
       "path": "DATA_CARD_DATASET_V1.md",
-      "sha256": "ea787ce5892ad70333f3b6e185d03bbbe7d8719610ee097374ff8c0332f1ed62"
+      "sha256": "e65f9febf879a6a2670d86633728c8b1bacb2e4b9a76a4dfd5c5f1a30edba494"
     },
     {
       "path": "DATASHEET_DATASET_V1.md",
-      "sha256": "958df91529b5f2c29e13ae399ed84e1ea0e52a6977ef0bd5381c08ed54cc3365"
+      "sha256": "6721b0e6d3f2468ec287dfc16d5cd1f43e348bb58cf9de99435b374f769c8811"
     },
     {
       "path": "PRIVACY_STATEMENT.md",
@@ -47,22 +51,24 @@
     },
     {
       "path": "DATA_RELEASE_BOUNDARY.md",
-      "sha256": "6c1ae427738e12ad3464461d3f6213f2ac8b1fceeb4cb4487d305abc828ee2c1"
+      "sha256": "a660737001457c2783286f39920a6ff4a4b8f1af92908eb7e6b68dd800a5abc2"
     }
   ],
-  "formal_model_use_allowed": false,
+  "formal_model_use_allowed": true,
   "g1_passed": true,
   "g1_status": "PASS",
-  "g2_passed": false,
-  "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+  "g2_passed": true,
+  "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+  "g2_status": "PASS_WITH_ACCEPTED_ASSET_RISK",
   "label_provenance_manifest": {
     "manifest": "label-provenance-v1.manifest.json",
-    "sha256": "bfab00156f5d97c6b21bd16d3d61b7b1d84949a6e324512d4d4baedfdae24e65"
+    "sha256": "0ac81e2db69f1e883599cb654bb679d10c1411f570e97ab6c2678f7699ce5a43"
   },
   "leakage_manifest": {
     "manifest": "leakage-audit-v1.manifest.json",
-    "sha256": "855cc47e64f731a5ff13e4476077f6072bd73161763cdcab330417cbcf6656d3"
+    "sha256": "982c5a75019ae6178f39797664aa390a65c336e2b78ef45c25ece96eb59991dc"
   },
+  "model_use_scope": "INTERNAL_RESEARCH_ONLY_NO_ASSET_REDISTRIBUTION",
   "primary_human_gold": {
     "manifest": "human-gold-v1.manifest.json",
     "records": 8210,
@@ -78,9 +84,9 @@
   "sensitive_user_identifiers_in_release": false,
   "split_manifest": {
     "manifest": "split-v1.manifest.json",
-    "sha256": "9dc31a930af19e6b2cbb6f5c5c2e78defd4bac01406e60842022b133b9b470bc"
+    "sha256": "6a15f992b9e5839d6f21b4a6d40619f48bb14445b18a0c1814024794f56b6780"
   },
-  "status": "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED",
+  "status": "PROTOCOL_DATA_G2_PASS_ASSET_RISK_ACCEPTED",
   "unlabeled": {
     "manifest": "unlabeled-v1.manifest.json",
     "records": 0

@@ -98,12 +98,15 @@ def build_manifest() -> dict:
             "e5": "NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY",
             "h3": "NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL_UNLESS_ANOTHER_PROTOCOL_QUALIFIES",
         },
-        "external_attestation": "DEFERRED_PENDING_MAINTAINER_REPLY",
+        "external_attestation": "DEFERRED_ACCEPTED_RISK",
         "gate_state": {
             "g1": "PASS",
-            "g2": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
-            "formal_split": False,
-            "task20_created": False,
+            "g2": "PASS_WITH_ACCEPTED_ASSET_RISK",
+            "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+            "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
+            "formal_split": True,
+            "task20_authorized": True,
+            "asset_redistribution_allowed": False,
         },
         "evidence_files": [
             {"path": relative, "sha256": sha256_file(ROOT / relative)}

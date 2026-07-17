@@ -442,3 +442,12 @@
 - J0—J2、JH1—JH3、任务25/65、IJCV日历和投稿门已从当前项目活动总纲与任务树中移除；历史双路线方案只读归档。
 - 任务10交接、代理规范、决策日志、风险台账和claim边界已同步为T-AFFC-only，避免后续任务误读双路线。
 - 科学门没有借迁出而放宽：G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`；`formal_split=false`；任务20仍未创建。
+
+## 2026-07-17 — G2拆分并放行任务20
+
+- 用户明确要求将总纲中的G2拆为协议/数据门与资产风险状态，并放行任务20；该指令登记为`SC-20260717-01`。
+- 非资产复审已证明没有第二个数据、协议、泄漏、标签隔离或复现阻塞，因此`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`。
+- I3D资产级许可、稳定官方revision及权利方包身份/fixity仍未获确认，诚实登记为`DEFERRED_ACCEPTED_RISK`，不改写为PASS或维护者已确认。
+- 总门更新为`PASS_WITH_ACCEPTED_ASSET_RISK`，`formal_split=true`，任务20获内部研究授权；I3D与受限资产不得再分发，论文必须披露风险。
+- 若权利方否认使用、固定资产hash/覆盖漂移或任务20绕开冻结协议，相关运行立即停止并失去正式证据资格。
+- 当前正在重建机器manifest、M2 release和综合门；验证并绑定Git提交后创建任务20。

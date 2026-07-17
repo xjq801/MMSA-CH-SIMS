@@ -1,10 +1,10 @@
 # 任务计划：Codex任务树执行规格
 
 ## 目标
-基于 `TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` 当前v1.12，为00—60七个Codex任务形成可直接执行、可验收、可交接的详细工作规格。
+基于 `TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` 当前v1.16，为00—60七个Codex任务形成可直接执行、可验收、可交接的详细工作规格。
 
 ## 当前阶段
-阶段18的CSMV命名空间纠正与同源split已获00接受，公共核心19项复现零漂移，G1=`PASS`。音频已裁定为结构性不可得并移出G2/取得关键路径；当前G2只剩一个CSMV视觉特征族的资产许可、稳定revision与权利方包身份/fixity准入。G2书面通过前不进入任务20。
+CSMV命名空间纠正与同源split已获00接受，公共核心19项复现零漂移，G1=`PASS`。音频已裁定为结构性不可得并移出G2/取得关键路径。用户已通过`SC-20260717-01`接受I3D外部证明延期风险：`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、`formal_split=true`，任务20获准启动内部研究；许可与权利方身份未知项仍不得写成已解决，I3D不得再分发。
 
 ### 00专项：音频模态与实际可得输入协议复审（2026-07-16）
 - [x] 独立复核T-AFFC General CFP、CSMV固定README、NeurIPS 2024正式入口及总纲G2条款
@@ -12,8 +12,8 @@
 - [x] 冻结音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`并移出G2/取得关键路径
 - [x] 将E1/E5/H3改为仅对实际T0输入生效，建立三个机器可读`NOT_APPLICABLE`状态
 - [x] 同步总纲v1.12、实验协议v2、G门、交接、Data Card、Datasheet和决策日志
-- [ ] 继续等待/闭合I3D资产许可、稳定revision与包身份/fixity；未放行G2或任务20
-- **状态：** audio_boundary_closed_g2_visual_asset_blocked
+- [x] 将I3D许可、稳定revision与包身份/fixity登记为`DEFERRED_ACCEPTED_RISK`，不再作为任务20启动阻塞
+- **状态：** audio_boundary_closed_task20_authorized_with_asset_risk
 
 ## 各阶段
 
@@ -288,3 +288,12 @@
 - [x] 同步任务10交接、代理规范、决策、风险和claim边界；历史IJCV材料标记为迁出归档。
 - [x] 运行工作日志、综合准备、diff与Git同步检查。
 - **状态：** completed
+
+### 阶段23：G2拆分、资产风险接受与任务20放行（2026-07-17）
+
+- [x] 将总纲升级为v1.16，冻结`G2_PROTOCOL_DATA`与`ASSET_ADMISSIBILITY`两个正交状态。
+- [x] 签署`SC-20260717-01`及`TASK00_G2_RISK_ACCEPTANCE_AND_TASK20_AUTHORIZATION_20260717.md`。
+- [x] 同步数据卡、Datasheet、发布边界、实验协议、数据协议、证据/决策/风险台账和机器manifest构建合同。
+- [x] 重建并验证M2 release、泄漏门、I3D序列manifest、19项公共核心复现及综合准备检查。
+- [ ] 创建任务20并绑定最终Git提交；任务20只允许内部训练、train-only索引和冻结评估，不得再分发I3D或虚构权利方确认。
+- **状态：** release_validated_pending_task20_thread_handoff

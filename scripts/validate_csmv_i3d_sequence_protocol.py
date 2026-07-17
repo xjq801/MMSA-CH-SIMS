@@ -148,11 +148,14 @@ def validate() -> dict:
     claim = manifest.get("paper_claim_contract", {})
     checks["honest_boundary"] = {
         "passed": (
-            manifest.get("external_attestation") == "DEFERRED_PENDING_MAINTAINER_REPLY"
+            manifest.get("external_attestation") == "DEFERRED_ACCEPTED_RISK"
             and gate.get("g1") == "PASS"
-            and gate.get("g2") == "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE"
-            and gate.get("formal_split") is False
-            and gate.get("task20_created") is False
+            and gate.get("g2") == "PASS_WITH_ACCEPTED_ASSET_RISK"
+            and gate.get("g2_protocol_data") == "PASS_WITH_LIMITATIONS"
+            and gate.get("asset_admissibility") == "DEFERRED_ACCEPTED_RISK"
+            and gate.get("formal_split") is True
+            and gate.get("task20_authorized") is True
+            and gate.get("asset_redistribution_allowed") is False
             and claim.get("audio") == "STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED"
             and "END_TO_END_VIDEO_ENCODING" in claim.get("prohibited", [])
             and "COMMENT_TEXT_AS_T0_STUDENT_INPUT" in claim.get("prohibited", [])
@@ -162,7 +165,7 @@ def validate() -> dict:
     return {
         "schema": "csmv-i3d-sequence-protocol-check-v1",
         "passed": passed,
-        "status": "PASS_PREREGISTRATION_ONLY_G2_UNCHANGED" if passed else "PROTOCOL_VALIDATION_FAILED",
+        "status": "PASS_PROTOCOL_G2_RISK_ACCEPTED_TASK20_AUTHORIZED" if passed else "PROTOCOL_VALIDATION_FAILED",
         "checks": checks,
     }
 

@@ -75,7 +75,7 @@
 3. 主敏感性规则为`UNIFORM_180_ENDPOINT_INCLUSIVE`：长序列用包含首尾的180个确定性均匀索引，短序列保留并右补零；`FIRST_180_ONLY_FIXED_DIAGNOSTIC`只作预注册补充，不得按test结果改变等级。
 4. 空序列、坏shape、非`float32`或非有限值一律拒绝；所有split同规则，无test覆盖、无随机性、无标签依赖。协议全文及fixity证据见`CSMV_I3D_SEQUENCE_PROTOCOL_V1.md`和对应manifest。
 5. E1的`ALL_AVAILABLE_INPUTS`在CSMV即I3D单输入；E5为`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY`。完整序列与180步是同一视觉模态的处理消融，不得冒充模态增量或缺失模态实验；H3资格保持条件化。
-6. 许可、稳定revision和权利方包身份/fixity证明为`DEFERRED_PENDING_MAINTAINER_REPLY`；该延期不改变G2、`formal_split=false`或任务20禁令。
+6. 许可、稳定revision和权利方包身份/fixity证明为`DEFERRED_ACCEPTED_RISK`，不是已解决或已获权利方确认。按`SC-20260717-01`，`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`formal_split=true`，任务20获内部研究授权；禁止再分发I3D，论文必须披露风险。权利方否认或资产hash/覆盖漂移时，相关运行立即失去正式证据资格。
 
 ## 10. 变更纪律
 

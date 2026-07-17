@@ -54,4 +54,4 @@
 - CSMV主张收紧为冻结I3D视觉表征上的公众诱发受众情绪分布预测；端到端视频、原始帧、音视频融合、音频增益与评论文本T0输入均禁止。
 - I3D主序列规则与180步敏感性规则已在任何训练/test结果前冻结于`CSMV_I3D_SEQUENCE_PROTOCOL_V1.md`；其选择只依据8210个输入shape和资源上限。
 - E1在CSMV上为I3D单输入的`ALL_AVAILABLE_INPUTS`；E5/H3缺失模态实验无资格时使用既定`NOT_APPLICABLE`，不能把两种序列处理写成两种模态。
-- 音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`；资产外部证明=`DEFERRED_PENDING_MAINTAINER_REPLY`。G1=`PASS`，G2、`formal_split=false`与任务20禁令不变。
+- 音频=`STRUCTURALLY_UNAVAILABLE_NOT_IMPUTED`；资产外部证明=`DEFERRED_ACCEPTED_RISK`，不是已闭合。按`SC-20260717-01`，G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、`formal_split=true`，任务20获内部研究授权；I3D再分发仍禁止，权利方否认或hash/覆盖漂移触发停用。

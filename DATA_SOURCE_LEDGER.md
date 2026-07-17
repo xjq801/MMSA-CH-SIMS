@@ -65,4 +65,4 @@
 | VCE | NeurIPS官方论文页与supplement | 约60000视频、400名合格标注者、每视频12—15人；27类自身诱发情绪分布 | Reddit/Instagram媒体无正式许可且标注无音频；包revision/size/hash |
 | LAI-GAI | 官方项目页/Data Card、官网图片浏览器、论文v05、OSF DOI、评分组件固定元数据与本地不可变manifest | 官网847图文件树与最终AI评分清单一一闭合；847图逐图hash；12项最小评分文件OSF hash闭合；图像/元数据CC BY 4.0；63682个合规人工反应；00已正式冻结 | 旧K8XVH空列表与0.996519秒偏差不获旧授权门信用；单图域不承担CSMV的视频H1/H2证据 |
 
-下载成功不等于`FIT`。CSMV标签、URL元数据lineage和同源split已由00接受，19项公共核心复现也已由00独立确认当前PASS，但URL hash不能替代正式模型输入资产。LAI-GAI已冻结，G1=`PASS`；G2=`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`。全局`formal_split=false`，不得创建任务20。
+下载成功不等于`FIT`。CSMV标签、URL元数据lineage和同源split已由00接受，19项公共核心复现也已由00独立确认当前PASS，但URL hash不能替代正式模型输入资产。LAI-GAI已冻结，G1=`PASS`。按`SC-20260717-01`，`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、全局`formal_split=true`，任务20获内部研究授权。许可、稳定revision与权利方包身份/fixity仍未获确认；禁止I3D再分发及虚构许可信用，权利方否认或hash/覆盖漂移触发停用和结果失效。

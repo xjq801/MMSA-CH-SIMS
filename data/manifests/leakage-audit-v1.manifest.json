@@ -1,4 +1,5 @@
 {
+  "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
   "checks": {
     "fit_scope": {
       "allowed_fit_split": "train",
@@ -111,8 +112,9 @@
   "dataset_id": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
   "g1_passed": true,
   "g1_status": "PASS",
-  "g2_passed": false,
-  "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+  "g2_passed": true,
+  "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+  "g2_status": "PASS_WITH_ACCEPTED_ASSET_RISK",
   "gate": "PASS_WITH_LIMITATIONS",
   "passed": true,
   "record_count": 8210,

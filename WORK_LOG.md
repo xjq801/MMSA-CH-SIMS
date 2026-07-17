@@ -3033,3 +3033,48 @@ GitHub已固定“非资产G2条件通过、正式G2仍blocked”的审计结论
 ### Git状态
 
 commit `7b82aaa`已推送；本条日志本身尚未提交或推送。
+
+## WR-20260717-003 — 拆分G2、接受I3D资产风险并放行任务20
+
+- 时间：2026-07-17 12:20:00 +08:00
+- 类型：DECISION | PROTOCOL | DATA | VALIDATION | HANDOFF
+- 任务/门：00-总控 / G2正式裁定与任务20启动
+- 状态：完成待任务线程创建
+- 负责人：Codex
+
+### 背景与目标
+
+用户明确要求修改总纲，将门拆为“协议/数据G2通过”与“资产风险延期接受”，并放行任务20。本批次把该授权写入SSOT、机器manifest、验证器、数据与实验文档；未知许可事实不得因风险接受而改写为已闭合。
+
+### 实际变更
+
+- 总纲升级为v1.16，新增`SC-20260717-01`：`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、`formal_split=true`、`internal_model_use_allowed=true`。
+- 新建`TASK00_G2_RISK_ACCEPTANCE_AND_TASK20_AUTHORIZATION_20260717.md`，明确任务20允许范围、I3D再分发禁令、论文披露和权利方否认/hash漂移止损条件。
+- 同步G1/G2矩阵、任务10交接、决策/风险/claim台账、Data Card、Datasheet、发布边界、数据源台账、M2数据协议、实验协议、I3D序列协议、研究冻结审计、计划与进度。
+- 更新M2 release、泄漏门、数据工程与I3D序列构建/验证脚本；重建dataset、split、label-provenance、leakage、sequence和reproducibility manifests。
+- 未修改原始数据、标签定义、split算法或I3D特征字节；I3D资产级许可、稳定官方revision和权利方包身份/fixity仍保持未知。
+
+### 验证与证据
+
+- `python -m compileall -q scripts`：exit 0；I3D序列manifest构建、8项单测和专项validator均exit 0，专项状态=`PASS_PROTOCOL_G2_RISK_ACCEPTED_TASK20_AUTHORIZED`。
+- 首次误调用`build_m2_data_artifacts.py`未提供必选参数：exit 2并显示usage；未隐瞒。改用`--public-core`后构建成功。
+- M2数据构建、泄漏正门、release构建与数据工程validator均exit 0；首轮release validator因6个授权性状态输出尚未写入复现基线而exit 1，准确报告6项mismatch。
+- 随后两次`reproduce_m2_minimal.py --public-core`均exit 0；Python 3.8.9、`-I -S`、19项before/after一致、`mismatches=[]`。最终`validate_m2_release.py` exit 0，G1 PASS、G2风险接受PASS、`formal_split=true`。
+- `run_m2_leakage_tests.py --selftest --no-write`：exit 0并正确输出`LEAKAGE_BLOCKED (expected negative fixture)`。
+- `run_preparation_checks.py`：exit 0，`blocking_checks=[]`；`formal_model_work_ready=false`仅因当前环境缺少faiss，任务20须先完成正式环境锁定与安装，不撤销其创建授权。
+
+### 影响与边界
+
+任务20已经获得创建与内部研究授权。I3D未知许可/revision/权利方fixity从启动硬阻塞转为持续风险账，不是许可证据；禁止提交或再分发`.npy`，禁止声称权利方确认。若权利方否认、固定hash/8210覆盖漂移或任务绕开冻结协议，相关运行立即标记`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 风险、问题与阻塞
+
+当前无任务20创建阻塞。正式实验环境仍需由任务20安装并锁定faiss等依赖；在该环境门通过前不得把环境诊断写成已就绪。公开发布模型权重、embedding或索引仍须单独审计其是否封装或可逆推出受限特征。
+
+### 下一步
+
+提交并推送本批次状态合同，创建`20-M3 基线与统一评测`任务，绑定最终Git提交并从环境/配置/加载器/指标和最小基线测试开始。
+
+### Git状态
+
+本条及本批次变更在记录时尚未提交或推送；任务20线程尚未创建。

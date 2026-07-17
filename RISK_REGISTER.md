@@ -11,7 +11,7 @@
 | `R-PROTOCOL-001` | LAI-GAI API审计请求间隔违反硬下限 | 请求2→3为0.996519秒，低于1秒0.003481秒；专项validator exit 1 | 本轮不能声明授权合规，综合准备门保持阻塞 | 不设容差、不追溯豁免、不重跑；采集器未来余量+0.1秒 | CLOSED_FOR_THIS_RUN_NONCONFORMING；历史失败永久保留 |
 | `R-CLAIM-001` | 把图像跨域验证夸大为第二多模态视频复现 | LAI-GAI为单图，缺音频/视频；H1/H2字段可能不适用 | 论文构念、实验同构性和投稿可信度受损 | 总纲v1.6限定主张；不适用项记`NOT_APPLICABLE_BY_DESIGN` | CONTROLLED_OPEN；G4/G6据真实证据重新审核 |
 | `R-LEAK-001` | 生成prompt或目标类别形成标签捷径 | 预设目标与人类最高评分并非完全一致 | T0输入泄漏、人工真值被伪标签替代 | prompt只存hash/provenance，目标类别标为非真值，二者均禁止进入模型；专项字段与负面门通过 | CLOSED_FOR_LAI_GAI_V1；映射或输入合同升版时重开 |
-| `R-DATA-003` | CSMV正式视频/特征输入资产许可与固定性未知 | README仅明确annotations许可；TikTok媒体与Google Drive特征未取得资产级license/revision/file tree/size/hash | 无法构造合法、固定、可追溯的CSMV正式多模态测试输入 | Issue #5等待权利方回复；效率政策允许从官方或可信镜像隔离预取候选特征并核hash/覆盖，但不外推许可、不用于正式模型 | BLOCKING_G2；关闭条件为选定特征族许可/revision/manifest/schema与8210覆盖闭合 |
+| `R-DATA-003` | CSMV I3D资产许可与官方身份仍未知 | 本地9942文件、8210必需键、schema和hash闭合；权利方未确认asset license、稳定revision或包身份/fixity | 可能影响审稿、复现、模型/特征发布及后续合规；若权利方否认，依赖I3D的结果须撤回 | 用户以`SC-20260717-01`接受延期风险；仅内部研究、禁止再分发、强制披露；继续等待Issue #5但不阻塞任务20 | ACCEPTED_HIGH_RISK_NONBLOCKING_G2；权利方否认或hash漂移立即止损 |
 | `R-REPRO-001` | source-family修复后复现manifest陈旧 | 旧18输出manifest的记录hash与当时9项文件不一致；旧validator未现场重算 | 不能证明当前split可从manifest隔离重建，可能把旧PASS误作新PASS | 公共核心隔离重放扩为19项；validator现场重算；00独立重跑 | CLOSED_20260715；19项当前零漂移，后续任一漂移继续fail-closed |
 | `R-IJCV-001` | 当前CARM视觉方法性不足且与VEDL近邻撞车 | 专刊强调新CV方法；PC Loss、SAMNet、MFRN已覆盖分布结构、主观分支/affective memory和特征精炼 | 仅影响已迁出的IJCV方向，不再影响本项目G门 | 风险及J0/J1/J2控制已迁至独立IJCV项目；本项目不执行视觉表征路线 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
 | `R-IJCV-002` | 缺少第二个像素可得、许可固定的人工主观分布集 | LAI-GAI已冻结；其他图像集仍需逐资产准入 | 仅影响已迁出的IJCV方向，不再是本项目数据门 | 第二像素人工集准入由独立IJCV项目维护；本项目任务10不再取得该数据 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |

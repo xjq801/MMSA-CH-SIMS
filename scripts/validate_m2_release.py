@@ -32,6 +32,7 @@ REQUIRED = [
     "HANDOFF_10.md",
     "TASK00_CSMV_LINEAGE_G2_REVIEW_20260715.md",
     "TASK00_CSMV_FEATURE_PREFLIGHT_G2_REVIEW_20260715.md",
+    "TASK00_G2_RISK_ACCEPTANCE_AND_TASK20_AUTHORIZATION_20260717.md",
     "TASK00_CSMV_ONE_FEATURE_FAMILY_METADATA_COORDINATION_AUTHORIZATION_20260715.md",
     "CSMV_FEATURE_ASSET_PREFLIGHT_20260715.md",
     "scripts/validate_csmv_feature_preflight.py",
@@ -93,15 +94,19 @@ def validate_m2_release() -> dict:
     provenance = read_json(MANIFEST_ROOT / "label-provenance-v1.manifest.json")
     checks["honest_release_state"] = {
         "passed": (
-            dataset.get("status") == "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED"
-            and dataset.get("formal_model_use_allowed") is False
+            dataset.get("status") == "PROTOCOL_DATA_G2_PASS_ASSET_RISK_ACCEPTED"
+            and dataset.get("formal_model_use_allowed") is True
+            and dataset.get("model_use_scope") == "INTERNAL_RESEARCH_ONLY_NO_ASSET_REDISTRIBUTION"
             and dataset.get("g1_passed") is True
             and dataset.get("g1_status") == "PASS"
-            and dataset.get("g2_passed") is False
-            and dataset.get("g2_status") == "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE"
-            and split.get("formal_split") is False
-            and split.get("status") == "LOCAL_CANDIDATE_G1_PASS_G2_BLOCKED"
-            and provenance.get("formal_evaluation_eligible") is False
+            and dataset.get("g2_passed") is True
+            and dataset.get("g2_status") == "PASS_WITH_ACCEPTED_ASSET_RISK"
+            and dataset.get("g2_protocol_data") == "PASS_WITH_LIMITATIONS"
+            and dataset.get("asset_admissibility") == "DEFERRED_ACCEPTED_RISK"
+            and split.get("formal_split") is True
+            and split.get("status") == "FORMAL_PROTOCOL_SPLIT_ASSET_RISK_ACCEPTED"
+            and provenance.get("formal_evaluation_eligible") is True
+            and provenance.get("asset_admissibility") == "DEFERRED_ACCEPTED_RISK"
             and provenance.get("mixed_tier_loading") == "PROHIBITED"
         ),
         "dataset_status": dataset.get("status"),
@@ -169,13 +174,14 @@ def validate_m2_release() -> dict:
     checks["gate_evidence_and_handoff"] = {
         "passed": (
             "G1=`PASS`" in matrix
-            and "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE" in matrix
+            and "G2=`PASS_WITH_ACCEPTED_ASSET_RISK`" in matrix
+            and "ASSET_ADMISSIBILITY=`DEFERRED_ACCEPTED_RISK`" in matrix
             and "REVIEW-00-CSMV-FEATURE-PREFLIGHT-G2-20260715" in matrix
             and "00已确认" in handoff
-            and "不创建任务20" in handoff
+            and "任务20已获创建授权" in handoff
         ),
         "g1_claimed_pass": True,
-        "g2_claimed_pass": False,
+        "g2_claimed_pass": True,
     }
 
     passed = all(result["passed"] for result in checks.values())
@@ -185,8 +191,10 @@ def validate_m2_release() -> dict:
         "steps_34_39_local_package_ready": passed,
         "g1_passed": passed,
         "g1_status": "PASS" if passed else "VALIDATION_FAILED",
-        "g2_passed": False,
-        "g2_status": "BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE",
+        "g2_passed": passed,
+        "g2_status": "PASS_WITH_ACCEPTED_ASSET_RISK" if passed else "VALIDATION_FAILED",
+        "g2_protocol_data": "PASS_WITH_LIMITATIONS" if passed else "VALIDATION_FAILED",
+        "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
         "checks": checks,
     }
 

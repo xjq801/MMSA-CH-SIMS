@@ -5,6 +5,8 @@
 > 反事实结论：`PASS_NON_ASSET_G2_REQUIREMENTS_WITH_LIMITATIONS`  
 > 正式门状态：`G2=BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，未改变
 
+> 后续裁定：本报告的反事实结论已由`SC-20260717-01`正式采纳并取代上述历史门状态。当前`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、`formal_split=true`，任务20获内部研究授权；资产未知项本身仍未闭合。
+
 ## 1. 结论
 
 排除I3D资产准入包后，当前G2的其余数据、协议、泄漏、标签隔离、复现和文档条件均已通过现场复核。因此可以准确地说：
@@ -62,4 +64,3 @@
 - `scripts/validate_csmv_i3d_sequence_protocol.py`：exit 0。
 - `scripts/validate_lai_gai_second_primary.py`：exit 0。
 - `scripts/run_preparation_checks.py`：exit 0；`blocking_checks=[]`、`formal_model_work_ready=false`。
-

@@ -1,9 +1,9 @@
 # CSMV I3D序列处理协议 v1
 
-> 冻结日期：2026-07-16  
+> 冻结日期：2026-07-17  
 > 状态：`PREREGISTERED_BEFORE_TEST_RESULTS`  
 > 适用输入：CSMV冻结I3D视觉表征，`float32[T,1024]`  
-> 正式资产边界：仍为隔离候选；本协议不授予许可、G2或正式split信用
+> 正式资产边界：`DEFERRED_ACCEPTED_RISK`；仅授权内部研究，不授予许可或再分发权
 
 ## 1. 冻结依据
 
@@ -46,4 +46,4 @@
 
 E1在CSMV上只有一个实际T0内容模态，`ALL_AVAILABLE_INPUTS`即I3D，逐模态增量为`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY`。E5/H3的缺失模态分支不因完整序列与180步处理方式而获得资格；若无其他同样本多输入协议，H3为`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL`。主协议与180步敏感性只构成视觉序列处理消融。
 
-维护者许可、稳定revision和权利方包身份/fixity证明按用户指令暂记`DEFERRED_PENDING_MAINTAINER_REPLY`。这不是已解决：G1保持`PASS`，G2保持`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，`formal_split=false`，不创建任务20。
+维护者许可、稳定revision和权利方包身份/fixity证明按`SC-20260717-01`记为`DEFERRED_ACCEPTED_RISK`。这不是已解决或已获权利方确认：G1=`PASS`，`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`，总门为`PASS_WITH_ACCEPTED_ASSET_RISK`，`formal_split=true`，任务20仅获内部研究授权。I3D及其受限派生资产不得再分发，论文必须披露不确定性；若权利方否认或资产hash/覆盖漂移，相关运行必须停止并失去正式证据资格。

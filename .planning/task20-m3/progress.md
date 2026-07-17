@@ -77,3 +77,8 @@
 - 比较器提交`f6a8363`并推送后，以clean工作区在本地3070 Ti完成全量12-trial dev replay，833秒结束。
 - 四项核心产物、model state和standardizer均与原正式dev run逐字节hash一致；不重跑test，复现边界仅为同环境同seed。
 - baseline-table-v1已按任务16冻结；正式G3证据包已生成，待证据提交推送后发送00任务。
+
+## 2026-07-18 任务18提交完成
+
+- 证据提交`b89d8dc`推送main后，已将正式G3包与风险边界发送新00总控任务`019f6e64-0635-7ac0-a70a-65445b0fc1d1`。
+- 任务18状态为`SUBMITTED_PENDING_00_REVIEW`；任务20不自行设置G3 PASS，后续只响应00的接受、补证或拒绝结论。

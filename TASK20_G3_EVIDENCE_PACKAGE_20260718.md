@@ -1,6 +1,6 @@
 # 任务20 G3证据提交包
 
-> 提交状态：`READY_FOR_00_REVIEW_WITH_ACCEPTED_ASSET_RISK`  
+> 提交状态：`SUBMITTED_TO_00_PENDING_REVIEW_WITH_ACCEPTED_ASSET_RISK`  
 > G3决定：`NOT_SET_BY_TASK20_PENDING_00_REVIEW`  
 > SSOT：总纲v1.16第17节任务20  
 > 证据日期：2026-07-18 +08:00
@@ -36,7 +36,7 @@
 | 15 | COMPLETED | smoke、单种子完整run、正式dev同seed独立replay及fail-closed hash比较 |
 | 16 | COMPLETED | `BASELINE_TABLE_V1.md`已冻结，四类证据身份明确分离 |
 | 17 | COMPLETED | `TASK20_BASELINE_EXECUTION_AUDIT.md`保留依赖、数据、许可、性能和实现根因 |
-| 18 | READY_TO_SUBMIT | 本包提交并推送后发送00任务；00验收状态不由任务20预填 |
+| 18 | SUBMITTED_PENDING_00_REVIEW | 已发送新00总控任务；00验收状态不由任务20预填 |
 
 ## 正式运行证据
 

@@ -12,7 +12,7 @@
 - [completed] C. Legacy 基线（6、12）：统一CSMV资格仍被数据协议阻断；已按独立冻结的publisher-disjoint原生二分类合同完成CatBoost/HGB/LightGBM各12-trial重跑，明确非T0、不可比较、不可承担主结论。
 - [completed] D. 官方/强基线（7）：官方revision无模型代码且输入非T0的失败证据保留；冻结I3D temporal-attention以强视觉重实现完成12-trial dev选择和单种子test一次评测，明确非VC-CSA官方复现。
 - [completed] E. 冻结特征模型与 E1（8–9）：pooled MLP/temporal attention及安全test路径已实现；late fusion/cross-attention/E1按单模态登记不适用。
-- [in_progress] F. 运行与交付（15–18）：任务15正式dev replay与任务16 baseline-table-v1已完成；任务18正式G3包已生成，待提交推送后发送00任务。
+- [completed] F. 运行与交付（15–18）：任务15正式dev replay、任务16 baseline-table-v1和任务18向新00总控提交G3证据均已完成；G3接受/补证/拒绝结论待00独立审查。
 
 ## 冻结输入指针
 

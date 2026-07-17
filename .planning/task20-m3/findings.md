@@ -49,3 +49,11 @@
 - pooled runner原test路径把test用于早停；正式test从未运行。新增红测后改为train拟合、dev早停、test只前向一次，并让冻结dev selection进入manifest输入hash。
 - temporal-attention新增train-only流式时序标准化、冻结动态padding训练、12-trial runner、dev/test负门、失败产物和manifest；test同样只前向一次。
 - temporal CPU smoke固定32 train/16 dev、1 trial、2 epochs；两次独立同seed运行的predictions/metrics/selection hash完全一致，manifest均通过schema；不具有论文结果资格。
+
+## 任务6原48维native legacy重跑
+
+- 租用A30端口复查超时，不得标记为可用；用户允许本地3070 Ti，但2787×48树模型单trial烟测仅约4.8秒/三模型，故统一使用本地CPU以保持三模型执行口径稳定。
+- 新增独立`LEGACY_NATIVE_COMPATIBILITY_ONLY`合同，不改变CSMV八类分布/T0正式协议；publisher hash split为1905/307/575条，28/6/9组，交集为0。
+- CatBoost/HGB/LightGBM各执行12个冻结trial，dev选参后test各调用一次；完整运行36.4秒。
+- test Macro-F1分别为0.5346/0.4591/0.3645，正类Recall分别为0.2183/0.1338/0.0528；低值与跨publisher泛化问题原样保留，不做test后适配。
+- run bundle只含单向hash样本/组ID和聚合fixity，不含原始特征、本机路径、旧论文数字或受限I3D资产；结果仅用于legacy附表。

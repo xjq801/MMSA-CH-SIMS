@@ -3567,3 +3567,129 @@ pooled与temporal模型的test路径现在不会用test选择epoch；temporal强
 ### Git状态
 
 实现提交`9c06a149146d766186eecf8065a9f1897167f556`已推送`origin/main`；本条日志将作为后续日志提交同步。
+
+## WR-20260717-016 — 完成任务20第6项原48维native legacy重跑
+
+- 时间：2026-07-17 22:36:36 +08:00
+- 类型：PROGRESS | EXPERIMENT | TEST | DOC
+- 任务/门：20-M3 / 总纲任务20第6项
+- 状态：legacy原生兼容重跑完成；不具备CSMV统一正式结果资格
+- 负责人：Codex
+
+### 背景与目标
+
+用户明确要求重跑任务6，并允许优先使用本地3070 Ti；若耗时过长再租算力。原48维资产为CUC 2787条SILVER二分类、含非T0字段且没有CSMV正式split，故不能改写为八类分布正式结果。本批目标是在不修改总纲、G门或CSMV冻结协议的前提下，建立独立native legacy合同，重新运行CatBoost/HGB/LightGBM且不复用旧论文数字。
+
+### 实际变更
+
+- 新增`configs/task20/legacy-48-native-rerun-v1.json`，固定`LEGACY_NATIVE_COMPATIBILITY_ONLY`、publisher hash split、每模型12-trial、dev按Macro-F1选择和test一次性评测。
+- 新增`scripts/task20_legacy48.py`与`scripts/run_task20_legacy48.py`：加载有限48维二分类记录、输出单向hash样本/组ID、验证发布者组不跨split、计算Macro-F1/Balanced Accuracy/AUPRC/Recall等指标，并禁止将该结果标为CSMV统一主表资格。
+- 新增`tests/test_task20_legacy48.py`共6项测试；先后出现缺模块与缺API两轮预期失败，再完成最小实现。
+- 运行三模型各1个dev-only trial，合计约4.8秒；据此判断完整36 trial无需GPU。完整本地CPU运行耗时36.4秒，split为train/dev/test 1905/307/575条、28/6/9个发布者组。
+- CatBoost/HGB/LightGBM的test Macro-F1分别为0.5346/0.4591/0.3645，Balanced Accuracy为0.6006/0.5514/0.4766，AUPRC为0.6884/0.5989/0.4581，正类Recall为0.2183/0.1338/0.0528；每模型test调用均为1次，不做test后调参。
+- 本机忽略的run bundle位于`results/task20/legacy48-native-rerun-v1/`，包含metrics、predictions、split/run manifest及artifact hashes；不含原始48维特征、本机路径、旧论文数字或I3D资产。
+- 更新`BASELINE_TABLE_V1.md`、`TASK20_BASELINE_EXECUTION_AUDIT.md`、`experiments/EXPERIMENT_REGISTRY.md`与`.planning/task20-m3/`三份规划记录；原统一正式尝试的`FAILED_DATA_MISMATCH_NO_FROZEN_SPLIT_T0_INELIGIBLE`历史记录继续保留。
+
+### 验证与证据
+
+- 租用A30 TCP连通性复查：5秒超时，`TCP_REACHABLE=False`；未标记为可用，也未向远端传输数据。
+- `\.venv-task20\Scripts\python.exe -m unittest tests.test_task20_legacy48 -v`：首次因`task20_legacy48`缺失失败，第二次因`build_split_manifest`缺失失败；实现后6/6通过。
+- `\.venv-task20\Scripts\python.exe scripts\run_task20_legacy48.py --data-dir <external-local-read-only> --output results\task20\legacy48-dev-smoke-20260717 --max-trials-per-model 1 --dev-only`：exit 0，三模型test均`NOT_EVALUATED_DEV_ONLY`。
+- 同一runner完整运行：exit 0，三模型各12 trial、test各调用1次、1725条test预测，状态`COMPLETED_LEGACY_NATIVE_NON_T0_NON_COMPARABLE`。
+- run bundle合同复核：`RUN_BUNDLE_CONTRACT_OK=True`，路径/项目名扫描无命中；metrics、run manifest、split manifest、predictions四个SHA-256已写入本机`artifact-hashes.json`。
+- `\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，52项全部通过。
+- `\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`：exit 0。
+- `git diff --check`：exit 0。
+
+### 影响与边界
+
+任务6现在拥有重新计算的独立legacy原生兼容结果，但这些特征非T0、标签为SILVER二分类、资产2787/2815版本漂移和221条标签冲突仍未解决。结果只能进入明确的legacy附表，不能与CSMV八类分布结果比较、不能承担主结论或升级G门。I3D许可、官方revision、权利方包身份/fixity未知状态未改变。
+
+### 风险、问题与阻塞
+
+- 租用A30当前不可连接；本批树模型因实测仅36.4秒而按用户授权使用本地CPU完成，不构成高算力替代。
+- LightGBM的跨发布者test Balanced Accuracy低于0.5，三模型正类Recall均低；失败表现如实保留，不静默删除或test后调参。
+- CSMV正式I3D训练、任务7正式强基线及最终G3证据仍受合格GPU运行时和既有资产边界约束。
+
+### 下一步
+
+1. 运行`validate_work_log.py`与`run_preparation_checks.py`两项项目门禁。
+2. 复核diff与Git状态；若门禁通过，再有意提交和同步本批任务6实现与聚合文档，继续排除`results/`原始run bundle。
+
+### Git状态
+
+本条写入时改动尚未提交或推送，工作区非clean；`results/`保持Git忽略。
+
+## WR-20260717-017 — 更正WR-20260717-016验证命令路径
+
+- 时间：2026-07-17 22:37:27 +08:00
+- 类型：DOC
+- 任务/门：20-M3 / 工作记录纠错
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+`WR-20260717-016`的四条任务20独立环境验证命令误将开头的`.\`写成了`\`。按只追加政策不改写原记录，追加本条更正。
+
+### 实际变更
+
+`WR-20260717-016`中的四条对应命令实际均以`.\.venv-task20\Scripts\python.exe`开头；其参数、退出码、测试数量和结果不变。
+
+### 验证与证据
+
+- 本条仅纠正命令文本；实际终端输出已在`WR-20260717-016`记录为6/6新测试、52/52全量测试、compileall exit 0和完整runner exit 0。
+
+### 影响与边界
+
+不改变代码、实验数值、资产边界、G门或Git状态。
+
+### 风险、问题与阻塞
+
+无新增风险；任务6的legacy资格限制和远端GPU不可用状态沿用`WR-20260717-016`。
+
+### 下一步
+
+继续执行提交前项目门禁。
+
+### Git状态
+
+本条与`WR-20260717-016`同批待提交，尚未推送。
+
+## WR-20260717-018 — 完成任务6提交前项目门禁
+
+- 时间：2026-07-17 22:39:11 +08:00
+- 类型：TEST | VALIDATION
+- 任务/门：20-M3 / 任务6提交前门禁
+- 状态：验证通过
+- 负责人：Codex
+
+### 背景与目标
+
+在任务6代码、配置、聚合结果文档与运行记录进入有意提交前，执行AGENTS要求的工作日志验证和准备检查，并复核任务20独立正式环境。
+
+### 实际变更
+
+- 本条仅追加验证事实；未改动实验配置、模型结果、总纲、G门或数据manifest。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，82条记录、最新`WR-20260717-017`、`passed=true`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`secret_scan.hits=[]`；默认环境诚实报告`formal_model_work_ready=false`，原因为默认`.venv`无faiss。
+- `.\.venv-task20\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`、`secret_scan.hits=[]`、`formal_carm_environment.classification=READY_FOR_REVIEW`、`faiss_available=true`、`formal_model_work_ready=true`。
+
+### 影响与边界
+
+门禁证明当前任务6批次满足工作日志、敏感信息扫描、Git忽略和任务20独立环境要求；不改变legacy结果只能用于非T0原生兼容附表的资格限制。
+
+### 风险、问题与阻塞
+
+默认`.venv`无faiss的历史状态未伪装为已解决；任务20独立环境可用。远端A30不可连接和CSMV正式高算力运行阻塞仍保留。
+
+### 下一步
+
+因本条使日志计数变化，复跑强制日志与准备检查，然后复核diff/status并有意提交、推送本批次。
+
+### Git状态
+
+本条写入时尚未提交或推送，工作区非clean；`results/`继续保持忽略。

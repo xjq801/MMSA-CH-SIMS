@@ -45,3 +45,10 @@
 - 发现并以红测修复pooled test早停泄漏：test不再进入训练或epoch选择。
 - 实现完整序列temporal-attention train-only标准化、冻结动态padding、12-trial/dev选择和test只前向runner。
 - temporal本地CPU工程smoke两次同seed独立复跑通过，三类核心产物hash一致；全量测试增至46项通过。
+
+## 2026-07-17 任务6原48维重跑
+
+- 先新增6项legacy测试并经历缺模块/缺API两轮预期红测，随后实现48维loader、发布者隔离split、二分类指标、dev-only选择与test一次性负门。
+- 冻结独立native legacy配置；三模型单trial dev-only smoke合计约4.8秒，确认无需租用GPU。
+- CatBoost/HGB/LightGBM各12-trial完整重跑完成，test各评测一次，总耗时36.4秒；结果标记`COMPLETED_LEGACY_NATIVE_NON_T0_NON_COMPARABLE`。
+- 已生成本机忽略的metrics/predictions/split/run/hash bundle，并更新基线表、执行审计和实验登记；CSMV正式协议与G门未修改。

@@ -9,7 +9,7 @@
 - [completed] A. 输入与环境冻结（1–3）：交接/hash复核、独立环境、schema/run manifest。
 - [completed] B1. 统一评测核心（4–5）：canonical loader、总体均值、主题均值资格/实现、经验分布、多数类。
 - [completed] B2. 统一评测扩展（10–14）：完整指标、bootstrap、预测标准、E0。
-- [blocked] C. Legacy 基线（6、12）：等预算计划已冻结；48维数据无正式split且非T0，正式重跑被数据协议阻断。
+- [completed] C. Legacy 基线（6、12）：统一CSMV资格仍被数据协议阻断；已按独立冻结的publisher-disjoint原生二分类合同完成CatBoost/HGB/LightGBM各12-trial重跑，明确非T0、不可比较、不可承担主结论。
 - [blocked] D. 官方/强基线（7）：官方revision无模型代码且输入非T0；强视觉重实现与runner已完成，正式run被远端GPU运行时阻断。
 - [completed] E. 冻结特征模型与 E1（8–9）：pooled MLP/temporal attention及安全test路径已实现；late fusion/cross-attention/E1按单模态登记不适用。
 - [blocked] F. 运行与交付（15–18）：pooled与temporal CPU smoke及同seed复跑完成；正式run、正式表格和最终G3证据被远端GPU运行时阻断。
@@ -41,9 +41,9 @@
 ## 已知阻塞
 
 - 本地 `.venv-task20` 已完成并通过formal-carm smoke；旧的代理失败仅保留为历史失败证据。
-- LightGBM、VC-CSA/官方强基线代码与许可证尚待盘点；不可用时保留失败记录。
+- LightGBM依赖与任务6原生兼容重跑已完成；VC-CSA官方代码缺失和输入不匹配继续保留失败记录。
 - CSMV 无原生 topic，`topic_heldout_v1.not_assigned=8210`。
 
 ## 当前用户限定
 
-用户已授权继续完成总纲任务20第6–18项；仍禁止提前引入teacher、memory或完整CARM，禁止修改总纲/G门，禁止再分发受限I3D资产。
+用户已授权继续完成总纲任务20第6–18项，并允许任务6先使用本地3070 Ti；本次树模型规模较小，实测本地CPU 36.4秒完成，无需GPU。仍禁止提前引入teacher、memory或完整CARM，禁止修改总纲/G门，禁止再分发受限I3D资产。

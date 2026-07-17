@@ -2,7 +2,7 @@
 
 > 日期：2026-07-17  
 > SSOT：总纲v1.16第17节任务20、`experiment-protocol-v2.md`  
-> 状态：部分完成；正式高算力运行被远端GPU运行时阻塞
+> 状态：任务6已完成独立legacy原生兼容重跑；CSMV正式高算力运行仍被远端GPU运行时阻塞
 
 ## 1. 原48维 legacy baseline（任务6）
 
@@ -16,7 +16,22 @@
 
 `FAILED_DATA_MISMATCH_NO_FROZEN_SPLIT_T0_INELIGIBLE`
 
-CatBoost/HGB/LightGBM依赖和等预算空间已冻结，但不执行无资格数值，不复用旧论文表格。该失败属于任务17要求保留的`DATA_MISMATCH`，不是GPU失败。
+CatBoost/HGB/LightGBM依赖和等预算空间已冻结。上述裁定继续适用于“把48维结果纳入CSMV统一正式评测”的尝试，属于任务17要求保留的`DATA_MISMATCH`，不是GPU失败。
+
+用户随后明确要求重跑任务6。为保留原生任务含义且不修改CSMV冻结协议，新增独立配置`configs/task20/legacy-48-native-rerun-v1.json`，证据类别固定为`LEGACY_NATIVE_COMPATIBILITY_ONLY`：
+
+- 数据仍为2787条CUC原48维与原生SILVER二分类标签，不改写为八类分布或T0输入；
+- 采用发布者级SHA-256确定性分组，train/dev/test为1905/307/575条、28/6/9个发布者组，组交集为0；
+- CatBoost、HGB、LightGBM各执行冻结的12个trial，只用dev按Macro-F1选择，test对选中模型各评测一次；
+- 本地CPU完整运行耗时36.4秒，未复用旧论文或旧脚本数值，run bundle未记录本机数据路径。
+
+| 模型 | 选中trial | test Macro-F1 | Balanced Accuracy | AUPRC | 正类Recall |
+|---|---:|---:|---:|---:|---:|
+| CatBoost | 07 | 0.5346 | 0.6006 | 0.6884 | 0.2183 |
+| HGB | 09 | 0.4591 | 0.5514 | 0.5989 | 0.1338 |
+| LightGBM | 04 | 0.3645 | 0.4766 | 0.4581 | 0.0528 |
+
+本次成功状态仅为`COMPLETED_LEGACY_NATIVE_NON_T0_NON_COMPARABLE`。低Recall和跨发布者泛化下降如实保留；不做test后调参，不进入CSMV统一数值表或主结论。
 
 ## 2. VC-CSA官方复现（任务7）
 

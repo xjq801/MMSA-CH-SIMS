@@ -3998,3 +3998,90 @@ I3D权利/fixity未知和`DEFERRED_ACCEPTED_RISK`继续保留；正式run bundle
 ### Git状态
 
 本条写入时变更尚未提交或推送，工作区非clean。
+
+## WR-20260718-001 — 完成任务15 replay与任务16表格并生成任务18 G3包
+
+- 时间：2026-07-18 00:00:26 +08:00
+- 类型：EXPERIMENT | TEST | DOC | PROGRESS
+- 任务/门：20-M3 / 总纲任务20第15、16、18项
+- 状态：任务15、16完成；任务18证据包待提交推送后发送00
+- 负责人：Codex
+
+### 背景与目标
+
+在clean比较器提交后完成正式同seed replay，冻结baseline-table-v1，并形成不自行修改G门、可交00独立审查的G3证据包。
+
+### 实际变更
+
+- 比较器代码提交`f6a8363bc79144775d63c9bd62f149ce51cb9ff7`已推送；随后在clean工作区以本地3070 Ti、seed `20260717`、5698 train/837 dev、完整12-trial执行attempt 2 replay。
+- replay耗时833秒，状态`COMPLETED`；只读取train/dev，未再次运行或查看test。
+- 比较报告确认原正式dev与replay的config、inputs、代码文件hash、环境、seed、split相同，predictions、metrics、selection、trial_results四项SHA-256完全一致；model state与standardizer SHA-256也一致。
+- 将`BASELINE_TABLE_V1.md`冻结为任务16 v1，明确官方复现尝试、重实现、legacy兼容与reference model四类证据身份。
+- 新增`TASK20_G3_EVIDENCE_PACKAGE_20260718.md`，逐项映射1–18证据、正式数值、验证门和必须传播的风险；原`TASK20_G3_EVIDENCE_DRAFT.md`标记为被正式包取代。
+- 更新`TASK20_BASELINE_EXECUTION_AUDIT.md`、`experiments/EXPERIMENT_REGISTRY.md`和`.planning/task20-m3/`三份规划文件。
+
+### 验证与证据
+
+- 运行前`nvidia-smi`确认本地3070 Ti可见；`validate_csmv_feature_preflight.py` exit 0、8210 required hash/覆盖通过，未知权利状态保留。
+- 正式runner exit 0；开始`2026-07-17T23:45:27.082220+08:00`，结束`2026-07-17T23:59:17.474389+08:00`。
+- `compare_task20_runs.py` exit 0、`passed=true`、`matching_artifacts=4`；核心hash为predictions `e08c5b3d...cbf`、metrics `0271a654...100`、selection `dce53eeb...fbf`、trial results `b5a246c3...f1f`。
+- replay manifest schema：`PASS`；manifest SHA-256 `2b5b3473473ffe1d50435d2838642de1cae00b6618b29f93df79a5facfcfde3d`；比较报告SHA-256 `5d85fa1dbfdd263e5c5086e57bab3ce5305af4c340e28cf4315a1bbcbea1458d`。
+- replay文本产物绝对路径扫描无命中；run bundle继续位于Git忽略范围。
+
+### 影响与边界
+
+任务15以smoke、单种子完整run和正式dev同seedreplay闭合；任务16交付冻结。任务18目前只完成包生成，必须在提交推送后实际发送00才能标记完成。replay不增加test查看次数，也不替代任务50五种子统计。
+
+### 风险、问题与阻塞
+
+I3D许可、官方revision和权利方包身份/fixity仍未知；资产状态继续为`DEFERRED_ACCEPTED_RISK`。若权利方否认或8210 hash/覆盖漂移，立即标记`ASSET_INVALIDATED_DO_NOT_REPORT`。同seed一致性不外推跨硬件或跨release绝对复现。
+
+### 下一步
+
+1. 运行全量测试、日志验证、准备检查和diff门，提交并推送任务15/16/18证据批次。
+2. 将远端commit与正式G3包指针发送00任务，记录实际提交状态；不预填G3 PASS。
+
+### Git状态
+
+本条写入时证据文档和规划更新尚未提交或推送；正式run bundle保持Git忽略。
+
+## WR-20260718-002 — 完成任务15至18证据批次提交前门禁
+
+- 时间：2026-07-18 00:03:32 +08:00
+- 类型：TEST | VALIDATION
+- 任务/门：20-M3 / 任务15、16、18证据交付
+- 状态：验证通过
+- 负责人：Codex
+
+### 背景与目标
+
+对正式replay证据、冻结baseline-table-v1和G3提交包执行提交前全量门禁，确保不把本机run bundle、受限资产、秘密或未通过状态带入Git。
+
+### 实际变更
+
+- 未修改模型、运行结果、split、总纲或G门；仅追加本次验证记录。
+
+### 验证与证据
+
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，56/56通过；随后`compileall` exit 0。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，91条记录、最新`WR-20260718-001`、`passed=true`。
+- 默认`.venv`准备检查：exit 0、`blocking_checks=[]`、`secret_scan.hits=[]`；旧环境faiss缺失与`formal_model_work_ready=false`继续保留。
+- `.venv-task20`准备检查：exit 0、`blocking_checks=[]`、`secret_scan.hits=[]`、`formal_model_work_ready=true`。
+- replay run manifest schema通过；`git diff --check` exit 0。
+- `git check-ignore -v`确认replay `run-manifest.json`及其父目录由`.gitignore`的`results/`规则排除。
+
+### 影响与边界
+
+任务15/16/18证据文件达到提交门要求；任务18仍需在远端commit可见后实际发送00任务，不能仅以文件存在替代提交。
+
+### 风险、问题与阻塞
+
+无新增阻塞。资产权利未知、VC-CSA官方复现失败、单种子统计边界继续在G3包中显式传播。
+
+### 下一步
+
+有意提交并推送证据批次，随后将commit和G3包指针发送00任务，再记录任务18实际提交状态。
+
+### Git状态
+
+本条写入时证据批次尚未提交或推送，工作区非clean。

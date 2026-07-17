@@ -1,7 +1,7 @@
-# 任务20 G3证据草案
+# 任务20 G3证据草案（已被正式包取代）
 
-> 当前裁定：`NOT_READY_REMAINING_FORMAL_COMPARISONS_AND_FINAL_G3_PACKAGE_INCOMPLETE`  
-> 本文件不修改G门，不代表00已验收。
+> 当前裁定：`SUPERSEDED_BY_TASK20_G3_EVIDENCE_PACKAGE_20260718`  
+> 正式提交材料见`TASK20_G3_EVIDENCE_PACKAGE_20260718.md`；本文件保留历史草案，不修改G门、不代表00已验收。
 
 ## 已闭合证据
 

@@ -80,3 +80,10 @@
 - 新比较器先以缺模块红测验证测试有效，再实现fail-closed身份与fixity核验；Git commit可因纯文档提交不同，但实际代码文件SHA-256、config、inputs、环境、seed、split和四项核心产物必须一致。
 - 同环境同seedhash一致只支持工程复跑，不外推跨硬件、跨release绝对复现。
 - `rg`在当前Windows会话被系统拒绝执行；审计改用PowerShell原生只读检索，不影响实验合同。
+
+## 任务15 replay结果与任务16冻结
+
+- 正式GPU dev replay为attempt 2，12-trial、seed=20260717、train/dev=5698/837，耗时833秒；未读取或重跑test。
+- 原run与replay的predictions、metrics、selection、trial_results四项hash全部一致；model state和standardizer hash也一致，replay manifest schema通过且文本路径扫描无命中。
+- `BASELINE_TABLE_V1.md`已冻结为任务16 v1交付，明确区分官方复现尝试、重实现、legacy兼容与reference model；单种子结果继续与任务50最终统计隔离。
+- G3证据包可请求00审查，但任务20自身不得写G3 PASS；资产风险和失败状态必须由00审查时原样保留。

@@ -71,3 +71,9 @@
 - 审计确认任务15仍缺正式全量GPU dev同seed独立复跑；任务16已有草表但未冻结为任务16交付，任务18仍是未提交00的G3草案。
 - 新增任务20 run比较器测试，首轮因比较模块不存在按预期失败；最小实现后3/3通过。
 - 比较合同要求clean、completed、同config/input/code/environment/seed/split，并逐项验证manifest声明fixity和四个核心产物hash；下一步提交clean代码后运行正式dev replay。
+
+## 2026-07-18 任务15/16完成、任务18待发送
+
+- 比较器提交`f6a8363`并推送后，以clean工作区在本地3070 Ti完成全量12-trial dev replay，833秒结束。
+- 四项核心产物、model state和standardizer均与原正式dev run逐字节hash一致；不重跑test，复现边界仅为同环境同seed。
+- baseline-table-v1已按任务16冻结；正式G3证据包已生成，待证据提交推送后发送00任务。

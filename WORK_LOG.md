@@ -4332,3 +4332,43 @@ I3D许可、官方revision及权利方包身份/fixity仍未知，`ASSET_ADMISSI
 ### Git状态
 
 本条写入时最终审查文件与状态收尾尚未提交或推送，工作区非clean。
+
+## WR-20260718-009 — 固定并推送任务20最终G3审查状态
+
+- 时间：2026-07-18 00:32:51 +08:00
+- 类型：SYNC | VALIDATION | PROGRESS
+- 任务/门：20-M3 / G3最终收尾
+- 状态：最终裁定与任务20状态已推送，工作区已核对clean
+- 负责人：Codex
+
+### 背景与目标
+
+在00独立裁定`G3=PASS_WITH_LIMITATIONS`后，固定其审查文件和任务20状态收尾，并记录真实远端同步结果。
+
+### 实际变更
+
+- 有意提交`TASK00_G3_FINAL_REVIEW_20260718.md`、WR-20260718-007/008、G3证据包状态和任务20规划收尾；未修改总纲、G1/G2、实验核心或受限资产。
+- 创建提交`e20a4eeffc644ee32ddc7a907108fd294f972e4c`（`docs(g3): record task20 final review`）并通过本机7890代理推送`main`。
+
+### 验证与证据
+
+- 提交前工作日志：98条、最新`WR-20260718-008`、`passed=true`；双环境准备检查均exit 0且`blocking_checks=[]`，正式`.venv-task20`为`formal_model_work_ready=true`，旧`.venv`继续如实为false/faiss缺失。
+- handoff validator：exit 0，`passed=true`、`tracked_evidence_checked=22`、`restricted_assets_required=false`；`git diff --check` exit 0。
+- `git commit`：exit 0，`e20a4eeffc644ee32ddc7a907108fd294f972e4c`，127 insertions、4 deletions。
+- 代理push：exit 0，`e49ef9e..e20a4ee main -> main`；随后`HEAD`与`origin/main`均为`e20a4eeffc644ee32ddc7a907108fd294f972e4c`，工作区clean。
+
+### 影响与边界
+
+任务20交接缺口和G3独立裁定已在远端闭合。任务30可按总纲启动条件进入后续流程，但未在本批创建；任务50仍为`TASK50_NOT_COMPLETED`。
+
+### 风险、问题与阻塞
+
+I3D许可、官方revision及权利方包身份/fixity仍未知，`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`不变；权利否认或8210 hash/覆盖漂移立即标记`ASSET_INVALIDATED_DO_NOT_REPORT`。VC-CSA失败和重实现身份继续传播。
+
+### 下一步
+
+本批无剩余任务20补证工作；后续由总控按`PASS_WITH_LIMITATIONS`边界决定任务30启动。
+
+### Git状态
+
+本条写入前`main`、`origin/main`均为`e20a4eeffc644ee32ddc7a907108fd294f972e4c`且工作区clean；本条日志自身待提交推送。

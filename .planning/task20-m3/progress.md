@@ -65,3 +65,9 @@
 - 缓存优化提交`14027a0`后，以clean commit执行全量temporal-attention 12-trial dev搜索，13分30秒完成并冻结selection。
 - 按冻结selection执行唯一一次test，91秒完成；1675条预测、manifest、指标和test负门复核通过，无本机路径。
 - baseline-table、执行审计、实验登记、G3草案与计划状态已更新；任务7标记为`COMPLETED_VIA_REIMPLEMENTATION_STRONG_BASELINE_SINGLE_SEED`，非VC-CSA官方复现。
+
+## 2026-07-17 任务15/16/18启动
+
+- 审计确认任务15仍缺正式全量GPU dev同seed独立复跑；任务16已有草表但未冻结为任务16交付，任务18仍是未提交00的G3草案。
+- 新增任务20 run比较器测试，首轮因比较模块不存在按预期失败；最小实现后3/3通过。
+- 比较合同要求clean、completed、同config/input/code/environment/seed/split，并逐项验证manifest声明fixity和四个核心产物hash；下一步提交clean代码后运行正式dev replay。

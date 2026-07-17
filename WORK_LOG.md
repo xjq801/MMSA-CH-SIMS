@@ -3913,3 +3913,88 @@ I3D权利/fixity未知和`DEFERRED_ACCEPTED_RISK`继续保留；正式run bundle
 ### Git状态
 
 任务7证据提交已推送；本条同步记录尚待日志收尾提交。
+
+## WR-20260717-024 — 实现任务15正式run一致性比较合同
+
+- 时间：2026-07-17 23:42:01 +08:00
+- 类型：FEATURE | TEST | PROGRESS
+- 任务/门：20-M3 / 总纲任务20第15、16、18项启动
+- 状态：比较器实现完成；正式dev replay待clean commit后执行
+- 负责人：Codex
+
+### 背景与目标
+
+用户要求完成任务15、16、18。现有证据已覆盖smoke与单种子完整run，但正式全量GPU dev尚无独立同seed replay；任务16仍为部分表，任务18仍为未提交00的草案。本批先建立fail-closed的正式run比较合同，且不再次运行或查看test。
+
+### 实际变更
+
+- 新增`tests/test_task20_reproducibility.py`，覆盖clean Git提交不同但代码hash相同可比较、预测内容漂移必须失败、dirty run必须失败三条合同。
+- 新增`scripts/compare_task20_runs.py`，先验证两侧manifest声明的全部artifact fixity，再比较experiment/model/fit scope/split/eval/seed/config/input/code/environment身份和`predictions.jsonl`、`metrics.json`、`selection.json`、`trial_results.json`四项核心产物hash。
+- 比较报告边界固定为`SAME_ENVIRONMENT_FIXED_SEED`，明确不建立跨硬件或跨release bitwise复现结论。
+- 更新`.planning/task20-m3/task_plan.md`、`findings.md`和`progress.md`，登记正式dev replay缺口、比较口径与下一步。
+
+### 验证与证据
+
+- 首次运行`.\.venv-task20\Scripts\python.exe -m unittest -v tests.test_task20_reproducibility`：exit 1，因`compare_task20_runs`不存在按预期红测失败。
+- 实现后复跑同一命令：exit 0，3/3通过。
+- `git diff --check`：exit 0。
+
+### 影响与边界
+
+任务15现在具备正式同seed run对的可审计比较入口；尚未执行全量replay，不得提前写成一致性已通过。比较只使用run bundle内哈希和脱敏元数据，不输出I3D序列、本机资产路径或可逆受限资产。
+
+### 风险、问题与阻塞
+
+- `rg`在当前Windows会话被系统拒绝执行；已改用PowerShell原生只读检索，未重复同一失败。
+- I3D许可、官方revision和权利方包身份/fixity仍未知；若权利方否认或8210 hash/覆盖漂移，立即停止并标记`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 运行全量测试与项目门禁，提交并推送比较器代码，使正式replay绑定clean commit。
+2. 复跑I3D preflight后执行一次全量dev同seed replay，仅比较dev产物，不再次评测test。
+3. 冻结任务16表格，形成任务18最终G3证据包并提交00任务。
+
+### Git状态
+
+本条写入时比较器、测试和规划记录尚未提交或推送，工作区非clean。
+
+## WR-20260717-025 — 完成任务15比较器代码批次提交前门禁
+
+- 时间：2026-07-17 23:43:50 +08:00
+- 类型：TEST | VALIDATION
+- 任务/门：20-M3 / 任务15正式replay准备
+- 状态：验证通过
+- 负责人：Codex
+
+### 背景与目标
+
+在正式全量dev replay前，为新增一致性比较器建立clean Git基线，并执行项目要求的全量测试、工作日志验证、准备检查、编译和diff门禁。
+
+### 实际变更
+
+- 未改变比较逻辑、模型、配置、split、test结果、总纲或G门；仅追加本次验证记录。
+
+### 验证与证据
+
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，56/56通过。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，89条记录、最新`WR-20260717-024`、`passed=true`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0、`blocking_checks=[]`、`secret_scan.hits=[]`；默认旧环境继续诚实报告faiss缺失和`formal_model_work_ready=false`。
+- `.\.venv-task20\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0、`blocking_checks=[]`、`secret_scan.hits=[]`、`formal_model_work_ready=true`。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`与`git diff --check`：exit 0。
+- 比较器对既有正式dev bundle自比较：exit 0，四项核心产物fixity和hash均匹配。
+
+### 影响与边界
+
+新增代码已达到提交门要求，可用于任务15同环境同seed dev replay比较；尚未执行replay，不提前声明任务15完成。
+
+### 风险、问题与阻塞
+
+无新增阻塞。默认旧环境faiss缺失不是独立任务20正式环境状态；资产权利未知风险继续保留。
+
+### 下一步
+
+提交并推送本批比较器代码，确认工作区clean；随后复跑资产预检并启动全量dev replay。
+
+### Git状态
+
+本条写入时变更尚未提交或推送，工作区非clean。

@@ -72,3 +72,11 @@
 - 唯一test运行使用同一seed和冻结selection，train拟合/dev早停/test一次前向；重训dev JSD与冻结值完全一致，1675条预测完整，test JSD=0.182668。
 - test其余指标：NLL 1.715192、EMD 0.162983、Brier 0.227379、ECE 0.053885、ACE 0.054004、AURC 0.175399、Macro-F1 0.137048、Balanced Accuracy 0.148577。
 - task7以强视觉重实现单种子结果闭合；VC-CSA官方代码缺失/目标评论输入不匹配失败保持不变。结果仍受accepted asset risk约束，并待任务50五种子统计。
+
+## 任务15正式重复运行缺口与比较合同
+
+- 既有任务15证据已覆盖GPU smoke、单种子全量dev/test run和CPU smoke同seed复跑；尚缺正式全量GPU dev的独立同seed replay。
+- 不允许为一致性验证第二次查看test；replay固定为dev 12-trial，并与原正式dev run比较predictions、metrics、selection和trial_results。
+- 新比较器先以缺模块红测验证测试有效，再实现fail-closed身份与fixity核验；Git commit可因纯文档提交不同，但实际代码文件SHA-256、config、inputs、环境、seed、split和四项核心产物必须一致。
+- 同环境同seedhash一致只支持工程复跑，不外推跨硬件、跨release绝对复现。
+- `rg`在当前Windows会话被系统拒绝执行；审计改用PowerShell原生只读检索，不影响实验合同。

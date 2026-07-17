@@ -3527,3 +3527,43 @@ pooled与temporal模型的test路径现在不会用test选择epoch；temporal强
 ### Git状态
 
 本条写入时尚未提交或推送，工作区非clean。
+
+## WR-20260717-015 — 提交并同步任务20统一基线实现批次
+
+- 时间：2026-07-17 15:12:49 +08:00
+- 类型：PROGRESS | SYNC
+- 任务/门：20-M3 / 任务20第1至18项阶段实现
+- 状态：代码批次已提交并推送；正式实验仍阻塞
+- 负责人：Codex
+
+### 背景与目标
+
+将已通过项目门禁的任务20统一配置、最低基线、完整指标、预测与E0合同、pooled/temporal runner、测试、规划和阶段证据作为一个有意实现提交同步到`main`。
+
+### 实际变更
+
+- 提交`9c06a149146d766186eecf8065a9f1897167f556`，提交说明为`feat(task20): add unified baseline evaluation`，共35个文件、3360行新增、52行删除。
+- 使用本机代理推送`main`；远端`origin/main`从`4d1861908c24570599ad6b48d6f908b8a1efcb0d`前进到`9c06a149146d766186eecf8065a9f1897167f556`。
+- 受保护的总纲、G门、00授权文件、`HANDOFF_10.md`和数据manifest均未进入提交。
+
+### 验证与证据
+
+- `git push origin main`使用一次性代理配置：exit 0，输出`main -> main`。
+- `git rev-parse HEAD`与`git rev-parse origin/main`均为`9c06a149146d766186eecf8065a9f1897167f556`。
+- 推送后`git status --short --branch`为`## main...origin/main`。
+
+### 影响与边界
+
+任务20阶段实现已在远端仓库可复核；`results/`、原始I3D `.npy`、模型权重、连接信息和认证值未提交或推送。该同步不代表正式baseline数值、G3或总任务20已完成。
+
+### 风险、问题与阻塞
+
+租用A30仍不可连接，正式12-trial、完整run、一次性test、paired bootstrap和最终G3包继续阻塞；I3D权利/fixity未知状态未改变。
+
+### 下一步
+
+远端实例恢复或更换后，先验证最小CUDA矩阵与依赖锁，再从冻结dev调参计划继续；不得重新定义实验或上传受限I3D资产。
+
+### Git状态
+
+实现提交`9c06a149146d766186eecf8065a9f1897167f556`已推送`origin/main`；本条日志将作为后续日志提交同步。

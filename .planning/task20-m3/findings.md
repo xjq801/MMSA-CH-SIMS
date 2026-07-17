@@ -87,3 +87,13 @@
 - 原run与replay的predictions、metrics、selection、trial_results四项hash全部一致；model state和standardizer hash也一致，replay manifest schema通过且文本路径扫描无命中。
 - `BASELINE_TABLE_V1.md`已冻结为任务16 v1交付，明确区分官方复现尝试、重实现、legacy兼容与reference model；单种子结果继续与任务50最终统计隔离。
 - G3证据包可请求00审查，但任务20自身不得写G3 PASS；资产风险和失败状态必须由00审查时原样保留。
+
+## 2026-07-18 G3补证缺口
+
+- 00独立审查接受任务20执行证据进入G3复核，但因总纲4.5明确要求`HANDOFF_20.md`且`b89d8dc`缺失该文件，裁定`G3=HOLD_FOR_SUPPLEMENT`。
+- 当前工作区包含00尚未提交的`WORK_LOG.md` WR-20260718-004与`.light/handoff/S03-task20-g3-review-hold.md`；任务20不得覆盖或擅自stage，已通知00先固定其审查提交。
+- 补交应同时绑定：证据主体commit `b89d8dc1d62b5d6ea7b07b1d30cc8f19224c030d`、状态收尾commit `aed141b78b0babe4bad10555f335587f983f479b`、tracked证据Git快照字节SHA-256和本机受限run的不可逆artifact SHA-256。
+- Windows工作树对部分JSON使用CRLF，而Git快照为LF；因此运行时工作树hash与Git快照字节hash必须分栏，不得把换行差异误判为科学数据漂移。
+- 00已将其WR-20260718-004和S03交接卡自行提交推送为`3273ab2926581a877f89d5adc7da591dbe1dba2d`；任务20未stage、未改写00文件。
+- `task20-handoff-v1.manifest.json`绑定22项tracked证据，现场从Git对象库逐项核验通过；manifest SHA-256=`6d75e219...f96e91`。
+- `HANDOFF_20.md`当前SHA-256=`5a503d90...9b56cb`，不含绝对路径或受限资产；validator输出`passed=true`、`restricted_assets_required=false`。

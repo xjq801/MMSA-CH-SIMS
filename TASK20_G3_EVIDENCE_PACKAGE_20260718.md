@@ -1,7 +1,7 @@
 # 任务20 G3证据提交包
 
-> 提交状态：`SUBMITTED_TO_00_PENDING_REVIEW_WITH_ACCEPTED_ASSET_RISK`  
-> G3决定：`NOT_SET_BY_TASK20_PENDING_00_REVIEW`  
+> 提交状态：`HANDOFF_20_SUPPLEMENT_READY_PENDING_00_FINAL_REVIEW`  
+> G3决定：`HOLD_FOR_SUPPLEMENT_PENDING_00_FINAL_REVIEW`  
 > SSOT：总纲v1.16第17节任务20  
 > 证据日期：2026-07-18 +08:00
 
@@ -81,3 +81,15 @@ replay manifest SHA-256为`2b5b3473473ffe1d50435d2838642de1cae00b6618b29f93df79a
 - `WORK_LOG.md`中任务20连续记录
 
 本包是审查请求，不是G3自批文件。00应基于上述证据和限制独立给出接受、补证或拒绝结论。
+
+## HANDOFF_20补证
+
+00在commit `3273ab2926581a877f89d5adc7da591dbe1dba2d`中确认任务20执行证据可进入G3复核，但因总纲必需产出`HANDOFF_20.md`缺失而保持`G3=HOLD_FOR_SUPPLEMENT`。任务20现补交：
+
+- `HANDOFF_20.md`：冻结输入、split、指标、调参预算、run/replay、完成/未完成项、下游合同和强制止损；
+- `data/manifests/task20-handoff-v1.manifest.json`：绑定证据主体commit `b89d8dc1d62b5d6ea7b07b1d30cc8f19224c030d`、提交状态commit `aed141b78b0babe4bad10555f335587f983f479b`及22项tracked证据SHA-256；
+- `scripts/validate_task20_handoff.py`：不需要受限资产即可从Git对象库验证commit、原始blob字节SHA-256、长度、风险词和路径安全；
+- manifest SHA-256：`6d75e2190a50dc4a2191458d6d379a7d49a84f630d5ccf3eb27ac83294f96e91`；
+- `HANDOFF_20.md`当前SHA-256：`5a503d90308781620b4e4a7c99b409e29f30cd0872fc6f8b51da6c580a9b56cb`。
+
+补证只关闭交接文件缺失，不自行改变G3；最终`PASS_WITH_LIMITATIONS`或`REJECT`仍由00独立裁定。

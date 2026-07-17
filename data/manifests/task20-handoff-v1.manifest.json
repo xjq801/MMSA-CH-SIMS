@@ -1,0 +1,62 @@
+{
+  "schema_version": "task20-handoff-evidence-v1",
+  "task_id": "20-M3",
+  "ssot": "TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md v1.16 section 17 task 20",
+  "evidence_snapshot_commit": "b89d8dc1d62b5d6ea7b07b1d30cc8f19224c030d",
+  "submission_status_commit": "aed141b78b0babe4bad10555f335587f983f479b",
+  "hash_definition": "sha256 over exact git blob bytes at the declared commit; local run hashes are sha256 over internal artifact bytes",
+  "tracked_evidence": [
+    {"path": "HANDOFF_10.md", "sha256": "47de656e7a8ff391118858bc932b5f7f1b089d98575b1a29e3f608b4e4ac66fb", "bytes": 11441},
+    {"path": "TASK20_G3_EVIDENCE_PACKAGE_20260718.md", "sha256": "d0c279a7f0d773bd01d5052e668cc190d53f3e530525ccf483418b5982b609d3", "bytes": 5404},
+    {"path": "BASELINE_TABLE_V1.md", "sha256": "7a2b612c16ebe8110a67a4108877ae0aca4082d8b7ab7d87897dc48f6c651f44", "bytes": 3789},
+    {"path": "TASK20_BASELINE_EXECUTION_AUDIT.md", "sha256": "efdee28ce7f48a9eafea6b4d0abefae4c8bc0f0e08d5e70e84a29fde42e0907b", "bytes": 9361},
+    {"path": "experiments/EXPERIMENT_REGISTRY.md", "sha256": "1f5d08564886b7a769fc2e2477e5ff207120e92a946489321125c79f4aeb0769", "bytes": 5214},
+    {"path": "requirements-task20-lock.txt", "sha256": "51e986891ba1ed64cebee6503fc820adc67c8b0dcfe5b7ef0bf8f78a1e3c3b6d", "bytes": 296},
+    {"path": "configs/task20/experiment.schema.json", "sha256": "31b9665c6e006b5958f05e160d25acb39cc4c0e7f570a3d10b31fe5e465284a6", "bytes": 2705},
+    {"path": "configs/task20/run-manifest.schema.json", "sha256": "7c14ba2c8155e16a8afa11608476ba6f697eb42326103d598b66125401b03546", "bytes": 630},
+    {"path": "configs/task20/prediction.schema.json", "sha256": "fadc6ff7571241bedec48e94f69082d1f6273fa627c610c7f479572e16b19d6e", "bytes": 1112},
+    {"path": "configs/task20/tuning-plan-v1.json", "sha256": "01878e74f6f9c150d583ad591b0b7b5fb662208119076aef51ccb237ab741cf9", "bytes": 2120},
+    {"path": "scripts/compare_task20_runs.py", "sha256": "8a932d5b1de834d37694f4d1157bf0752ba9fa2053ae6b7742a52392d31bf480", "bytes": 5643},
+    {"path": "data/manifests/dataset-v1.manifest.json", "sha256": "086e7094dd20249c456fdfc5fe97f2c0e530e1d7ba8116ebd82e5303f0054693", "bytes": 3538},
+    {"path": "data/manifests/split-v1.manifest.json", "sha256": "7f96f84a8c2cff0f3a1445302db41522e397a390b62de9274ac30b5d7a2a5d8f", "bytes": 1047},
+    {"path": "data/manifests/label-provenance-v1.manifest.json", "sha256": "ebb4afada253139be668500b257d31c53c19435f76041b6df43cf4fe7bdf8154", "bytes": 975},
+    {"path": "data/manifests/leakage-audit-v1.manifest.json", "sha256": "23cfd8ec931b4fead93fc0d517cec472dfd80efc73e9d2db144c1c8b2f4afc28", "bytes": 3619},
+    {"path": "data/manifests/csmv-i3d-sequence-protocol-v1.manifest.json", "sha256": "3ae5a161bc22e8c5464d183bf76c5a9e438709c29aa7d17a2d44e0d1cb5bca78", "bytes": 3349},
+    {"path": "data/manifests/csmv-i3d-quarantine-v1.manifest.json", "sha256": "8d10ee5d97a009aa33930507e600966e9a8ce644c943516b8a210129442f10a8", "bytes": 2022682},
+    {"path": "T0_INPUT_POLICY.md", "sha256": "287356695d0be3b6cbbd5760ee926e43dde90437abf4bfcd920b3c1276cea1d5", "bytes": 5190},
+    {"path": "experiment-protocol-v2.md", "sha256": "53a08ff90608c982c700759683566fb0a52216ebeed33f185b2406373ba4d976", "bytes": 7046},
+    {"path": "leakage-threat-model.md", "sha256": "88a4896012992c6c74b55f774bfe22227ddec8a12276f477fe85856a7218182c", "bytes": 3890},
+    {"commit": "aed141b78b0babe4bad10555f335587f983f479b", "path": "TASK20_G3_EVIDENCE_PACKAGE_20260718.md", "sha256": "056f79885d68100edbc96cebd9f4edff6abff3e0ac27d2941b66487a36346759", "bytes": 5415},
+    {"commit": "aed141b78b0babe4bad10555f335587f983f479b", "path": "WORK_LOG.md", "sha256": "c0ebc061e818c5d8690e1b3f643448db4a51d3070c99c2f828db3169b3b95716", "bytes": 266837}
+  ],
+  "runtime_input_evidence": [
+    {"artifact_id": "dataset-v1-windows-runtime-bytes", "sha256": "1b8ba9f5c4b801f9530b4e97c8f6b777db4562bce37b24d63aa341b64e3e806e", "bytes": 3632},
+    {"artifact_id": "split-v1-windows-runtime-bytes", "sha256": "6a15f992b9e5839d6f21b4a6d40619f48bb14445b18a0c1814024794f56b6780", "bytes": 1079},
+    {"artifact_id": "label-provenance-v1-windows-runtime-bytes", "sha256": "0ac81e2db69f1e883599cb654bb679d10c1411f570e97ab6c2678f7699ce5a43", "bytes": 1004},
+    {"artifact_id": "leakage-audit-v1-windows-runtime-bytes", "sha256": "982c5a75019ae6178f39797664aa390a65c336e2b78ef45c25ece96eb59991dc", "bytes": 3746}
+  ],
+  "local_run_evidence": [
+    {"artifact_id": "formal-dev-run-manifest", "sha256": "e16a26c04d8fa471fd84e4de630050b35e64af27d6ae733e74549dbb1b31035b", "bytes": 3992},
+    {"artifact_id": "formal-dev-selection", "sha256": "dce53eeb8f3d618d2ed6e09fecc49164a0e6ac72b5254a065ebf4f493c97dfbf", "bytes": 819},
+    {"artifact_id": "formal-dev-predictions", "sha256": "e08c5b3d94217d145e94baa03ad6e0323c150898cee0d12a2044f78152760cbf", "bytes": 605665},
+    {"artifact_id": "formal-dev-metrics", "sha256": "0271a6547d6245bd1fcd1cee9615af30bedf7fb588048f67369e58ce70ae2100", "bytes": 417},
+    {"artifact_id": "formal-dev-trial-results", "sha256": "b5a246c3422052487e38baede213bf8c92c052e8782bdf75bc5bb01c1ba14f1f", "bytes": 9545},
+    {"artifact_id": "formal-test-run-manifest", "sha256": "0f5949a8dce4922dcb2559054370288f1e037408b722d3b68b0d0432c0539186", "bytes": 4165},
+    {"artifact_id": "formal-test-predictions", "sha256": "ca7276b759248ef0c8fcc17ee1ea98bafcb88d41161d4e1feec6251d698bba9f", "bytes": 1210084},
+    {"artifact_id": "formal-test-metrics", "sha256": "05f4785cc084bfc8ebe04a8f1d035ac81c97d127347dc4712cd1fe25fa2aeb7e", "bytes": 420},
+    {"artifact_id": "formal-dev-replay-run-manifest", "sha256": "2b5b3473473ffe1d50435d2838642de1cae00b6618b29f93df79a5facfcfde3d", "bytes": 4000},
+    {"artifact_id": "formal-dev-reproducibility-comparison", "sha256": "5d85fa1dbfdd263e5c5086e57bab3ce5305af4c340e28cf4315a1bbcbea1458d", "bytes": 1031},
+    {"artifact_id": "selected-model-state", "sha256": "5fab01356f336c28726ef1e3ed7469f4d1e7a5ae0e71272ef514fbd1edaf6e00", "bytes": 531642},
+    {"artifact_id": "train-only-standardizer", "sha256": "12240ec959204f2cacd9b0a574bfe064e5778e73816c26bc84f991e554d918b2", "bytes": 8696}
+  ],
+  "gate_state": {
+    "g1": "PASS",
+    "g2_protocol_data": "PASS_WITH_LIMITATIONS",
+    "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
+    "formal_split": true,
+    "g3": "HOLD_FOR_SUPPLEMENT_PENDING_00_FINAL_REVIEW"
+  },
+  "redistribution": "PROHIBITED",
+  "restricted_assets_in_manifest": false,
+  "task50_status": "TASK50_NOT_COMPLETED"
+}

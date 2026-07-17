@@ -466,3 +466,4 @@
 - 新建`TOTAL_CONTROL_HANDOFF_20260717.md`，压缩保存用户纠偏、总纲、研究边界、数据、门状态、任务树、线程、风险、网络政策和下一步。
 - 建立`.light/passport.yaml`、项目卡、决策/版本/术语台账以及S00→S01交接链；底层passport验证为WARN（历史G门未附passport内部hash/timestamp），S01交接合同PASS。
 - `light-memory-pm`封装器因本机技能布局缺`_shared/passport`导入失败，未伪报完整pm audit通过；改用底层`passport.py`和独立handoff validator。
+- 交接包已在commit `e6c48c6`推送；已创建隔离worktree任务`019f6e64-0635-7ac0-a70a-65445b0fc1d1`并命名为`00-T-AFFC 新总控`，由其接替00责任。

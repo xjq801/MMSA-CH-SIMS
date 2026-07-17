@@ -95,3 +95,14 @@
 - 机器manifest已绑定`b89d8dc`、`aed141b`、22项tracked Git证据、运行时manifest hash及本机run不可逆hash；现场核验22/22通过。
 - `HANDOFF_20.md`已覆盖冻结输入、split、指标、预算、run/replay、完成/未完成项、资产止损和任务30继承合同；待全量门禁和提交00。
 - 00并发文件已由00自行固定为`3273ab2`，任务20未纳入或改写其所有权文件。
+
+## 2026-07-18 HANDOFF_20补证提交
+
+- 60/60全量单测、handoff 22项证据校验、工作日志门禁、双环境准备检查与diff门禁均通过；旧默认环境faiss缺失状态继续保留，正式`.venv-task20`就绪。
+- 补证提交`e49ef9e57cac2b072d638811e68b621ec254e6d2`已通过本机7890代理推送`main`，本地HEAD与`origin/main`一致。
+- 已向新00总控任务`019f6e64-0635-7ac0-a70a-65445b0fc1d1`发送commit、HANDOFF/manifest SHA-256及风险边界，请求最终独立G3裁定；任务20不自批。
+
+## 2026-07-18 00最终G3裁定
+
+- 00独立复核handoff validator、22项证据、两项SHA-256、60/60测试和正式环境后，形成`TASK00_G3_FINAL_REVIEW_20260718.md`并裁定`G3=PASS_WITH_LIMITATIONS`。
+- 任务30可按总纲启动条件进入后续流程，但本批未创建；VC-CSA失败、重实现身份、单seed边界、任务50未完成及I3D accepted-risk继续传播。

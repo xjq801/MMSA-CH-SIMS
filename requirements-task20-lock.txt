@@ -1,0 +1,2 @@
+# Independent task-20 environment addition; base versions remain in requirements-lock.txt.
+faiss-cpu==1.7.4

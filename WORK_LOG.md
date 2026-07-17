@@ -3120,3 +3120,37 @@ WR-20260717-003已完成G2拆分、机器合同重建与验证。本条记录随
 ### Git状态
 
 内容commit `f869732`已推送；本条创建记录与计划/进度同步尚未提交或推送。
+
+## WR-20260717-005 — 20-M3 第一批基线与环境审计
+- 时间：2026-07-17 13:40:00 +08:00
+- 类型：PROGRESS | FEATURE | TEST | ENVIRONMENT
+- 任务/门：20-M3 / M3 第一阶段
+- 状态：部分完成
+- 负责人：Codex
+
+### 背景与目标
+按总纲 v1.16 第17节任务20，在已授权且接受 I3D 资产风险的边界内，先锁定独立环境、冻结统一配置与评测合同，并实现最低基线；I3D 许可、官方 revision、权利方身份/fixity 仍保持 UNKNOWN。
+
+### 实际变更
+- 新增任务20配置、baseline loader、unittest、独立环境依赖锁和持久化规划目录。
+- 配置冻结 T0、manifest 引用、train/dev/test 使用边界、三种最低基线、指标和 teacher/memory/full-CARM 排除项；loader 拒绝评论/未来字段并强制 train-only 拟合。
+- 创建独立 `.venv-task20` 并加入 `.gitignore`；未将本机环境或受限资产纳入 Git。
+
+### 验证与证据
+- `\.\.venv\Scripts\python.exe -m unittest -v tests.test_task20_baseline`：exit 0，3/3 通过。
+- `\.\.venv\Scripts\python.exe -m compileall -q scripts tests`：exit 0。
+- `\.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0，`blocking_checks=[]`；真实报告 `formal_carm_environment.classification=BLOCKED_M1`、`faiss_available=false`、`formal_model_work_ready=false`。
+- 独立环境 pip 25.0.1 升级成功；安装 `pytest`/`faiss-cpu` 因代理不可连接失败，环境未就绪，失败证据保留。
+
+### 影响与边界
+最低基线和统一合同已可在历史环境运行自测，但不能宣称正式模型环境已锁定；未接入真实正式预测，不产生论文数字。未读取、复制、提交或再分发 I3D `.npy`、junction、本机路径或可逆受限资产。
+
+### 风险、问题与阻塞
+`faiss` 仍缺失，独立环境安装受外部代理连接失败阻塞；I3D 许可/revision/fixity 仍未知。若权利方否认或固定 hash/8210 覆盖漂移，须立即标记 `ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+1. 在可用包源/代理恢复后，仅在 `.venv-task20` 安装并验证 faiss，再更新环境锁定证据。
+2. 接入权威 split/label-provenance manifest 的受控样例，生成 prediction/run manifest 与指标输出。
+
+### Git状态
+当前未提交、未推送；本条记录与本批次代码/配置变更待同一提交。

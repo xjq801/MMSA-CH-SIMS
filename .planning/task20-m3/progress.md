@@ -52,3 +52,10 @@
 - 冻结独立native legacy配置；三模型单trial dev-only smoke合计约4.8秒，确认无需租用GPU。
 - CatBoost/HGB/LightGBM各12-trial完整重跑完成，test各评测一次，总耗时36.4秒；结果标记`COMPLETED_LEGACY_NATIVE_NON_T0_NON_COMPARABLE`。
 - 已生成本机忽略的metrics/predictions/split/run/hash bundle，并更新基线表、执行审计和实验登记；CSMV正式协议与G门未修改。
+
+## 2026-07-17 任务7正式run准备
+
+- 复核官方snapshot仍只有README/LICENSE/数据，VC-CSA代码缺失且目标评论输入不符合T0；不冒充官方复现。
+- 本地3070 Ti + PyTorch CUDA预检通过，I3D必需8210 hash/覆盖无漂移；GPU smoke只评dev并完成。
+- 通过红测新增进程内只读序列缓存，消除每epoch重复打开I3D文件；全量两epoch由旧路径外推的长时运行降至20.8秒实测。
+- 全量测试增至53项通过；下一步先提交固定clean commit，再执行12-trial dev选择与冻结selection后的test一次评测。

@@ -11,7 +11,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import run_task20_temporal_attention as runner
-from run_task20_temporal_attention import limit_smoke_records, temporal_trial_grid, validate_eval_policy
+from run_task20_temporal_attention import (
+    limit_smoke_records,
+    memoize_sequence_loader,
+    temporal_trial_grid,
+    validate_eval_policy,
+)
 
 
 class Task20TemporalRunnerTests(unittest.TestCase):
@@ -87,6 +92,23 @@ class Task20TemporalRunnerTests(unittest.TestCase):
         selected_ids, selected_targets = limit_smoke_records(item_ids, targets, limit=2)
         self.assertEqual(selected_ids, ["c", "a"])
         np.testing.assert_array_equal(selected_targets, targets[:2])
+
+    def test_memory_cache_loads_each_restricted_sequence_once_without_writing(self):
+        calls = []
+
+        def source(item_id):
+            calls.append(item_id)
+            return np.full((2, 1024), len(calls), dtype=np.float32)
+
+        cached = memoize_sequence_loader(source)
+        first = cached("item-a")
+        second = cached("item-a")
+        other = cached("item-b")
+
+        self.assertEqual(calls, ["item-a", "item-b"])
+        self.assertIs(first, second)
+        self.assertFalse(first.flags.writeable)
+        self.assertEqual(other.dtype, np.float32)
 
 
 if __name__ == "__main__":

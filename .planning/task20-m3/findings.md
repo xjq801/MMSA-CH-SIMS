@@ -57,3 +57,11 @@
 - CatBoost/HGB/LightGBM各执行12个冻结trial，dev选参后test各调用一次；完整运行36.4秒。
 - test Macro-F1分别为0.5346/0.4591/0.3645，正类Recall分别为0.2183/0.1338/0.0528；低值与跨publisher泛化问题原样保留，不做test后适配。
 - run bundle只含单向hash样本/组ID和聚合fixity，不含原始特征、本机路径、旧论文数字或受限I3D资产；结果仅用于legacy附表。
+
+## 任务7本地GPU预检与运行性能根因
+
+- 本地3070 Ti Laptop GPU可被PyTorch 2.4.1+cu121识别；任务20独立环境CUDA可用，8210个必需I3D hash/覆盖预检通过，许可、revision与权利方证明仍保持待定风险。
+- temporal runner/test负门11项通过；GPU smoke为32 train/16 dev、1 trial、2 epoch，只看dev且未读test。
+- 全量5698 train/837 dev单epoch旧路径耗时30.4秒、峰值CUDA显存154 MiB；静态调用审计显示20-epoch trial会重复触发约13万次序列访问，瓶颈是重复文件打开而非GPU算力。
+- 新增只在当前进程内的只读序列memoization，先以缺API红测证明测试有效；每个底层I3D文件只加载一次，不写磁盘、不改变标准化统计、模型、预算或split。
+- 优化后全量两epoch耗时20.8秒，预计12-trial常见早停总耗时20–60分钟；无需租新实例，且继续满足禁止I3D外传边界。

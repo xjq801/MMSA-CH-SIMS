@@ -10,7 +10,7 @@
 - [completed] B1. 统一评测核心（4–5）：canonical loader、总体均值、主题均值资格/实现、经验分布、多数类。
 - [completed] B2. 统一评测扩展（10–14）：完整指标、bootstrap、预测标准、E0。
 - [completed] C. Legacy 基线（6、12）：统一CSMV资格仍被数据协议阻断；已按独立冻结的publisher-disjoint原生二分类合同完成CatBoost/HGB/LightGBM各12-trial重跑，明确非T0、不可比较、不可承担主结论。
-- [blocked] D. 官方/强基线（7）：官方revision无模型代码且输入非T0；强视觉重实现与runner已完成，正式run被远端GPU运行时阻断。
+- [in_progress] D. 官方/强基线（7）：官方revision无模型代码且输入非T0的失败证据保留；本地3070 Ti运行时已通过，强视觉重实现正式run进入dev调参阶段。
 - [completed] E. 冻结特征模型与 E1（8–9）：pooled MLP/temporal attention及安全test路径已实现；late fusion/cross-attention/E1按单模态登记不适用。
 - [blocked] F. 运行与交付（15–18）：pooled与temporal CPU smoke及同seed复跑完成；正式run、正式表格和最终G3证据被远端GPU运行时阻断。
 
@@ -46,4 +46,4 @@
 
 ## 当前用户限定
 
-用户已授权继续完成总纲任务20第6–18项，并允许任务6先使用本地3070 Ti；本次树模型规模较小，实测本地CPU 36.4秒完成，无需GPU。仍禁止提前引入teacher、memory或完整CARM，禁止修改总纲/G门，禁止再分发受限I3D资产。
+用户已授权继续完成总纲任务20第6–18项，并允许先使用本地3070 Ti；任务7强视觉基线在本地既有只读I3D环境运行，不上传或再分发资产。仍禁止提前引入teacher、memory或完整CARM，禁止修改总纲/G门，禁止再分发受限I3D资产。

@@ -106,15 +106,30 @@ def limit_smoke_records(
     return normalized_ids[:count], matrix[:count].copy()
 
 
+def memoize_sequence_loader(source: Callable[[str], np.ndarray]) -> Callable[[str], np.ndarray]:
+    """Keep restricted sequences in process memory to avoid repeated file opens."""
+    cache: Dict[str, np.ndarray] = {}
+
+    def load_sequence(item_id: str) -> np.ndarray:
+        key = str(item_id)
+        if key not in cache:
+            sequence = np.array(source(key), dtype=np.float32, copy=True)
+            sequence.setflags(write=False)
+            cache[key] = sequence
+        return cache[key]
+
+    return load_sequence
+
+
 def build_sequence_loader() -> Callable[[str], np.ndarray]:
     lookup = canonical_item_lookup()
 
-    def load_sequence(item_id: str) -> np.ndarray:
+    def load_from_restricted_asset(item_id: str) -> np.ndarray:
         if item_id not in lookup:
             raise KeyError("unknown canonical CSMV item_id")
         return load_by_video_file_id(lookup[item_id])
 
-    return load_sequence
+    return memoize_sequence_loader(load_from_restricted_asset)
 
 
 def fit_temporal_for_evaluation(

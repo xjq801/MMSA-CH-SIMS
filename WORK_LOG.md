@@ -3733,3 +3733,53 @@ pooled与temporal模型的test路径现在不会用test选择epoch；temporal强
 ### Git状态
 
 实现提交已推送；本条日志尚待收尾提交与同步。
+
+## WR-20260717-020 — 完成任务7本地GPU预检与temporal运行加速
+
+- 时间：2026-07-17 23:08:01 +08:00
+- 类型：PROGRESS | TEST | FIX | EXPERIMENT
+- 任务/门：20-M3 / 总纲任务20第7项正式run准备
+- 状态：准备完成；正式dev调参待固定clean commit后启动
+- 负责人：Codex
+
+### 背景与目标
+
+用户要求完成任务7，并已允许优先使用本地3070 Ti。官方VC-CSA固定snapshot缺少模型代码且依赖目标评论，不能冒充当前T0分布预测的官方复现；本批继续执行已登记的冻结I3D temporal-attention强视觉重实现，并在正式运行前验证本地GPU、资产fixity、test负门和预计耗时。
+
+### 实际变更
+
+- 本地GPU预检确认PyTorch 2.4.1+cu121识别NVIDIA GeForce RTX 3070 Ti Laptop GPU；任务20独立环境CUDA可用。
+- 复跑CSMV feature preflight：8210个必需I3D文件hash/覆盖通过，许可、稳定revision和权利方包身份/fixity证明仍保持`DEFERRED_ACCEPTED_RISK`，未写成已解决。
+- 运行32 train/16 dev、1 trial、2 epoch的本地GPU smoke，只评dev、不读取test。
+- 全量5698 train/837 dev单epoch边界计时为30.4秒、峰值CUDA显存154 MiB。根因审计确认旧runner在每epoch重复打开数千个I3D文件，按早停耐心20估计原12-trial需约2–6小时。
+- 在`tests/test_task20_temporal_runner.py`先新增“每个底层受限序列只读一次、不写内存数组”的测试并看到缺API预期失败；随后在`scripts/run_task20_temporal_attention.py`新增进程内只读memoization，不写磁盘、不缓存标签、不改变train-only标准化、模型、预算、split或指标。
+- 优化后全量train/dev两epoch实测20.8秒，峰值CUDA显存154 MiB；12-trial常见早停预计20–60分钟，因此无需租新实例，也避免受限I3D外传。
+- 更新`.planning/task20-m3/task_plan.md`、`findings.md`与`progress.md`，将任务7置为正式dev调参待启动。
+
+### 验证与证据
+
+- `nvidia-smi`及任务20 Python CUDA探针：exit 0，CUDA可用并识别本地3070 Ti。
+- `.\.venv-task20\Scripts\python.exe scripts\validate_csmv_feature_preflight.py`：exit 0，`passed=true`、`required_file_hashes=8210`、未知权利状态fail-closed保留。
+- `.\.venv-task20\Scripts\python.exe -m unittest tests.test_task20_temporal_runner tests.test_task20_training -v`：修改前11/11通过；新增测试首次因`memoize_sequence_loader`缺失失败，实现后12/12通过。
+- GPU smoke runner：exit 0，状态`COMPLETED`、仅dev、smoke=true；本机run bundle位于Git忽略的`results/task20/temporal-attention-gpu-smoke-task7-20260717-a/`。
+- 全量边界计时：旧路径1 epoch 30.4秒；新增只读内存缓存后2 epoch 20.8秒；两次均只用train/dev，不读取test。
+- `.\.venv-task20\Scripts\python.exe -m unittest discover -v tests`：exit 0，53项全部通过。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests`与`git diff --check`：exit 0。
+
+### 影响与边界
+
+正式temporal-attention运行不再为每个epoch重复打开I3D文件，但数据语义、FULL_SEQUENCE_DYNAMIC_PADDING_MASK、train-only拟合、12-trial预算、dev选择和test一次性规则完全不变。缓存只存在进程内，不落盘、不进入Git或run bundle。官方复现失败证据继续保留，强基线只能标记`REIMPLEMENTATION_STRONG_BASELINE`。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision和权利方包身份/fixity仍未知；若后续权利方否认或8210 hash/覆盖漂移，必须标记`ASSET_INVALIDATED_DO_NOT_REPORT`。
+- 8GB显存不是当前瓶颈；正式运行实际时长仍取决于各trial最佳epoch，若超出冻结200 epoch上限或出现OOM/非确定算子将如实失败，不缩减trial或改test规则。
+
+### 下一步
+
+1. 运行工作日志与准备检查，提交并推送当前缓存优化，使正式run绑定clean commit。
+2. 从固定commit执行12-trial dev选择，冻结selection后对test评测一次。
+
+### Git状态
+
+本条写入时改动尚未提交或推送，工作区非clean；所有I3D与`results/`产物保持Git忽略。

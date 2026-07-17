@@ -2952,3 +2952,45 @@ GitHub上的当前项目已固定T-AFFC-only总纲v1.15。独立IJCV项目仍保
 ### Git状态
 
 内容commit `db89c99`已推送；本条日志本身尚未提交或推送。
+
+## WR-20260717-001 — 复核忽略I3D资产准入后的G2条件
+
+- 时间：2026-07-17 11:21:38 +08:00
+- 类型：TEST | DECISION | DATA
+- 任务/门：00-总控 / G2反事实复审
+- 状态：完成
+- 负责人：Codex
+
+### 背景与目标
+
+用户要求暂时忽略CSMV I3D资产准入，检查是否能够通过G2。本批次只做反事实门审计：检查排除资产级许可、稳定官方revision和权利方身份/fixity证明后是否仍有其他G2阻塞；不自动修改总纲、机器状态或任务20启动门。
+
+### 实际变更
+
+- 新建`TASK00_G2_NON_ASSET_COUNTERFACTUAL_REVIEW_20260717.md`，逐项记录非资产G2条件、现场命令、限制和正式门边界。
+- 更新`G1_G2_EVIDENCE_MATRIX.md`，登记`PASS_NON_ASSET_G2_REQUIREMENTS_WITH_LIMITATIONS`反事实裁定，同时保持正式G2 blocked。
+- 未修改任何原始数据、标签、split算法、I3D字节、dataset/split manifest门状态或训练代码。
+
+### 验证与证据
+
+- `validate_m2_data_engineering.py`：exit 0；8210记录、107267人工响应、8008源族、金标/银标隔离及第二主集映射通过。
+- `run_m2_leakage_tests.py --no-write`：exit 0；Critical=0、`PASS_WITH_LIMITATIONS`；`--selftest`：exit 0并正确输出`LEAKAGE_BLOCKED`。
+- `reproduce_m2_minimal.py --public-core`：exit 0；Python 3.8.9、`-I -S`、19项before/after一致、`mismatches=[]`。
+- `validate_m2_release.py`、`validate_csmv_i3d_sequence_protocol.py`、`validate_lai_gai_second_primary.py`均exit 0。
+- `run_preparation_checks.py`：exit 0；`blocking_checks=[]`、`m1_read_only_work_ready=true`、`formal_model_work_ready=false`。
+
+### 影响与边界
+
+排除资产准入后，没有发现第二个非资产G2阻塞，故反事实结论为非资产条件通过。正式G2不能仅凭“忽略”改为PASS：现行总纲和机器合同仍要求许可/官方身份闭合，故`G2=BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`、`formal_split=false`、`formal_model_use_allowed=false`，任务20未创建。
+
+### 风险、问题与阻塞
+
+I3D资产级研究许可、稳定官方revision和权利方包身份/fixity证明仍未知。若未来通过范围变更接受风险，可能影响论文审稿、实验复现、代码/特征发布和后续数据合规；不得把接受风险写成权利方确认。
+
+### 下一步
+
+等待用户决定是否正式修改总纲，把G2拆分为协议/数据通过与资产风险延期接受；在此之前维持现有门状态。
+
+### Git状态
+
+本条记录及两份复审材料尚未提交或推送。

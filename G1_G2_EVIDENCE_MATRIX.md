@@ -31,6 +31,12 @@
 
 维护者外部证明现按用户指令标记`DEFERRED_PENDING_MAINTAINER_REPLY`：暂时跳过协调，不等待、不催促、不重复检查；延期不等于缺口关闭。
 
+## 2026-07-17 非资产G2反事实复审
+
+用户要求暂时忽略CSMV I3D资产准入并检查G2。00现场复核结论为`PASS_NON_ASSET_G2_REQUIREMENTS_WITH_LIMITATIONS`：排除资产级许可、稳定官方revision与权利方包身份/fixity证明后，G2其余数据血缘、标签隔离、T0评论隔离、泄漏正负门、第二主集、I3D序列协议、19项隔离复现和M2本地发布包均通过，未发现第二个非资产阻塞。详细证据见`TASK00_G2_NON_ASSET_COUNTERFACTUAL_REVIEW_20260717.md`。
+
+该结果是反事实范围判断，不是正式放行。现行总纲与机器合同未修改，故正式G2仍为`BLOCKED_CSMV_INPUT_ASSET_LICENSE_FIXITY_AND_COVERAGE`，`formal_split=false`、`formal_model_use_allowed=false`，任务20不创建。若以后决定承担资产不确定性，必须先书面修改门定义并将风险明确记录为`DEFERRED_ACCEPTED_RISK`，不得把未知许可写成已通过。
+
 ## 止损执行
 
 - 不训练模型、不建立正式索引、不创建任务20。

@@ -5407,3 +5407,50 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本同步日志自身尚未提交或推送；主裁定提交`e5397d29c8211a3af274161defad7bc082b48f8a`已推送。
+
+## WR-20260718-033 — 建立VC-CSA泄漏接受型隔离探索合同
+
+- 时间：2026-07-18 23:16:09 +08:00
+- 类型：FEATURE | TEST | DOC | RISK
+- 任务/门：任务20 / VC-CSA作者原设定单种子隔离探索
+- 状态：新合同已完成并提交00精确hash复核；有效传输权限仍待批准
+- 负责人：Codex
+
+### 背景与目标
+
+00在`e5397d29c8211a3af274161defad7bc082b48f8a`裁定用户仅接受一次隔离探索的方法学泄漏风险，并要求任务20新建独立合同；在00另行绑定精确SHA-256前，真实I3D必须保持0上传、真实训练保持0次。旧NO_TRANSFER合同及其固定hash不得原地改写。
+
+### 实际变更
+
+- 新建`TASK20_VCCSA_LEAKAGE_ACCEPTED_EXPLORATORY_EXECUTION_CONTRACT_20260718.md`，唯一身份固定为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，明确train可读取dev/test peer评论与标签、dev/test指标污染和正式证据禁入。
+- 合同仅允许`single seed=3407`工程诊断，并把T0、G3、`BASELINE_TABLE_V1.md`、任务50、论文claim、排名和显著性比较全部排除。
+- 合同覆盖指定实例SSH host-key SHA-256/GPU UUID/endpoint digest三元绑定、固定8210项传前传后fixity、SFTP与0700/0600、禁Git/对象存储/快照、最小输出回传、删除核验、`UNKNOWN_PLATFORM_CONTROL_PLANE`及`ASSET_INVALIDATED_DO_NOT_REPORT`止损。
+- 在`tests/test_vccsa_author_reproduction.py`新增合同负测/合同测试；未修改旧`TASK20_REMOTE_A6000_I3D_STAGING_EXECUTION_CONTRACT_20260718.md`、00裁定、S09、总纲或G门。
+
+### 验证与证据
+
+- TDD红灯：先运行新专项测试，因新合同不存在得到预期`FileNotFoundError`，1项失败；随后最小新增合同，同一专项测试1/1通过。
+- `.venv-task20`任务20 VC-CSA专项8/8通过；正式环境全量unittest 68/68通过。
+- `.venv-task20`准备检查exit 0，`blocking_checks=[]`、`faiss_available=true`、`formal_model_work_ready=true`。
+- 新合同SHA-256=`77b0a93003d265aae6215caca3ef53fbef4624bd24cf3dfabf46df3978cdaed4`，PowerShell按物理换行计48行；旧NO_TRANSFER合同diff为空。
+- 首轮默认`validate_work_log.py`因本条把必需元数据键写成“任务/问题”而失败，报告`WR-20260718-033缺少元数据: 任务/门`；已将本条未提交记录修正为校验器要求的“任务/门”并保留失败事实。修正后复跑：`validate_work_log.py`共123条、latest=`WR-20260718-033`、`passed=true`；默认`.venv`准备检查exit 0、`blocking_checks=[]`，如实保持`faiss_available=false`与`formal_model_work_ready=false`；正式`.venv-task20`准备检查exit 0、`blocking_checks=[]`、`faiss_available=true`、`formal_model_work_ready=true`。
+- `git diff --check`通过；新合同与测试定向敏感端点/凭证扫描命中0；旧NO_TRANSFER合同diff为空。截至验证结束，未连接远端，真实I3D上传0项，真实训练0次。
+
+### 影响与边界
+
+本批只建立供00精确hash复核的执行合同，不构成`APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`。探索结果即使后续产生也永久为`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入正式baseline或论文证据。I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN。
+
+### 风险、问题与阻塞
+
+- `EFFECTIVE_I3D_TRANSFER_PERMISSION=PENDING_EXPLORATORY_CONTRACT_HASH_REVIEW`仍是当前硬门；00接受精确hash前不得上传或训练。
+- 平台控制面删除/备份能力不可独立验证；合同仅约束操作者可见层，保留`UNKNOWN_PLATFORM_CONTROL_PLANE`。
+
+### 下一步
+
+1. 运行项目强制门禁、diff与敏感信息检查，有意提交本合同、测试和WR-033。
+2. 推送后向00回传commit、合同SHA-256、行数和门禁结果，等待独立hash复核。
+3. 仅在00另行记录`APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`后才允许执行实例绑定和资产传输。
+
+### Git状态
+
+本条写入时新合同、测试和WR-033尚未提交或推送，工作区非clean；真实I3D上传0项，真实训练0次。

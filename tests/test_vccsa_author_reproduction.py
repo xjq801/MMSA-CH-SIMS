@@ -169,6 +169,45 @@ class VccsaAuthorReproductionTests(unittest.TestCase):
         self.assertFalse(scope["may_be_reported_as_t0_baseline"])
         self.assertEqual(contract["source"]["revision"], EXPECTED_AUTHOR_REVISION)
 
+    def test_exploratory_contract_discloses_leakage_and_blocks_formal_evidence(self):
+        contract = (
+            ROOT
+            / "TASK20_VCCSA_LEAKAGE_ACCEPTED_EXPLORATORY_EXECUTION_CONTRACT_20260718.md"
+        ).read_text(encoding="utf-8")
+        required_terms = {
+            "AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY",
+            "METHOD_LEAKAGE_RISK=USER_ACCEPTED_FOR_EXPLORATORY_ONLY",
+            "FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE",
+            "EFFECTIVE_I3D_TRANSFER_PERMISSION=PENDING_EXPLORATORY_CONTRACT_HASH_REVIEW",
+            "APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT",
+            "7,854",
+            "122 / 2,750 / 1,573",
+            "train 可读取 dev/test peer 评论与标签",
+            "dev/test 指标受到污染",
+            "single seed=3407",
+            "T0",
+            "G3",
+            "BASELINE_TABLE_V1.md",
+            "任务50",
+            "论文",
+            "SSH host-key SHA-256",
+            "GPU UUID",
+            "endpoint digest",
+            "8210",
+            "SFTP",
+            "0700",
+            "0600",
+            "对象存储",
+            "Git",
+            "快照",
+            "UNKNOWN_PLATFORM_CONTROL_PLANE",
+            "ASSET_INVALIDATED_DO_NOT_REPORT",
+        }
+        missing = sorted(term for term in required_terms if term not in contract)
+        self.assertEqual(missing, [])
+        self.assertIn("真实 I3D 上传=0", contract)
+        self.assertIn("真实训练=0", contract)
+
     def test_contract_rejects_silent_t0_relabel(self):
         contract = json.loads(
             (ROOT / "configs" / "task20" / "vccsa-author-original-v1.json").read_text(

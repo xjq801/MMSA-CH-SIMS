@@ -62,22 +62,21 @@ def build_smoke_inputs(
     train_examples: int = 8,
     dev_examples: int = 4,
 ) -> Dict:
-    """Create ignored smoke-only inputs while making test access impossible."""
+    """Build a runtime that persists only selected train/dev records.
+
+    The builder must read the author's full annotation archive as its source.
+    It then physically excludes test and unselected records from the persisted
+    runtime annotation dictionary and video-to-comment mapping.
+    """
     if train_examples < 1 or dev_examples < 1:
         raise ValueError("smoke requires positive train and dev example counts")
     output_dir.mkdir(parents=True, exist_ok=True)
     train = json.loads((comments_source / "train_set.json").read_text(encoding="utf-8"))
     dev = json.loads((comments_source / "dev_set.json").read_text(encoding="utf-8"))
-    selected_train = train[:train_examples]
-    selected_dev = dev[:dev_examples]
-    if len(selected_train) != train_examples or len(selected_dev) != dev_examples:
+    if len(train) < train_examples or len(dev) < dev_examples:
         raise ValueError("author split is smaller than the requested smoke subset")
 
-    for name in (
-        "video_to_comment.json",
-        "opinion_label_map.json",
-        "emotion_label_map.json",
-    ):
+    for name in ("opinion_label_map.json", "emotion_label_map.json"):
         shutil.copyfile(comments_source / name, output_dir / name)
 
     archive_path = comments_source / "lable_data_dict.json.zip"
@@ -85,10 +84,98 @@ def build_smoke_inputs(
         members = [name for name in archive.namelist() if not name.endswith("/")]
         if members != ["lable_data_dict.json"]:
             raise ValueError(f"unexpected annotation archive members: {members}")
-        with archive.open(members[0]) as source_handle, (
-            output_dir / "lable_data_dict.json"
-        ).open("wb") as target_handle:
-            shutil.copyfileobj(source_handle, target_handle)
+        with archive.open(members[0]) as source_handle:
+            all_annotations = json.loads(source_handle.read().decode("utf-8"))
+
+    all_video_comments = json.loads(
+        (comments_source / "video_to_comment.json").read_text(encoding="utf-8")
+    )
+
+    def select_with_peers(split_ids, requested, split_name):
+        grouped = {}
+        video_order = []
+        for comment_id in split_ids:
+            annotation = all_annotations.get(comment_id)
+            if annotation is None:
+                raise ValueError(f"{split_name} annotation ID missing: {comment_id}")
+            video_id = annotation.get("video_file_id")
+            if video_id is None:
+                raise ValueError(f"{split_name} annotation is missing video_file_id")
+            if comment_id not in all_video_comments.get(video_id, []):
+                raise ValueError(
+                    f"{split_name} annotation {comment_id} is absent from video map {video_id}"
+                )
+            if video_id not in grouped:
+                grouped[video_id] = []
+                video_order.append(video_id)
+            grouped[video_id].append(comment_id)
+
+        selected = []
+        remaining = requested
+        for video_id in video_order:
+            candidates = grouped[video_id]
+            if len(candidates) < 2 or remaining < 2:
+                continue
+            take = 3 if remaining % 2 == 1 and len(candidates) >= 3 else 2
+            if take <= remaining:
+                selected.extend(candidates[:take])
+                remaining -= take
+            if remaining == 0:
+                break
+        if remaining:
+            raise ValueError(
+                f"cannot select {requested} {split_name} comments with at least two selected comments per video"
+            )
+        selected_set = set(selected)
+        return [comment_id for comment_id in split_ids if comment_id in selected_set]
+
+    selected_train = select_with_peers(train, train_examples, "train")
+    selected_dev = select_with_peers(dev, dev_examples, "dev")
+
+    selected_ids = selected_train + selected_dev
+    selected_set = set(selected_ids)
+    if len(selected_set) != len(selected_ids):
+        raise ValueError("smoke train/dev selections contain duplicate IDs")
+    missing_annotations = selected_set.difference(all_annotations)
+    if missing_annotations:
+        raise ValueError(f"selected annotation IDs missing: {sorted(missing_annotations)}")
+    filtered_annotations = {key: all_annotations[key] for key in selected_ids}
+
+    selected_video_ids = {
+        annotation.get("video_file_id") for annotation in filtered_annotations.values()
+    }
+    if None in selected_video_ids:
+        raise ValueError("selected annotation is missing video_file_id")
+    filtered_video_comments = {}
+    for video_id in sorted(selected_video_ids):
+        candidates = [
+            comment_id
+            for comment_id in all_video_comments.get(video_id, [])
+            if comment_id in selected_set
+        ]
+        if len(candidates) < 2:
+            raise ValueError(
+                f"video {video_id} needs at least two selected comments for peer sampling"
+            )
+        filtered_video_comments[video_id] = candidates
+
+    mapped_ids = {
+        comment_id
+        for candidates in filtered_video_comments.values()
+        for comment_id in candidates
+    }
+    if mapped_ids != selected_set:
+        missing = sorted(selected_set.difference(mapped_ids))
+        extra = sorted(mapped_ids.difference(selected_set))
+        raise ValueError(f"filtered video map ID mismatch: missing={missing}, extra={extra}")
+
+    for name, value in (
+        ("lable_data_dict.json", filtered_annotations),
+        ("video_to_comment.json", filtered_video_comments),
+    ):
+        with (output_dir / name).open("w", encoding="utf-8", newline="\n") as handle:
+            json.dump(value, handle, ensure_ascii=False, indent=2)
+            handle.write("\n")
 
     for name, values in (
         ("train_set.json", selected_train),
@@ -99,12 +186,28 @@ def build_smoke_inputs(
             json.dump(values, handle, ensure_ascii=False, indent=2)
             handle.write("\n")
 
+    persisted_annotations = json.loads(
+        (output_dir / "lable_data_dict.json").read_text(encoding="utf-8")
+    )
+    persisted_video_map = json.loads(
+        (output_dir / "video_to_comment.json").read_text(encoding="utf-8")
+    )
+    persisted_mapped_ids = {
+        comment_id
+        for candidates in persisted_video_map.values()
+        for comment_id in candidates
+    }
+    if set(persisted_annotations) != selected_set or persisted_mapped_ids != selected_set:
+        raise ValueError("persisted smoke inputs contain missing or extra annotation IDs")
+
     return {
         "schema_version": "task20-vccsa-author-smoke-input-v1",
         "status": "SMOKE_INPUTS_READY_NO_TEST",
         "train_examples": len(selected_train),
         "dev_examples": len(selected_dev),
         "test_examples": 0,
+        "annotation_ids": len(persisted_annotations),
+        "video_comment_ids": len(persisted_mapped_ids),
         "files": {
             path.name: _sha256(path)
             for path in sorted(output_dir.iterdir())

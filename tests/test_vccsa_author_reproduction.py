@@ -1,4 +1,5 @@
 import json
+import hashlib
 from pathlib import Path
 import sys
 import tempfile
@@ -18,7 +19,27 @@ from prepare_vccsa_author_reproduction import (
 
 
 class VccsaAuthorReproductionTests(unittest.TestCase):
-    def test_smoke_builder_is_deterministic_and_never_reads_test(self):
+    def test_post_snapshot_erratum_preserves_frozen_bytes_and_precedence(self):
+        frozen = {
+            "TASK20_G3_EVIDENCE_PACKAGE_20260718.md": "cf906a93c9cd1c8ad6c022d7bfe019d323ba19d0f6aa4bd7786a338c152248c6",
+            "BASELINE_TABLE_V1.md": "7a2b612c16ebe8110a67a4108877ae0aca4082d8b7ab7d87897dc48f6c651f44",
+            "HANDOFF_20.md": "5a503d90308781620b4e4a7c99b409e29f30cd0872fc6f8b51da6c580a9b56cb",
+        }
+        for name, expected in frozen.items():
+            self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), expected)
+        audit = (ROOT / "TASK20_BASELINE_EXECUTION_AUDIT.md").read_text(encoding="utf-8")
+        erratum = (ROOT / "TASK20_POST_SNAPSHOT_VCCSA_ERRATUM_20260718.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn("`FAILED_OFFICIAL_CODE_ABSENT_AND_TARGET_COMMENT_INPUT_MISMATCH`", audit)
+        self.assertIn("HISTORICAL_OFFICIAL_MAIN_99D1424_ATTEMPT_FAILED", audit)
+        self.assertIn(
+            "AUTHOR_ORIGINAL_PATH_SMOKE_EXECUTABLE_FULL_REPRODUCTION_BLOCKED_COMPUTE",
+            erratum,
+        )
+        self.assertIn("适用范围与优先级", erratum)
+
+    def test_smoke_builder_physically_excludes_unselected_and_test_records(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             source = root / "Comments_Anno"
@@ -28,21 +49,72 @@ class VccsaAuthorReproductionTests(unittest.TestCase):
                 "train_set.json": ["tr0", "tr1", "tr2"],
                 "dev_set.json": ["dv0", "dv1"],
                 "test_set.json": ["te0"],
-                "video_to_comment.json": {"v.mp4": ["tr0", "tr1"]},
+                "video_to_comment.json": {
+                    "train.mp4": ["tr0", "tr1", "te0"],
+                    "dev.mp4": ["dv0", "dv1"],
+                    "other.mp4": ["tr2"],
+                },
                 "opinion_label_map.json": {"neutral": 0},
                 "emotion_label_map.json": {"neutral": 0},
             }
             for name, value in fixtures.items():
                 (source / name).write_text(json.dumps(value), encoding="utf-8")
             with zipfile.ZipFile(source / "lable_data_dict.json.zip", "w") as archive:
-                archive.writestr("lable_data_dict.json", json.dumps({"tr0": {}}))
+                archive.writestr(
+                    "lable_data_dict.json",
+                    json.dumps(
+                        {
+                            "tr0": {"video_file_id": "train.mp4"},
+                            "tr1": {"video_file_id": "train.mp4"},
+                            "tr2": {"video_file_id": "other.mp4"},
+                            "dv0": {"video_file_id": "dev.mp4"},
+                            "dv1": {"video_file_id": "dev.mp4"},
+                            "te0": {"video_file_id": "train.mp4"},
+                        }
+                    ),
+                )
 
-            report = build_smoke_inputs(source, output, train_examples=2, dev_examples=1)
+            report = build_smoke_inputs(source, output, train_examples=2, dev_examples=2)
 
             self.assertEqual(json.loads((output / "train_set.json").read_text()), ["tr0", "tr1"])
-            self.assertEqual(json.loads((output / "dev_set.json").read_text()), ["dv0"])
+            self.assertEqual(json.loads((output / "dev_set.json").read_text()), ["dv0", "dv1"])
             self.assertEqual(json.loads((output / "test_set.json").read_text()), [])
+            annotations = json.loads((output / "lable_data_dict.json").read_text())
+            video_map = json.loads((output / "video_to_comment.json").read_text())
+            self.assertEqual(set(annotations), {"tr0", "tr1", "dv0", "dv1"})
+            self.assertEqual(video_map, {
+                "train.mp4": ["tr0", "tr1"],
+                "dev.mp4": ["dv0", "dv1"],
+            })
+            self.assertNotIn("te0", json.dumps(annotations))
+            self.assertNotIn("te0", json.dumps(video_map))
             self.assertEqual(report["test_examples"], 0)
+
+    def test_smoke_builder_fails_closed_when_selected_id_has_no_peer(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            source = root / "Comments_Anno"
+            source.mkdir()
+            for name, value in {
+                "train_set.json": ["tr0"],
+                "dev_set.json": ["dv0"],
+                "test_set.json": ["te0"],
+                "video_to_comment.json": {"v0.mp4": ["tr0"], "v1.mp4": ["dv0"]},
+                "opinion_label_map.json": {"neutral": 0},
+                "emotion_label_map.json": {"neutral": 0},
+            }.items():
+                (source / name).write_text(json.dumps(value), encoding="utf-8")
+            with zipfile.ZipFile(source / "lable_data_dict.json.zip", "w") as archive:
+                archive.writestr(
+                    "lable_data_dict.json",
+                    json.dumps({
+                        "tr0": {"video_file_id": "v0.mp4"},
+                        "dv0": {"video_file_id": "v1.mp4"},
+                        "te0": {"video_file_id": "v0.mp4"},
+                    }),
+                )
+            with self.assertRaisesRegex(ValueError, "at least two selected comments"):
+                build_smoke_inputs(source, root / "runtime", 1, 1)
 
     def test_contract_keeps_author_reproduction_outside_t0(self):
         contract = load_reproduction_contract(

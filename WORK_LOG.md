@@ -5362,3 +5362,48 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时上述四项00文件尚未提交或推送；任务20仍不得执行真实I3D传输。
+
+## WR-20260718-032 — 提交推送VC-CSA泄漏接受型探索原则授权
+
+- 时间：2026-07-18 23:09:04 +08:00
+- 类型：SYNC | PROGRESS | AUDIT
+- 任务/门：00-T-AFFC总控 / VC-CSA泄漏接受型探索授权
+- 状态：原则授权已推送；合同hash复核待任务20提交
+- 负责人：Codex
+
+### 背景与目标
+
+固定WR-031的用户方法学风险接受边界、`SC-20260718-04`裁定和S09交接合同，并记录实际Git同步结果。
+
+### 实际变更
+
+- 仅暂存并提交四项00所有权文件：`.light/decision_log.md`、`.light/handoff/S09-vccsa-leakage-accepted-exploratory-authorized.md`、`TASK00_VCCSA_LEAKAGE_ACCEPTED_EXPLORATORY_AUTHORIZATION_20260718.md`和`WORK_LOG.md`。
+- 创建提交`e5397d29c8211a3af274161defad7bc082b48f8a`并推送`origin/main`。
+- 未修改或提交任务20实验代码、测试、旧NO_TRANSFER合同、执行审计或运行资产。
+
+### 验证与证据
+
+- 首次`validate_work_log.py`因WR-031把必需元数据键写成“任务/问题”而报告`缺少元数据: 任务/门`，`run_preparation_checks.py`相应给出`blocking_checks=[work_log]`；修正键名后重跑通过。
+- 修正后`validate_work_log.py`：121条、latest=`WR-20260718-031`、`passed=true`。
+- 修正后默认`.venv`的`run_preparation_checks.py`：exit 0、`blocking_checks=[]`；同时如实保持`faiss_available=false`、`formal_model_work_ready=false`。
+- S09交接卡结构6项通过；`git diff --check`与`git diff --cached --check`均exit 0。
+- `git commit -m "docs(task00): authorize leakage-accepted VC-CSA exploration"`：commit=`e5397d29c8211a3af274161defad7bc082b48f8a`，4 files changed、152 insertions。
+- `git push origin main`：`c5a552b..e5397d2 main -> main`；推送后`HEAD=origin/main=e5397d29c8211a3af274161defad7bc082b48f8a`、工作区clean。
+
+### 影响与边界
+
+远端main现正式记录：该隔离探索原则允许，但有效传输许可仍为`PENDING_EXPLORATORY_CONTRACT_HASH_REVIEW`。任务20只有在新合同精确hash被00另行接受后，才可上传固定8210项并启动该次单种子探索；其结果始终不具正式证据资格。
+
+### 风险、问题与阻塞
+
+当前唯一执行阻塞是任务20尚未提交新的独立探索合同。I3D许可、官方revision、权利方包身份/fixity和平台控制面残余风险均不变。
+
+### 下一步
+
+1. 向任务20发送`e5397d29`和合同要求，指令其只起草/提交新探索合同，合同获接受前保持0上传/0训练。
+2. 00收到提交后独立复核实例绑定、8210 fixity、结果隔离、删除核验和止损条款，并绑定精确SHA-256。
+3. 若合同满足硬门，再单独激活`APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`。
+
+### Git状态
+
+本同步日志自身尚未提交或推送；主裁定提交`e5397d29c8211a3af274161defad7bc082b48f8a`已推送。

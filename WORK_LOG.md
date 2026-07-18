@@ -5273,3 +5273,45 @@ I3D许可、官方revision、权利方包身份/fixity仍未知，`ASSET_ADMISSI
 
 本条写入时上述三项00文件尚未提交或推送；工作区非clean。
 
+## WR-20260718-030 — 提交推送任务20 peer阻断验收
+
+- 时间：2026-07-18 17:44:00 +08:00
+- 类型：SYNC | PROGRESS | AUDIT
+- 任务/门：00-T-AFFC总控 / 任务20 VC-CSA阻断收尾
+- 状态：00验收已提交推送；同步日志待提交
+- 负责人：Codex
+
+### 背景与目标
+
+固定WR-029完成的独立验收、正式验收单和S08交接合同，并记录实际远端同步结果。
+
+### 实际变更
+
+- 仅暂存`TASK00_TASK20_PEER_BLOCKER_SUBMISSION_ACCEPTANCE_20260718.md`、`.light/handoff/S08-task20-peer-blocker-submission-accepted.md`和`WORK_LOG.md`三项00文件。
+- 创建提交`78b680817c3bfad96a49e91b44fd4fb26357927f`并推送`origin/main`。
+
+### 验证与证据
+
+- 提交前`validate_work_log.py`为119条、latest=`WR-20260718-029`、`passed=true`；默认`run_preparation_checks.py` exit 0、`blocking_checks=[]`，继续如实为`faiss_available=false`、`formal_model_work_ready=false`。
+- S08独立handoff合同6项通过；`git diff --check`与`git diff --cached --check`均exit 0；缓存范围严格为三项00文件。
+- `git commit -m "docs(task00): accept task20 peer blocker submission"`：exit 0，commit=`78b680817c3bfad96a49e91b44fd4fb26357927f`，3 files changed，135 insertions。
+- `git push origin main`：exit 0，`baaac07..78b6808 main -> main`；推送后工作区clean。
+
+### 影响与边界
+
+远端main现包含00对任务20 `baaac078`阻断提交的独立验收及S08接续合同。faithful作者全量路径保持结构性阻断，真实I3D保持0上传；未授权任何peer适配或新实验。
+
+### 风险、问题与阻塞
+
+I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非faithful peer适配仍须重新预注册与审批。
+
+### 下一步
+
+1. 提交推送本同步日志，确认`HEAD=origin/main`和工作区clean。
+2. 任务20保持idle；若用户不提出REIMPLEMENTATION方案，该路径按结构性阻断收尾。
+3. 总控继续监督任务树、G3限制和任务50未完成边界。
+
+### Git状态
+
+本条同步日志自身尚未提交或推送；主验收提交`78b680817c3bfad96a49e91b44fd4fb26357927f`已推送。
+

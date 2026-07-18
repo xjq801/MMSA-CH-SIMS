@@ -106,3 +106,9 @@
 
 - 00独立复核handoff validator、22项证据、两项SHA-256、60/60测试和正式环境后，形成`TASK00_G3_FINAL_REVIEW_20260718.md`并裁定`G3=PASS_WITH_LIMITATIONS`。
 - 任务30可按总纲启动条件进入后续流程，但本批未创建；VC-CSA失败、重实现身份、单seed边界、任务50未完成及I3D accepted-risk继续传播。
+
+## 2026-07-18 VC-CSA作者代码候选审计
+
+- 定位作者fork `JackySnake/MSA-CRVI@3e8c426`及官方open PR #3；代码树含VC-CSA模型和训练/评测脚本，纠正原“无作者代码”判断。
+- 原任务仍读取目标评论、使用comment split并预测评论级标签，不满足T0视频级分布合同；当前状态为作者实现已定位、尚未复现。
+- compileall通过，两个入口在GPU前因`en_vectors_web_lg`缺失失败；未启动高算力实验。

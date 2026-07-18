@@ -4372,3 +4372,53 @@ I3D许可、官方revision及权利方包身份/fixity仍未知，`ASSET_ADMISSI
 ### Git状态
 
 本条写入前`main`、`origin/main`均为`e20a4eeffc644ee32ddc7a907108fd294f972e4c`且工作区clean；本条日志自身待提交推送。
+
+## WR-20260718-010 — 定位VC-CSA作者实现并更正代码缺失结论
+
+- 时间：2026-07-18 12:17:14 +08:00
+- 类型：AUDIT | TEST | DECISION | PROGRESS
+- 任务/门：20-M3 / 任务7补充证据
+- 状态：作者代码已定位；依赖预检失败；尚未训练
+- 负责人：Codex
+
+### 背景与目标
+
+用户提供`JackySnake/MSA-CRVI`候选仓库，要求重新核实此前“VC-CSA官方代码缺失”的判断，区分可克隆仓库、作者实现和T0协议资格。
+
+### 实际变更
+
+- 只读核验远端refs、GitHub仓库/PR元数据、commit历史、完整文件树、README、VC-CSA模型、dataset loader、训练/评测入口和shell脚本。
+- 将作者fork以`--filter=blob:none --no-checkout`克隆至Git忽略的`downloads/MSA-CRVI-JackySnake-audit`，固定HEAD `3e8c42608f4e89bc2082c55760aa63535e8e276a`后进行静态预检；不把上游代码纳入项目Git。
+- 更新`TASK20_BASELINE_EXECUTION_AUDIT.md`、实验登记和任务20规划事实：原“作者代码缺失”被更正为`AUTHOR_RELEASED_IMPLEMENTATION_LOCATED_PR3_OPEN_NOT_YET_REPRODUCED`，但历史官方main审计不删除。
+- 未修改冻结评测器、split、任务7既有结果、G3裁定或总纲。
+
+### 验证与证据
+
+- `git ls-remote https://github.com/JackySnake/MSA-CRVI.git`：HEAD/main均为`3e8c42608f4e89bc2082c55760aa63535e8e276a`。
+- GitHub API：该仓库是`IEIT-AGI/MSA-CRVI`的fork；官方PR #3标题`add source code`、状态open、未合并、head=`3e8c426`、base=`99d1424`；README联系人为论文第一作者Qi Jia。
+- `git ls-tree -r --name-only HEAD`确认存在`source_vcssa/model_VCCSA.py`、`main.py`、`main_eval.py`、训练/评测脚本与配置。
+- 代码检查确认dataset/model读取目标`comment_info.comment`并用RoBERTa编码，输出评论级opinion/emotion；原split为随机comment 7:1:2，因此不能直接进入本项目T0视频级分布主表。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q downloads/MSA-CRVI-JackySnake-audit/source_vcssa`：exit 0。
+- `main.py --help`与`main_eval.py --help`：均exit 1，在CUDA前因`ModuleNotFoundError: en_vectors_web_lg`停止；作者环境清单未声明该依赖。脚本另有`video_feature`/`${video_feature_dir}`变量不一致和续行空格问题。
+- 本轮未读取受限I3D、未运行训练、未调用GPU。
+
+### 影响与边界
+
+任务7官方复现的阻塞原因不再包括“找不到任何作者代码”，改为作者代码候选已定位但尚未完成依赖修复/原设定复现；目标评论与split不符合T0的科学边界完全不变。既有强基线仍是`REIMPLEMENTATION_STRONG_BASELINE`，不能改称VC-CSA。
+
+### 风险、问题与阻塞
+
+- PR未合并，作者forkrevision身份必须显式披露，不能写成官方main已发布。
+- faithful原任务复现需RoBERTa、旧依赖、作者comment split和视频特征；T0适配必须另建实验且降为重实现。
+- GPU当前没有被调用；可运行性在依赖/脚本修复前即失败，因此尚不存在GPU不可用结论。
+- I3D许可/revision/权利方fixity风险继续为`DEFERRED_ACCEPTED_RISK`。
+
+### 下一步
+
+1. 先让00复核并更新G3限制措辞，不把代码定位自动写成复现成功。
+2. 若继续任务7补充复现，冻结`3e8c426`、建立作者环境兼容/修复账本并先做无数据入口测试；需要GPU时优先检查用户租用实例，不可用立即报告。
+3. 作者原设定复现与T0适配重实现分开配置、分开结果、分开命名。
+
+### Git状态
+
+本条写入时审计更正尚未提交或推送；上游fork克隆位于Git忽略目录。

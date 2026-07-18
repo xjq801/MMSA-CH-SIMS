@@ -97,3 +97,10 @@
 - 00已将其WR-20260718-004和S03交接卡自行提交推送为`3273ab2926581a877f89d5adc7da591dbe1dba2d`；任务20未stage、未改写00文件。
 - `task20-handoff-v1.manifest.json`绑定22项tracked证据，现场从Git对象库逐项核验通过；manifest SHA-256=`6d75e219...f96e91`。
 - `HANDOFF_20.md`当前SHA-256=`5a503d90...9b56cb`，不含绝对路径或受限资产；validator输出`passed=true`、`restricted_assets_required=false`。
+
+## 2026-07-18 VC-CSA作者代码定位更正
+
+- `JackySnake/MSA-CRVI@3e8c426`是官方仓库fork、论文第一作者联系仓库，并对应`IEIT-AGI/MSA-CRVI`尚未合并的PR #3 `add source code`；包含完整VC-CSA模型、训练与评测入口。
+- 原“作者代码缺失”结论应更正为`AUTHOR_RELEASED_IMPLEMENTATION_LOCATED_PR3_OPEN_NOT_YET_REPRODUCED`；官方main仍未合并代码的历史事实保留。
+- 原实现读取目标评论并采用随机comment split，故T0与视频级分布协议不匹配仍成立；作者原设定复现与T0适配必须分开登记。
+- 语法编译通过；任务20环境入口预检在CUDA前因未声明`en_vectors_web_lg`依赖失败，尚未使用GPU。

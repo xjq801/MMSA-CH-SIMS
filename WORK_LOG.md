@@ -4422,3 +4422,43 @@ I3D许可、官方revision及权利方包身份/fixity仍未知，`ASSET_ADMISSI
 ### Git状态
 
 本条写入时审计更正尚未提交或推送；上游fork克隆位于Git忽略目录。
+
+## WR-20260718-011 — 推送VC-CSA代码资格更正并通知00
+
+- 时间：2026-07-18 12:20:54 +08:00
+- 类型：SYNC | PROGRESS | DOC
+- 任务/门：20-M3 / 任务7补充证据
+- 状态：更正已推送并提交00复核
+- 负责人：Codex
+
+### 背景与目标
+
+固定作者代码定位、可运行性预检与T0边界更正，并将会影响G3限制措辞的新证据提交00总控。
+
+### 实际变更
+
+- 有意提交任务20执行审计、实验登记、规划事实和WR-20260718-010；上游作者代码克隆继续位于Git忽略目录。
+- 向新00总控任务发送commit、作者fork/PR身份、入口预检失败和T0不匹配边界，请其更新“代码缺失”限制措辞但不把定位冒充复现成功。
+
+### 验证与证据
+
+- `git diff --cached --check`：exit 0；暂存5个任务20审计/登记/规划文件。
+- `git commit -m "docs(task20): correct VC-CSA source availability"`：exit 0，commit `d5f22f7ca27d33612bebb55fae399bbb8dfe42ac`，83 insertions、1 deletion。
+- 7890代理push：exit 0，`5e1e5e2..d5f22f7 main -> main`；随后HEAD与`origin/main`均为`d5f22f7ca27d33612bebb55fae399bbb8dfe42ac`，工作区clean。
+- `send_message_to_thread`返回目标threadId `019f6e64-0635-7ac0-a70a-65445b0fc1d1`。
+
+### 影响与边界
+
+项目远端现已反映“作者实现已定位但未复现”的真实状态。G3现有强基线依据不自动失效；是否修订00最终审查措辞由00独立决定。
+
+### 风险、问题与阻塞
+
+原实现依赖/脚本尚需修复；PR未合并；目标评论和comment split仍不满足T0。I3D资产风险不变。本批未运行GPU。
+
+### 下一步
+
+等待00审查更正；如用户要求继续原设定复现，先建立冻结环境和补丁账本，再检查租用GPU可用性。
+
+### Git状态
+
+本条写入前`main`与`origin/main`均为`d5f22f7ca27d33612bebb55fae399bbb8dfe42ac`且工作区clean；本条同步记录自身待提交推送。

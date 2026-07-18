@@ -156,3 +156,20 @@ I3D许可、官方revision、权利方包身份/fixity仍未知，`ASSET_ADMISSI
 `REMOTE_A6000_RUNTIME_READY_SYNTHETIC_BATCH16_RESOURCE_SMOKE_PASSED_FULL_REPRODUCTION_NOT_STARTED`
 
 该结论关闭“没有可用高显存GPU/运行时”的算力阻塞，但不等于全量复现完成。正式运行前仍须在现有`asset_redistribution_allowed=false`边界下明确远端I3D暂存权限，并只暂存固定8210项、复核逐文件hash/覆盖；若没有该权限，不得借租用GPU绕过资产边界。作者代码每epoch约保存1.66GB checkpoint，120 epoch约199GB；当前350GB磁盘在技术上足够，但必须保留容量监控。作者原任务身份继续为`AUTHOR_ORIGINAL_SETTING_NON_T0`，任何T0适配仍须独立标`REIMPLEMENTATION`。
+
+## 11. 用户扩权后的传输前peer隔离止损
+
+用户随后明确书面授权固定manifest中的8210项I3D可临时上传到该私人租用实例，仅用于内部研究训练，完成后删除且不发布、不转交第三方。该扩权不证明I3D权利方许可、官方revision或包身份/fixity，也不覆盖其他实例。任务20据此起草了包含严格集合/fixity、SFTP最小权限、禁快照/镜像、实例唯一绑定、输出回传和删除核验的执行合同；但在传输第一个真实I3D字节前，作者peer逻辑预检触发了合同内预注册止损。
+
+聚合审计不读取I3D、不输出评论ID/正文或本机路径，结果如下：
+
+- 作者split仍为75,086 train / 10,727 dev / 21,454 test，comment ID跨split重复为0；
+- 7,854个视频跨split；
+- split内singleton video/ID为train 122、dev 2,750、test 1,573；这些ID均有全局peer，但peer只存在于其他split；
+- 作者loader对每条样本必须随机选择同视频另一评论，并读取该peer的评论和标签。
+
+因此，保留完整作者映射会让train读取dev/test评论或标签；按split物理过滤后，train的122条singleton无法取得合法peer。两条路径不能同时满足faithful作者合同与无泄漏合同。当前状态更新为：
+
+`LEAKAGE_BLOCKED_AUTHOR_ORIGINAL_PEER_DEPENDENCY`
+
+该阻塞优先于实例算力与资产暂存授权。真实I3D上传数保持0，未连接远端、未启动全量训练。不得通过持久化dev/test记录、删除原split样本或静默修改peer规则冒充全量作者复现。改变peer逻辑、去除singleton或改为视频级split只能另立`REIMPLEMENTATION`，并重新审查其数据与远端资产合同。

@@ -8,6 +8,7 @@ video-level protocol.
 from __future__ import annotations
 
 import argparse
+from collections import Counter, defaultdict
 import hashlib
 import json
 from pathlib import Path
@@ -54,6 +55,94 @@ def verify_source_revision(repo_root: Path) -> str:
             f"unexpected author revision: expected {EXPECTED_AUTHOR_REVISION}, got {revision}"
         )
     return revision
+
+
+def audit_peer_isolation(comments_source: Path) -> Dict:
+    """Audit whether every author split record has an in-split peer.
+
+    The author loader samples another comment from the same video.  A physically
+    isolated split is executable only when every selected comment has at least
+    one peer in that same split.  This report intentionally contains aggregate
+    counts only; it never emits comment IDs or comment text.
+    """
+    splits = {
+        name: json.loads(
+            (comments_source / f"{name}_set.json").read_text(encoding="utf-8")
+        )
+        for name in ("train", "dev", "test")
+    }
+    archive_path = comments_source / "lable_data_dict.json.zip"
+    with zipfile.ZipFile(archive_path) as archive:
+        members = [name for name in archive.namelist() if not name.endswith("/")]
+        if members != ["lable_data_dict.json"]:
+            raise ValueError(f"unexpected annotation archive members: {members}")
+        annotations = json.loads(archive.read(members[0]).decode("utf-8"))
+    video_to_comment = json.loads(
+        (comments_source / "video_to_comment.json").read_text(encoding="utf-8")
+    )
+
+    all_ids = [comment_id for values in splits.values() for comment_id in values]
+    if len(all_ids) != len(set(all_ids)):
+        raise ValueError("author split IDs are duplicated within or across splits")
+
+    split_reports = {}
+    video_splits = defaultdict(set)
+    for split_name, comment_ids in splits.items():
+        split_id_set = set(comment_ids)
+        by_video = Counter()
+        for comment_id in comment_ids:
+            annotation = annotations.get(comment_id)
+            if annotation is None:
+                raise ValueError(f"{split_name} annotation ID is missing")
+            video_id = annotation.get("video_file_id")
+            if video_id is None:
+                raise ValueError(f"{split_name} annotation is missing video_file_id")
+            if comment_id not in video_to_comment.get(video_id, []):
+                raise ValueError(f"{split_name} annotation is absent from its video map")
+            by_video[video_id] += 1
+            video_splits[video_id].add(split_name)
+        singleton_videos = sum(count == 1 for count in by_video.values())
+        no_global_peer_ids = 0
+        cross_split_only_peer_ids = 0
+        for comment_id in comment_ids:
+            video_id = annotations[comment_id]["video_file_id"]
+            if by_video[video_id] != 1:
+                continue
+            peers = [
+                peer_id
+                for peer_id in video_to_comment[video_id]
+                if peer_id != comment_id
+            ]
+            if not peers:
+                no_global_peer_ids += 1
+            elif all(peer_id not in split_id_set for peer_id in peers):
+                cross_split_only_peer_ids += 1
+        split_reports[split_name] = {
+            "comment_ids": len(comment_ids),
+            "videos": len(by_video),
+            "singleton_videos": singleton_videos,
+            "singleton_ids": singleton_videos,
+            "cross_split_only_peer_ids": cross_split_only_peer_ids,
+            "no_global_peer_ids": no_global_peer_ids,
+            "minimum_comments_per_video": min(by_video.values()) if by_video else 0,
+            "maximum_comments_per_video": max(by_video.values()) if by_video else 0,
+        }
+
+    blocked = any(report["singleton_ids"] for report in split_reports.values())
+    return {
+        "schema_version": "task20-vccsa-author-peer-isolation-audit-v1",
+        "status": (
+            "LEAKAGE_BLOCKED_AUTHOR_ORIGINAL_PEER_DEPENDENCY"
+            if blocked
+            else "AUTHOR_SPLITS_PHYSICALLY_ISOLATABLE"
+        ),
+        "splits": split_reports,
+        "videos_spanning_splits": sum(
+            len(split_names) > 1 for split_names in video_splits.values()
+        ),
+        "contains_comment_ids": False,
+        "contains_comment_text": False,
+    }
 
 
 def build_smoke_inputs(

@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from prepare_vccsa_author_reproduction import (
     EXPECTED_AUTHOR_REVISION,
     apply_compatibility_patch,
+    audit_peer_isolation,
     build_smoke_inputs,
     load_reproduction_contract,
     validate_reproduction_contract,
@@ -19,6 +20,45 @@ from prepare_vccsa_author_reproduction import (
 
 
 class VccsaAuthorReproductionTests(unittest.TestCase):
+    def test_full_author_split_fails_closed_when_peer_requires_another_split(self):
+        with tempfile.TemporaryDirectory() as td:
+            source = Path(td) / "Comments_Anno"
+            source.mkdir()
+            for name, value in {
+                "train_set.json": ["tr0"],
+                "dev_set.json": ["dv0", "dv1"],
+                "test_set.json": ["te0"],
+                "video_to_comment.json": {
+                    "cross.mp4": ["tr0", "te0"],
+                    "dev.mp4": ["dv0", "dv1"],
+                },
+            }.items():
+                (source / name).write_text(json.dumps(value), encoding="utf-8")
+            with zipfile.ZipFile(source / "lable_data_dict.json.zip", "w") as archive:
+                archive.writestr(
+                    "lable_data_dict.json",
+                    json.dumps({
+                        "tr0": {"video_file_id": "cross.mp4"},
+                        "dv0": {"video_file_id": "dev.mp4"},
+                        "dv1": {"video_file_id": "dev.mp4"},
+                        "te0": {"video_file_id": "cross.mp4"},
+                    }),
+                )
+
+            report = audit_peer_isolation(source)
+
+            self.assertEqual(
+                report["status"], "LEAKAGE_BLOCKED_AUTHOR_ORIGINAL_PEER_DEPENDENCY"
+            )
+            self.assertEqual(report["splits"]["train"]["singleton_ids"], 1)
+            self.assertEqual(
+                report["splits"]["train"]["cross_split_only_peer_ids"], 1
+            )
+            self.assertEqual(report["splits"]["train"]["no_global_peer_ids"], 0)
+            self.assertEqual(report["videos_spanning_splits"], 1)
+            self.assertNotIn("tr0", json.dumps(report))
+            self.assertNotIn("te0", json.dumps(report))
+
     def test_post_snapshot_erratum_preserves_frozen_bytes_and_precedence(self):
         frozen = {
             "TASK20_G3_EVIDENCE_PACKAGE_20260718.md": "cf906a93c9cd1c8ad6c022d7bfe019d323ba19d0f6aa4bd7786a338c152248c6",

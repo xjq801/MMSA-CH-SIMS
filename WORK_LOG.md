@@ -5454,3 +5454,53 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时新合同、测试和WR-033尚未提交或推送，工作区非clean；真实I3D上传0项，真实训练0次。
+
+## WR-20260718-034 — 独立验收VC-CSA探索合同精确hash并激活绑定权限
+
+- 时间：2026-07-18 23:21:32 +08:00
+- 类型：AUDIT | TEST | DECISION | AUTH | DOC
+- 任务/门：00-T-AFFC总控 / VC-CSA泄漏接受型探索合同hash复核
+- 状态：合同接受；绑定合同范围内的传输执行权限生效
+- 负责人：Codex
+
+### 背景与目标
+
+任务20基于`bbccdf0`提交新的独立探索合同并请求00仅做精确hash复核。00需验证当前远端字节、提交范围、旧合同不变性和合同测试，不重新审议用户已接受的方法学泄漏风险，也不改任务20实验核心。
+
+### 实际变更
+
+- 新建`TASK00_VCCSA_EXPLORATORY_CONTRACT_HASH_ACCEPTANCE_20260718.md`，记录`SC-20260718-05`并绑定合同精确SHA-256。
+- 更新`.light/decision_log.md`，把有效权限改为`APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`。
+- 新建`.light/handoff/S10-vccsa-exploratory-contract-hash-accepted.md`，传播实例、8210 fixity、单种子和删除监督门。
+- 未修改任务20新/旧合同、测试、实验代码、总纲、G门、冻结G3 package/HANDOFF或实验结果。
+
+### 验证与证据
+
+- 开工刷新：`HEAD=origin/main=4ebcb260dfccf357e9cfb9c7a92c9d348a1b28d9`、工作区clean、任务20线程idle。
+- `git diff --name-status bbccdf0..4ebcb260`严格为新合同、`WORK_LOG.md`和合同测试三项；旧NO_TRANSFER合同diff为空。
+- 00独立`Get-FileHash -Algorithm SHA256`得到`77b0a93003d265aae6215caca3ef53fbef4624bd24cf3dfabf46df3978cdaed4`，与任务20回传一致。
+- 当前合同物理行数由`Get-Content -Encoding utf8`独立得到100；任务20回传48行不正确，`git show --stat`同样显示新增100行。hash一致，故字节版本未漂移；00验收材料使用100行并停止传播48行。
+- `.venv-task20\Scripts\python.exe -m unittest tests.test_vccsa_author_reproduction -v`：8/8通过，exit 0。
+- `git diff --check bbccdf0..4ebcb260`：exit 0。
+- 本次使用`light-data-engineering`维持泄漏结果正式证据禁入，使用`light-research-ethics`把用户知情带病推进限定于透明、隔离且可止损的探索合同；两者没有把用户已接受的风险重新设为执行阻塞。
+
+### 影响与边界
+
+任务20现在可执行已接受合同，但必须先通过实例三元绑定和传前8210 fixity，再传输、远端复核并运行一次seed=3407诊断。批准不证明传输、训练、结果或删除已经完成；验收时真实I3D仍0上传、真实训练0次。
+
+结果永久为`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0、G3、统一baseline、任务50或论文正式claim。I3D未知项、平台控制面残余风险和资产止损条件不变。
+
+### 风险、问题与阻塞
+
+- 任务20回传的合同物理行数错误，已由00纠正为100；后续hash仍是唯一字节身份锚点。
+- 执行仍受实例三元绑定、8210传前/传后fixity、最小权限、输出边界和删除核验约束；任一失败即停止。
+
+### 下一步
+
+1. 提交推送本验收单、决策日志、WR-034与S10。
+2. 向任务20发送验收commit、合同hash和100行更正，允许其严格按合同开始实例绑定与传前检查。
+3. 持续监督上传、单种子诊断和删除核验；不得扩大到更多种子或正式证据。
+
+### Git状态
+
+本条写入时上述四项00文件尚未提交或推送；有效权限裁定尚未进入远端main，任务20应继续等待提交hash。

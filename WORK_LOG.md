@@ -5226,3 +5226,50 @@ I3D许可、官方revision、权利方包身份/fixity仍未知，`ASSET_ADMISSI
 
 本条写入时上述任务20五项改动尚未提交或推送；工作区非clean。真实I3D远端上传数为0。
 
+## WR-20260718-029 — 00独立验收任务20 peer阻断提交
+
+- 时间：2026-07-18 17:35:00 +08:00
+- 类型：AUDIT | TEST | DECISION | DOC
+- 任务/门：00-T-AFFC总控 / 任务20 VC-CSA阻断收尾
+- 状态：`TASK20_PEER_BLOCKER_SUBMISSION=ACCEPTED`
+- 负责人：Codex
+
+### 背景与目标
+
+任务20报告已按00父状态`c7edb54`有意提交并推送最终NO_TRANSFER合同、执行审计、peer聚合器、负测和WR-028，commit=`baaac078add841bb40fa6be1b44fa202c60f6e2b`。00须刷新实时状态并独立复核，不能以任务20自报替代验收。
+
+### 实际变更
+
+- 新建`TASK00_TASK20_PEER_BLOCKER_SUBMISSION_ACCEPTANCE_20260718.md`，接受`baaac078`作为结构性peer阻断的正式可审计提交。
+- 新建`.light/handoff/S08-task20-peer-blocker-submission-accepted.md`，传播NO_TRANSFER、NON_T0、REIMPLEMENTATION新审批和I3D UNKNOWN边界。
+- 未修改任务20代码、测试、合同、执行审计、总纲、G门、冻结G3 package/HANDOFF、T0协议或任务50状态。
+
+### 验证与证据
+
+- 开工刷新：`git status --short --branch`为`main...origin/main`且clean；`git fetch origin`后`HEAD=origin/main=baaac078add841bb40fa6be1b44fa202c60f6e2b`；任务20线程idle。
+- `git show baaac078`确认相对父状态严格五项：执行合同、执行审计、聚合器、负测和WR-028。
+- 合同SHA-256=`5dbf891d1fcd6307ee19f98dc46c8e3f7c35a712c167a5b258c4c10b79d28d3c`、120行；`git diff --check c7edb54..baaac078` exit 0。
+- 00独立`.venv-task20`全量unittest 67/67通过；真实peer聚合重算7,854个跨split视频，train/dev/test singleton与cross-split-only peer均122/2,750/1,573，三split`no_global_peer=0`，报告不含comment IDs/text。
+- 默认`.venv`的`validate_work_log.py`为118条、latest=`WR-20260718-028`、`passed=true`；默认准备检查exit 0、`blocking_checks=[]`，但`faiss_available=false`、`formal_model_work_ready=false`。
+- 正式`.venv-task20`准备检查exit 0、`blocking_checks=[]`、`faiss_available=true`、`formal_model_work_ready=true`；handoff validator 22项通过、`restricted_assets_required=false`。
+
+### 影响与边界
+
+任务20faithful作者全量路径可按结构性泄漏止损正式收尾；其阻断证据可重复，且没有通过传输I3D或运行真实实验才发现问题。接受阻断证据不等于接受作者复现结果。任何peer适配都必须另建`REIMPLEMENTATION_NON_FAITHFUL_PEER_ADAPTATION`并重新预注册与审批。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；本验收不产生再分发或发布权。
+- 用户曾接受当前A6000实例风险，但faithful实验已被更早的数据泄漏门阻断；不得继续为该路径上传或训练。
+- 默认与正式task20环境状态不同，后续材料不得混写。
+
+### 下一步
+
+1. 提交推送00验收单、WR-029和S08交接卡。
+2. 若用户不提出独立REIMPLEMENTATION方案，任务20本轮保持idle并按结构性阻断收尾。
+3. 继续监督任务树、G3限制、任务50未完成和I3D止损边界，不创建IJCV任务。
+
+### Git状态
+
+本条写入时上述三项00文件尚未提交或推送；工作区非clean。
+

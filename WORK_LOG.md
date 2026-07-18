@@ -4462,3 +4462,93 @@ I3D许可、官方revision及权利方包身份/fixity仍未知，`ASSET_ADMISSI
 ### Git状态
 
 本条写入前`main`与`origin/main`均为`d5f22f7ca27d33612bebb55fae399bbb8dfe42ac`且工作区clean；本条同步记录自身待提交推送。
+
+## WR-20260718-012 — 总控更正G3中的VC-CSA证据身份与限制措辞
+
+- 时间：2026-07-18 13:05:00 +08:00
+- 类型：AUDIT | DECISION | DOC | VALIDATION
+- 任务/门：00-T-AFFC总控 / G3证据更正
+- 状态：G3继续PASS_WITH_LIMITATIONS；作者实现已定位但尚未复现
+- 负责人：Codex
+
+### 背景与目标
+
+独立复核任务20在`d5f22f7ca27d33612bebb55fae399bbb8dfe42ac`提交的新证据，纠正G3最终审查中已过时的“作者代码缺失”限制，同时防止把代码定位扩大成官方复现成功或T0资格。
+
+### 实际变更
+
+- 更新`TASK00_G3_FINAL_REVIEW_20260718.md`：将VC-CSA状态改为`AUTHOR_RELEASED_IMPLEMENTATION_LOCATED_PR3_OPEN_NOT_YET_REPRODUCED`，保留官方`main@99d1424`原审计时无代码为历史事实。
+- 明确作者fork/上游PR #3身份、入口依赖与脚本预检失败、未运行GPU，以及目标comment、随机comment split、评论级输出与T0协议不匹配。
+- 明确既有temporal-attention仍为`REIMPLEMENTATION_STRONG_BASELINE`，作者实现定位不使G3强基线依据失效；`G3=PASS_WITH_LIMITATIONS`不变。
+- 新建`.light/handoff/S04-g3-vccsa-evidence-correction.md`，传播更正后的SSOT边界和下一会话提示词。
+- 未修改总纲、G1/G2、冻结实验核心、I3D资产、任务50状态或IJCV隔离边界。
+
+### 验证与证据
+
+- 开工状态：`main`与`origin/main`均为`11f96fe`，工作区clean；该提交已固定任务20的WR-20260718-011同步记录。
+- `light-orchestrator lifecycle.py intake --root D:\MMSA-CH-SIMS`：exit 0、`state=resume`、`blockers=[]`；其`next_action=stage 20`落后于实时G3裁定，仅作状态诊断，不用于回滚门状态。
+- GitHub独立核验：`JackySnake/MSA-CRVI`页面标识为`IEIT-AGI/MSA-CRVI`的fork；上游PR #3标题`add source code`、状态Open、目标`IEIT-AGI:main`、来源`JackySnake:main`，提交链末端显示`3e8c426`。
+- 作者fork README独立核验：任务输入包含视频和评论，输出评论级opinion/emotion；train/dev/test为随机comment ID的7:1:2划分，与T0禁用目标评论及`group_by_video_v1`不匹配。
+- 任务20已提交审计记录的静态预检：compileall exit 0；两个入口因`en_vectors_web_lg`缺失exit 1；本轮无GPU运行。
+- 提交前门禁结果见本条后续追加记录；失败不会删除或改写。
+
+### 影响与边界
+
+G3维持`PASS_WITH_LIMITATIONS`，但“当前作者代码缺失”不再是有效措辞。代码定位不等于上游main发布、环境可运行、faithful reproduction成功或T0官方复现；VC-CSA不得进入T0统一主表，除非后续建立边界清晰的独立适配实验，并仍按重实现报告。
+
+### 风险、问题与阻塞
+
+- PR仍open且未合并，作者fork revision必须固定并披露。
+- 依赖清单与shell脚本存在已知缺陷，尚无GPU或训练级复现证据。
+- I3D许可、官方revision、权利方包身份/fixity仍未知；`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`不变，权利否认或8210 hash/覆盖漂移即`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+执行工作日志、准备检查和diff门禁；有意提交并推送00更正文档、WR-20260718-012与S04交接卡。继续监督任务树，避免把作者原任务复现与T0适配混写。
+
+### Git状态
+
+本条写入时上述00文件尚未提交或推送，工作区非clean。
+
+## WR-20260718-013 — 完成G3证据更正门禁并记录任务20重跑授权状态
+
+- 时间：2026-07-18 13:14:00 +08:00
+- 类型：VALIDATION | SYNC | RISK
+- 任务/门：00-T-AFFC总控 / G3证据更正收尾
+- 状态：更正文档门禁通过；待提交推送
+- 负责人：Codex
+
+### 背景与目标
+
+闭合WR-20260718-012承诺的提交前验证，并记录任务20在总控审查期间收到的最新用户授权和GPU可用性边界。
+
+### 实际变更
+
+- 运行AGENTS要求的工作日志与准备检查，并复核任务20隔离环境和hash-bound handoff。
+- 在S04补记：用户已授权任务20用作者代码重跑和修复依赖/脚本；租用A30当前connection refused，任务20先在本地3070 Ti做TDD/smoke。
+- 未执行作者代码、未修改实验核心，也未把连接失败写成GPU训练失败或把本地smoke写成复现完成。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：exit 0，`passed=true`，102条，最新`WR-20260718-012`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0、`blocking_checks=[]`；旧环境继续如实显示formal CARM环境`faiss_available=false`、`formal_model_work_ready=false`。
+- `.\.venv-task20\Scripts\python.exe scripts\run_preparation_checks.py`：exit 0、`blocking_checks=[]`、`formal_model_work_ready=true`。
+- `.\.venv-task20\Scripts\python.exe scripts\validate_task20_handoff.py`：exit 0、`passed=true`、`tracked_evidence_checked=22`、`restricted_assets_required=false`。
+- `git diff --check`：exit 0。
+- 对双环境准备检查的重复摘要命令因120秒超时exit 124；没有据此覆盖前一轮已完整返回的真实结果，也未重复采用已知失败的`light-memory-pm pm.py`包装器。
+
+### 影响与边界
+
+G3仍为`PASS_WITH_LIMITATIONS`。重跑授权只扩展任务20可执行的作者代码兼容/复现工作，不授权修改T0冻结协议、不把faithful作者任务与T0适配混并，也不改变I3D接受风险。
+
+### 风险、问题与阻塞
+
+租用A30端点当前TCP/SSH connection refused；本地3070 Ti约6.47GB空闲是否足以全量运行尚未由任务20证明。依赖与脚本修复必须保留补丁账本，且不得越过作者原任务/T0适配身份边界。
+
+### 下一步
+
+提交并推送00更正文档、WR-20260718-012/013与S04；向任务20回传commit hash，随后持续监督其TDD、smoke和运行证据。
+
+### Git状态
+
+本条写入时上述00文件仍未提交或推送，工作区非clean。

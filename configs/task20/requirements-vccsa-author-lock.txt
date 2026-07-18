@@ -1,0 +1,12 @@
+# Author-declared direct dependencies
+torch==1.13.1+cu117
+numpy==1.22.4
+scikit-learn==1.2.1
+transformers==4.26.1
+easydict==1.10
+
+# Imported by the released training path but omitted from its README
+tensorboard==2.13.0
+tensorboardX==2.6.2.2
+loguru==0.7.2
+tqdm==4.66.5

@@ -112,3 +112,10 @@
 - 定位作者fork `JackySnake/MSA-CRVI@3e8c426`及官方open PR #3；代码树含VC-CSA模型和训练/评测脚本，纠正原“无作者代码”判断。
 - 原任务仍读取目标评论、使用comment split并预测评论级标签，不满足T0视频级分布合同；当前状态为作者实现已定位、尚未复现。
 - compileall通过，两个入口在GPU前因`en_vectors_web_lg`缺失失败；未启动高算力实验。
+
+## 2026-07-18 VC-CSA作者原设定兼容与smoke
+
+- 冻结`JackySnake/MSA-CRVI@3e8c426`为`AUTHOR_ORIGINAL_SETTING_NON_T0`；T0适配仍为独立`REIMPLEMENTATION`。
+- 锁定Python 3.8.9、torch 1.13.1+cu117、transformers 4.26.1及作者直接依赖；以测试约束最小兼容补丁。
+- 本地RTX 3070 Ti完成8 train / 4 dev / 0 test、batch 1、1 epoch的146.05439M参数smoke，未OOM。
+- 全split为75,086 / 10,727 / 21,454；本地120 epoch粗估约52天，租用A30仍不可达，因此全量未启动。

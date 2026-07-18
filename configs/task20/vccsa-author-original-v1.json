@@ -1,0 +1,56 @@
+{
+  "schema_version": "task20-vccsa-author-reproduction-v1",
+  "experiment_id": "vccsa-author-original-comment-level-seed3407",
+  "source": {
+    "repository": "JackySnake/MSA-CRVI",
+    "revision": "3e8c42608f4e89bc2082c55760aa63535e8e276a",
+    "upstream_pr": "IEIT-AGI/MSA-CRVI#3",
+    "release_status": "AUTHOR_RELEASED_IMPLEMENTATION_PR_OPEN_UNMERGED"
+  },
+  "claim_scope": {
+    "classification": "AUTHOR_ORIGINAL_SETTING_NON_T0",
+    "target": "comment_level_opinion_and_emotion",
+    "uses_target_comment_text": true,
+    "split_unit": "comment",
+    "split_source": "author_provided_train_dev_test_json",
+    "t0_adaptation": false,
+    "may_be_reported_as_t0_baseline": false
+  },
+  "runtime": {
+    "python": "3.8",
+    "torch": "1.13.1",
+    "numpy": "1.22",
+    "scikit_learn": "1.2.1",
+    "transformers": "4.26.1",
+    "easydict": "1.10",
+    "cuda_device_class": "NVIDIA_GPU"
+  },
+  "pretrained_model": {
+    "repository": "FacebookAI/roberta-base",
+    "revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+    "local_snapshot_required": true
+  },
+  "training": {
+    "seed": 3407,
+    "batch_size": 16,
+    "max_epoch": 120,
+    "early_stop_declared_but_not_implemented_upstream": 5,
+    "learning_rate": 0.00005,
+    "lang_seq_len": 512,
+    "video_seq_len": 180,
+    "test_access": "EVALUATION_ONLY_AFTER_DEV_CHECKPOINT_SELECTION"
+  },
+  "smoke": {
+    "purpose": "EXECUTABILITY_AND_RESOURCE_ESTIMATION_ONLY",
+    "train_examples": 8,
+    "dev_examples": 4,
+    "test_examples": 0,
+    "max_epoch": 1,
+    "may_be_reported_as_reproduction": false
+  },
+  "asset_policy": {
+    "i3d_admissibility": "DEFERRED_ACCEPTED_RISK",
+    "redistribution_allowed": false,
+    "invalidation_status": "ASSET_INVALIDATED_DO_NOT_REPORT"
+  }
+}

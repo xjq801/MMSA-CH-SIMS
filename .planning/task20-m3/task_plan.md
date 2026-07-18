@@ -47,4 +47,13 @@
 
 ## 当前用户限定
 
-用户已授权继续完成总纲任务20第6–18项，并允许先使用本地3070 Ti；任务7强视觉基线在本地既有只读I3D环境运行，不上传或再分发资产。仍禁止提前引入teacher、memory或完整CARM，禁止修改总纲/G门，禁止再分发受限I3D资产。
+用户已授权继续完成总纲任务20第6—18项，并允许先使用本地3070 Ti；任务7强视觉基线在本地既有只读I3D环境运行，不上传或再分发资产。仍禁止提前引入teacher、memory或完整CARM，禁止修改总纲/G门，禁止再分发受限I3D资产。
+
+## Phase H: author-released VC-CSA reproduction supplement
+
+- [completed] H1. Freeze the author-original comment-level NON_T0 contract and write failing tests.
+- [completed] H2. Apply a minimal auditable compatibility patch without vendoring author code.
+- [completed] H3. Lock an isolated author runtime and prepare ignored local inputs.
+- [completed] H4. Run a local-GPU smoke for executability and resource estimation only.
+- [pending] H5. Run the full author setting only when compute is feasible; never label smoke as reproduction.
+- [pending] H6. Keep any T0 adaptation as a separate REIMPLEMENTATION experiment.

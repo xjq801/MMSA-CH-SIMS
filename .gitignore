@@ -1,6 +1,7 @@
 # Local Python environments and caches
 .venv/
 .venv-task20/
+.venv-vccsa-author/
 venv/
 env/
 __pycache__/

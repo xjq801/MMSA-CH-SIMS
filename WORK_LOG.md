@@ -5315,3 +5315,50 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 
 本条同步日志自身尚未提交或推送；主验收提交`78b680817c3bfad96a49e91b44fd4fb26357927f`已推送。
 
+## WR-20260718-031 — 裁定VC-CSA泄漏风险接受型隔离探索
+
+- 时间：2026-07-18 23:02:08 +08:00
+- 类型：DECISION | AUTH | RISK | DOC
+- 任务/门：00-T-AFFC总控 / VC-CSA作者原设定泄漏接受型探索
+- 状态：原则允许；新探索合同hash复核前不得传输
+- 负责人：Codex
+
+### 背景与目标
+
+用户明确表示不再以跨split peer数据泄漏作为停止理由，并要求继续作者代码训练。任务20没有自行解封，而是建议将唯一诚实身份固定为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，保留作者完整comment split、全量映射和peer逻辑，同时把结果隔离于正式证据。00需区分用户对方法学风险的知情接受与I3D许可/fixity闭合，并裁定既有实例专用传输扩权能否在新合同下恢复。
+
+### 实际变更
+
+- 新建`TASK00_VCCSA_LEAKAGE_ACCEPTED_EXPLORATORY_AUTHORIZATION_20260718.md`，记录`SC-20260718-04`。
+- 更新`.light/decision_log.md`，固定探索身份、正式证据禁入和合同hash复核前的有效权限状态。
+- 新建`.light/handoff/S09-vccsa-leakage-accepted-exploratory-authorized.md`，传播下一会话的复核硬门。
+- 未修改任务20代码、测试、旧NO_TRANSFER合同、执行审计、总纲、G门、冻结G3 package/HANDOFF或实验核心。
+
+### 验证与证据
+
+- 开工前读取`AGENTS.md`、`WORK_RECORD_POLICY.md`、WORK_LOG末条、现有SC-20260718-03与S08边界，并刷新Git和任务20状态；当时`HEAD=origin/main=c5a552b131eebc7d7a37ac017d33dc95d95b0542`、工作区clean、任务20 idle。
+- 复核既有聚合证据：7,854个跨split视频，train/dev/test的cross-split-only singleton为122/2,750/1,573；该事实不因用户接受风险而改变。
+- 按`light-data-engineering`和`light-research-ethics`要求区分正式无泄漏证据门与用户知情“带病推进”的隔离探索；用户指令优先，但所有限制和披露必须落盘。
+- 裁定状态为`APPROVED_IN_PRINCIPLE`而非立即执行：新合同精确SHA-256未获00接受前，真实I3D仍为0上传，真实全量训练不得启动。
+
+### 影响与边界
+
+跨split peer泄漏不再阻止这一次隔离探索，但永久阻止其进入T0、统一baseline、G3主证据、任务50、论文主表以及泛化/无泄漏/公平比较claim。作者完整映射可在新合同下保留；所有结果必须披露train可读取dev/test peer评论与标签及dev/test指标污染。
+
+用户此前对当前私人租用实例固定8210项I3D临时上传、内部训练、任务后删除且不发布/不转交的扩权原则上可复用，但I3D许可、官方revision、权利方包身份/fixity仍UNKNOWN。权利方否认、8210 hash/覆盖漂移或实例绑定漂移继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 风险、问题与阻塞
+
+- 任务20尚未提交新的探索合同，故`EFFECTIVE_I3D_TRANSFER_PERMISSION=PENDING_EXPLORATORY_CONTRACT_HASH_REVIEW`。
+- 平台控制面残余、I3D权利链和资产fixity未知项未被用户的方法学风险接受所消除。
+- 单次探索指标受结构性泄漏污染；增加种子不能提升其正式证据资格。
+
+### 下一步
+
+1. 提交并推送本裁定、决策日志、WR-031与S09。
+2. 通知任务20基于该父提交新建独立探索合同；在00接受精确hash前保持0上传/0真实训练。
+3. 00随后只读复核合同与实例/资产/结果隔离条款，不并发修改任务20实验核心。
+
+### Git状态
+
+本条写入时上述四项00文件尚未提交或推送；任务20仍不得执行真实I3D传输。

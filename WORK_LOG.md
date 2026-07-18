@@ -5548,3 +5548,51 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本同步日志自身尚未提交或推送；主验收提交`c77eff30ba31d3db293014aff4b3b97cf3f46980`已推送。
+
+## WR-20260718-036 — VC-CSA探索实例三元绑定前SSH握手失败止损
+
+- 时间：2026-07-18 23:29:33 +08:00
+- 类型：TEST | SECURITY | PROGRESS | RISK
+- 任务/门：任务20 / VC-CSA泄漏接受型隔离探索实例绑定门
+- 状态：阻挡；实例SSH在密钥交换前拒绝连接，未传输资产、未训练
+- 负责人：Codex
+
+### 背景与目标
+
+00已在`c77eff30ba31d3db293014aff4b3b97cf3f46980`接受任务20探索合同精确SHA-256，并在同步后的`main@2d5e182ff790595654f150245c97227d0171af99`激活`EFFECTIVE_I3D_TRANSFER_PERMISSION=APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`。任务20按合同顺序首先尝试获取SSH host-key SHA-256、GPU UUID和endpoint digest三元绑定；三元绑定完成前禁止fixity、传输和训练。
+
+### 实际变更
+
+- 快进刷新`main`并完整读取`TASK00_VCCSA_EXPLORATORY_CONTRACT_HASH_ACCEPTANCE_20260718.md`与S10，确认合同精确SHA-256仍为`77b0a93003d265aae6215caca3ef53fbef4624bd24cf3dfabf46df3978cdaed4`。
+- 采纳00纠正：合同当前物理行数为100，停止传播此前错误的48行。
+- 对用户指定实例执行只读SSH host-key扫描和最小TCP/SSH握手诊断；未创建远端目录、未认证、未上传、未执行远端命令。
+- 因实例在密钥交换前拒绝连接，三元绑定无法形成；按合同立即停止，未继续本地8210传前fixity、SFTP、远端fixity或seed=3407诊断。
+
+### 验证与证据
+
+- 开工状态：`HEAD=origin/main=2d5e182ff790595654f150245c97227d0171af99`，工作区clean。
+- 合同复核：SHA-256=`77b0a93003d265aae6215caca3ef53fbef4624bd24cf3dfabf46df3978cdaed4`，`Get-Content -Encoding utf8`为100个物理行。
+- 首次`ssh-keyscan`返回空并以`SSH_HOST_KEY_SCAN_EMPTY`失败；未取得可绑定host-key指纹。
+- 最小握手诊断显示TCP连接一度建立，但随后在认证前得到`kex_exchange_identification: write: Connection refused`和`banner exchange ... Connection refused`；`Test-NetConnection`同时报告`TcpTestSucceeded=False`。
+- SSH host-key SHA-256未取得、GPU UUID未取得，因此三元绑定状态为`FAILED_NOT_BOUND`。真实I3D上传0项，真实训练0次，远端受限根目录未创建。
+- 交付门禁：`validate_work_log.py`共126条、latest=`WR-20260718-036`、`passed=true`；默认`.venv`准备检查exit 0、`blocking_checks=[]`且如实保持`faiss_available=false`、`formal_model_work_ready=false`；正式`.venv-task20`准备检查exit 0、`blocking_checks=[]`、`faiss_available=true`、`formal_model_work_ready=true`；`git diff --check`通过。
+
+### 影响与边界
+
+本次失败发生在任何资产操作之前，不构成合同字节、8210资产或远端权限漂移，也没有需要删除的远端受限资产。实验身份仍永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；T0、G3、统一baseline、任务50、论文claim、总纲和G门均未修改。
+
+### 风险、问题与阻塞
+
+- 当前用户指定实例SSH服务不可完成握手，GPU可用性和GPU UUID无法验证；按用户要求认定当前实例不可用于本次全量诊断并立即报告。
+- 未取得三元绑定意味着既有合同不得用于传输；不得把原则授权迁移到其他端点或实例。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；`UNKNOWN_PLATFORM_CONTROL_PLANE`与`ASSET_INVALIDATED_DO_NOT_REPORT`边界不变。
+
+### 下一步
+
+1. 运行工作日志、准备检查和diff门禁，仅提交本次失败记录。
+2. 向00回传实例绑定失败、0上传/0训练和当前阻塞状态。
+3. 等待用户恢复同一实例SSH服务或提供新的实例；新实例必须重新取得00实例绑定授权，不能沿用当前三元组批准。
+
+### Git状态
+
+本条写入时仅`WORK_LOG.md`有未提交变更；未连接成功远端、未上传I3D、未启动训练。

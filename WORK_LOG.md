@@ -5504,3 +5504,47 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时上述四项00文件尚未提交或推送；有效权限裁定尚未进入远端main，任务20应继续等待提交hash。
+
+## WR-20260718-035 — 提交推送VC-CSA探索合同hash验收
+
+- 时间：2026-07-18 23:25:10 +08:00
+- 类型：SYNC | PROGRESS | AUDIT
+- 任务/门：00-T-AFFC总控 / VC-CSA探索合同生效同步
+- 状态：合同hash验收已推送；绑定合同权限正式生效
+- 负责人：Codex
+
+### 背景与目标
+
+固定WR-034的独立hash复核、100行更正、`SC-20260718-05`和S10监督合同，并记录实际远端同步结果。
+
+### 实际变更
+
+- 仅暂存并提交四项00所有权文件：`.light/decision_log.md`、`.light/handoff/S10-vccsa-exploratory-contract-hash-accepted.md`、`TASK00_VCCSA_EXPLORATORY_CONTRACT_HASH_ACCEPTANCE_20260718.md`和`WORK_LOG.md`。
+- 创建提交`c77eff30ba31d3db293014aff4b3b97cf3f46980`并推送`origin/main`。
+- 未修改或提交任务20合同、测试、实验代码或受限资产。
+
+### 验证与证据
+
+- 提交前`validate_work_log.py`：124条、latest=`WR-20260718-034`、`passed=true`。
+- 默认`.venv`的`run_preparation_checks.py`：exit 0、`blocking_checks=[]`；同时如实保持`faiss_available=false`、`formal_model_work_ready=false`。
+- S10交接结构6项通过；`git diff --check`和`git diff --cached --check`均exit 0。
+- `git commit -m "docs(task00): accept VC-CSA exploratory contract hash"`：commit=`c77eff30ba31d3db293014aff4b3b97cf3f46980`，4 files changed、142 insertions。
+- `git push origin main`：`4ebcb26..c77eff3 main -> main`；推送后`HEAD=origin/main=c77eff30ba31d3db293014aff4b3b97cf3f46980`、工作区clean。
+
+### 影响与边界
+
+远端main现正式激活`EFFECTIVE_I3D_TRANSFER_PERMISSION=APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`。任务20可严格按hash为`77b0a93003d265aae6215caca3ef53fbef4624bd24cf3dfabf46df3978cdaed4`的合同执行；任何字节、实例或资产漂移都会使批准失效。
+
+### 风险、问题与阻塞
+
+执行尚未发生，实例三元绑定、传前/传后8210 fixity、一次seed=3407诊断和删除核验仍须逐门完成。合同指标始终不具正式证据资格。
+
+### 下一步
+
+1. 向任务20回传`c77eff30`及100行更正，允许按已接受合同开始实例绑定和传前检查。
+2. 持续监督传输、诊断和删除；失败即停止并记录。
+3. 禁止任务20扩大到更多种子、正式baseline、任务50或论文claim。
+
+### Git状态
+
+本同步日志自身尚未提交或推送；主验收提交`c77eff30ba31d3db293014aff4b3b97cf3f46980`已推送。

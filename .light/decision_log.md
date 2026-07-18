@@ -14,3 +14,4 @@
 - [2026-07-18] `SC-20260718-03`接受用户对当前私人租用A6000实例的残余风险扩权，但独立peer审计触发`LEAKAGE_BLOCKED_AUTHOR_ORIGINAL_PEER_DEPENDENCY`，故有效I3D传输许可保持BLOCKED — faithful作者路径不得上传或运行；任何peer改法只能另建REIMPLEMENTATION并重审 — 来源 用户授权/00独立审查
 - [2026-07-18] `SC-20260718-04`接受用户对跨split peer泄漏的方法学风险仅用于隔离探索，身份固定为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且正式证据资格为INELIGIBLE；当前实例8210项传输仅原则批准，须待00绑定新的探索合同精确hash后生效 — 来源 用户明确风险接受/00边界裁定
 - [2026-07-18] `SC-20260718-05`接受任务20独立探索合同SHA-256=`77b0a93003d265aae6215caca3ef53fbef4624bd24cf3dfabf46df3978cdaed4`，把有效权限改为`APPROVED_FOR_BOUND_EXPLORATORY_CONTRACT`；仅允许指定实例、固定8210项和一次seed=3407隔离诊断，正式证据资格永久INELIGIBLE — 来源 00精确hash复核
+- [2026-07-18] `SC-20260718-06`接受任务20在SSH密钥交换前被拒后按合同停止；三元绑定=`FAILED_NOT_BOUND`，有效传输权限暂停为`SUSPENDED_INSTANCE_BINDING_FAILED_DO_NOT_TRANSFER`，真实I3D 0上传、训练0次且无远端受限目录。恢复同一实例可重试绑定，换实例必须重新授权 — 来源 任务20失败提交/00独立验收

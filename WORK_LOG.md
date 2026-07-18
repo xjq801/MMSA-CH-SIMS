@@ -5596,3 +5596,52 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时仅`WORK_LOG.md`有未提交变更；未连接成功远端、未上传I3D、未启动训练。
+
+## WR-20260718-037 — 验收VC-CSA实例绑定失败止损并暂停传输权限
+
+- 时间：2026-07-18 23:32:48 +08:00
+- 类型：AUDIT | DECISION | SECURITY | RISK | DOC
+- 任务/门：00-T-AFFC总控 / VC-CSA探索实例绑定失败验收
+- 状态：失败止损接受；等待同一实例恢复或新实例重新授权
+- 负责人：Codex
+
+### 背景与目标
+
+任务20按已接受合同从实例三元绑定开始，但SSH在密钥交换前拒绝连接，无法取得host-key与GPU UUID，遂在任何资产操作前停止并提交WR-036。00需独立复核提交范围、止损顺序和零资产事实，并冻结等待状态，避免无新mitigation重复连接失败。
+
+### 实际变更
+
+- 新建`TASK00_VCCSA_INSTANCE_BINDING_FAILURE_ACCEPTANCE_20260718.md`，记录`SC-20260718-06`。
+- 更新`.light/decision_log.md`，将有效传输权限暂停为`SUSPENDED_INSTANCE_BINDING_FAILED_DO_NOT_TRANSFER`。
+- 新建`.light/handoff/S11-vccsa-instance-binding-failure-accepted.md`，传播同一实例恢复与换实例重授权边界。
+- 未重试实例连接，未获取或记录端点/凭证，未修改任务20合同、代码、测试或实验核心。
+
+### 验证与证据
+
+- 开工刷新：`HEAD=origin/main=5ddb1f655539c44c60d503d7aa8fbb7b04c0a20d`、工作区clean、任务20线程idle。
+- `git show`确认`5ddb1f6`相对`2d5e182`仅向`WORK_LOG.md`追加WR-036，共48行；`git diff --check` exit 0。
+- WR-036如实记录`ssh-keyscan`为空、认证前kex/banner connection refused、`Test-NetConnection=False`，host-key与GPU UUID均未取得。
+- 复核操作顺序：本地8210传前fixity未开始、SFTP未开始、远端fixity未开始、seed=3407诊断未开始；真实I3D 0上传、训练0次、远端受限根目录未创建。
+- 使用`light-data-engineering`确认零传输与未启动fixity的资产状态不被误写为已核验；使用`light-research-ethics`确认失败和未知平台原因不被包装为完成或绝对安全结论。
+
+### 影响与边界
+
+任务20正确执行了fail-closed合同。合同hash验收仍有效，但当前实例未绑定，故执行权限暂停。同一实例恢复后可重试三元绑定；换实例不得继承本批准。
+
+无远端受限资产意味着无需执行删除动作，但不能声称远端删除核验已完成。没有产生指标、权重、预测或实验结果。
+
+### 风险、问题与阻塞
+
+- SSH拒绝的根因未被独立确认；不能把一次连接失败外推为平台永久故障。
+- 当前工作阻塞于用户/平台恢复同一实例，或用户提供新实例并重新申请00授权。
+- I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN。
+
+### 下一步
+
+1. 提交推送本验收单、决策日志、WR-037与S11。
+2. 通知任务20保持idle，不无新mitigation重复探针；同一实例恢复后从三元绑定重新开始。
+3. 若用户更换实例，先完成新实例授权，不沿用旧绑定批准。
+
+### Git状态
+
+本条写入时上述四项00文件尚未提交或推送；任务20应继续保持0上传/0训练。

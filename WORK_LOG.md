@@ -5645,3 +5645,47 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时上述四项00文件尚未提交或推送；任务20应继续保持0上传/0训练。
+
+## WR-20260718-038 — 提交推送VC-CSA实例绑定失败止损验收
+
+- 时间：2026-07-18 23:35:12 +08:00
+- 类型：SYNC | PROGRESS | AUDIT
+- 任务/门：00-T-AFFC总控 / VC-CSA实例绑定失败同步
+- 状态：止损验收已推送；等待外部实例状态变化
+- 负责人：Codex
+
+### 背景与目标
+
+固定WR-037的失败验收、`SC-20260718-06`、暂停权限和S11等待合同，并记录实际远端同步结果。
+
+### 实际变更
+
+- 仅暂存并提交四项00文件：`.light/decision_log.md`、`.light/handoff/S11-vccsa-instance-binding-failure-accepted.md`、`TASK00_VCCSA_INSTANCE_BINDING_FAILURE_ACCEPTANCE_20260718.md`和`WORK_LOG.md`。
+- 创建提交`f95815f742abb941571461a41a8b948e5a71d759`并推送`origin/main`。
+- 未重试SSH、未修改任务20合同/代码/测试，未操作任何I3D资产。
+
+### 验证与证据
+
+- 提交前`validate_work_log.py`：127条、latest=`WR-20260718-037`、`passed=true`。
+- 默认`.venv`的`run_preparation_checks.py`：exit 0、`blocking_checks=[]`，如实保持`formal_model_work_ready=false`。
+- S11交接结构6项通过；`git diff --check`和`git diff --cached --check`均exit 0。
+- `git commit -m "docs(task00): accept VC-CSA instance binding stop"`：commit=`f95815f742abb941571461a41a8b948e5a71d759`，4 files changed、134 insertions。
+- `git push origin main`：`5ddb1f6..f95815f main -> main`；推送后`HEAD=origin/main=f95815f742abb941571461a41a8b948e5a71d759`、工作区clean。
+
+### 影响与边界
+
+远端main现正式记录`EFFECTIVE_I3D_TRANSFER_PERMISSION=SUSPENDED_INSTANCE_BINDING_FAILED_DO_NOT_TRANSFER`。合同hash验收仍有效；同一实例恢复可重试三元绑定，换实例必须重新授权。
+
+### 风险、问题与阻塞
+
+当前阻塞依赖用户或平台恢复实例SSH服务。无新mitigation前不得重复失败探针；真实I3D保持0上传、训练0次。
+
+### 下一步
+
+1. 通知任务20验收提交与暂停状态，要求保持idle。
+2. 等待用户确认同一实例恢复，或提供新实例以重新授权。
+3. 继续监督G3、任务50和资产/claim边界。
+
+### Git状态
+
+本同步日志自身尚未提交或推送；主验收提交`f95815f742abb941571461a41a8b948e5a71d759`已推送。

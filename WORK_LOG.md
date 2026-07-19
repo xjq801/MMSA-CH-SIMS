@@ -5783,3 +5783,51 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本同步日志自身尚未提交或推送；主授权提交`6c3b2cf924ad383f324daffb30fde68fcd0bd69a`已推送。
+
+## WR-20260719-003 — 验收任务20受限存储、快照与配置镜像补充授权
+
+- 时间：2026-07-19 12:43:35 +08:00
+- 类型：DECISION | AUTH | DATA | RISK | DOC
+- 任务/门：00-T-AFFC总控 / VC-CSA受限资产存储补充授权
+- 状态：私有存储、快照和配置镜像获批并可执行
+- 负责人：Codex
+
+### 背景与目标
+
+用户明确新增最高授权，允许任务20受限I3D进入MatBox网盘、对象存储或环境快照，并允许配置镜像；同时要求总控验收且不改写此前禁止这些载体的历史合同。任务20报告作者原设定探索训练已在A30以seed=3407启动。
+
+### 实际变更
+
+- 新建`TASK00_VCCSA_RESTRICTED_STORAGE_AND_IMAGE_SUPPLEMENT_AUTHORIZATION_20260719.md`，记录`SC-20260719-02`，以补充授权方式允许私有网盘、对象存储、环境/卷快照及配置镜像。
+- 更新`.light/decision_log.md`，保留旧合同历史字节并固定存储范围、fixity、权限、保留/删除和claim边界。
+- 新建`.light/handoff/S13-restricted-storage-and-image-supplement-accepted.md`，传播目标绑定、8210 fixity、30日保留和删除监督要求。
+- 未修改任务20旧/新合同、代码、测试、A30运行过程或未跟踪`tmp/`运行材料；未执行任何网盘、对象存储或快照操作。
+
+### 验证与证据
+
+- 开工刷新：`HEAD=origin/main=8f9fae4442ec3b4b74b7ace30bd04ae3d2e9701d`；任务20线程报告A30训练已启动并请求00验收。
+- 共享主仓库存在任务20所有权的未跟踪`tmp/`运行目录，包含作者runtime/评论/模型归档和传输脚本；00仅目录级盘点，未读取、移动、暂存、提交或删除其中任何受限材料。
+- 用户明确允许MatBox、对象存储、快照和配置镜像；00将此解释为内部私有处理授权，不冒充权利方许可、公开发布或再分发权。
+- 使用`light-data-engineering`将存储对象限制为固定8210和可重算fixity；使用`light-research-ethics`将保留期限、删除可见层证据、平台控制面UNKNOWN和结果claim边界显式落盘。
+
+### 影响与边界
+
+任务20可立即创建私有存储目标、绑定非秘密摘要、备份/恢复8210与运行环境并继续训练，无需00逐步签字。运行快照可包含为运行所必需的受限runtime，但Git不得承载任何I3D或可逆受限材料。
+
+实验身份仍为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；存储扩权不进入G3、T0、统一baseline、任务50或论文正式claim。
+
+### 风险、问题与阻塞
+
+- 实际MatBox/bucket/snapshot目标尚未由任务20绑定；本授权定义逻辑区域与私有ACL要求，实际定位符不得入Git。
+- I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；用户接受的是内部处理与平台控制面风险。
+- 当前A30训练运行中，00不得并发改写任务20核心或运行材料。
+
+### 下一步
+
+1. 提交推送本补充授权、决策日志、WR-003和S13。
+2. 通知任务20可创建私有存储/快照、记录非秘密绑定与fixity摘要，并继续seed=3407训练。
+3. 持续监督训练结果、存储目标、删除计划和NON_T0/INELIGIBLE边界。
+
+### Git状态
+
+本条写入时上述四项00文件尚未提交或推送；任务20的未跟踪`tmp/`仍由任务20所有。

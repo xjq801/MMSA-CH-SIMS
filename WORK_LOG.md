@@ -5921,3 +5921,45 @@ The current A30 run can now be recovered from a private MatBox I3D copy after fr
 ### Git状态
 
 `WORK_LOG.md` is modified and uncommitted; `tmp/` remains untracked Task20 operational material. No restricted asset is staged or committed.
+
+## WR-20260719-006 — 00接受Task20 MatBox存储补充执行
+
+- 时间：2026-07-19 +08:00
+- 类型：DECISION | AUDIT | DATA | SECURITY | DOC
+- 任务/门：00 T-AFFC总控 / SC-20260719-03
+- 状态：接受已报告的MatBox I3D备份和非敏感配置镜像；运行时快照仍延期
+- 负责人：Codex
+
+### 背景与目标
+
+Independently review task20's S13 execution record at `origin/main@229dbcd0b38cd13ecb945c63c94f31feab91f687` against the versioned storage authorization, while preserving task20 ownership of ignored runtime material.
+
+### 实际变更
+
+- Added `TASK00_TASK20_STORAGE_SUPPLEMENT_EXECUTION_ACCEPTANCE_20260719.md`, decision-log entry `SC-20260719-03`, and S14 handoff.
+- Accepted only the reported private MatBox I3D backup (target digest `2c9b6bedc811c90ecfd230d1fd03d7b236e29d9a9b49f38be7c8415f50ca9e58`) and separate non-sensitive configuration mirror (digest `f2d4841dcda36c912d5b94984fd823c1cb64caf08753d10af440c71ef855551c`).
+- Did not read, stage, move, delete or inspect contents of task20-owned ignored `tmp/`; did not connect to MatBox or access raw endpoints, credentials, or restricted files.
+
+### 验证与证据
+
+- `git fetch origin; git status --short --branch; git log --oneline -5 origin/main; git rev-parse origin/main` refreshed `origin/main=229dbcd0b38cd13ecb945c63c94f31feab91f687`; only `?? tmp/` was untracked.
+- `git show --format=fuller --no-ext-diff --unified=35 229dbcd -- WORK_LOG.md` independently reviewed WR-20260719-005. It reports I3D `count=8210`, `bytes=2283804928`, all four mismatch lists empty, tree hash `592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`, private `0700`/`0600` modes, and UNKNOWN platform control plane.
+- The reported target scope and retention policy match SC-20260719-02. This is documentary acceptance: 00 did not directly rerun the target-side copy, fixity, or ACL check.
+
+### 影响与边界
+
+The private backup/config mirror is accepted as an authorized operational artifact. `RUNTIME_SNAPSHOT=DEFERRED_NOT_STARTED`; A30 seed=3407 is only reported active, not complete and not accepted as a result. The exploration remains NON_T0/INELIGIBLE; no G3, T0, unified baseline, Task50 or paper claim is created.
+
+### 风险、问题与阻塞
+
+- Platform control plane and static encryption remain UNKNOWN. I3D license, official revision, and rightsholder package identity/fixity remain UNKNOWN; denial or 8210 drift invalidates assets for reporting.
+- Local `.venv` and `.venv-task20` remain unusable because their configured Python 3.8 is absent; bundled Python lacks PyYAML, so 00 cannot truthfully rerun preparation checks in this checkout.
+
+### 下一步
+
+1. Supervise task20's active exploratory run, safe runtime snapshot if created, and final retention/deletion evidence.
+2. Repair a local gate environment before independently rerunning the preparation check; retain the actual failure record until then.
+
+### Git状态
+
+This 00 acceptance batch is uncommitted at write time. Only 00-owned decision, acceptance, handoff and WORK_LOG files are intended for staging; `tmp/` remains task20-owned and untracked.

@@ -5738,3 +5738,48 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时上述四项00文件尚未提交或推送；新实例尚未连接。
+
+## WR-20260719-002 — 提交推送任务20新实例完整执行扩权
+
+- 时间：2026-07-19 10:53:44 +08:00
+- 类型：SYNC | PROGRESS | AUDIT
+- 任务/门：00-T-AFFC总控 / 任务20完整探索执行授权同步
+- 状态：完整执行扩权已推送；任务20可直接推进
+- 负责人：Codex
+
+### 背景与目标
+
+固定WR-001的用户优先级、`SC-20260719-01`完整执行扩权和S12监督合同，并记录实际远端同步结果。
+
+### 实际变更
+
+- 仅暂存并提交四项00所有权文件：`.light/decision_log.md`、`.light/handoff/S12-task20-new-instance-full-execution-authorized.md`、`TASK00_VCCSA_NEW_INSTANCE_FULL_EXECUTION_AUTHORIZATION_20260719.md`和`WORK_LOG.md`。
+- 创建提交`6c3b2cf924ad383f324daffb30fde68fcd0bd69a`并推送`origin/main`。
+- 未连接新实例，未操作I3D，未修改任务20实验代码或合同。
+
+### 验证与证据
+
+- 第一次用临时统一补丁向共享主仓库落盘时，因hunk声明行数与实际正文不一致，`git apply`在写入前以`corrupt patch`失败；主仓库未改动。随后使用`git apply --recount`按实际行数重算，检查与应用均通过。
+- 提交前`validate_work_log.py`：129条、latest=`WR-20260719-001`、`passed=true`。
+- 默认`.venv`的`run_preparation_checks.py`：exit 0、`blocking_checks=[]`；如实保持`formal_model_work_ready=false`。
+- S12交接结构6项通过；`git diff --check`和`git diff --cached --check`均exit 0；secret scan无命中。
+- `git commit -m "docs(task00): authorize task20 full exploratory execution"`：commit=`6c3b2cf924ad383f324daffb30fde68fcd0bd69a`，4 files changed、135 insertions。
+- `git push origin main`：`b914ede..6c3b2cf main -> main`；推送后`HEAD=origin/main=6c3b2cf924ad383f324daffb30fde68fcd0bd69a`、工作区clean。
+
+### 影响与边界
+
+远端main现正式授权任务20在三元绑定后无需00二次签字，直接完成8210 fixity、传输、远端复核、唯一seed=3407、最小证据和删除核验，并可自主处理工程故障或替代实例重绑定。
+
+### 风险、问题与阻塞
+
+实例身份尚未验证，凭据仍须只在私密执行上下文使用。实验结果永久NON_T0/INELIGIBLE，不能升级为正式证据。
+
+### 下一步
+
+1. 通知任务20刷新`6c3b2cf`并直接推进完整探索执行。
+2. 00持续监督关键阶段证据、失败实录和删除核验，不再制造逐步审批等待。
+3. 保持任务30、任务50执行和IJCV范围冻结。
+
+### Git状态
+
+本同步日志自身尚未提交或推送；主授权提交`6c3b2cf924ad383f324daffb30fde68fcd0bd69a`已推送。

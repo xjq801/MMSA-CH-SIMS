@@ -5877,3 +5877,47 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本同步日志自身尚未提交或推送；主补充授权提交`29cee82f6af22f7c392d799e5e276af0cf21c4b9`已推送，`tmp/`仍未跟踪且归任务20所有。
+
+## WR-20260719-005 — Task20 private MatBox backup binding and fixity verification
+
+- 时间：2026-07-19 +08:00
+- 类型：DATA | SECURITY | PROGRESS
+- 任务/门：Task20 VC-CSA exploratory execution / SC-20260719-02
+- 状态：completed for MatBox I3D backup and configuration mirror; runtime snapshot deferred while training is active
+- 负责人：Codex
+
+### 背景与目标
+
+Apply the accepted restricted-storage supplement to the active A30 seed=3407 exploratory run without changing its permanent `AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY` and `FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE` boundaries.
+
+### 实际变更
+
+- Refreshed `main` at `bd6bfbdaa06571f2afb82ed9f6c041e1373cd801` and read `TASK00_VCCSA_RESTRICTED_STORAGE_AND_IMAGE_SUPPLEMENT_AUTHORIZATION_20260719.md` plus S13.
+- Bound one private MatBox target: `storage_target_digest=2c9b6bedc811c90ecfd230d1fd03d7b236e29d9a9b49f38be7c8415f50ca9e58`; region category `matbox-private`; target ACL summary `directory 0700, owner-only`; encryption/platform control-plane status `UNKNOWN_PLATFORM_CONTROL_PLANE`.
+- Copied only the fixed 8210 I3D `.npy` files to that target and created a separate non-sensitive configuration mirror: `storage_target_digest=f2d4841dcda36c912d5b94984fd823c1cb64caf08753d10af440c71ef855551c`; region category `config-mirror`; ACL summary `directory 0700, files 0600`.
+- Did not create a runtime/volume snapshot because A30 training is active; did not create object storage; did not place restricted assets, comments, labels, weights, predictions, credentials, or endpoint text in Git.
+
+### 验证与证据
+
+- `tmp/task20_remote_fixity.py` verified the source before copy and the MatBox copy after copy: `files=8210`, `bytes=2283804928`, `missing=[]`, `extra=[]`, `size_mismatch=[]`, `sha256_mismatch=[]`, `content_tree_sha256=592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`, directories `0700`, file-mode errors `0`.
+- Remote mount inspection reported a private mounted volume with 55 GB free and no public/anonymous ACL evidence exposed through the mount; GPU training remained active during copy.
+- Configuration mirror contains only a sorted dependency lock and Python version record; no restricted reversible content or credentials.
+
+### 影响与边界
+
+The current A30 run can now be recovered from a private MatBox I3D copy after fresh fixity verification. This storage action does not make the experiment formal evidence, T0-compatible, leakage-free, publishable, or eligible for G3, unified baselines, Task50, or paper claims.
+
+### 风险、问题与阻塞
+
+- Static encryption and platform-side retention are not observable from the mounted volume and remain `UNKNOWN_PLATFORM_CONTROL_PLANE`.
+- The storage supplement requires restricted I3D/runtime material to be deleted 30 calendar days after minimum-evidence acceptance unless the user extends retention. Runtime snapshot creation is deferred until training is paused/completed because platform guidance advises against saving an active environment.
+- Initial remote-copy invocation failed locally before connection because PowerShell expanded a shell variable; no remote directory was created by that failed attempt. The fixed command subsequently completed.
+
+### 下一步
+
+1. Monitor the active seed=3407 training and create a private runtime snapshot only at a safe pause/completion point.
+2. Record final training evidence, retention deadline, and visible-layer deletion plan; run the required work-log and preparation checks once a runnable local gate environment is restored.
+
+### Git状态
+
+`WORK_LOG.md` is modified and uncommitted; `tmp/` remains untracked Task20 operational material. No restricted asset is staged or committed.

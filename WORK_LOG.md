@@ -5831,3 +5831,49 @@ I3D许可、官方revision、权利方包身份/fixity继续UNKNOWN；任何非f
 ### Git状态
 
 本条写入时上述四项00文件尚未提交或推送；任务20的未跟踪`tmp/`仍由任务20所有。
+
+## WR-20260719-004 — 提交推送任务20受限存储补充授权
+
+- 时间：2026-07-19 12:54:28 +08:00
+- 类型：SYNC | PROGRESS | AUDIT
+- 任务/门：00-T-AFFC总控 / VC-CSA受限存储补充授权同步
+- 状态：补充授权已推送；任务20可执行私有存储/快照/配置镜像
+- 负责人：Codex
+
+### 背景与目标
+
+固定WR-003的`SC-20260719-02`、S13和版本化存储边界，并记录环境门禁与Git权限失败的真实结果及后续同步状态。
+
+### 实际变更
+
+- 仅暂存并提交四项00所有权文件：`.light/decision_log.md`、`.light/handoff/S13-restricted-storage-and-image-supplement-accepted.md`、`TASK00_VCCSA_RESTRICTED_STORAGE_AND_IMAGE_SUPPLEMENT_AUTHORIZATION_20260719.md`和`WORK_LOG.md`。
+- 创建提交`29cee82f6af22f7c392d799e5e276af0cf21c4b9`并推送`origin/main`。
+- 未暂存、移动、读取或删除任务20未跟踪`tmp/`运行材料，未执行存储、快照、传输或训练命令。
+
+### 验证与证据
+
+- 默认`.venv`与`.venv-task20`均因其`pyvenv.cfg`指向已不存在的`C:\Users\86183\AppData\Local\Programs\Python\Python38`而无法启动`validate_work_log.py`/`run_preparation_checks.py`；失败未删除。
+- 使用Codex bundled Python运行`validate_work_log.py`：131条、latest=`WR-20260719-003`、`passed=true`；同一解释器运行准备检查因缺少`yaml`模块失败，未冒充通过。
+- S13交接结构6项通过，`git diff --check`通过。
+- 首次普通Git暂存/提交因无法创建`.git/index.lock`超时失败，未产生提交；经提升Git索引写权限后，`git diff --cached --check`通过，暂存范围严格为四项00文件。
+- `git commit -m "docs(task00): authorize restricted storage supplement"`：commit=`29cee82f6af22f7c392d799e5e276af0cf21c4b9`，4 files changed、137 insertions。
+- `git push origin main`：`8f9fae4..29cee82 main -> main`；推送后`HEAD=origin/main=29cee82f6af22f7c392d799e5e276af0cf21c4b9`。工作区仅余任务20所有的未跟踪`tmp/`。
+
+### 影响与边界
+
+远端main现正式允许私有MatBox、私有对象存储、私有环境/卷快照和非敏感配置镜像。任务20可直接绑定实际私有目标、执行fixity、备份/恢复及继续A30训练；旧合同字节与NON_T0/INELIGIBLE结果边界不变。
+
+### 风险、问题与阻塞
+
+- 本地两套Python 3.8虚拟环境已漂移失效，且bundled Python缺少PyYAML；本批准备检查没有可运行环境，需后续修复/重建，但不影响远端A30训练事实。
+- 平台控制面、I3D许可、官方revision和权利方包身份/fixity继续UNKNOWN；用户已接受私有存储残余风险。
+
+### 下一步
+
+1. 通知任务20使用`29cee82`授权，创建私有存储/快照目标并记录非秘密绑定、ACL和fixity摘要。
+2. 持续监督A30 seed=3407训练、存储恢复及30日删除计划；不再并发改写任务20运行材料。
+3. 修复本地Python门禁环境后重跑项目准备检查，并如实记录结果。
+
+### Git状态
+
+本同步日志自身尚未提交或推送；主补充授权提交`29cee82f6af22f7c392d799e5e276af0cf21c4b9`已推送，`tmp/`仍未跟踪且归任务20所有。

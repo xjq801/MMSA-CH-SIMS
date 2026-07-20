@@ -6013,3 +6013,45 @@ This 00 acceptance batch is uncommitted at write time. Only 00-owned decision, a
 ### Git状态
 
 本条写入时，全项目复盘、S15和WORK_LOG尚未提交；只计划暂存这三项00文件，`tmp/`继续未跟踪且归任务20所有。
+
+## WR-20260720-002 — Task20 DataLoader worker failure and recovery
+
+- 时间：2026-07-20 +08:00
+- 类型：FIX | PROGRESS | TEST | RISK
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / S15 follow-up
+- 状态：失败已保留，`num_workers=0` 恢复运行中
+- 负责人：Codex
+
+### 背景与目标
+
+00 已审计：原作者训练在第 1 epoch 未完成时因 DataLoader worker 被系统杀掉而中断。本批仅处理 worker 数与恢复运行，不改实验身份、分割、指标或 claim 边界。
+
+### 实际变更
+
+- 保留原始失败日志，不覆盖。原运行到 epoch 1 step 4269/4692，最后可见 `Loss_sum=0.1785` 仅为诊断，随后报告 `DataLoader worker ... killed by signal: Killed`。
+- 将远端作者启动器的 `num_workers` 从 8 降至 0，保留同一 `seed=3407`、批大小、学习率、数据和模型配置。
+- 重新启动后使用独立日志文件，不把失败尝试写成完成。
+
+### 验证与证据
+
+- 失败时远端 RAM 可用约 85 GB，故不将诊断结果写成 GPU OOM；根因仅记为 worker 被系统杀掉。
+- 恢复后实时进程证据显示作者入口包含 `--num_workers 0` 且进程存活；约 step 126/4692，GPU 约 82%，显存约 14518 MiB，RAM 可用约 82 GB。
+- 恢复日志当前最新诊断 loss 约 `Loss_sum=0.3637`，不作任何结果或 epoch 完成证据。
+
+### 影响与边界
+
+当前只是同一个已注册 seed 的工程恢复尝试；任务仍永久 `AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY` 且 `FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`。首个 epoch 尚未完成，不形成训练结果。
+
+### 风险、问题与阻塞
+
+- `num_workers=0` 可降低 worker 被杀风险，但训练速度和是否能完成首个 epoch 仍待监控。
+- 本地 git 上游已是 `48201e9`；此次仅追加 Task20 自有工作记录，不修改 00 复盘/S15。
+
+### 下一步
+
+1. 持续监控进程、RAM/GPU、最新 loss 和 checkpoint。
+2. 首个 epoch 或新失败出现后追加真实证据；不将中断、超时或部分运行标记为完成。
+
+### Git状态
+
+本条记录待提交；`tmp/` 继续为 Task20 所有的未跟踪运行工具。

@@ -5963,3 +5963,53 @@ The private backup/config mirror is accepted as an authorized operational artifa
 ### Git状态
 
 This 00 acceptance batch is uncommitted at write time. Only 00-owned decision, acceptance, handoff and WORK_LOG files are intended for staging; `tmp/` remains task20-owned and untracked.
+
+## WR-20260720-001 — 全项目复盘并登记Task20实时训练中断
+
+- 时间：2026-07-20 +08:00
+- 类型：AUDIT | PROGRESS | RISK | DOC
+- 任务/门：00-T-AFFC总控 / 全项目状态复盘
+- 状态：完成全景复盘；Task20 A30探索训练中断待恢复
+- 负责人：Codex
+
+### 背景与目标
+
+用户要求详细说明项目从开始至今的工作、成果、问题、整体思路和下一步目标。总控需要以实时Git、权威门文件、实验台账和任务20实时状态交叉复核，不能把旧交接卡或过期`.light`状态当成当前事实。
+
+### 实际变更
+
+- 新建`PROJECT_STATUS_RETROSPECTIVE_20260720.md`，按研究重构、数据协议、统一评测、VC-CSA补充探索、存储、成果、问题和下一步组织全项目快照。
+- 新建`.light/handoff/S15-project-retrospective-and-task20-runtime-failure.md`，传播实时训练中断和账本治理缺口。
+- 未读取、移动、暂存或删除任务20所有的未跟踪`tmp/`运行材料；未修改实验核心、模型、结果或受限资产。
+
+### 验证与证据
+
+- `git fetch origin; git status --short --branch; git log --oneline --decorate -12 origin/main`：刷新到`main=origin/main=6534a0834f793426afc4aa2a97da697f1825ea66`，仅`?? tmp/`未跟踪。
+- 读取总纲v1.16、`.light/passport.yaml`、`.light/project_card.md`、G1/G2/G3复审、dataset/split/label manifests、baseline table、实验登记、风险登记和134条既有WORK_LOG标题。
+- 任务20实时线程在2026-07-20报告：A30训练因`DataLoader worker ... killed by signal: Killed`停止，GPU空闲，未完成首epoch；约0.36 loss只作诊断，不作结果。
+- 文件存在性审计确认`TASK_REGISTRY.md`、`GATE_G1.md`至`GATE_G6.md`和`TAFFC_GO_NO_GO.md`尚不存在；handoff目录无S02而S03的`parent_session: S02`。
+- 首次运行独立`handoff_contract.py`对S15返回exit 1：内容存在但使用英文节标题，缺少机器要求的`当前阶段/已完成/工作区状态/待用户回答/下一步/阻塞/风险/必读文件/禁止`固定章节；失败保留后已按模板修正，待重新验证。
+- 第二次运行`handoff_contract.py`仍返回exit 1：`待用户回答`的none格式、三条已完成证据写法和工作区dirty/unpushed措辞不符合机器合同；继续保留失败并收紧为精确artifact—verification、裸`none`和Git状态表述，待第三次验证。
+- 第三次运行`handoff_contract.py`仍返回exit 1：裸`none`被判空，且三条英文`verified`不命中验证证据词表；已按模板改为唯一`- none — 具体原因`并将证据措辞改为`验证/commit/PASS`，待第四次验证。
+- 第四次运行`handoff_contract.py --as-of 2026-07-20`返回PASS；bundled Python工作日志验证为135条、latest=WR-20260720-001、passed=true，`git diff --check`通过。
+- 当前`.venv`/`.venv-task20`的`pyvenv.cfg`均指向Python 3.8.9，基础解释器路径现为存在；但`.venv`的`python --version`、日志校验和准备检查组合在30秒内无输出并超时。bundled Python运行准备检查明确因`ModuleNotFoundError: yaml`返回exit 1，故当前总控准备门仍不可运行，未冒充通过。
+
+### 影响与边界
+
+正式门不变：G1 PASS、G2协议/数据PASS_WITH_LIMITATIONS、资产DEFERRED_ACCEPTED_RISK、G3 PASS_WITH_LIMITATIONS。Task20探索永久NON_T0/INELIGIBLE；本批没有接受其训练结果，也没有创建任务30。
+
+### 风险、问题与阻塞
+
+- Task20 A30探索因DataLoader worker被Killed而中断，需降低worker并监控RAM后再恢复。
+- `.light/passport.yaml`和`.light/project_card.md`仍停留在G3前状态，且本地总控Python门禁环境漂移；这些治理缺口不推翻正式审查文件，但必须在任务30前修复。
+- I3D许可、官方revision和权利方包身份/fixity仍UNKNOWN；资产止损条件不变。
+
+### 下一步
+
+1. 监督任务20记录并修复DataLoader失败，独立审查恢复后的真实证据。
+2. 重建本地门禁环境，使用底层passport路径更新过期账本并修复/说明S02链缺口。
+3. 待任务20停止修改实验核心且交接完整后，再复核任务30创建条件。
+
+### Git状态
+
+本条写入时，全项目复盘、S15和WORK_LOG尚未提交；只计划暂存这三项00文件，`tmp/`继续未跟踪且归任务20所有。

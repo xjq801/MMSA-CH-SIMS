@@ -6055,3 +6055,52 @@ This 00 acceptance batch is uncommitted at write time. Only 00-owned decision, a
 ### Git状态
 
 本条记录待提交；`tmp/` 继续为 Task20 所有的未跟踪运行工具。
+
+## WR-20260720-003 — 00验收Task20 DataLoader恢复为运行中未完成
+
+- 时间：2026-07-20 16:19:48 +08:00
+- 类型：DECISION | PROGRESS | TEST | RISK | DOC
+- 任务/门：00总控 / Task20 VC-CSA author exploratory seed=3407 / S16
+- 状态：完成；恢复状态验收为`ACCEPTED_RUNNING_NOT_COMPLETED`
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+Task20在保留epoch 1 DataLoader worker被`Killed`的失败记录后，将远端启动器`num_workers`从8降为0，并推送仅含自身WORK_LOG的`main@7d686dd`。本批由00独立复核提交边界、实时任务状态和claim边界，决定是否接受恢复状态。
+
+### 实际变更
+
+- 新增`TASK00_TASK20_DATALOADER_RECOVERY_ACCEPTANCE_20260720.md`，裁定`TASK20_DATALOADER_RECOVERY=ACCEPTED_RUNNING_NOT_COMPLETED`。
+- 新增`.light/handoff/S16-task20-dataloader-recovery-running.md`，延续总控交接链。
+- 未修改总纲、G门、实验代码、运行配置或Task20的`tmp/`。
+
+### 验证与证据
+
+- 运行`git fetch origin`、`git status --short --branch`、`git log -5`、`git show 7d686dd`和`git diff --name-status 48201e9..7d686dd`：`main=origin/main=7d686dd2497b90099ac63596f531d3e8ef7286f9`，Task20提交仅修改`WORK_LOG.md`。
+- 读取任务20实时任务：恢复进程报告使用`--num_workers 0`并存活至约step 126/4692；GPU约82%、显存约14518 MiB、RAM可用约82 GB。00未直接登录远端，以上是Task20报告并由tracked日志固定的证据。
+- 原失败保留为epoch 1 step 4269/4692后worker被信号`Killed`；失败时RAM可用约85 GB，不支持GPU OOM表述。
+- `Loss_sum=0.1785`和恢复运行中的约`0.3637`均为中途诊断值；首个epoch、checkpoint及完整训练均未完成。
+- 首次运行`handoff_contract.py --as-of 2026-07-20`失败：两条已完成事项缺少机器可识别的验证证据、一条下一步动作格式不足；修正验证措辞后第二次仍因“运行”不匹配动作词正则而失败；再将其改为“跑”后，第三次仍定位出另一条的“重建”不在动作词正则。三次均未改变科学裁定，失败全部保留，并将相应动词改为合同可识别字面后再次复验。
+- 第四次运行同一`handoff_contract.py`命令得到`handoff contract PASS`。
+- 用bundled Python运行`scripts/run_preparation_checks.py`失败，真实错误为`ModuleNotFoundError: No module named 'yaml'`；这是已知本地门禁环境阻塞，未冒充准备检查通过。
+
+### 影响与边界
+
+恢复动作可继续，但不得升级为结果。实验继续永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`、`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`。G1、G2、资产风险和G3裁定均不变；任务50未完成，任务30未创建。
+
+### 风险、问题与阻塞
+
+- `num_workers=0`是否足以完成首个epoch仍UNKNOWN；新失败必须单独记录。
+- 本地旧venv不可用，bundled Python缺PyYAML，准备检查仍不可完整复跑；不得冒充当前准备门PASS。
+- I3D许可、官方revision、权利方包身份/fixity仍UNKNOWN；8210项hash/覆盖漂移或权利方否认仍触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+- `.light/passport.yaml`、`.light/project_card.md`和任务/门索引仍待后续修复。
+
+### 下一步
+
+1. 持续监督同一seed；首个epoch/checkpoint完成、完整训练完成或再次失败时再更新状态。
+2. 用新mitigation修复本地门禁与陈旧`.light`账本；不要重复已知包装导入失败。
+3. Task20仍修改或运行共享实验核心时不创建任务30。
+
+### Git状态
+
+本条写入时，00验收文件、S16和WR-20260720-003尚未提交；计划只暂存这三项00文件，`tmp/`继续未跟踪且归Task20所有。

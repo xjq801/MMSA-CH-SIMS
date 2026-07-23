@@ -1,7 +1,7 @@
 # 项目风险登记
 
 > 维护任务：00-总控与决策  
-> 当前快照：2026-07-16  
+> 当前快照：2026-07-23  
 > 规则：风险关闭必须链接到可复核证据；`UNKNOWN`不能按通过处理。
 
 | 风险ID | 风险 | 当前证据 | 影响 | 当前控制 | 状态/恢复条件 |
@@ -17,3 +17,6 @@
 | `R-IJCV-002` | 缺少第二个像素可得、许可固定的人工主观分布集 | LAI-GAI已冻结；其他图像集仍需逐资产准入 | 仅影响已迁出的IJCV方向，不再是本项目数据门 | 第二像素人工集准入由独立IJCV项目维护；本项目任务10不再取得该数据 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
 | `R-INTEGRITY-001` | IJCV与T-AFFC形成一稿多投或重复发表 | 两路线可能共享研究构念与部分数据基础 | 若未来两项目都形成稿件，仍可能产生投稿伦理风险 | 项目、分支、总纲、claim和主实验已物理分离；跨项目只消费已提交事实并在投稿时披露相关稿 | CONTROLLED_CROSS_PROJECT；不阻塞本项目当前G门 |
 | `R-SCHEDULE-001` | IJCV 2026-12-15固定截稿压缩方法与复现周期 | IJCV方向已独立迁出 | 不再挤占本项目T-AFFC日历与资源优先级 | 本项目恢复2027-05-12 T-AFFC单线日历；IJCV期限由独立项目自行管理 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
+| `R-NOVELTY-001` | CARM被评价为蒸馏、评论增强、检索和拒绝的模块拼接 | generalized distillation、评论增强社会情绪预测、CRC-MRC、RAMER和选择性拒绝均已有前作 | T-AFFC方法新颖性与完整论文定位 | v1.17把核心机制收紧为收益感知可靠性路由；强制普通KD、错配评论、random/error neighbor、固定融合和简单拒绝对照 | CONTROLLED_OPEN；H1/H2判别实验失败或路由无独立收益时降级claim |
+| `R-EVIDENCE-001` | 把单seed强基线或计划阈值写成正式优越性 | 当前temporal-attention只有单seed正式test，任务50尚未完成 | 过度主张、统计无效与拒稿 | 所有效应claim保持TO_VERIFY；正式门要求五种子、原生单位paired bootstrap CI和多重校正 | OPEN_NONBLOCKING_UNTIL_TASK50；G4/G6前不得升级 |
+| `R-OPS-001` | Task20 VC-CSA探索、运行时快照和受限存储生命周期未闭环 | 远端SSH最近不可达，训练无首epoch/checkpoint完成证据；MatBox备份已核但运行快照未建 | 共享核心冲突、费用和受限资产残留 | 探索永久NON_T0/INELIGIBLE；收尾前不创建任务30；保留完成/失败/不可用证据与删除核验 | OPEN_BLOCKS_TASK30_CREATION |

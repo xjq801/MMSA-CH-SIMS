@@ -6699,3 +6699,108 @@ heartbeat在前序RAM高风险告警后继续监控同一进程。2026-07-23 22:
 ### Git状态
 
 本条写入时本批总纲v1.18、查新/claim/风险/任务台账、`.light`记忆与S22待最终门禁、提交和推送；Task20所有的`tmp/`保持未跟踪且不进入本批。
+## WR-20260724-001 — Task20在亚太区RTX 4090完成全量训练前零epoch预检
+
+- 时间：2026-07-24 03:15:24 +08:00
+- 类型：PROGRESS | ENV | DATA | EXPERIMENT | TEST | SECURITY
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 4090迁移与保存环境前检查
+- 状态：环境、完整输入与零训练前向预检通过；Epoch 1尚未启动，等待用户保存个人环境
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+用户提供新的亚太区RTX 4090私人租用实例，要求尝试全量训练，并明确要求在第一个epoch开始前通知，以便先保存个人环境。本批严格停在训练前：完成实例绑定、私有MatBox输入fixity、冻结环境重建、作者运行时恢复、完整数据初始化和单批次无梯度前向验证，不执行反向传播、优化器更新或epoch训练。
+
+### 实际变更
+
+- 形成非秘密实例绑定摘要：host-key SHA-256=`SHA256:gmztR/PfVEDy6YzkP24iddGQhHqSJ5Ffa+74nfaB8F0`，GPU UUID=`GPU-87cf0a36-238d-7d5e-fe24-3330fbca7672`，endpoint digest=`e1926899b884010cf3c610704002d80620f524a41249730d1c4300c55075da95`；未记录凭据或端点原文。
+- 复用目标区私有MatBox固定I3D副本，逐文件复核8210项、2,283,804,928字节、内容树SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`、缺失/额外/大小/hash错误全空。发现挂载父目录与I3D目录初始模式为`0750`后收紧为`0700`并复核。
+- 将既有Task20忽略目录内的作者运行时、作者源码、全量comment runtime、RoBERTa作者快照及精确断点补丁传入实例临时区；四个归档传后SHA-256分别与本地固定值`f0fd66accb16db4292ede192c516a8daeae1d1e1d94d2326e4259aa64a813af3`、`12c000d289668628ced1335bbe9cbb35c9fc3093a3e06e48c06531ae4689819e`、`ac818f8100fdcd61169fdb91b6fe85521b8dd1dfbe5352f7ab41a3cd986d4cbe`、`a32207a761222570e7e1003fd3f826828f4b1198bdb55e707b57ead868cefd86`一致；这些受限输入未进入Git。
+- 新建独立冻结环境`/root/task20-runtime/env`：Python 3.8.20、NumPy 1.22.4、SciPy 1.10.1、scikit-learn 1.2.1、transformers 4.26.1、PyTorch 1.13.1+cu117等；现有MatBox配置镜像仅含版本与requirements锁，并非可直接激活的完整Conda环境，因此本次按锁文件重建。
+- 恢复作者源码、comment runtime和RoBERTa快照，建立到私有MatBox I3D的受限符号链接，应用已跟踪的精确断点兼容补丁并得到`PATCHED_AND_VERIFIED`。
+- 运行完整输入零epoch初始化和单批次`eval()+torch.no_grad()`前向预检；探针只读取一个batch，不调用`backward()`、`optimizer.step()`或训练循环。训练保持未启动，实例保持空闲，等待用户保存个人环境。
+
+### 验证与证据
+
+- 实例资源探针：NVIDIA GeForce RTX 4090，24,564 MiB，驱动565.77；主机RAM约50 GiB并有约3.6 GiB swap；根盘约300 GiB；私有MatBox挂载可读。
+- 环境CUDA smoke：PyTorch 1.13.1+cu117、CUDA 11.7、`torch.cuda.is_available()=True`，1024×1024 CUDA矩阵乘结果有限。
+- 完整输入计数：train=75,086、dev=10,727、test=21,454、annotations=117,057；模型参数量146.05439M。
+- 零epoch完整初始化成功完成数据集、RoBERTa、模型、优化器与scheduler构造后退出，未进入epoch。RoBERTa未使用`lm_head`权重警告符合`RobertaModel`加载任务头不同的预期；Transformers AdamW弃用警告不构成失败。
+- 前向探针第一次因脚本所在目录不在`sys.path`而报`ModuleNotFoundError: train_vccsv`；修正导入路径后第二次模型前向成功，但探针误以为eval返回loss键而失败；第三次模型前向成功，但探针对多元素张量调用`.item()`而失败。这三次均为只读探针自身断言错误，均未训练。最小修正为逐张量`torch.isfinite(v).all().item()`后最终输出`preflight_batch 16 finite_predictions True gpu_peak_mib 1675.2`，exit 0。
+- 预检后交叉核验：无`main.py`或探针Python进程，GPU利用率0%、显存2 MiB；无`last-resume.ckpt`，预检日志无`Epoch`文本。因此没有optimizer step、没有epoch训练、没有可被误写为实验结果的loss或checkpoint。
+- AGENTS指定的普通`.venv`与锁定`.venv-task20`门禁均因解释器仍指向已不存在的本机Python 3.8路径而以exit 101无法创建进程；该环境故障如实保留。改用Codex工作区内置Python后，`validate_work_log.py`首跑发现本条误写元数据名`任务/问题`并exit 1，同批最小修正为合同要求的`任务/门`；复跑通过150条、errors空、latest=`WR-20260724-001`。`run_preparation_checks.py`首跑因内置Python缺少PyYAML而exit 1；仅从项目环境复制纯Python PyYAML到忽略目录后脚本可完整执行，但因内置Python不具备历史训练依赖而诚实返回`blocking_checks=["historical_environment"]`、exit 1、`formal_model_work_ready=false`，其余Task20相关数据/协议/工作日志检查通过。`git diff --check` exit 0。该本机历史环境门禁不改变远端冻结环境的CUDA与完整输入预检事实。
+
+### 影响与边界
+该里程碑证明目标4090实例、冻结软件栈、完整作者输入和模型前向在训练前可执行，并把环境保存时点固定在首个epoch之前。它不证明Epoch 1或完整120 epoch训练能完成，也不产生结果。后续只允许从Epoch 0启动同一唯一`seed=3407`，并使用已实现的精确断点合同处理非连续租用。
+
+实验身份永久保持`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；不得进入T0/G3/统一baseline/任务50/论文claim。I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；若权利方否认或固定8210覆盖/hash漂移，立即触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 风险、问题与阻塞
+
+- 当前尚未进行训练内存增长验证；此前A30失败为主机RAM耗尽后进程被Killed，不是GPU OOM。代码层浅拷贝与loss图累积修复虽已测试，本实例仍需以实际Epoch 1闭环验证。
+- 私有MatBox配置镜像不是完整可激活环境；用户保存平台个人环境后才能验证跨实例恢复体验。I3D继续作为独立私有挂载，不应进入非受限配置镜像。
+- 本批探针的三次工程失败如实保留；它们不等于模型、数据或GPU失败，但也不得从记录中静默删除。
+
+### 下一步
+1. 明确通知用户当前可以保存个人环境；除非用户希望立即释放实例，不勾选“保存成功后自动释放机器”。
+2. 用户确认保存完成后，从Epoch 0启动唯一`seed=3407`全量运行，监控进程、GPU/RAM、日志和精确断点。
+3. 仅在Epoch 1训练、dev评估和checkpoint全部闭环，完整训练完成，或出现新失败时升级状态并追加真实证据。
+
+### Git状态
+本条写入时仅`WORK_LOG.md`为本批跟踪变更；`tmp/`继续未跟踪且归Task20所有，不进入Git。远端环境已就绪但训练未启动。
+
+## WR-20260724-002 — 验收4090环境快照并闭合真实断点恢复与A30内存根因
+
+- 时间：2026-07-24 03:50:41 +08:00
+- 类型：PROGRESS | TEST | EXPERIMENT | STORAGE | FIX | AUDIT
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 环境恢复、精确断点与DataLoader故障复核
+- 状态：环境快照可见；真实全模型保存—退出—恢复链通过；训练安全暂停在Epoch 0 step 12
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户确认已把4090个人环境保存至亚太2区网盘，要求核对后续是否能快速恢复训练、验证断点可支持非连续租用，并排查旧A30在首个epoch末段发生DataLoader worker被系统杀死的问题。本批先验证控制面保存痕迹和运行时可用性，再分别执行合成断点合同测试、真实DataLoader内存诊断和同一唯一seed的短故障注入恢复，不把中途step或loss写成结果。
+
+### 实际变更
+
+- 在当前亚太区实例的私有MatBox根目录确认出现新的权限`0600`环境快照标记，物理大小7,252,834,254字节，mtime为2026-07-24 03:32:43 +08:00；该时间晚于零epoch预检并与用户保存动作一致。没有为读取该大文件而完成全文件hash，首次SHA-256读取因不必要地占用FUSE I/O而主动中止。
+- 复核保存时运行时仍可直接激活：`/root/task20-runtime/env`约3.7 GiB、Python 3.8.20；源码、RoBERTa和comment runtime约527 MiB；私有MatBox I3D继续作为独立挂载。环境快照与数据挂载职责分离。
+- 在远端冻结环境执行合成精确恢复测试：原子保存/加载模型、optimizer、scheduler和全部RNG状态；错误身份在模型变更前fail closed；epoch内DataLoader游标与后续随机流精确重放；`num_workers=1`被精确恢复合同拒绝。四项全部通过。
+- 运行不训练的真实DataLoader长诊断：`num_workers=0`连续读取300个batch、4,800个训练样本，不调用模型forward/backward/optimizer；验证annotation长期字典未被写入视频数组或张量。
+- 使用同一唯一`seed=3407`和完整作者输入执行真实全模型短故障注入。首次从Epoch 0启动，周期断点落盘后发送SIGTERM，进程在当前batch完成后保存游标并以143退出；随后以同一断点、身份和配置恢复，继续运行并再次SIGTERM安全退出。该工程验证属于同一探索run，不新增seed、不进入dev/test、不形成结果。
+- 将最终`last-resume.ckpt`及两份最小故障注入日志保存在亚太2区私有MatBox受限runtime-evidence目录，文件权限全部收紧为`0600`；执行`sync`并保持训练进程为0。
+
+### 验证与证据
+
+- 环境快照可见性：`stat /mnt/*.snap`返回mode=600、size=7,252,834,254、mtime=2026-07-24 03:32:43 +08:00。该文件证明当前MatBox挂载可见保存工件；个人环境的控制面名称与“已成功登记为可选启动镜像”仍需在下一台实例创建页或实际恢复时最终确认，不能仅凭FUSE文件冒充控制面验收。
+- 合成断点测试输出：`REMOTE_EXACT_RESUME_SYNTHETIC_PASS roundtrip=1 identity_fail_closed=1 cursor_replay=1 worker_fail_closed=1`。
+- 真实DataLoader诊断输出：annotation总键数从585,285保持为585,285，含数组/张量的annotation记录从0保持为0；RSS MiB采样为`[(0,2357.5),(1,2389.3),(50,2389.4),(100,2389.4),(200,2389.4),(300,2389.4)]`。首批后至第300批仅约0.1 MiB波动，不存在旧路径的近线性累积。
+- 当前运行时源码复核：`csmv_dataset.py`三处均使用`output = dict(comment_label_data)`，不再原地扩写annotation；`train_vccsv.py`使用`loss.item()`、`op_loss.item()`和`emo_loss.item()`累计标量，不再跨batch保留计算图；精确恢复强制`num_workers=0`。
+- 首次真实故障注入：正式断点写入后SIGTERM，21秒内退出，shell确认exit 143、训练进程0、`.tmp`空；断点游标为Epoch 0、`next_batch_index=6`、`global_step=6`。
+- 恢复故障注入：使用`--resume_checkpoint`加载同一断点，断点mtime继续推进；再次SIGTERM后27秒内exit 143、训练进程0、`.tmp`空。最终游标为Epoch 0、`next_batch_index=12`、`global_step=12`、`tensorboard_steps=0`。
+- 最终断点schema=`task20-vccsa-exact-resume-v1`，identity固定seed=3407、CSMV、batch=16、max_epoch=120、steps_per_epoch=4693、train=75,086、dev=10,727；模型、optimizer、scheduler、RNG和training state均存在。文件大小1,742,988,475字节，SHA-256=`52345285324cb828c7deda3aae0adc1d117b7198705ec2cd086f7755592d0255`，mode=0600。
+- 提交前门禁：AGENTS指定的`.venv`现可运行，`scripts/validate_work_log.py`通过151条、errors空、latest=`WR-20260724-002`；`scripts/run_preparation_checks.py` exit 0、`blocking_checks=[]`、`m1_read_only_work_ready=true`。普通历史环境仍因faiss缺失诚实为`formal_model_work_ready=false`，不改变远端Task20冻结环境与本批实测。`git diff --check` exit 0。该当前事实优先于WR-20260724-001记录的当时本地解释器瞬时不可用状态，历史失败不删除。
+
+### 影响与边界
+
+当前证据支持：在亚太2区选择已保存的个人环境并挂载同一区私有MatBox后，不必重新安装3.7 GiB冻结环境或重新上传8210项I3D；恢复前仍必须核对GPU/驱动、Python/包版本、MatBox fixity、路径和断点身份。当前全量运行可从Epoch 0 step 12继续，硬断电最多丢失最后一个成功原子断点之后的计算；计划正式运行时把周期从故障注入用2步恢复为冻结默认500步。
+
+旧A30的DataLoader worker被Killed与随后`num_workers=0`主进程RAM耗尽属于同一内存保留链的两个表现：作者数据集把大视频特征写回长期annotation，多worker时每个worker独立累积；作者训练器又跨batch累计带计算图loss。当前两处根因均已修复，并由真实4,800样本内存诊断和全模型12步断点恢复支持。该证据显著降低但不能数学保证120 epoch绝不出现其他平台、FUSE或硬件故障，正式运行仍需监控RSS、GPU、日志和断点mtime。
+
+实验身份继续永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；step 12及故障注入日志不得进入T0/G3/统一baseline/任务50/论文claim。
+
+### 风险、问题与阻塞
+
+- 个人环境快照在当前实例上有可见工件，但只有从平台创建页选择该环境或用新实例实际恢复，才能最终证明控制面可启动；当前不虚报已完成跨实例恢复。
+- 断点约1.74 GiB，写入私有MatBox需要约20—30秒；SIGTERM后必须等待exit 143、`.tmp`消失和`sync`完成，不能立即释放机器。
+- 每个epoch的作者legacy checkpoint仍可能大量占用实例根盘；后续需滚动保留最近精确断点和必要最佳工件，避免120个大文件堆积。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 用户允许继续正式全量运行时，从当前step 12断点恢复，并把`checkpoint_every_steps`固定回500；持续监控RSS、GPU、日志、断点mtime和磁盘。
+2. 下次新建亚太2区实例时，选择已保存个人环境并完成一次只读恢复预检，最终闭合平台控制面可复用性。
+3. 每次暂停前发送SIGTERM并等待143退出、无`.tmp`、断点hash稳定和`sync`完成；恢复时保持完全相同identity。
+
+### Git状态
+
+本条写入时`WORK_LOG.md`含WR-20260724-001—002待门禁和有意提交；`tmp/`继续未跟踪且归Task20所有。远端训练已安全暂停在Epoch 0 step 12，私有断点与日志不进入Git。

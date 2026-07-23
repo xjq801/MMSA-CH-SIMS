@@ -6861,3 +6861,47 @@ G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFE
 ### Git状态
 
 本条写入时共享主仓库基线为`main=origin/main=51c92351efeb39bb5d5e56b9839af8948b2d8367`；本批仅修改或新增00所有权的SSOT、台账、验证器、规划和handoff文件。`tmp/`继续未跟踪且归Task20所有，不进入本批暂存或提交。
+
+## WR-20260724-004 — 推送SSOT v1.19并向Task20传播新边界
+
+- 时间：2026-07-24 19:05:00 +08:00
+- 类型：SYNC | HANDOFF | PROGRESS
+- 任务/门：00-T-AFFC总控 / Video2Reaction定位中修收尾
+- 状态：内容提交已推送，Task20已收到刷新与边界通知
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+在WR-20260724-003所列SSOT、claim、实验和机器门全部闭合后，本批只完成有意Git同步、阶段状态收尾和Task20接口传播，不新增科学判断或实验变更。
+
+### 实际变更
+
+- 将26项00所有权文件提交为`63be49c`，提交说明为`docs(task00): freeze Video2Reaction positioning in SSOT v1.19`。
+- 成功推送`51c9235..63be49c`到`origin/main`；Task20自有未跟踪`tmp/`未暂存、未提交、未读取。
+- 向Task20线程`019f6e2e-f781-7270-bb45-af8272ff5a5c`发送刷新通知，解除此前00文档暂停，并明确新增Video2Reaction式基线、四组件消融与OOD/可靠性义务属于任务30—50接口，未经00授权不得在Task20并发实现。
+- 将文件化计划阶段24和进度状态更新为`completed`。
+
+### 验证与证据
+
+- 推送输出为`51c9235..63be49c main -> main`。
+- 推送前`git fetch origin`确认`HEAD=origin/main=51c92351efeb39bb5d5e56b9839af8948b2d8367`，不存在远端并发提交。
+- 内容提交前工作日志152条通过，定位validator通过，综合准备检查`blocking_checks=[]`，handoff合同PASS，passport exit 0且仅保留历史stage10 WARN，`git diff --cached --check`通过。
+- Task20消息工具返回目标线程ID，通知已受理；不把“已受理”冒充Task20已经完成刷新或回复确认。
+
+### 影响与边界
+
+当前共享SSOT现实已更新到v1.19；G1、G2、资产风险与G3状态不变，Task30仍未创建。Task20可继续其既有`NON_T0/INELIGIBLE`探索与收尾，但不能改写00文件或擅自吸收任务30—50新增实验。
+
+### 风险、问题与阻塞
+
+- Task20尚未回复确认刷新，后续总控启动时仍须读取其实时线程，不能仅凭本条判断其当前状态。
+- 完整语义一致性工具依赖仍未修复；当前证据等级仍是项目专用文本门加人工回扫。
+- Video2Reaction正式出版状态、I3D资产未知项及Task20受限存储生命周期风险均未因本次推送而关闭。
+
+### 下一步
+
+等待或读取Task20对v1.19边界的确认，并按S23交接卡继续关闭其探索与存储生命周期；在共享实验核心静止前不创建Task30。后续若需Word总纲，从v1.19单向生成新派生副本。
+
+### Git状态
+
+内容提交`63be49c`已经推送`origin/main`；本条与阶段完成状态将作为独立00同步收尾提交推送。`tmp/`继续未跟踪且排除。

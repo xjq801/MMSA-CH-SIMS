@@ -6304,3 +6304,56 @@ v1.17取代v1.16成为活动SSOT。压缩移除的是重复说明和已完成任
 ### Git状态
 
 本条写入时，v1.17总纲及配套台账、任务登记、S20和WR-20260723-004均待最终门禁、提交和推送；`tmp/`继续未跟踪且归Task20所有。
+
+## WR-20260723-005 — 按用户指令将活动总纲回退至v1.16
+
+- 时间：2026-07-23 13:48:40 +08:00
+- 类型：DECISION | DOC | AUDIT | RISK
+- 任务/门：00总控 / SSOT回退 / S21
+- 状态：完成内容回退；待最终门禁、提交和推送
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+用户明确要求“退回到上一步总纲”。回退前活动SSOT为v1.17；本批目标是恢复上一版v1.16，同时遵守WORK_LOG和handoff只追加纪律，不删除v1.17曾生效及后来被撤回的历史证据。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`恢复为父提交`d45338e`中的v1.16正文。
+- 将`AGENTS.md`、`.light/terminology.md`、`CLAIM_EVIDENCE_MATRIX.md`和论文创新档案恢复为v1.16对应边界；收益感知路由和3%/5%/8%门重新降为非权威建议。
+- 保留并更新`.light/project_card.md`、`TASK_REGISTRY.md`和`RISK_REGISTER.md`中的当前G门、Task20及风险事实，只把活动SSOT改回v1.16。
+- 向`.light/decision_log.md`和`.light/version_history.md`追加撤回记录，保留v1.17历史；保留S20并新增`.light/handoff/S21-master-plan-rollback-to-v116.md`。
+- 未修改数据、split、评测器、实验代码、G1—G3、I3D风险、Task20实验身份或`tmp/`。
+
+### 验证与证据
+
+- 开工运行`git fetch origin`、`git status --short --branch`和`git log -8`，确认`HEAD=origin/main=47e9338cdf06f120f99e819f74ef19f1aa9eda3d`。
+- `lifecycle.py intake`返回`dirty+resume`，共12个dirty path；逐文件hash核验发现用户回退动作已把9个配套文件精确恢复为`d45338e`版本，并删除v1.17新增的S20和TASK_REGISTRY，但总纲正文仍为v1.17，属于半回退状态。
+- 为保护审计链，恢复S20、TASK_REGISTRY、WR-004、v1.17决策和版本记录，再以追加记录表达撤回；没有将历史改写成“从未发生”。
+- 读取Task20实时任务：统一基线/G3主体已完成；VC-CSA全量探索、运行时快照和受限存储生命周期未闭环，最近远端SSH不可用，故Task30继续冻结。
+- `git hash-object`验证活动总纲SHA对象为`30ecdd984680eb51d17882813048aab3a00c2dde`，与`d45338e:TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`逐字节一致。
+- `.venv`运行`scripts/validate_work_log.py`通过：共142条，最新为`WR-20260723-005`，`passed=true`。
+- `.venv`运行`scripts/run_preparation_checks.py`以exit 0完成且`blocking_checks=[]`；同时诚实保持`formal_model_work_ready=false`、`faiss_available=false`和正式CARM环境`BLOCKED_M1`。
+- `handoff_contract.py`首次发现S21缺少明确`dirty/unpushed`字样且一条下一步动词不匹配合同正则，exit 1；补齐真实工作区状态并改为“读取/检查/编写”后复跑得到`handoff contract PASS`。
+- 以`.light/terminology.md`回扫总纲、项目卡、AGENTS、任务登记、创新档案、claim、风险、决策、版本和S21共10份材料，exit 0且术语/数值/claim/创新点硬冲突均为0；因缺四份YAML注册表，仍有1项`AUTHORITY_COVERAGE` WARN与4项一般术语INFO，只记`PARTIAL_TEXT_AUDIT`。
+- 已知`light-memory-pm pm.py`包装布局缺`_shared/passport`且无新mitigation，本批未重复触发同一失败；以底层事实源、直接一致性回扫和独立handoff合同完成替代验证。`git diff --check`通过。
+
+### 影响与边界
+
+从本批生效后，唯一活动总纲重新为v1.16。v1.17中的收益感知可靠性路由、3%/5%/8%效应门和新增Pareto门不再是任务30—60的强制要求；详细创新档案仍可作为未来讨论材料，但重新采用必须由用户另行批准。现有G门、数据协议、资产风险、实验结果和Task20边界不因总纲回退而变化。
+
+### 风险、问题与阻塞
+
+- Task20探索与受限存储生命周期仍阻塞Task30创建。
+- `.light/passport.yaml`仍是陈旧PLANNED账本且缺inputs fingerprint；本批未静默迁移。
+- 若后续材料仍引用v1.17门槛，可能形成版本漂移，需执行一致性回扫。
+
+### 下一步
+
+1. 完成本批门禁、提交和推送，并确认`main=origin/main`。
+2. 持续监督Task20形成完成、失败或不可用收尾以及快照/删除证据。
+3. Task20闭环后严格按v1.16复核Task30创建条件。
+
+### Git状态
+
+本条写入时，v1.16回退、配套台账、S21和WR-20260723-005待门禁、提交和推送；`tmp/`继续未跟踪且归Task20所有。

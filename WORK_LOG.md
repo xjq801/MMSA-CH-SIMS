@@ -6406,3 +6406,45 @@ v1.17取代v1.16成为活动SSOT。压缩移除的是重复说明和已完成任
 ### Git状态
 
 本条写入时`WORK_LOG.md`待门禁、提交与推送；Task20忽略目录`tmp/`及远端受限runtime不进入Git。训练仍运行中，首个epoch尚未完成。
+
+## WR-20260723-007 — 核验算力平台GPU零值面板未代表训练中断
+
+- 时间：2026-07-23 20:20:06 +08:00
+- 类型：TEST | AUDIT | PROGRESS
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 运行监控
+- 状态：诊断完成；训练正常运行，未修改参数
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户提供的算力平台截图显示GPU利用率0%、显存0G，同时CPU约106.71%、内存约5.09G和磁盘约6.77G，询问训练是否故障并授权必要修复。本批直接核对容器内进程、`nvidia-smi`、RAM、磁盘、日志与checkpoint，避免仅凭平台控制面单次采样停止或重启正常运行。
+
+### 实际变更
+
+- 未修改模型、数据、seed、batch、worker、学习率、进程或存储。
+- 保持唯一`seed=3407`与`num_workers=0`训练继续运行；未重启、未新增attempt。
+
+### 验证与证据
+
+- 容器内作者训练进程和启动器均存活；实际命令仍包含`--seed 3407 --batch_size 16 --num_workers 0`。
+- 容器内`nvidia-smi`显示GPU利用率96%、显存13,719/24,576 MiB、温度53°C、功耗约154W，并存在训练compute process占用约13,710 MiB。
+- 日志从先前step 126继续推进到Epoch 1 step 254/4692，作者即时估计约78分钟剩余；没有Traceback、OOM或worker killed。
+- 系统RAM总量90 GiB、available约82 GiB，swap未使用；根盘已用约6.8 GiB、剩余约144 GiB；尚未产生epoch checkpoint符合运行阶段。
+
+### 影响与边界
+
+平台截图中的GPU 0%/0G判定为控制面单次采样未反映容器内实时GPU状态，不构成训练失败证据。CPU 106.71%约等于一个逻辑核的持续占用，不是超限。当前中途loss与step仍只用于运行诊断，不进入结果或claim。
+
+### 风险、问题与阻塞
+
+- 平台面板可能继续短暂显示零值，后续运行判断以容器内进程、`nvidia-smi`、日志连续推进和checkpoint四类证据交叉确认。
+- 首个epoch、dev评估与checkpoint仍未完成；训练状态不得升级为结果。
+
+### 下一步
+
+1. 继续按既有15分钟heartbeat监控，只有首个epoch+dev+checkpoint完成、完整训练完成或新失败时升级状态。
+2. 若容器内GPU和日志同时停止，再按真实错误分类修复；不因控制面单次零值重启正常运行。
+
+### Git状态
+
+本条写入时`WORK_LOG.md`待门禁、提交与推送；Task20忽略目录`tmp/`不进入Git，远端训练继续运行。

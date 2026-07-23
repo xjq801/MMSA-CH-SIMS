@@ -330,6 +330,336 @@ def _write_if_changed(path: Path, text: str) -> bool:
     return True
 
 
+def _write_created_or_changed(path: Path, text: str) -> bool:
+    if path.is_file() and path.read_text(encoding="utf-8") == text:
+        return False
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+    return True
+
+
+def _patch_vccsa_main_for_resume(text: str) -> str:
+    if "from resume_utils import load_training_checkpoint" not in text:
+        anchor = "from train_vccsv import train\n"
+        addition = (
+            anchor
+            + "from resume_utils import load_training_checkpoint, require_exact_resume_loader\n"
+        )
+        text = text.replace(anchor, addition, 1) if anchor in text else addition + text
+    if "--resume_checkpoint" not in text:
+        anchor = "    parser.add_argument('--fine_ck_path', type=str, default=None)\n"
+        addition = (
+            anchor
+            + "    parser.add_argument('--resume_checkpoint', type=str, default=None)\n"
+            + "    parser.add_argument('--resume_checkpoint_out', type=str, default=None)\n"
+            + "    parser.add_argument('--checkpoint_every_steps', type=int, default=500)\n"
+        )
+        if anchor not in text:
+            raise ValueError("cannot add VC-CSA resume arguments")
+        text = text.replace(anchor, addition, 1)
+
+    seed_block = (
+        "    torch.manual_seed(args.seed)\n"
+        "    np.random.seed(args.seed)\n"
+        "    torch.backends.cudnn.deterministic = True\n"
+        "    torch.backends.cudnn.benchmark = False\n"
+    )
+    seeded_block = (
+        "    random.seed(args.seed)\n"
+        "    torch.manual_seed(args.seed)\n"
+        "    torch.cuda.manual_seed_all(args.seed)\n"
+        "    np.random.seed(args.seed)\n"
+        "    torch.backends.cudnn.deterministic = True\n"
+        "    torch.backends.cudnn.benchmark = False\n"
+        "    train_generator = torch.Generator()\n"
+        "    train_generator.manual_seed(args.seed)\n"
+        "    if args.checkpoint_every_steps > 0 or args.resume_checkpoint:\n"
+        "        if args.num_workers != 0:\n"
+        "            raise ValueError('exact resume requires --num_workers 0')\n"
+    )
+    if seed_block in text and "train_generator = torch.Generator()" not in text:
+        text = text.replace(seed_block, seeded_block, 1)
+
+    loader_anchor = "                              collate_fn=csmv_collate_fn)"
+    loader_replacement = (
+        "                              collate_fn=csmv_collate_fn,\n"
+        "                              generator=train_generator)"
+    )
+    if loader_anchor in text and "generator=train_generator" not in text:
+        text = text.replace(loader_anchor, loader_replacement, 1)
+
+    scheduler_anchor = (
+        "    scheduler = get_linear_schedule_with_warmup(optim,\n"
+        "                                                num_warmup_steps=int(t_total * args.warmup_proportion),\n"
+        "                                                num_training_steps=t_total)\n"
+    )
+    resume_setup = (
+        scheduler_anchor
+        + "\n"
+        + "    require_exact_resume_loader(train_loader)\n"
+        + "    args.resume_identity = {\n"
+        + "        'seed': args.seed,\n"
+        + "        'dataset': args.dataset,\n"
+        + "        'batch_size': args.batch_size,\n"
+        + "        'max_epoch': args.max_epoch,\n"
+        + "        'steps_per_epoch': len(train_loader),\n"
+        + "        'train_examples': len(train_dset),\n"
+        + "        'dev_examples': len(eval_dset),\n"
+        + "    }\n"
+        + "    if args.resume_checkpoint_out is None:\n"
+        + "        args.resume_checkpoint_out = os.path.join(args.output, args.name, 'last-resume.ckpt')\n"
+        + "    resume_state = None\n"
+        + "    if args.resume_checkpoint:\n"
+        + "        if args.fine_ck_path:\n"
+        + "            raise ValueError('--resume_checkpoint and --fine_ck_path are mutually exclusive')\n"
+        + "        resume_state = load_training_checkpoint(\n"
+        + "            args.resume_checkpoint, model=net, optimizer=optim, scheduler=scheduler,\n"
+        + "            train_generator=train_generator, expected_identity=args.resume_identity,\n"
+        + "            map_location='cpu')\n"
+    )
+    if scheduler_anchor in text and "args.resume_identity" not in text:
+        text = text.replace(scheduler_anchor, resume_setup, 1)
+
+    call_anchor = (
+        "    eval_accuracies = train(net, train_loader, eval_loader, optim, args,\n"
+        "                               scheduler)"
+    )
+    call_replacement = (
+        "    eval_accuracies = train(net, train_loader, eval_loader, optim, args,\n"
+        "                               scheduler, resume_state=resume_state,\n"
+        "                               train_generator=train_generator)"
+    )
+    if call_anchor in text:
+        text = text.replace(call_anchor, call_replacement, 1)
+    return text
+
+
+def _patch_vccsa_trainer_for_resume(text: str) -> str:
+    if "from resume_utils import (" not in text:
+        anchor = "from tqdm import tqdm\n"
+        imports = (
+            anchor
+            + "from resume_utils import (\n"
+            + "    require_exact_resume_loader,\n"
+            + "    resume_batch_iterator,\n"
+            + "    save_training_checkpoint,\n"
+            + ")\n"
+        )
+        text = text.replace(anchor, imports, 1) if anchor in text else imports + text
+    if "_STOP_REQUESTED = False" not in text:
+        text = (
+            "import signal\n"
+            "_STOP_REQUESTED = False\n"
+            "\n"
+            "def _request_checkpoint_and_stop(signum, frame):\n"
+            "    global _STOP_REQUESTED\n"
+            "    _STOP_REQUESTED = True\n"
+            "    print('checkpoint requested by signal {}'.format(signum), flush=True)\n"
+            "\n"
+            + text
+        )
+
+    text = text.replace(
+        "def train(net, train_loader, eval_loader, optim, args, scheduler):",
+        "def train(net, train_loader, eval_loader, optim, args, scheduler, "
+        "resume_state=None, train_generator=None):",
+        1,
+    )
+    text = text.replace(
+        "    logfile = open(args.output + \"/\" + args.name + '/log_run.txt', 'w+')",
+        "    require_exact_resume_loader(train_loader)\n"
+        "    signal.signal(signal.SIGTERM, _request_checkpoint_and_stop)\n"
+        "    signal.signal(signal.SIGINT, _request_checkpoint_and_stop)\n"
+        "    logfile_mode = 'a' if resume_state is not None else 'w+'\n"
+        "    logfile = open(args.output + \"/\" + args.name + '/log_run.txt', logfile_mode)",
+        1,
+    )
+    if "signal.signal(signal.SIGTERM" not in text:
+        text = text.replace(
+            "    require_exact_resume_loader(train_loader)\n",
+            "    require_exact_resume_loader(train_loader)\n"
+            "    signal.signal(signal.SIGTERM, _request_checkpoint_and_stop)\n"
+            "    signal.signal(signal.SIGINT, _request_checkpoint_and_stop)\n",
+            1,
+        )
+
+    state_anchor = (
+        "    eval_accuracies = []  # to record evaluate accuracy\n"
+        "    for epoch in range(0, args.max_epoch):  # epoch loop\n"
+    )
+    state_replacement = (
+        "    eval_accuracies = []  # to record evaluate accuracy\n"
+        "    start_epoch = 0\n"
+        "    next_batch_index = 0\n"
+        "    global_step = 0\n"
+        "    if resume_state is not None:\n"
+        "        cursor = resume_state['cursor']\n"
+        "        recovered = resume_state['training_state']\n"
+        "        start_epoch = cursor['epoch_index']\n"
+        "        next_batch_index = cursor['next_batch_index']\n"
+        "        global_step = cursor['global_step']\n"
+        "        tensorboard_steps = cursor['tensorboard_steps']\n"
+        "        best_eval_accuracy = recovered.get('best_eval_accuracy', 0.0)\n"
+        "        best_epoch = recovered.get('best_epoch', 0)\n"
+        "        eval_accuracies = recovered.get('eval_accuracies', [])\n"
+        "    for epoch in range(start_epoch, args.max_epoch):  # epoch loop\n"
+    )
+    if state_anchor in text:
+        text = text.replace(state_anchor, state_replacement, 1)
+
+    epoch_anchor = (
+        "        epoch_loss, epoch_op_loss, epoch_em_loss, epoch_mag_loss = 0, 0, 0, 0\n"
+        "        op_aux_loss_sum = 0\n"
+        "        emo_aux_loss_sum = 0\n"
+        "\n"
+        "        time_start = time.time()  # record train time\n"
+        "\n"
+        "        for step, batch_data in enumerate(train_loader):  # step : a \"backward\"\n"
+    )
+    epoch_replacement = (
+        "        if resume_state is not None and epoch == start_epoch and next_batch_index > 0:\n"
+        "            recovered = resume_state['training_state']\n"
+        "            epoch_loss = float(recovered.get('epoch_loss', 0.0))\n"
+        "            epoch_op_loss = float(recovered.get('epoch_op_loss', 0.0))\n"
+        "            epoch_em_loss = float(recovered.get('epoch_em_loss', 0.0))\n"
+        "            epoch_start_generator_state = resume_state['cursor']['epoch_start_generator_state']\n"
+        "            train_iterator = resume_batch_iterator(\n"
+        "                train_loader, next_batch_index=next_batch_index,\n"
+        "                train_generator=train_generator,\n"
+        "                epoch_start_generator_state=epoch_start_generator_state,\n"
+        "                checkpoint_rng_state=resume_state['rng_state'])\n"
+        "            first_step = next_batch_index\n"
+        "        else:\n"
+        "            epoch_loss, epoch_op_loss, epoch_em_loss = 0.0, 0.0, 0.0\n"
+        "            epoch_start_generator_state = train_generator.get_state()\n"
+        "            train_iterator = iter(train_loader)\n"
+        "            first_step = 0\n"
+        "        epoch_mag_loss = 0.0\n"
+        "        op_aux_loss_sum = 0.0\n"
+        "        emo_aux_loss_sum = 0.0\n"
+        "\n"
+        "        time_start = time.time()  # record train time\n"
+        "\n"
+        "        for step, batch_data in enumerate(train_iterator, start=first_step):\n"
+    )
+    if epoch_anchor in text:
+        text = text.replace(epoch_anchor, epoch_replacement, 1)
+
+    loss_anchor = (
+        "            epoch_loss += loss\n"
+        "            epoch_op_loss += output.get(\"opinion_loss\")\n"
+        "            epoch_em_loss += output.get(\"emotion_loss\")\n"
+    )
+    loss_replacement = (
+        "            epoch_loss += loss.item()\n"
+        "            epoch_op_loss += op_loss.item()\n"
+        "            epoch_em_loss += emo_loss.item()\n"
+        "            global_step += 1\n"
+        "            if (_STOP_REQUESTED or (args.checkpoint_every_steps > 0 and\n"
+        "                    global_step % args.checkpoint_every_steps == 0)):\n"
+        "                writer.flush()\n"
+        "                logfile.flush()\n"
+        "                save_training_checkpoint(\n"
+        "                    args.resume_checkpoint_out, model=net, optimizer=optim,\n"
+        "                    scheduler=scheduler, train_generator=train_generator,\n"
+        "                    identity=args.resume_identity,\n"
+        "                    cursor={'epoch_index': epoch, 'next_batch_index': step + 1,\n"
+        "                            'global_step': global_step,\n"
+        "                            'tensorboard_steps': tensorboard_steps,\n"
+        "                            'epoch_start_generator_state': epoch_start_generator_state},\n"
+        "                    training_state={'epoch_loss': epoch_loss,\n"
+        "                                    'epoch_op_loss': epoch_op_loss,\n"
+        "                                    'epoch_em_loss': epoch_em_loss,\n"
+        "                                    'best_eval_accuracy': best_eval_accuracy,\n"
+        "                                    'best_epoch': best_epoch,\n"
+        "                                    'eval_accuracies': eval_accuracies})\n"
+        "                if _STOP_REQUESTED:\n"
+        "                    raise SystemExit(143)\n"
+    )
+    if loss_anchor in text:
+        text = text.replace(loss_anchor, loss_replacement, 1)
+    else:
+        text = text.replace("epoch_loss += loss\n", "epoch_loss += loss.item()\n")
+        text = text.replace(
+            'epoch_op_loss += output.get("opinion_loss")\n',
+            "epoch_op_loss += op_loss.item()\n",
+        )
+        text = text.replace(
+            'epoch_em_loss += output.get("emotion_loss")\n',
+            "epoch_em_loss += emo_loss.item()\n",
+        )
+    text = text.replace(
+        "if args.checkpoint_every_steps > 0 and global_step % args.checkpoint_every_steps == 0:",
+        "if (_STOP_REQUESTED or (args.checkpoint_every_steps > 0 and\n"
+        "                    global_step % args.checkpoint_every_steps == 0)):",
+    )
+    if "if _STOP_REQUESTED:\n                    raise SystemExit(143)" not in text:
+        text = text.replace(
+            "                                    'eval_accuracies': eval_accuracies})\n"
+            "            # epoch_mag_loss",
+            "                                    'eval_accuracies': eval_accuracies})\n"
+            "                if _STOP_REQUESTED:\n"
+            "                    raise SystemExit(143)\n"
+            "            # epoch_mag_loss",
+            1,
+        )
+
+    for expression in (
+        "epoch_loss.item()",
+        "epoch_op_loss.item()",
+        "epoch_em_loss.item()",
+    ):
+        text = text.replace(expression, expression[:-7])
+
+    text = text.replace(
+        "        epoch_loss, epoch_op_loss, epoch_em_loss, epoch_mag_loss = 0, 0, 0, 0\n"
+        "        op_aux_loss_sum, emo_aux_loss_sum = 0, 0\n"
+        "        # Eval\n",
+        "        # Eval\n",
+        1,
+    )
+
+    boundary_anchor = (
+        "                print(\"best eopch: \" + str(best_epoch) + \" , performance: \" + str(best_eval_accuracy))\n"
+    )
+    boundary_replacement = (
+        boundary_anchor
+        + "\n"
+        + "        writer.flush()\n"
+        + "        logfile.flush()\n"
+        + "        save_training_checkpoint(\n"
+        + "            args.resume_checkpoint_out, model=net, optimizer=optim,\n"
+        + "            scheduler=scheduler, train_generator=train_generator,\n"
+        + "            identity=args.resume_identity,\n"
+        + "            cursor={'epoch_index': epoch + 1, 'next_batch_index': 0,\n"
+        + "                    'global_step': global_step,\n"
+        + "                    'tensorboard_steps': tensorboard_steps,\n"
+        + "                    'epoch_start_generator_state': train_generator.get_state()},\n"
+        + "            training_state={'epoch_loss': 0.0, 'epoch_op_loss': 0.0,\n"
+        + "                            'epoch_em_loss': 0.0,\n"
+        + "                            'best_eval_accuracy': best_eval_accuracy,\n"
+        + "                            'best_epoch': best_epoch,\n"
+        + "                            'eval_accuracies': eval_accuracies})\n"
+        + "        if _STOP_REQUESTED:\n"
+        + "            raise SystemExit(143)\n"
+        + "        resume_state = None\n"
+        + "        next_batch_index = 0\n"
+    )
+    if boundary_anchor in text and "cursor={'epoch_index': epoch + 1" not in text:
+        text = text.replace(boundary_anchor, boundary_replacement, 1)
+    if text.count("raise SystemExit(143)") < 2:
+        text = text.replace(
+            "                            'eval_accuracies': eval_accuracies})\n"
+            "        resume_state = None\n",
+            "                            'eval_accuracies': eval_accuracies})\n"
+            "        if _STOP_REQUESTED:\n"
+            "            raise SystemExit(143)\n"
+            "        resume_state = None\n",
+            1,
+        )
+    return text
+
+
 def apply_compatibility_patch(source_root: Path) -> Dict:
     required = [
         source_root / "utils" / "tokenize.py",
@@ -339,6 +669,7 @@ def apply_compatibility_patch(source_root: Path) -> Dict:
         source_root / "main.py",
         source_root / "model_VCCSA.py",
         source_root / "utils" / "compute_args.py",
+        source_root / "train_vccsv.py",
     ]
     missing = [path.name for path in required if not path.is_file()]
     if missing:
@@ -353,6 +684,7 @@ def apply_compatibility_patch(source_root: Path) -> Dict:
         main_path,
         model_path,
         compute_args_path,
+        trainer_path,
     ) = required
 
     tokenize = tokenize_path.read_text(encoding="utf-8")
@@ -390,6 +722,9 @@ def apply_compatibility_patch(source_root: Path) -> Dict:
             "pretrained_model_name_or_path = args.pre_trained_LM",
         )
         replacements += count
+    dataset = dataset.replace(
+        "output = comment_label_data", "output = dict(comment_label_data)"
+    )
     if "args.pre_trained_LM" not in dataset or replacements == 0 and dataset_path.read_text(encoding="utf-8") == dataset:
         if "args.pre_trained_LM" not in dataset:
             raise ValueError("cannot parameterize dataset RoBERTa path")
@@ -468,6 +803,8 @@ def apply_compatibility_patch(source_root: Path) -> Dict:
         entrypoint_text = entrypoint_text.replace(
             ", CSMV_Dataset_VideoMAEv2FPS16", ""
         )
+        if entrypoint == main_path:
+            entrypoint_text = _patch_vccsa_main_for_resume(entrypoint_text)
         if "CSMV_Dataset_VideoMAEv2FPS16" in entrypoint_text:
             raise ValueError(f"invalid dataset import remains in {entrypoint.name}")
         if _write_if_changed(entrypoint, entrypoint_text):
@@ -493,14 +830,27 @@ def apply_compatibility_patch(source_root: Path) -> Dict:
     if _write_if_changed(compute_args_path, compute_args):
         changed.append("utils/compute_args.py")
 
+    trainer = _patch_vccsa_trainer_for_resume(
+        trainer_path.read_text(encoding="utf-8")
+    )
+    if _write_if_changed(trainer_path, trainer):
+        changed.append("train_vccsv.py")
+
+    helper_source = Path(__file__).with_name("vccsa_resume_runtime.py")
+    helper_target = source_root / "resume_utils.py"
+    if _write_created_or_changed(
+        helper_target, helper_source.read_text(encoding="utf-8")
+    ):
+        changed.append("resume_utils.py")
+
     return {
         "schema_version": "task20-vccsa-author-patch-report-v1",
         "status": "PATCHED_AND_VERIFIED",
         "changed_files": changed,
-        "post_patch_sha256": {
+        "post_patch_sha256": dict({
             str(path.relative_to(source_root)).replace("\\", "/"): _sha256(path)
             for path in required
-        },
+        }, **{"resume_utils.py": _sha256(helper_target)}),
     }
 
 

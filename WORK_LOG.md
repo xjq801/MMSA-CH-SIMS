@@ -6448,3 +6448,199 @@ v1.17取代v1.16成为活动SSOT。压缩移除的是重复说明和已完成任
 ### Git状态
 
 本条写入时`WORK_LOG.md`待门禁、提交与推送；Task20忽略目录`tmp/`不进入Git，远端训练继续运行。
+
+## WR-20260723-008 — Task20 VC-CSA首个全量epoch、dev评估与checkpoint闭合
+
+- 时间：2026-07-23 21:45 +08:00
+- 类型：PROGRESS | EXPERIMENT | TEST | AUDIT | RISK
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 首个epoch里程碑
+- 状态：首个epoch训练、dev评估与checkpoint真实完成；同一进程已进入epoch 2，完整训练未完成
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+按既有heartbeat继续监控唯一`seed=3407`远端运行，只在首个epoch训练、dev评估与checkpoint三项全部闭合后升级状态。本条固定首个可恢复模型工件与实测耗时，为总时长、并行资源和暂停恢复判断提供依据；中途loss不作为结果。
+
+### 实际变更
+
+- 未修改模型、数据、split、seed、batch、worker、学习率或运行进程；唯一训练进程继续使用`seed=3407`、`batch_size=16`、`num_workers=0`。
+- Epoch 1于2026-07-23 21:37:29 +08:00完成训练，作者日志报告训练段耗时4981秒；dev预测与性能文件于21:43:21落盘，checkpoint于21:43:23落盘。
+- 完成后同一进程自动进入epoch 2；本条记录时进程仍存活，未停止、未重启、未新增种子。
+
+### 验证与证据
+
+- 远端只读探针交叉检查训练进程、容器内`nvidia-smi`、RAM、`author_full_seed3407.log`和checkpoint目录；21:45探针显示GPU利用率100%、显存16,899/24,576 MiB、RAM available约20 GiB，进程已进入Epoch 2。
+- Epoch 1日志完整出现`Step 4692/4692`、`Finished in 4981s`和epoch汇总；dev评估产生`dev_predict_1.pkl`（2,796,992字节）与`dev_performance_1.json`（2,155字节）。
+- checkpoint `best3407_1.1946490165004193_1.pkl`已落盘，大小1,742,975,421字节；同时存在`loss_epoc_1.json`和TensorBoard事件文件。
+- 首个dev诊断为opinion micro-F1 0.6367111028、emotion micro-F1 0.5579379137，二者和为作者选择分数1.1946490165；这些数值仅属于`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0/G3/统一baseline/任务50或论文claim。
+- 源码复核确认默认`max_epoch=120`，`early_stop=5`参数未在训练循环实现；每epoch均保存约1.62 GiB checkpoint。`fine_ck_path`只恢复模型权重，未恢复optimizer、scheduler、epoch计数或随机状态，因此当前作者入口不支持严格等价的跨进程续训。
+- `validate_work_log.py`首跑因本条误用元数据名`任务/问题`而失败；同批改为合同要求的`任务/门`后重跑，不删除该失败事实。
+
+### 影响与边界
+
+首个epoch里程碑证明当前A30、冻结环境和全量作者输入路径可完成一轮训练、dev评估及checkpoint写入，但不等于完整复现完成，也不改变永久NON_T0/INELIGIBLE身份。按首轮约89分钟端到端耗时线性外推，120轮约178小时（约7.4天），实际会受I/O、评估、存储和潜在故障影响。当前授权仅允许一个完成的seed=3407；未经改造的作者程序为单GPU，额外四张A30不能直接加速同一进程。
+
+### 风险、问题与阻塞
+
+- 当前根盘若保留120个约1.62 GiB checkpoint将明显超过容量；必须采用私有MatBox滚动保存策略，但删除旧checkpoint前需保留当前最佳和最近可诊断工件。
+- 作者代码没有严格resume入口；使用`fine_ck_path`重启会丢失optimizer/scheduler/epoch/RNG状态，只能视为非等价工程续跑，不能冒充同一次精确训练。
+- 首轮后RAM available约20 GiB，显著低于训练早期，需继续监控是否为持续增长；尚无OOM、Killed或Traceback，当前不能写成失败。
+- I3D许可、官方revision和权利方包身份/fixity仍为UNKNOWN；权利方否认或固定8210项hash/覆盖漂移仍触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 保持heartbeat监控同一进程、GPU/RAM、日志与checkpoint；完整训练完成或新失败时立即升级状态。
+2. 在不中断当前运行的前提下评估滚动checkpoint复制到私有MatBox及空间阈值，禁止把受限工件写入Git或公开存储。
+3. 完整训练结束后核验最终日志、checkpoint、MatBox挂载与受限存储生命周期，再通知用户保存个人环境。
+
+### Git状态
+
+本条写入时仅`WORK_LOG.md`为本批新增跟踪变更；`tmp/`继续未跟踪且归Task20所有。远端训练仍运行，完整训练结果尚未形成。
+
+## WR-20260723-009 — 评估VC-CSA首轮诊断、跨区换卡与RAM止损风险
+
+- 时间：2026-07-23 22:00 +08:00
+- 类型：AUDIT | DECISION | RISK | EXPERIMENT | STORAGE
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / A30转4090可行性
+- 状态：完成只读评估；当前A30训练仍运行，但主机RAM增长已进入高风险区，尚未执行换卡或停止
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户询问Epoch 1诊断是否达到预期，并考虑把当前A30换成不同区域的4090。本批核对作者论文最终指标、当前运行资源和矩池云官方跨区存储/环境规则，区分“首轮训练路径正常”“最终精度达到论文值”和“可无损换卡续训”。
+
+### 实际变更
+
+- 未停止、重启或修改当前训练；未创建4090实例，未跨区复制资产，未保存或迁移环境。
+- 明确换到不同区域不需要从本地重新上传：应使用私有MatBox的“跨区复制”把数据/代码复制到目标区域；已保存的`.snap`环境必须使用“我的环境→迁移”进入目标区域。
+- 明确当前作者入口不能精确跨进程续训，故现阶段换卡只能从头重跑或接受非等价权重热启动；不得把后者写成同一seed运行的精确延续。
+
+### 验证与证据
+
+- Epoch 1 dev诊断为opinion micro/macro F1 63.67%/56.58%，emotion micro/macro F1 55.79%/40.50%；训练、dev和checkpoint链闭合，说明可执行性达到首轮预期。
+- NeurIPS 2024论文表3报告VC-CSA(I3D)最终五种子test均值为opinion micro/macro F1 73.52%/67.51%、emotion micro/macro F1 62.99%/55.18%。当前首轮dev相差约9.85/10.93/7.20/14.68个百分点，但两者分别是Epoch 1 dev单种子与最终选择后test五种子均值，不能作同口径成败判断。
+- 2026-07-23 21:57 +08:00远端只读探针确认同一进程仍在Epoch 2 step 757/4692，GPU利用率100%、显存16,899/24,576 MiB；进程RSS约84,498,644 KiB，占90 GiB主机内存约89.5%，available约10 GiB。尚无Traceback/Killed/OOM，但内存增长已构成迫近失败风险。
+- 矩池云官方概念文档明确不同区域的实例与网盘隔离；官方网盘教程提供“跨区复制”，官方环境保存文档说明`.snap`保存在实例所在区域，跨区使用须迁移环境且目标网盘容量充足。
+
+### 影响与边界
+
+首轮成绩处于“训练链正常但尚未达到论文最终精度”的合理早期状态，不能称已复现论文数字。4090具备24 GiB显存，按当前峰值技术上可能容纳模型，但性能收益必须实测；当前最主要风险是作者进程的主机RAM增长，而不是A30算力。未修复该增长前迁移到4090可能重复被Killed。
+
+### 风险、问题与阻塞
+
+- 当前A30进程RSS已接近主机上限，可能在Epoch 2内被系统杀死；这是新风险，不是已发生失败。
+- 当前完整环境尚未在训练安全停止后保存为可迁移`.snap`；训练运行中不得点击保存环境。
+- 跨区复制会额外占用目标区域网盘空间并通过公网迁移；复制完成后仍须复核固定8210项count、coverage和SHA-256，再启动训练。
+- 4090目标实例的系统RAM、区域网盘容量、GPU UUID和实际endpoint尚未知；任何实际实例仍须先做非秘密三元绑定和资产fixity。
+
+### 下一步
+
+1. 用户决定换卡前，不把A30当前checkpoint称为可精确续训点；若换卡，优先在安全停止后备份首轮checkpoint/日志并修复RAM增长，再从目标区域重新开始唯一seed=3407。
+2. 在MatBox界面对I3D、作者runtime归档和必要配置执行跨区复制；若已有环境快照则执行环境迁移，否则在目标区域重建冻结环境。
+3. 4090启动前核验显存、主机RAM、目标网盘空间、8210项fixity和冻结依赖；首个资源smoke通过后再启动全量。
+
+### Git状态
+
+本条写入时`WORK_LOG.md`包含Task20的WR-008/009待提交记录；`tmp/`继续未跟踪且归Task20所有。远端A30训练仍运行，未执行换卡。
+
+## WR-20260723-010 — VC-CSA在Epoch 2因主机RAM耗尽被Killed并保全首轮工件
+
+- 时间：2026-07-23 22:20 +08:00
+- 类型：FAILURE | EXPERIMENT | STORAGE | SECURITY | AUDIT
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / A30运行失败止损
+- 状态：训练失败并停止；Epoch 1工件已备份到私有MatBox，完整训练未完成
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+heartbeat在前序RAM高风险告警后继续监控同一进程。2026-07-23 22:15 +08:00探针发现训练进程消失、GPU空闲且日志出现`Killed`，因此立即按失败处理，不把Epoch 1或中途Epoch 2写成完整结果；同时在释放实例前保全已闭合的Epoch 1最小工件。
+
+### 实际变更
+
+- 未重启训练、未新增seed、未尝试从不完整Epoch 2续训。
+- 在私有MatBox新建权限`0700`的`runtime-evidence/task20-vccsa-seed3407-epoch1`目录，复制Epoch 1 checkpoint、dev性能、dev预测、epoch loss和完整运行日志，文件权限固定为`0600`。
+- 第一次备份命令因远端shell引号不闭合而exit 1，未形成可验收输出；随后改用无变量的明确路径命令成功复制、`sync`并逐文件计算SHA-256，失败事实未删除。
+
+### 验证与证据
+
+- 最后日志时间为2026-07-23 22:10:11 +08:00，停止于`[Epoch 2][Step 1397/4692]`，随后明确出现`train.sh: line 46: 1100 Killed python ../main.py ...`。
+- 失败后训练进程数为0，`nvidia-smi`为GPU利用率0%、显存0 MiB；系统RAM由失败前进程RSS约87,080,752 KiB、占主机约92.2%，恢复为约128 MiB used、89 GiB available。
+- 无CUDA OOM文本，显存失败前约16,899/24,576 MiB，故分类为`HOST_RAM_EXHAUSTION_PROCESS_KILLED`，不得改称GPU OOM。
+- 私有MatBox备份包含5个文件：checkpoint 1,742,975,421字节、dev预测2,796,992字节、dev性能2,155字节、epoch loss 127字节、日志800,677字节；逐文件SHA-256均已计算且复制命令exit 0。
+- 固定I3D备份复核为8210个`.npy`；额外唯一文件是0字节、权限0600的`.copy-complete`完成标记，因此受限资产覆盖未漂移，不能把全部普通文件数8211误写为8210项I3D失败。
+
+### 影响与边界
+
+本次A30运行只证明Epoch 1训练、dev和checkpoint可执行，完整120 epoch训练失败。Epoch 2中途loss与step不构成结果，Epoch 1诊断继续永久属于`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`。首轮工件已进入经授权的私有MatBox，但尚未跨区复制到13区或亚太2区。
+
+### 风险、问题与阻塞
+
+- 同一作者代码在`num_workers=0`下仍发生近线性主机RAM增长；更换A30/4090/5090不会自动解决，必须先修复内存保留根因并做多epoch RAM smoke。
+- 作者入口没有精确resume合同；Epoch 1 checkpoint只可作诊断和工程恢复输入，不得冒充原进程的逐位续训。
+- 当前环境快照尚未创建；训练进程已停止，因此技术上进入可保存环境阶段，但应先清理可重下载wheel/临时归档并确认用户是否迁移区域。
+- I3D许可、官方revision和权利方包身份/fixity仍为UNKNOWN，资产止损条件不变。
+
+### 下一步
+
+1. 在新GPU启动前TDD定位并修复主机RAM增长，至少完成跨Epoch 1→2的RSS稳定smoke。
+2. 将`matbox-private`、`config-mirror`和本次`runtime-evidence`通过MatBox跨区复制到13区及亚太2区，并在每个目标区域复核8210项I3D fixity。
+3. 若使用4090/5090，从Epoch 0重新启动唯一seed=3407；5090须使用支持Blackwell的独立冻结环境并记录软件栈变化。
+
+### Git状态
+
+本条写入时`WORK_LOG.md`包含WR-008—010待提交记录；`tmp/`继续未跟踪且归Task20所有。远端训练进程已停止，私有MatBox备份已形成，完整训练未完成。
+
+## WR-20260723-011 — 为VC-CSA作者训练路径实现完整断点续训并修复RAM累积根因
+
+- 时间：2026-07-23 22:45 +08:00
+- 类型：FEATURE | FIX | TEST | EXPERIMENT | REPRODUCIBILITY
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 4090迁移准备
+- 状态：代码、测试与本地作者源码smoke完成；尚未在4090全量启动
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户更正需求为“完整断点续训”：迁移到4090且实例可能不连续可用时，作者训练程序必须从持久化断点恢复完整训练状态。原作者`fine_ck_path`只恢复模型权重，既不能恢复scheduler、epoch、随机数和DataLoader游标，也不能作为同一次训练的严格延续。此前A30运行还在Epoch 2因主机RAM耗尽被Killed，必须先修复内存累积根因。
+
+### 实际变更
+
+- 新增`scripts/vccsa_resume_runtime.py`，实现原子checkpoint、模型/optimizer/scheduler恢复、Python/NumPy/Torch CPU/CUDA RNG捕获与恢复、严格身份校验及epoch内DataLoader游标重放。
+- 扩展`scripts/prepare_vccsa_author_reproduction.py`：向冻结作者运行时生成`resume_utils.py`，给`main.py`增加`resume_checkpoint`、`resume_checkpoint_out`和`checkpoint_every_steps`入口，使用显式train generator并强制精确恢复使用`num_workers=0`；给`train_vccsv.py`增加周期断点、epoch边界断点、append日志以及SIGTERM/SIGINT安全断点退出。
+- 修复`csmv_dataset.py`中`output = comment_label_data`对常驻annotation字典的原地写入，改为浅拷贝；这会阻止每次取样把大体积视频特征和张量永久挂到annotations。将epoch loss改为`.item()`标量累计，避免跨batch保留计算图。
+- 新增`tests/test_vccsa_resume_runtime.py`并扩展`tests/test_vccsa_author_reproduction.py`，覆盖完整状态/RNG round-trip、身份漂移fail closed、epoch内shuffle与随机流精确重放、worker合同、信号断点、补丁幂等和内存修复。
+- 新增`TASK20_VCCSA_EXACT_RESUME_RUNBOOK_20260723.md`，固定4090首次启动、恢复启动、安全暂停和跨GPU非逐bit一致边界。旧A30 Epoch 1作者checkpoint不符合新schema，不能冒充完整续训点；严格4090运行须从Epoch 0开始。
+
+### 验证与证据
+
+- RED：`.\.venv\Scripts\python.exe -m unittest tests.test_vccsa_resume_runtime tests.test_vccsa_author_reproduction.VccsaAuthorReproductionTests.test_patch_removes_dead_glove_import_and_fixes_launchers`首次为4个`ModuleNotFoundError`加1个内存修复断言失败；信号断点负测首次为1项失败，均在实现前如实保留。
+- GREEN：`.\.venv-task20\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"`通过72/72。
+- 当前普通`.venv`全量测试有3项既有合同测试因缺少`jsonschema`报错；改用`TASK20_ENVIRONMENT_LOCK.md`对应的`.venv-task20`后72/72通过，未把错误环境写成代码失败。
+- `.\.venv-task20\Scripts\python.exe -m compileall -q scripts tests tmp\vccsa-author-worktree\source_vcssa` exit 0。
+- `.\.venv-vccsa-author\Scripts\python.exe -c "... import resume_utils, train_vccsv ..."`输出`task20-vccsa-exact-resume-v1`与`trainer-import-ok`。
+- 对冻结作者源码运行`apply_compatibility_patch()`后状态为`PATCHED_AND_VERIFIED`；`train_vccsv.py`含两个真实`SystemExit(143)`路径，分别覆盖训练batch内和dev/epoch边界收到停止信号。
+- `git diff --check` exit 0。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`通过148条、0错误、latest=`WR-20260723-011`。
+- AGENTS要求的普通`.venv`准备检查无`blocking_checks`，但因该历史环境缺faiss而诚实输出`formal_model_work_ready=false`；随后在锁定的`.venv-task20`运行同一检查，`faiss_available=true`、`formal_model_work_ready=true`且无blocking check。
+
+### 影响与边界
+
+断点包含模型、optimizer、scheduler、epoch/batch/global step、部分epoch loss、dev历史、best状态、全部受控RNG和DataLoader洗牌状态。默认每500 optimizer step原子覆盖，SIGTERM/SIGINT在当前batch后立即保存；硬断电最多损失最后一个持久化断点后的计算，不损坏前一个正式断点。跨A30/4090可以恢复状态，但不同GPU/CUDA/cuDNN可能使后续浮点轨迹不逐bit相同。
+
+本变更不新增seed，不改变模型、loss、数据、split或dev选择规则，不把实验升级为正式结果。实验身份继续永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；不进入T0/G3/统一baseline/任务50/论文claim。
+
+### 风险、问题与阻塞
+
+- 旧A30 Epoch 1文件缺少scheduler、完整RNG和游标，只能保留为诊断工件；不能用新入口严格恢复。
+- 4090正式启动前仍需完成目标区域私有MatBox复制、8210项I3D fixity、冻结环境和实例三元绑定；本批未连接新实例、未上传新副本、未启动训练。
+- 作者每epoch另存legacy checkpoint的行为仍会占用大量空间；实际运行必须把输出放在已授权私有MatBox并监控容量，不能只依赖实例根盘。
+- I3D许可、官方revision与权利方包身份/fixity仍为UNKNOWN；权利方否认或固定8210覆盖/hash漂移继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 在4090目标区域复核私有MatBox、8210项fixity、冻结依赖、GPU/endpoint/host-key绑定和可用空间。
+2. 将本补丁施加到目标区域冻结作者源码，从Epoch 0启动唯一seed=3407，并用小间隔故障注入smoke验证远端保存—退出—恢复链。
+3. smoke通过后使用默认500-step断点完成全量训练；每次停机前发送SIGTERM并等待143退出、`.tmp`消失、正式断点hash稳定及`sync`完成。
+
+### Git状态
+
+本条写入时本批代码、测试、runbook和WR-20260723-011待门禁、提交与推送；既有WR-008—010同属尚未提交的Task20工作。`tmp/`继续未跟踪且归Task20所有，不进入Git。

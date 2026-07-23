@@ -235,11 +235,42 @@ class VccsaAuthorReproductionTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (source / "csmv_dataset.py").write_text(
-                'pretrained_model_name_or_path="~/.cache/torch/hub/transformers/roberta-base")\n',
+                'pretrained_model_name_or_path="~/.cache/torch/hub/transformers/roberta-base")\n'
+                "        output = comment_label_data\n",
                 encoding="utf-8",
             )
             (source / "main.py").write_text(
-                "from csmv_dataset import CSMV_Dataset, CSMV_Dataset_VideoMAEv2FPS16\n",
+                "from csmv_dataset import CSMV_Dataset, CSMV_Dataset_VideoMAEv2FPS16\n"
+                "    parser.add_argument('--fine_ck_path', type=str, default=None)\n",
+                encoding="utf-8",
+            )
+            (source / "train_vccsv.py").write_text(
+                "def train(net, train_loader, eval_loader, optim, args, scheduler):\n"
+                "    logfile = open(args.output + \"/\" + args.name + '/log_run.txt', 'w+')\n"
+                "    best_eval_accuracy = 0.0\n"
+                "    best_epoch = 0\n"
+                "    tensorboard_steps = 0\n"
+                "    eval_accuracies = []  # to record evaluate accuracy\n"
+                "    for epoch in range(0, args.max_epoch):  # epoch loop\n"
+                "        epoch_loss, epoch_op_loss, epoch_em_loss, epoch_mag_loss = 0, 0, 0, 0\n"
+                "        op_aux_loss_sum = 0\n"
+                "        emo_aux_loss_sum = 0\n"
+                "\n"
+                "        time_start = time.time()  # record train time\n"
+                "\n"
+                "        for step, batch_data in enumerate(train_loader):  # step : a \"backward\"\n"
+                "            epoch_loss += loss\n"
+                "            epoch_op_loss += output.get(\"opinion_loss\")\n"
+                "            epoch_em_loss += output.get(\"emotion_loss\")\n"
+                "            # epoch_mag_loss += output.get(\"margin_loss\")\n"
+                "        epoch_loss, epoch_op_loss, epoch_em_loss, epoch_mag_loss = 0, 0, 0, 0\n"
+                "        op_aux_loss_sum, emo_aux_loss_sum = 0, 0\n"
+                "        # Eval\n"
+                "        if epoch_finish >= args.eval_start:\n"
+                "            if performace > best_eval_accuracy:\n"
+                "                best_eval_accuracy = performace\n"
+                "                best_epoch = epoch_finish\n"
+                "                print(\"best eopch: \" + str(best_epoch) + \" , performance: \" + str(best_eval_accuracy))\n",
                 encoding="utf-8",
             )
             (source / "model_VCCSA.py").write_text(
@@ -268,21 +299,34 @@ class VccsaAuthorReproductionTests(unittest.TestCase):
             train = (source / "script" / "train.sh").read_text(encoding="utf-8")
             evaluate = (source / "script" / "eval.sh").read_text(encoding="utf-8")
             main = (source / "main.py").read_text(encoding="utf-8")
+            trainer = (source / "train_vccsv.py").read_text(encoding="utf-8")
             model = (source / "model_VCCSA.py").read_text(encoding="utf-8")
             compute_args = (source / "utils" / "compute_args.py").read_text(encoding="utf-8")
             self.assertIn("try:\n    import en_vectors_web_lg", tokenize)
             self.assertIn("en_vectors_web_lg is None", tokenize)
             self.assertIn("args.pre_trained_LM", dataset)
+            self.assertIn("output = dict(comment_label_data)", dataset)
             self.assertIn("--video_feature_dir ${video_feature}", train)
             self.assertNotIn("\\ ", train)
             self.assertIn("--pre_trained_LM ${pre_trained_lm}", train)
             self.assertIn("--pre_trained_LM ${pre_trained_lm}", evaluate)
             self.assertNotIn("CSMV_Dataset_VideoMAEv2FPS16", main)
             self.assertIn("CSMV_Dataset", main)
+            self.assertIn("--resume_checkpoint", main)
+            self.assertIn("--checkpoint_every_steps", main)
+            self.assertIn("load_training_checkpoint", main)
+            self.assertIn("loss.item()", trainer)
+            self.assertIn("save_training_checkpoint", trainer)
+            self.assertIn("signal.SIGTERM", trainer)
+            self.assertIn("checkpoint requested by signal", trainer)
+            self.assertEqual(trainer.count("raise SystemExit(143)"), 2)
+            self.assertTrue((source / "resume_utils.py").is_file())
             self.assertNotIn("from layers.", model)
             self.assertIn("class UsedModel", model)
             self.assertIn("args.aux_task = False", compute_args)
             self.assertEqual(report["status"], "PATCHED_AND_VERIFIED")
+            second_report = apply_compatibility_patch(source)
+            self.assertEqual(second_report["changed_files"], [])
 
 
 if __name__ == "__main__":

@@ -6357,3 +6357,52 @@ v1.17取代v1.16成为活动SSOT。压缩移除的是重复说明和已完成任
 ### Git状态
 
 本条写入时，v1.16回退、配套台账、S21和WR-20260723-005待门禁、提交和推送；`tmp/`继续未跟踪且归Task20所有。
+
+## WR-20260723-006 — Task20在新A30实例恢复VC-CSA全量探索训练
+
+- 时间：2026-07-23 20:15:27 +08:00
+- 类型：PROGRESS | ENV | DATA | EXPERIMENT | SECURITY
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / S16后续
+- 状态：实例与输入前门通过；全量训练运行中，首个epoch尚未完成
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户提供新的私人租用A30实例并要求立即开始VC-CSA作者原设定全量训练。按既有完整执行授权与存储补充，只恢复唯一`seed=3407`，先完成新实例非秘密三元绑定、私有MatBox固定8210项I3D复核、冻结环境重建和CUDA前检，再启动同一探索运行。
+
+### 实际变更
+
+- 新实例绑定摘要：host-key SHA-256=`SHA256:QJhCzZio1EfmATXNuiYBh3MxSL547Cp6R+bDl3FZNIw`，GPU UUID=`GPU-39408feb-5608-7073-ef5a-6e8e4c17a7b6`，endpoint digest=`18f346e8dfda4e66dde8fff715694fdc68568d090c3106e398f9b04e75476116`；未记录凭据或端点原文。
+- 直接复用已验收的私有MatBox I3D目标，没有重新上传I3D。使用`tmp/task20_remote_fixity.py`对挂载副本逐文件复核，仍为8210项、2,283,804,928字节、权限`0700/0600`、内容树SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`且`exact_match=true`。
+- 从Task20忽略目录中的既有冻结归档恢复作者兼容代码、全量comment runtime和RoBERTa作者快照；新建Python 3.8.20独立环境并安装冻结NumPy 1.22.4、scikit-learn 1.2.1、transformers 4.26.1、PyTorch 1.13.1+cu117等依赖。
+- PyTorch官方wheel单连接下载过慢后，保留该工程事实并改用16连接公开下载；下载文件1,801,800,326字节，SHA-256=`bbf9546f0d0d8b51263ca479637b426a88335fca0034f42cec63d4d32dee05af`通过后安装。
+- 将恢复启动器的`num_workers`从归档默认8再次锁定为0，保持作者batch=16、learning rate、模型、全量comment split和`seed=3407`不变。
+- 2026-07-23 20:14:26 +08:00启动全量运行；实验身份继续永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`。
+
+### 验证与证据
+
+- 新实例探针：NVIDIA A30 24,576 MiB，驱动580.65.06；主机密钥、GPU UUID与endpoint digest三元绑定形成。
+- MatBox复核输出：`files_expected=files_observed=8210`、`bytes_expected=bytes_observed=2283804928`、expected/observed tree hash相同、`file_mode_errors=0`、`exact_match=true`。
+- 全量输入计数：train=75,086、dev=10,727、test=21,454；`lable_data_dict.json`和RoBERTa权重仅位于权限受限的远端runtime。
+- 环境/CUDA前检：Python 3.8.20；PyTorch 1.13.1+cu117；CUDA 11.7；A30可见；2048×2048 CUDA矩阵结果有限；`main.py --help` exit 0。
+- 启动后实时证据：GPU利用率99%、显存约13,719 MiB、RAM可用约86 GiB；训练进程存活，尚未产生epoch checkpoint。
+
+### 影响与边界
+
+本批恢复了此前不可达实例上的同一单种子探索，不新增seed、不改变正式T0/G3/统一baseline/任务50/论文claim。中途loss、进程存活和GPU利用率都不是结果；只有epoch训练、dev评估和checkpoint完整落盘才构成首个里程碑。私有MatBox固定8210项备份继续作为恢复源，配置镜像此前只有依赖锁与配置，并非可直接激活的完整Conda环境。
+
+### 风险、问题与阻塞
+
+- 作者代码默认每epoch保存约1.66 GiB checkpoint且没有完整的跨进程resume入口；120 epoch全保留会超过当前根盘容量，需在不改变模型训练与dev选择的前提下建立滚动checkpoint/安全恢复证据。
+- 首个epoch是否能在`num_workers=0`下完整通过仍待实测；此前worker被Killed失败继续保留，不能改称GPU OOM。
+- I3D许可、官方revision和权利方包身份/fixity仍为UNKNOWN；权利方否认或固定8210项hash/覆盖漂移仍触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 持续监控唯一`seed=3407`的进程、GPU/RAM、日志和checkpoint，等待首个epoch+dev+checkpoint完整闭合或新失败。
+2. 用首个epoch实测时间评估单卡总耗时及四卡可行性，并明确跨日暂停/恢复的工程边界。
+3. 在安全里程碑建立私有可恢复环境与滚动checkpoint保存方案，不把受限runtime、权重、预测、凭据或端点原文写入Git。
+
+### Git状态
+
+本条写入时`WORK_LOG.md`待门禁、提交与推送；Task20忽略目录`tmp/`及远端受限runtime不进入Git。训练仍运行中，首个epoch尚未完成。

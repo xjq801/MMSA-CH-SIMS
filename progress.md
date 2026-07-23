@@ -467,3 +467,14 @@
 - 建立`.light/passport.yaml`、项目卡、决策/版本/术语台账以及S00→S01交接链；底层passport验证为WARN（历史G门未附passport内部hash/timestamp），S01交接合同PASS。
 - `light-memory-pm`封装器因本机技能布局缺`_shared/passport`导入失败，未伪报完整pm audit通过；改用底层`passport.py`和独立handoff validator。
 - 交接包已在commit `e6c48c6`推送；已创建隔离worktree任务`019f6e64-0635-7ac0-a70a-65445b0fc1d1`并命名为`00-T-AFFC 新总控`，由其接替00责任。
+
+## 2026-07-24 — Video2Reaction直接前作中修
+
+- **状态：** ready_for_commit
+- 刷新共享主仓库为`main=origin/main=51c9235`，tracked clean，仅Task20自有`tmp/`未跟踪。
+- Task20实时状态：4090冻结环境与完整断点恢复已验证，训练安全暂停在Epoch 0 step 12；探索身份永久`NON_T0/INELIGIBLE`，G1—G3不变。
+- 在线核验确认Video2Reaction arXiv与DataMFM workshop展示；workshop归档状态与ECCV正式论文集状态仍需按分层证据措辞。
+- 深读外部Word总纲，确认其为v1.14双路线历史快照，不能覆盖仓库v1.18 SSOT。
+- 已冻结总纲v1.19、claim blacklist、closest-prior矩阵、实验增量、三类拒稿预演和外部Word单向回填合同；Task20文档所有权暂停保持到本批提交。
+- 项目专用定位校验、文献冻结专项门、综合准备检查、passport与handoff合同均通过；跨材料一致性仅声明项目专用文本门通过，不冒充缺依赖的完整语义一致性审计。
+- G1=`PASS`、G2=`PASS_WITH_ACCEPTED_ASSET_RISK`、G3=`PASS_WITH_LIMITATIONS`均未改变；Task30仍未创建。

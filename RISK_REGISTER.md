@@ -1,7 +1,7 @@
 # 项目风险登记
 
 > 维护任务：00-总控与决策  
-> 当前快照：2026-07-23  
+> 当前快照：2026-07-24  
 > 规则：风险关闭必须链接到可复核证据；`UNKNOWN`不能按通过处理。
 
 | 风险ID | 风险 | 当前证据 | 影响 | 当前控制 | 状态/恢复条件 |
@@ -18,6 +18,7 @@
 | `R-INTEGRITY-001` | IJCV与T-AFFC形成一稿多投或重复发表 | 两路线可能共享研究构念与部分数据基础 | 若未来两项目都形成稿件，仍可能产生投稿伦理风险 | 项目、分支、总纲、claim和主实验已物理分离；跨项目只消费已提交事实并在投稿时披露相关稿 | CONTROLLED_CROSS_PROJECT；不阻塞本项目当前G门 |
 | `R-SCHEDULE-001` | IJCV 2026-12-15固定截稿压缩方法与复现周期 | IJCV方向已独立迁出 | 不再挤占本项目T-AFFC日历与资源优先级 | 本项目恢复2027-05-12 T-AFFC单线日历；IJCV期限由独立项目自行管理 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
 | `R-NOVELTY-001` | CARM被评价为蒸馏、评论增强、检索和拒绝的模块拼接 | generalized distillation、评论增强社会情绪预测、CRC-MRC、RAMER和选择性拒绝均已有前作 | T-AFFC方法新颖性与完整论文定位 | 活动总纲v1.18仅收紧查新边界；收益感知路由和3%/5%/8%门仍只保留在非权威建议档案，若未来重新采用须另行批准并预注册公平对照 | CONTROLLED_OPEN；H1/H2判别实验失败或路由无独立收益时降级claim |
-| `R-NOVELTY-002` | Video2Reaction直接覆盖“视频内容→受众反应分布”的C1任务层目标 | arXiv:2607.06875 v1于2026-07-08公开；截至2026-07-23为预印本，报告10,348段电影视频、评论构造分布与视频内容预测benchmark | “任务首创”失效；若不加入直接对比，相关工作与基线不足可导致拒稿 | 总纲v1.18将C1降为协议/证据贡献；更新查新矩阵与claim边界；任务50要求适配Video2Reaction VLM/LDL设置或提交不可执行审计 | OPEN_HIGH；投稿前滚动查新，只有H1/H2可证伪差异和跨域证据成立时才保留完整方法claim |
+| `R-NOVELTY-002` | Video2Reaction直接覆盖“视频内容→受众反应分布”的C1任务层目标 | arXiv:2607.06875于2026-07-08公开；DataMFM workshop展示确认但归档状态待核；ECCV录用为作者报告、正式论文集待核 | “任务首创”和“分布输出即创新”失效；若不加入直接对比可导致拒稿 | 总纲v1.19重定位为无目标响应与分布偏移下的可靠预测；claim blacklist；任务50适配VLM/LDL或六维不可执行审计 | OPEN_HIGH；投稿前滚动查新，只有H1/H2和OOD选择性证据成立才保留完整方法claim |
+| `R-CONSTRUCT-001` | 把社媒评论分布外推为所有观众的真实内在情绪 | 评论者自选择、公开表达与未评论观看者不可观测；Video2Reaction同样依赖社媒反应 | 构念效度被拒稿、伦理与应用主张过度 | 统一称“评论者公开表达的诱发反应分布”；HUMAN_GOLD主测试与SILVER训练隔离；报告评论数、分歧、置信度和代表性限制 | OPEN_HIGH；任务60必须通过claim blacklist与构念人工审计 |
 | `R-EVIDENCE-001` | 把单seed强基线或计划阈值写成正式优越性 | 当前temporal-attention只有单seed正式test，任务50尚未完成 | 过度主张、统计无效与拒稿 | 所有效应claim保持TO_VERIFY；正式门要求五种子、原生单位paired bootstrap CI和多重校正 | OPEN_NONBLOCKING_UNTIL_TASK50；G4/G6前不得升级 |
-| `R-OPS-001` | Task20 VC-CSA探索、运行时快照和受限存储生命周期未闭环 | 远端SSH最近不可达，训练无首epoch/checkpoint完成证据；MatBox备份已核但运行快照未建 | 共享核心冲突、费用和受限资产残留 | 探索永久NON_T0/INELIGIBLE；收尾前不创建任务30；保留完成/失败/不可用证据与删除核验 | OPEN_BLOCKS_TASK30_CREATION |
+| `R-OPS-001` | Task20 VC-CSA探索与受限存储生命周期未闭环 | 4090冻结环境、MatBox快照痕迹、真实断点保存—退出—恢复与A30内存根因修复已验证；当前安全暂停Epoch 0 step 12，完整120 epoch仍未完成 | 共享核心冲突、费用和受限资产残留 | 探索永久NON_T0/INELIGIBLE；收尾前不创建任务30；按精确断点续训并保留完成/失败/删除核验 | OPEN_BLOCKS_TASK30_CREATION；当前不是环境或断点阻塞 |

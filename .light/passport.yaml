@@ -2,12 +2,12 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-07-17T12:38"
+updated: "2026-07-24T04:11"
 current_stage: 20
-state_revision: 3
-state_hash: "sha256:69b177923f55aaeeef3fa5517b7cecaa8f04953761a6e436b9fd7d43319939f3"
+state_revision: 4
+state_hash: "sha256:e6d5c6404866a29305c4c503459bf09729e6a000be043bb0ac3ec8f1043449dd"
 evidence_state: PLANNED
-next_action: run or resume stage 20 (light-experiment-coding)
+next_action: continue stage 20 from status in_progress
 delivery_status: IN_PROGRESS
 delivery_authorization_id: ~
 stages:
@@ -27,6 +27,6 @@ stages:
     evidence_state: PLANNED
     skill: light-experiment-coding
     input: 冻结dataset/split/label与I3D协议
-    output: 统一评测器、强基线与G3证据
-    artifacts: [configs/task20-baseline-v1.yaml, scripts/task20_baseline.py, tests/test_task20_baseline.py]
-    gaps: [faiss unavailable in isolated environment]
+    output: 统一评测器、强基线、G3证据与隔离VC-CSA探索收尾
+    artifacts: [HANDOFF_20.md, TASK00_G3_FINAL_REVIEW_20260718.md, BASELINE_TABLE_V1.md, experiments/EXPERIMENT_REGISTRY.md, TASK20_VCCSA_EXACT_RESUME_RUNBOOK_20260723.md]
+    gaps: [VC-CSA NON_T0 exploration paused at epoch 0 step 12; restricted storage lifecycle not closed; stage 30 not authorized]

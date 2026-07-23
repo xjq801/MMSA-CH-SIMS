@@ -11,16 +11,19 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "references" / "search" / "step19-23" / "search-protocol.json"
 DOCUMENT_CONTRACT = {
     "LITERATURE_SEARCH_REPORT.md": [
-        "SCOPING_COMPLETE_v2",
+        "SCOPING_COMPLETE_v3",
         "评论特权监督",
         "公众诱发情绪分布",
         "检索增强情绪预测",
         "可靠性拒绝与缺失模态",
         "Video2Reaction",
-        "DIRECT_NEAR_COLLISION",
+        "closest/direct prior",
+        "WORKSHOP_APPEARANCE_CONFIRMED_ARCHIVAL_STATUS_UNRESOLVED",
+        "AUTHOR_REPORTED_ECCV_2026_ACCEPTANCE_PENDING_OFFICIAL_PROCEEDINGS",
         "不声称穷尽召回",
     ],
     "CONTRIBUTION_PRIOR_ART_MATRIX.md": [
+        "FROZEN_v3",
         "最相近前作",
         "必须对比实验",
         "NEmo+",
@@ -28,21 +31,32 @@ DOCUMENT_CONTRACT = {
         "RAMER",
         "SelectiveNet",
         "Video2Reaction",
-        "首次video-to-reaction-distribution",
+        "closest/direct prior",
+        "TAFFC_CLAIM_BLACKLIST_20260724.md",
     ],
     "CARM_NAME_AUDIT.md": ["NAME_BLOCKED", "Constraint-Aware Retrieval Module", "CarM"],
-    "RESEARCH_PROTOCOL_FREEZE_AUDIT.md": [
-        "FROZEN_v1_CONFIRMED",
-        "C1—C3",
-        "H1—H4",
-        "Jensen–Shannon divergence",
-        "LEAKAGE_BLOCKED",
+    "RESEARCH_PROTOCOL_FREEZE_AUDIT_V2_20260724.md": [
+        "POSITIONING_AMENDMENT_FROZEN_V2",
+        "RQ2/H1",
+        "RQ3/H2",
+        "H3/H4",
+        "Video2Reaction式VLM直接微调/LDL强基线",
+        "claim blacklist",
     ],
     "BASELINE_CANDIDATES.md": [
+        "CANDIDATES_FROZEN_v2",
         "代码可得性",
         "代码许可",
         "预计成本",
-        "G1仍因第二人工多模态公开主集未冻结",
+        "B18",
+        "G1=`PASS`",
+        "G2协议/数据=`PASS_WITH_LIMITATIONS`",
+        "G3=`PASS_WITH_LIMITATIONS`",
+    ],
+    "TAFFC_CLAIM_BLACKLIST_20260724.md": [
+        "Video2Reaction必须称为`closest/direct prior`",
+        "首次从多模态/视频内容预测观众情感反应",
+        "评论者公开表达",
     ],
 }
 

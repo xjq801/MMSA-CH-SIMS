@@ -1,7 +1,7 @@
 # IEEE T-AFFC 第四章研究十个月总纲（项目唯一主路线）
 
-> 版本：v1.18（基于v1.16的查新修正版；v1.17已撤回且不恢复）  
-> 冻结日期：2026-07-23  
+> 版本：v1.19（基于v1.18的Video2Reaction直接前作中修版；v1.17已撤回且不恢复）  
+> 冻结日期：2026-07-24  
 > 执行周期：2026-07-13—2027-05-12  
 > 首要目标：在2027-05-12前形成可直接提交 IEEE Transactions on Affective Computing（T-AFFC）的CARM群体情绪预测论文、代码、数据说明和完整证据链。  
 > 研究范围：只继承毕业论文第四章“基于多模态感知与检索的群体情绪预测”；第三章传播链、Temporal GNN 和传播拓扑不作为新论文的方法贡献。  
@@ -15,7 +15,7 @@
 
 暂定英文问题表述：
 
-> **Comment-privileged forecasting of public-induced emotion distributions with a calibrated audience-response memory under explicitly available content evidence.**
+> **Reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses.**
 
 ### 0.1 现实约束（v1.1新增）
 
@@ -79,16 +79,50 @@
 - 风险接受不产生或扩大法律许可。I3D特征不得进入Git、公开复现包或再分发；论文及Data Card必须披露资产许可/revision/权利方fixity未确认，并提供获取说明、ID/split/处理代码和本地hash证据。
 - 不得使用“官方资产已确认”“权利方已授权”“官方checksum闭合”等措辞。若维护者后续否认研究使用或包身份，立即暂停依赖I3D的正式结果并回到任务10更换合法输入或收缩论文。
 
-### 0.8 Video2Reaction查新修正与创新边界（v1.18，`SC-20260723-01`）
+### 0.8 Video2Reaction直接前作与论文重定位（v1.19，`SC-20260724-01`）
 
-2026-07-23补充核验确认，Nguyen et al.于2026-07-08公开的arXiv v1预印本 *Video2Reaction: Mapping Video to Audience Reaction Distribution in the Wild* 已直接建立“多模态视频内容→受众诱发情绪分布”任务与benchmark。其数据包含10,348段电影视频和由社交媒体评论构造的反应分布，论文报告从视频内容预测完整反应分布及主导反应；截至本版仅确认arXiv预印本状态，不写成已同行评审录用。
+Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video to Audience Reaction Distribution in the Wild*，直接建立“视频内容→受众诱发反应分布”数据集与benchmark，包含10,348段电影视频、21类评论派生反应分布、LDL方法和VLM微调。CVPR 2026 DataMFM官方页面确认同题工作以 *Video2Reaction: Training Foundation Video Models to Predict Audience Reaction* 展示；但页面轨道标题与CVF公开论文集收录情况尚未闭合，故记`WORKSHOP_APPEARANCE_CONFIRMED_ARCHIVAL_STATUS_UNRESOLVED`。合作者页面和团队公开帖将其列为ECCV 2026录用，但截至2026-07-24未检出ECCV/ECVA正式论文集条目，故记`AUTHOR_REPORTED_ECCV_2026_ACCEPTANCE_PENDING_OFFICIAL_PROCEEDINGS`，不得只称“孤立预印本”，也不得冒充正式论文集已闭合。
 
-- C1不再具有“首次从视频内容预测受众反应分布”的任务首创空间；只能作为严格T0、HUMAN_GOLD、按内容单元分组、未来评论物理隔离和系统审计的协议/证据贡献。
-- Video2Reaction的标签主要由开源LLM多代理流水线分析评论形成，CSMV路线则聚合人工标注评论；该差异可用于讨论真值等级和可复现边界，但不能据此否认其任务层直接相关性。
-- 评论teacher、teacher/student、蒸馏本身已有LUPI、generalized distillation、M2PKD和评论增强社会情绪预测前作，只能检验“训练期评论特权监督在严格T0视频级分布目标上是否有效”，不能写成模块首创。
-- 当前scoping范围尚未发现同时实现“评论仅训练期可见 + train-only历史反应分布记忆 + OOD/污染下显式识别检索负迁移”的完全同构前作；这是待持续证否的候选差异，不是“世界首创”结论，也不能用多个已有模块的串联自动证明创新。
-- Video2Reaction必须进入`CONTRIBUTION_PRIOR_ART_MATRIX.md`与最终相关工作；其公开模型/协议在许可、输入和标签映射可比时应形成适配强基线，无法公平执行时必须提交书面不可执行性与差异审计。
-- 本修正不追溯推翻G1—G3，不改变Task20的`PASS_WITH_LIMITATIONS`或VC-CSA探索的`NON_T0/INELIGIBLE`身份；它新增的是任务30—60的主张上限和正式对比义务。
+| 维度 | Video2Reaction | 本项目CARM允许保留的研究问题 |
+|---|---|---|
+| 共同任务 | 从视频/多模态内容预测受众诱发反应分布 | 明确认同同一任务家族，不淡化为“完全不同” |
+| 主要重心 | 数据集、自动评论标注、benchmark、LDL与VLM直接微调 | 目标响应不可用且测试分布偏移时，预测是否仍可靠 |
+| 评论角色 | 用评论构造自动反应分布 | 评论只作训练期特权监督/标签；T0学生不读取目标评论 |
+| 历史反应 | 非本项目所定位的train-only反应记忆 | 只从train/严格更早案例检索，邻居来源可审计 |
+| 可靠性 | 主要报告预测与迁移benchmark | 显式路由、校准、选择性拒绝、错误检索负对照与OOD风险 |
+| 证据边界 | LLM流水线标签并有人工核验 | HUMAN_GOLD主测试与SILVER训练物理分离 |
+
+- C1不再具有任务首创空间，只能作为严格T0、HUMAN_GOLD、按内容单元分组、未来评论物理隔离和系统审计的协议/证据贡献。
+- 评论teacher、蒸馏、检索或拒绝各自均已有前作；完整方法只有在每个模块对应的失败机制被单变量实验支持时才可保留，不能以模块数量证明创新。
+- 当前scoping尚未定位到同时实现“评论仅训练期可见 + train-only历史反应分布记忆 + OOD/污染下显式识别检索负迁移”的完全同构前作；这只是待持续证否的候选差异，不是世界首创结论。
+- Video2Reaction必须作为closest/direct prior进入引言、相关工作、基线与审稿预演；其公开VLM/LDL设置在输入、标签、许可和预算可比时必须适配，无法执行时提交00接受的差异/不可执行审计。
+- 本修正不追溯推翻G1—G3，不改变Task20的`PASS_WITH_LIMITATIONS`或VC-CSA探索的`NON_T0/INELIGIBLE`身份；它新增的是任务30—60的主张上限和正式证据义务。
+
+### 0.9 Claim blacklist与构念红线（v1.19）
+
+以下表述在标题、摘要、引言、贡献、相关工作、结论、PPT和答辩材料中全部禁用；完整清单与回扫状态见`TAFFC_CLAIM_BLACKLIST_20260724.md`：
+
+1. “首次从多模态/视频内容预测观众情感反应”；
+2. “首次研究内容到群体情感分布映射”；
+3. “首次构建视频诱发情感分布预测任务/benchmark”；
+4. “现有工作只识别内容表达情感，从未预测观众诱发情感”；
+5. 仅凭“输出分布而非单标签”宣称任务或方法创新；
+6. 把评论者的公开表达外推为所有观看者的内在心理状态；
+7. 把teacher、memory、router、拒绝或其简单拼接写成模块级首创。
+
+统一构念措辞为：标签表示**社交媒体评论者公开表达的诱发反应分布**，不是所有观众的潜在内在情绪，也不是人口总体估计。所有“优于、稳健、可靠、可泛化”表述继续受五种子、原生内容单元统计、严格OOD和claim-evidence约束。
+
+### 0.10 T-AFFC前三类预演拒稿与反驳证据（v1.19）
+
+| 预演拒稿点 | 若缺证据的结论 | 只有满足以下条件才可反驳 |
+|---|---|---|
+| A. 任务已被Video2Reaction提出 | 任务新颖性不足 | 取消任务首创；统一协议直接比较；以无目标响应、严格OOD、校准与拒绝证据定义新问题 |
+| B. 只是VLM+蒸馏+检索的模块拼接 | 方法贡献不可归因 | teacher/memory/router/rejection逐项消融；随机、错域、低质邻居负对照；证明router能识别并减少负迁移 |
+| C. 评论标签不等于真实观众情感 | 构念效度过度外推 | 限定为公开表达反应；HUMAN_GOLD主测试；报告评论数/分歧/置信度；明确个体表达、评论分布和总体人群的差别 |
+
+### 0.11 仓库SSOT与外部Word关系（v1.19）
+
+`D:\桌面\谢剑秋工作报告\总纲\论文修改总纲要（合体版）.docx`是2026-07-16的v1.14双路线历史派生快照，包含已迁出的IJCV任务和过期G门，不是当前事实源。后续只能从已提交的本Markdown总纲单向生成带Git commit与SHA-256的新Word副本；不得在旧Word和仓库总纲之间双向合并。具体回填与逐节验收见`WORD_MASTER_BACKFILL_PLAN_20260724.md`。
 
 这条路线与第四章的对应关系是：
 
@@ -129,7 +163,7 @@
 
 ### 2.1 构念
 
-本论文研究的是 **public-induced audience affect**：同一内容发布后，多个受众在评论中表达的情绪反应分布。它不同于：
+本论文研究的是 **public-induced audience affect**：同一内容发布后，社交媒体评论者公开表达的诱发情绪反应分布。它是可观察表达的经验分布，不是所有观看者内在心理状态或总体人口参数。它不同于：
 
 - CH-SIMS/MOSEI中的“视频说话者自身情绪”；
 - GAF等数据中的“画面里多人群体的共同情绪”；
@@ -157,12 +191,12 @@
 
 ## 3. T-AFFC论文的三项贡献上限
 
-### C1：无泄漏的公众诱发情绪预测协议
+### C1：无泄漏的公众诱发反应分布预测协议与证据
 
 - 评论仅在训练期作为标签或特权监督，推理时不可见；
 - CSMV重新按 `video_file_id` 分组划分，杜绝同一视频评论跨train/test；
 - 自建数据按时间、发布者、话题与检索图连通分量隔离；
-- 从单一硬标签升级为群体反应分布、分歧与不确定性。
+- 以经验反应分布、分歧与不确定性作为输出，但不把“输出分布本身”写成创新。
 
 注意：公众诱发情绪和分布预测已有直接前作，Video2Reaction还已直接从视频内容预测受众反应分布；不能声称“首次提出任务”“首次video-to-reaction-distribution”或以严格划分替代方法创新。C1只能作为协议与系统证据贡献。
 
@@ -176,9 +210,9 @@
 
 这不是用检索“伪造缺失图像”，也不是一般RAG问答；必须与RAMER、RAER等直接前作做差异实验。评论teacher/蒸馏和检索/拒绝均已有前作，C2只有在学习检索显著优于随机与普通近邻、且可靠性机制能识别并减少OOD或污染邻居造成的负迁移时，才可作为完整方法候选；否则必须降级为协议、特权监督或负结果研究。
 
-### C3：跨话题、跨平台和自然缺失下的可靠性证据
+### C3：分布偏移、自然缺失与选择性可靠性证据
 
-- 主公开集上做group-by-video、topic/hashtag-held-out和缺失模态实验；
+- 主公开集上做group/movie、topic/hashtag、source/time/platform held-out；只有合格多输入协议才做缺失模态实验；
 - 在CSMV与第二个人工标注公开集之间做跨数据/跨场景验证；MVIndEmo只作银标签辅助压力测试；
 - 自建Bilibili数据作为中文、跨平台、自然缺失外部验证；
 - 同时报告分布误差、校准、选择性风险、效率和失败案例，而不是只报Accuracy。
@@ -267,7 +301,7 @@
 | ID | 假设 | 主检验 | 反证/止损条件 |
 |---|---|---|---|
 | H1 | 评论特权教师能改善内容学生对未来群体反应分布的预测 | CSMV的JS/NLL；第二集仅在存在同构评论证据时检验 | CSMV相对最强content-only基线无稳定改善，或提升只来自随机划分；第二集缺同构字段时记`NOT_APPLICABLE_BY_DESIGN` |
-| H2 | train-only反应记忆在相关域中有效，可靠性拒绝可减少OOD负迁移 | learned retrieval vs no/random/BM25/CLIP-kNN；AURC/ECE | 随机检索同样好，或跨话题/平台下校准和分布误差更差 |
+| H2 | train-only反应记忆在相关域中有效，可靠性路由能减少错误/错域检索造成的OOD负迁移 | learned retrieval vs no/random/BM25/CLIP-kNN；去路由/去拒绝；错域邻居；AURC/ECE/risk-coverage | 随机检索同样好，固定融合与路由无差异，或跨话题/时间/平台下校准和分布误差更差且不能拒绝 |
 | H3（条件性） | 在同一样本至少含两个T0合法、冻结、实际可得输入模态的协议上，质量/缺失感知可使单一模型平稳退化 | 仅在合格协议上比较`ALL_AVAILABLE_INPUTS`、单模态和随机/自然缺失；CSMV音频记`NOT_APPLICABLE_AUDIO_UNAVAILABLE_BY_DATASET_DESIGN` | 不优于简单late fusion/zero-fill/近期缺失模态基线；若无合格协议则整体降级为`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL` |
 | H4（增强） | 配对模态条件能帮助预测加入图像后受众反应分布的变化 | NEmo+上的 `p_TI-p_T`、`p_TI-p_I` | 无法超过独立预测两个分布后相减的简单基线 |
 
@@ -280,7 +314,7 @@
 1. 总体均值/主题均值/多数类/经验分布基线；
 2. 原论文48维 + CatBoost、HGB、LightGBM；
 3. CSMV官方VC-CSA及数据集官方基线；
-4. Video2Reaction论文的内容到反应分布VLM/LDL设置或输入、标签与许可匹配的适配版；不能公平执行时提交差异与不可执行性审计；
+4. Video2Reaction式VLM直接微调与LDL设置的可比适配版；不能公平执行时提交输入、标签、split、许可、资源与预算差异审计；
 5. 冻结CLIP/SigLIP/VideoMAE + MLP、late fusion、cross-attention；
 6. content-only student、teacher-only上界、普通蒸馏；
 7. 无检索、随机检索、BM25/TF-IDF、CLIP/SBERT kNN、可学习检索；
@@ -295,12 +329,12 @@
 |---|---|---|
 | E0 | 数据/划分sanity check | 检测重复视频、同源事件、目标评论、未来候选泄漏 |
 | E1 | 实际单输入与`ALL_AVAILABLE_INPUTS` | 证明实际可得输入的增量；仅一模态时记`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY` |
-| E2 | 检索方式 | learned vs no/random/BM25/CLIP-kNN |
-| E3 | 去教师/去蒸馏 | 隔离评论特权监督贡献 |
-| E4 | 去可靠性路由/固定权重 | 隔离拒绝和校准机制 |
+| E2 | 去memory并比较检索方式 | content-only/no-memory vs random/BM25/CLIP-kNN/learned，隔离历史反应记忆贡献 |
+| E3 | 去teacher/去蒸馏 | hard/soft/普通KD/comment-privileged KD/错配评论，隔离特权监督贡献 |
+| E4 | 去router/固定权重/去rejection | 分离路由决策与选择性拒绝，验证是否真正减少负迁移 |
 | E5 | 合格协议上的缺失模式和缺失率 | 仅对同一样本至少两个实际T0输入运行缺一/自然/10/30/50/70%缺失；CSMV音频结构性缺失不进入随机删失实验 |
-| E6 | OOD | topic/hashtag、publisher/source、time、platform held-out |
-| E7 | 检索污染 | 错邻居、低相似邻居、库缩小、top-k扫描 |
+| E6 | 严格分布偏移 | movie/group、topic/hashtag、publisher/source、time、platform held-out及跨数据域 |
+| E7 | 检索污染与信息隔离负对照 | random/错域/低相似邻居、库缩小、top-k；目标/未来候选注入必须被门拒绝 |
 | E8 | 兼容旧任务 | 自然流行率上的Macro-F1、AUPRC、Recall、Brier与决策成本 |
 | E9 | 效率 | 参数量、显存、训练/推理时间、索引大小与检索延迟 |
 
@@ -384,6 +418,7 @@
 任务：
 
 - 复现CSMV官方基线；
+- 适配Video2Reaction式VLM直接微调/LDL最近强基线，或提交经00接受的不可执行审计；
 - 跑统计、传统ML、冻结深度编码器、普通融合和旧M-DRGE基线；
 - 建立分布、校准、OOD和检索的统一评测器；
 - 等预算调参，记录配置、种子、环境、日志和预测文件；
@@ -400,6 +435,7 @@
 - 训练评论反应teacher，聚合视频级分布；
 - 实现只看内容的student和最简单分布蒸馏；
 - 对比hard label、soft distribution、comment-privileged supervision；
+- 增加普通KD、错配评论和teacher-only上界，确认收益来自特权响应监督而非软标签或参数量；
 - 分析样本评论数、标签噪声和teacher置信度的影响。
 
 交付物：teacher/student-v1、H1主实验、单变量消融、误差案例。
@@ -413,8 +449,8 @@
 - 建立train-only memory和严格索引生命周期；
 - 实现BM25/CLIP-kNN与可学习检索；
 - 实现查询—邻居反应分布融合；
-- 加入相似度、邻居分歧、域距离和模态质量驱动的可靠性路由；
-- 用随机/错误邻居检验模型是否真的利用了有效证据。
+- 加入相似度、邻居分歧、域/时间距离和模态质量驱动的可靠性路由；
+- 分别去除memory、router和rejection，并用随机/错误域/低质量邻居检验模型是否真的利用了有效证据。
 
 交付物：CARM-v1、H2结果、检索可视化、负迁移分析、top-k研究。
 
@@ -425,7 +461,7 @@
 任务：
 
 - 在CSMV与通过准入的第二公开人工集完成各自适用的5种子实验；
-- 跑主要消融、bootstrap CI、校准和缺失模态；
+- 跑teacher/memory/router/rejection主要消融、paired bootstrap CI、校准和合格协议上的缺失模态；
 - 与最强公平baseline比较，完成第一次审稿人式内部评审；
 - 冻结是否加入NEmo+配对模态增强，避免继续扩张。
 
@@ -435,7 +471,7 @@
 
 任务：
 
-- topic/hashtag/source/time held-out；
+- movie/group、topic/hashtag、source/time/platform held-out；
 - LAI-GAI（若通过准入）↔CSMV之间做跨数据/跨场景验证并明确图像—视频、标签空间和统计单位差异；MVIndEmo仅补充银标迁移实验；
 - 迁移到CUC-IGPE-v2中文无标签/银标签压力测试，使用发布者/话题/时间隔离；
 - 比较无适配、轻量适配、检索记忆和拒绝策略；
@@ -450,7 +486,7 @@
 任务：
 
 - 完成E0—E9实验矩阵；
-- 补齐缺失率、检索污染、效率、风险覆盖、阈值敏感性；
+- 补齐teacher/memory/router/rejection消融、错域检索、未来/目标信息隔离负对照、合格协议的缺失率、效率与风险覆盖；
 - 做配对统计、效应量、CI和多重比较校正；
 - 固定主结果，禁止再根据测试集改主假设；
 - 建立每条论文claim到表格/图/预测文件的证据映射。
@@ -518,7 +554,8 @@
 6. 自建中文集若无独立人工真值，只报告压力测试与探索性证据；论文的主要定量结论全部来自两个公开人工标注主集；
 7. 五种子、按数据集原生内容单元的CI、校准、效率、失败案例和伦理说明完整；
 8. 代码、配置、split、日志、预测文件和可发布数据全部可追溯；
-9. 模拟审稿中不再存在“构念错位、未来泄漏、模块拼接、随机划分高分”四类Critical问题。
+9. Video2Reaction作为closest/direct prior已被公平比较或形成经00接受的不可执行审计，claim blacklist回扫无活动命中；
+10. 模拟审稿中不再存在“任务已被前作提出、构念错位、未来泄漏、模块拼接、随机划分高分”Critical问题。
 
 ## 12. 项目总览思维导图
 
@@ -639,7 +676,7 @@ flowchart TD
 从下一项任务起，开工前必须写清：
 
 ```text
-主纲版本：v1.18（2026-07-23）
+主纲版本：v1.19（2026-07-24）
 所属月份/工作包：M? / E?
 服务假设：H?
 数据版本与split：...
@@ -650,11 +687,13 @@ flowchart TD
 
 任何不属于本纲的想法，只能登记为“探索性候选”，先判断是否会改变研究问题、数据或十个月期限，再决定是否纳入；不能直接插入主模型。
 
-## 16. 关键外部依据（快照：2026-07-23）
+## 16. 关键外部依据（快照：2026-07-24）
 
 - T-AFFC官方范围包含群体情绪识别、情感数据收集与多模态情感计算：<https://www.computer.org/digital-library/journals/ta/tac-general-call-for-papers>
 - CSMV/MSA-CRVI，NeurIPS 2024 Datasets & Benchmarks：<https://proceedings.neurips.cc/paper_files/paper/2024/hash/bbf090d264b94d29260f5303efea868c-Abstract-Datasets_and_Benchmarks_Track.html>
-- Video2Reaction，arXiv:2607.06875 v1（2026-07-08，预印本）：<https://arxiv.org/abs/2607.06875>
+- Video2Reaction，arXiv:2607.06875 v1（2026-07-08）：<https://arxiv.org/abs/2607.06875>
+- CVPR 2026 DataMFM accepted papers（workshop展示确认；归档状态待核）：<https://datamfm.github.io/>
+- ECCV 2026状态当前仅有作者/合作者公开报告，正式ECCV/ECVA论文集条目待核；投稿前滚动复核。
 - CSMV官方数据与代码：<https://github.com/IEIT-AGI/MSA-CRVI>
 - MVIndEmo：<https://doi.org/10.1007/s00530-023-01221-8>
 - NEmo+：<https://aclanthology.org/2022.aacl-main.29/>
@@ -691,7 +730,7 @@ flowchart TD
 每个任务首次回复和每个正式实验必须填写：
 
 ```text
-主纲版本：v1.18（2026-07-23）
+主纲版本：v1.19（2026-07-24）
 任务编号与名称：
 所属月份/工作包：M? / E?
 服务假设：H? / C?
@@ -790,7 +829,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 **最低合格（L1）**：所有任务、版本和门有记录，能定位当前阶段。  
 **应达到（L2）**：每项决策有证据、影响范围和回退方案；不存在聊天与文件冲突。  
-**最终目标（L3）**：九项T-AFFC Go标准均有可审计证据链接，任何外部审阅者可沿交接链重建项目决策。
+**最终目标（L3）**：全部T-AFFC Go标准均有可审计证据链接，任何外部审阅者可沿交接链重建项目决策。
 
 #### 2.7 失败与禁止
 
@@ -817,7 +856,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 3.3 当前输入
 
-- 总纲v1.18；
+- 总纲v1.19；
 - `T0_INPUT_POLICY.md`；
 - `DATA_SOURCE_LEDGER.md`；
 - `ENVIRONMENT_LOCK.md`与`requirements-lock.txt`；
@@ -855,7 +894,7 @@ task_timepoint：T0 或独立的 T+Δ
 #### 3.7 工作包D：贡献级查新与协议冻结
 
 19. 分四条独立检索：评论特权监督、公众诱发情绪分布、检索增强情绪预测、可靠性拒绝/缺失模态。
-20. 建立“最相近前作—相同点—不同点—必须对比实验”矩阵；2026-07-23起必须纳入Video2Reaction并将C1固定为协议/证据贡献，不得恢复任务首创表述。
+20. 建立“最相近前作—相同点—不同点—必须对比实验”矩阵；2026-07-24起必须把Video2Reaction列为closest/direct prior，将C1固定为协议/证据贡献，并执行claim blacklist。
 21. 检查CARM工作名是否重名；查清前不得用于正式标题。
 22. 冻结研究问题v1、C1—C3上限、H1—H4、主指标和失败条件。
 23. 输出baseline候选清单，记录代码可得性、任务匹配度、许可和预计复现成本。
@@ -981,7 +1020,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 5.1 定位
 
-只验证H1：训练期评论能否作为特权监督，稳定改善推理时只看T0内容的学生对未来受众情绪分布的预测。
+只验证H1：训练期评论能否作为特权监督，稳定改善推理时只看T0内容的学生对未来受众公开表达反应分布的预测；teacher/student或蒸馏本身不作为创新。
 
 #### 5.2 对应总纲
 
@@ -1003,9 +1042,9 @@ task_timepoint：T0 或独立的 T+Δ
 5. 实现最简单content-only student，确保训练和推理均只吃T0允许内容。
 6. 比较softmax与简单Dirichlet头；先使用最小实现，不堆生成模块。
 7. 实现最简单分布蒸馏，明确损失项、温度和权重的训练集选择范围。
-8. 运行hard label、soft distribution、普通蒸馏和comment-privileged四组唯一变量实验。
+8. 运行hard label、soft distribution、普通蒸馏、comment-privileged KD和错配评论负对照；保留teacher-only上界但不进入T0推理。
 9. 研究每视频评论数、teacher置信度和标签噪声对收益的影响。
-10. 运行去teacher/去蒸馏E3，确认收益不是数据或参数量差异。
+10. 运行去teacher/去蒸馏/错配teacher E3，确认收益不是软标签、数据量、参数量或目标评论捷径。
 11. 检查teacher/student训练日志、梯度、分布归一化和数值稳定性。
 12. 在CSMV与第二公开人工集各自适用的开发协议上复核趋势；不强制在LAI-GAI复刻缺少字段支持的H1/H2，正式五种子结论留到任务50。
 13. 分析错误案例：讽刺、混合情绪、少评论、高分歧和跨域样本。
@@ -1040,7 +1079,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 6.1 定位
 
-只验证H2并为H3准备机制：历史案例检索是否提供真实有效证据，可靠性路由是否能识别并拒绝负迁移。
+只验证H2并为C3准备机制：历史案例检索是否提供真实有效证据，可靠性路由是否能根据相似度、邻居分歧、域/时间距离和模态质量识别并拒绝负迁移。
 
 #### 6.2 对应总纲
 
@@ -1068,8 +1107,8 @@ task_timepoint：T0 或独立的 T+Δ
 10. 构造可靠性特征：相似度、邻居分歧、域距离、时间距离、模态质量和缺失掩码。
 11. 实现融合/降权/拒绝路由；输出拒绝分数与解释字段。
 12. 跑E2：learned vs no/random/BM25/CLIP-kNN。
-13. 跑E4：去路由、固定权重、无拒绝。
-14. 跑E7：错误邻居、低相似邻居、库缩小、top-k扫描和检索污染。
+13. 跑E4：分别去router、固定权重、去rejection，不能把三者合并成一次消融。
+14. 跑E7：random、错误域、低相似邻居、库缩小、top-k扫描和检索污染；目标/未来候选注入必须被泄漏门拒绝，不得形成可报告结果。
 15. 测量负迁移率：检索比content-only更差的样本比例及路由识别能力。
 16. 分析OOD开发集上的risk-coverage、AURC、ECE和分布误差。
 17. 生成检索案例可视化，展示查询、邻居、反应分布、可靠性和最终决策。
@@ -1104,7 +1143,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 7.1 定位
 
-将冻结的方法和评测协议转化为T-AFFC可审计证据：两个人工标注主集、五种子、完整E0—E9、OOD、缺失模态、统计、中文压力测试和结果冻结。
+将冻结的方法和评测协议转化为T-AFFC可审计证据：两个人工标注主集、Video2Reaction最近强基线、五种子、完整E0—E9、严格OOD、适用的缺失模态、统计、中文压力测试和结果冻结。
 
 #### 7.2 对应总纲
 
@@ -1130,7 +1169,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 7.5 工作包B：M6两主集主实验与G4
 
-6. 在两个公开人工标注主集运行content-only、teacher/student、CARM和最强公平基线；CSMV主表必须包含Video2Reaction设置的可比适配基线，或提供经00接受的不可比/不可执行审计。
+6. 在两个公开人工标注主集运行content-only、teacher/student、CARM和最强公平基线；CSMV主表必须包含Video2Reaction式VLM直接微调/LDL的可比适配基线，或提供经00接受的输入、标签、split、许可、资源和预算不可执行审计。
 7. 每个主模型完成五种子，不以最佳种子代替均值与区间。
 8. 在CSMV完成H1、H2关键消融；两集均按各自原生内容单元完成paired bootstrap 95%CI，第二集不适用的机制实验记`NOT_APPLICABLE_BY_DESIGN`。
 9. 报告JS、NLL、EMD、Macro-F1、Balanced Accuracy、Brier、ECE/ACE、AURC。
@@ -1142,7 +1181,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 7.6 工作包C：M7 OOD与中文压力测试
 
-15. 完成topic/hashtag、publisher/source、time和platform held-out E6。
+15. 完成movie/group、topic/hashtag、publisher/source、time和platform held-out E6；若复核确认Video2Reaction公开split存在movie overlap，再报告其官方split与movie-disjoint的对照，但不把攻击其split写成主要贡献。
 16. 进行CSMV与LAI-GAI（若准入）的跨数据/跨场景验证，明确视频—图像、标签空间和可适用主张差异。
 17. MVIndEmo只作银标迁移补充，不混入人工金标主表。
 18. 在CUC-IGPE-v2按发布者/话题/时间隔离进行无标签/银标签压力测试。
@@ -1154,7 +1193,7 @@ task_timepoint：T0 或独立的 T+Δ
 #### 7.7 工作包D：M8完整矩阵与统计冻结
 
 23. 完成E0数据/split sanity复核，确认正式运行没有使用过期数据或泄漏索引。
-24. 完成E1模态增量、E2检索、E3教师、E4路由、E5缺失、E6 OOD、E7污染、E8兼容风险、E9效率。
+24. 完成E1输入、E2 memory/检索、E3 teacher、E4 router/rejection、E5适用缺失、E6 OOD、E7污染/隔离、E8兼容风险、E9效率。
 25. 测量参数量、显存、训练/推理时间、索引大小和检索延迟。
 26. 完成效应量、配对检验、按数据集原生内容单元的CI和多重比较校正。
 27. 做阈值、标签窗口、top-k、缺失率和校准方法敏感性分析。
@@ -1199,7 +1238,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 - M9、M10；
 - C1—C3最终表述；
-- T-AFFC九项投稿Go标准。
+- T-AFFC全部投稿Go标准。
 
 #### 8.3 启动条件
 
@@ -1211,9 +1250,9 @@ task_timepoint：T0 或独立的 T+Δ
 #### 8.4 工作包A：论文论证结构
 
 1. 以“问题—协议—方法—证据—边界”建立英文全文骨架。
-2. 冻结标题、摘要核心claim和三项贡献上限；CARM名称查重未完成前不用作正式名；标题、摘要和贡献列表禁止“首次公众诱发情绪分布预测”及“首次video-to-reaction-distribution”。
-3. 引言按痛点、现有不足、核心洞察、贡献组织，不以模块列表代替科学问题。
-4. Related Work覆盖公众诱发情绪、评论特权监督、检索增强预测、缺失模态与可靠性拒绝。
+2. 冻结标题、摘要核心claim和三项贡献上限；CARM名称查重未完成前不用作正式名；逐项执行`TAFFC_CLAIM_BLACKLIST_20260724.md`。
+3. 引言按痛点、Video2Reaction直接前作、未解决的可靠性问题、核心洞察和贡献组织，不以模块列表代替科学问题。建议关系句为：*Concurrent Video2Reaction research establishes the feasibility of directly predicting induced audience-reaction distributions from video. Our work instead investigates whether such predictions remain reliable when target responses are unavailable and test content deviates from training domains.*
+4. Related Work把Video2Reaction列为closest/direct prior，并覆盖公众诱发情绪、评论特权监督、检索增强预测、缺失模态与可靠性拒绝。
 5. 方法节明确T0信息边界、teacher/student、memory、检索、路由和输出。
 6. 实验节先写协议、数据、split、基线、公平预算、指标和统计，再写结果。
 7. 所有数值和结论从claim-evidence-map引用，不手工抄写无来源数字。
@@ -1233,10 +1272,10 @@ task_timepoint：T0 或独立的 T+Δ
 
 16. 写数据许可、隐私、匿名化、平台条款和访问限制。
 17. 写LLM使用披露：模型、版本、用途、人工审核和非主系统依赖。
-18. 写局限：评论者不代表所有观看者、平台删评偏差、域迁移、标签映射和拒绝覆盖。
+18. 写局限：评论标签只表示公开表达反应，不等于所有观看者的内在情绪；并披露平台删评/选择偏差、域迁移、标签映射和拒绝覆盖。
 19. 写误用风险与缓解，避免把系统包装为无条件可靠的舆情监控工具。
 20. 审计摘要、引言、方法、结论中的术语、指标、贡献和方法名一致。
-21. 审计每条引用真实性与claim支持关系，删除撞车或过度宣称。
+21. 审计每条引用真实性与claim支持关系，对标题、摘要、引言、贡献、相关工作和结论执行claim blacklist回扫，删除撞车或过度宣称。
 22. 做独立学术诚信、数据诚实性和复现性审计。
 
 #### 8.7 工作包D：M10模拟审稿与投稿
@@ -1248,7 +1287,7 @@ task_timepoint：T0 或独立的 T+Δ
 27. 在正式投稿时核对最新T-AFFC作者指南、格式、页数、双盲和补充材料要求，不沿用旧快照猜测。
 28. 准备cover letter、亮点说明、建议审稿人和伦理/数据回答。
 29. 冻结论文、代码、数据、图表和补充材料版本，记录SHA-256与Git tag。
-30. 由00任务逐条审核九项投稿Go标准。
+30. 由00任务逐条审核全部投稿Go标准。
 31. Go则提交T-AFFC；No-Go则延期补证据或根据贡献形态重新匹配投稿层级，禁止一稿多投。
 32. 建立最终归档包和后续审稿交接说明。
 
@@ -1265,7 +1304,7 @@ task_timepoint：T0 或独立的 T+Δ
 #### 8.9 达标水平
 
 **最低合格（L2）**：全文完整，所有主张有证据，代码和图表可追溯，主要局限诚实披露。  
-**投稿冻结（L3）**：最新作者要求通过；模拟评审无未解决Critical；九项Go标准全部有证据；匿名复现包能在干净环境运行；论文、代码、数据和图表版本一致。  
+**投稿冻结（L3）**：最新作者要求通过；模拟评审无未解决Critical；全部Go标准均有证据；匿名复现包能在干净环境运行；论文、代码、数据和图表版本一致。  
 **优秀水平**：审稿人即使不同意方法价值，也难以从构念、泄漏、标签循环、统计、公平基线或不可复现性上直接否决。
 
 #### 8.10 止损与禁止

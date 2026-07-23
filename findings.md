@@ -464,3 +464,13 @@
 - IJCV候选论文必须与T-AFFC的CARM解耦：不使用评论教师、受众响应记忆或CARM可靠性路由作为主贡献；改为研究“视觉表征空间如何保持人工主观响应分布的几何结构，并区分观察者分歧与跨域不确定性”。
 - 可检验的IJCV核心只保留三件事：响应分布几何对齐的视觉表征学习、主观分歧/认知不确定性的分解与校准、跨图像—视频/跨域的分布几何保持。任何组件若不能在至少两个独立人工分布数据集上相对强基线取得稳定证据，即触发止损，不以堆叠模块挽救。
 - 数据侧必须至少有两个可从像素训练或微调的人工主观分布数据集；CSMV冻结I3D只能作为视频迁移或外部有效性补充，不能独自支撑IJCV视觉方法主张。
+
+## 2026-07-24 — Video2Reaction出版状态、直接前作边界与Word权威关系
+
+- `[official arXiv]` arXiv:2607.06875于2026-07-08公开，题为*Video2Reaction: Mapping Video to Audience Reaction Distribution in the Wild*，明确建立10,348个电影片段到21类受众诱发反应分布的预测benchmark，并报告VLM微调、LDL方法和五种子结果。
+- `[official workshop page]` CVPR 2026 DataMFM页面确认*Video2Reaction: Training Foundation Video Models to Predict Audience Reaction*进入workshop accepted papers；页面把该条目置于`Proceedings Track`标题下，但截至2026-07-24 CVF公开workshop论文集未检出对应条目。故“曾在workshop展示/接收”可确认，“非归档”或“已正式归档”均不能单边写死，状态应为`WORKSHOP_APPEARANCE_CONFIRMED_ARCHIVAL_STATUS_UNRESOLVED`。
+- `[author/collaborator publication pages]` 合作者出版页和公开团队帖将Video2Reaction列为ECCV 2026论文/录用；但截至2026-07-24未检出ECCV/ECVA正式论文集条目。当前只能写`AUTHOR_REPORTED_ECCV_2026_ACCEPTANCE_PENDING_OFFICIAL_PROCEEDINGS`，不能继续仅写“预印本”而忽略公开录用信号，也不能冒充正式论文集已闭合。
+- `[novelty impact]` Video2Reaction与CARM共享“内容→受众诱发情绪分布”任务，直接否定任务层首创和“输出分布本身即创新”的叙事。CARM应重定位为`Reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses`。
+- `[method boundary]` 可保留的候选增量是评论特权教师、train-only反应记忆、以相似度/邻居分歧/域时距/模态质量为输入的可靠性路由、校准与选择性拒绝、严格内容分组和OOD评测；每项都必须绑定可测失败机制，不能凭模块组合宣称创新。
+- `[construct boundary]` 社媒评论只支持“公开表达的诱发反应分布”，不能外推为所有观看者的内在心理状态。HUMAN_GOLD主测试与LLM/规则SILVER训练必须物理分离。
+- `[Word authority]` `D:\桌面\谢剑秋工作报告\总纲\论文修改总纲要（合体版）.docx`的SHA-256为`a707ac6c1ab7b9eccf2148d0aec3abba59548516f18709ed2a6249df4cc0117e`，最后修改于2026-07-16，正文自称v1.14并包含已迁出的IJCV双路线、任务25/65及过期G2阻塞。它是历史派生快照，不是当前SSOT；应由仓库v1.19生成回填副本并带源commit/hash，不应双向编辑。

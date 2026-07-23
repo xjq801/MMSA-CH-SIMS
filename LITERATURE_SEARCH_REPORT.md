@@ -1,7 +1,7 @@
 # M1 步骤19：四路贡献级查新报告
 
-> 状态：SCOPING_COMPLETE_v2
-> 截止日期：2026-07-23
+> 状态：SCOPING_COMPLETE_v3
+> 截止日期：2026-07-24
 > 范围事实源：`references/search/step19-23/scope-decision.txt`
 > 诚实边界：本报告是中等范围 scoping 查新，不是系统综述，不声称穷尽召回，不据“未检出”判定首创。
 
@@ -85,12 +85,13 @@
 - 自动召回对精确术语和缩写敏感，且四条宽查询噪声高；核心矩阵只使用人工回到主要来源核验的条目。
 - 文献查新可冻结贡献上限，但不能解除第二人工多模态主集缺失、媒体许可、标签映射或物理泄漏隔离等G1/G2阻塞。
 
-## 7. 2026-07-23前沿增量核验：Video2Reaction
+## 7. 2026-07-24前沿增量核验：Video2Reaction
 
 ### 来源与状态
 
 - Nguyen et al., *Video2Reaction: Mapping Video to Audience Reaction Distribution in the Wild*, arXiv:2607.06875 v1，2026-07-08提交：[arXiv](https://arxiv.org/abs/2607.06875)。
-- 截至2026-07-23只确认arXiv v1预印本及其公开数据页，不声称已同行评审录用。
+- [CVPR 2026 DataMFM官方页面](https://datamfm.github.io/)确认同题工作进入accepted papers；该页面把条目置于`Proceedings Track`标题下，但[CVF公开workshop论文集](https://openaccess.thecvf.com/CVPR2026_workshops)尚未检出对应条目，故记`WORKSHOP_APPEARANCE_CONFIRMED_ARCHIVAL_STATUS_UNRESOLVED`。
+- [合作者出版页](https://gaurijagatap.github.io/publications/)与团队公开帖将Video2Reaction列为ECCV 2026录用；截至2026-07-24未检出ECCV/ECVA正式论文集条目，故记`AUTHOR_REPORTED_ECCV_2026_ACCEPTANCE_PENDING_OFFICIAL_PROCEEDINGS`。这比“仅孤立预印本”更强，但仍不等于正式论文集闭合。
 - 论文公开表述为从多模态视频内容直接预测受众诱发情绪分布；数据规模为10,348段电影视频，反应标签由社交媒体评论经开源LLM多代理流水线构造，并报告盲测人工核验。
 
 ### 对本项目的碰撞判定
@@ -108,3 +109,9 @@
 - Video2Reaction进入相关工作和最相近前作矩阵；任务50须执行其可比适配基线，或形成输入、标签、许可、资源不匹配的书面不可执行审计。
 - 完整方法的新颖性不能来自模块数量，只能来自可证伪差异：严格train-only历史反应案例是否提供随机/普通近邻没有的有效信息，以及可靠性机制是否能识别并减少检索负迁移。
 - “尚未定位到完全同构前作”只表示当前scoping范围内未检出，不是穷尽检索或世界首创证明；投稿前须再次做滚动查新。
+
+### 论文重定位
+
+Video2Reaction是`closest/direct prior`，双方共享内容到受众诱发反应分布任务。本项目不能通过强调数据来源差异来淡化碰撞，必须把问题收紧为：目标响应不可用且测试分布偏移时，评论特权监督、train-only历史反应记忆、可靠性路由与选择性拒绝能否维持可信预测。
+
+正式论文须删除“任务首创”“此前只研究内容表达情感”“分布输出本身创新”等叙事；社媒评论标签只能解释为公开表达的诱发反应，不能代表所有观众的内在心理状态。

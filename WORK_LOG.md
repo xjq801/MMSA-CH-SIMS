@@ -6804,3 +6804,60 @@ heartbeat在前序RAM高风险告警后继续监控同一进程。2026-07-23 22:
 ### Git状态
 
 本条写入时`WORK_LOG.md`含WR-20260724-001—002待门禁和有意提交；`tmp/`继续未跟踪且归Task20所有。远端训练已安全暂停在Epoch 0 step 12，私有断点与日志不进入Git。
+
+## WR-20260724-003 — Video2Reaction直接前作中修与SSOT v1.19冻结
+
+- 时间：2026-07-24 18:30:00 +08:00
+- 类型：DECISION | DOCUMENTATION | LITERATURE | AUDIT | TEST
+- 任务/门：00-T-AFFC总控 / Video2Reaction直接前作定位中修
+- 状态：SSOT v1.19与配套合同已冻结，待有意提交推送
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+用户提交最新对比论文分析，要求将Video2Reaction作为必须正面处理的公开前作整合进T-AFFC论文总纲、claim边界、实验矩阵和任务接口，同时不得推翻CARM路线、不得未经审核改变已通过G门或并发破坏Task20实验核心。本批先刷新共享主仓库与Task20现实状态，再核验公开来源并执行全局回扫。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升级为v1.19，把研究问题收紧为“目标响应不可用且测试内容偏离训练域时的可靠内容到受众诱发情感分布预测”，并把Video2Reaction冻结为`closest/direct prior`。
+- 新建`TAFFC_CLAIM_BLACKLIST_20260724.md`，禁止任务首创、内容到群体分布首创、视频诱发分布benchmark首创、既有工作从未预测受众反应及“输出分布即创新”等五类表述；同步回扫摘要/引言/贡献/相关工作/结论的未来写作合同。
+- 更新`LITERATURE_SEARCH_REPORT.md`、`CONTRIBUTION_PRIOR_ART_MATRIX.md`、`CLAIM_EVIDENCE_MATRIX.md`、`BASELINE_CANDIDATES.md`与`RESEARCH_PROTOCOL_FREEZE_AUDIT_V2_20260724.md`，保留评论特权教师、train-only反应记忆、可靠性router、校准/选择性拒绝和严格OOD评测为待实验证明的独立贡献。
+- 在E0—E9及任务30—60接口中加入Video2Reaction式VLM直接微调/LDL强基线、teacher/memory/router/rejection四类消融、随机与错误域检索负对照、future/target fail-closed、movie/group/topic/time/platform-disjoint、缺失模态、Brier/ECE/AURC/risk-coverage以及五种子/paired bootstrap；这些为后续增量，不修改Task20已冻结评测核心。
+- 新建`WORD_MASTER_BACKFILL_PLAN_20260724.md`。外部`D:\桌面\谢剑秋工作报告\总纲\论文修改总纲要（合体版）.docx`经读取确认是自述v1.14、含已迁出IJCV双路线和旧G2阻塞的历史派生文档，SHA-256=`A707AC6C1AB7B9ECCF2148D0AEC3ABBA59548516F18709ED2A6249DF4CC0117E`；本批不直接改写Word，固定仓库Markdown SSOT到Word的单向回填关系。
+- 同步`RISK_REGISTER.md`、`TASK_REGISTRY.md`、`AGENTS.md`、`.light`项目卡/决策/版本/术语/passport、`paper/README.md`、论文创新目标档案以及文件化计划/发现/进度；新建`.light/handoff/S23-video2reaction-direct-prior-v119.md`维持交接链。
+- 新建`scripts/validate_taffc_v119_positioning.py`并升级`scripts/validate_literature_freeze.py`，使机器门要求v1.19定位、closest-prior状态、claim blacklist、当前G门和新版协议审计，而不再要求已失效的任务首创或旧G1阻塞令牌。
+
+### 核验事实与裁定
+
+- arXiv:2607.06875 v1于2026-07-08公开，直接研究视频到受众诱发反应分布；DataMFM官方页面确认workshop展示并置于`Proceedings Track`标题下，但CVF公开workshop论文集尚未检出对应条目，因此状态为`WORKSHOP_APPEARANCE_CONFIRMED_ARCHIVAL_STATUS_UNRESOLVED`。
+- 合作者出版页和团队公开信息报告ECCV 2026录用，但截至2026-07-24未检出ECCV/ECVA正式论文集条目，因此状态为`AUTHOR_REPORTED_ECCV_2026_ACCEPTANCE_PENDING_OFFICIAL_PROCEEDINGS`。无论最终出版状态如何，该公开工作已足以否定原任务首创叙事。
+- Task20共享主线起点为`main=origin/main=51c92351efeb39bb5d5e56b9839af8948b2d8367`；其4090冻结环境与精确断点恢复已验证，探索训练安全暂停在Epoch 0 step 12，身份永久`NON_T0/INELIGIBLE`。本批未修改Task20实验代码、结果或其未跟踪`tmp/`。
+
+### 验证与证据
+
+- `scripts/validate_taffc_v119_positioning.py`最终`passed=true`、errors空；覆盖等级明确为`PROJECT_SPECIFIC_TEXT_GATE_NOT_FULL_SEMANTIC_CONSISTENCY`。完整`light-consistency`因本机技能缺`_shared/findings_schema`未重试，未冒充完整语义一致性门通过。
+- 项目定位校验器首跑把blacklist中的禁止句误判为正向主张；同批收紧为“本文/我们”正向句式后通过。`py_compile`因只读沙箱无法写`scripts/__pycache__`失败一次，随后以只读`ast.parse`验证语法通过。
+- 已知`light-memory-pm pm.py`包装布局缺`_shared/passport`，本批未重复失败；底层passport首次因沙箱写权限不足而`PermissionError`，获授权后执行`set-status`重算state hash，validate仅保留历史stage10缺passport内部hash/timestamp的WARN。
+- 最终passport复验首次误用不支持的`--root`参数并exit 2；读取子命令帮助后改用`validate --file .light/passport.yaml`，exit 0并仅保留上述历史WARN。
+- `scripts/validate_literature_freeze.py`升级前导致综合准备检查仅`literature_freeze`阻塞；升级后专项结果`passed=true`、documents=6、queries=4、identified=500、errors空。
+- AGENTS规定的`.venv`在普通沙箱中因解释器启动限制exit 101；获授权后复跑：`scripts/validate_work_log.py`在追加本条前通过151条，`scripts/run_preparation_checks.py` exit 0、`blocking_checks=[]`、`m1_read_only_work_ready=true`。普通历史环境仍因faiss缺失为`formal_model_work_ready=false`，不改变Task20独立正式环境或远端探索状态。
+- `scripts/handoff_contract.py --card .light/handoff/S23-video2reaction-direct-prior-v119.md --as-of 2026-07-24`最终PASS；首次因证据/行动措辞不满足合同失败并已同批修正。`git diff --check`通过。
+
+### 影响与边界
+
+G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、G3=`PASS_WITH_LIMITATIONS`均不改变；本批不创建Task30，也不把新实验义务误写成已完成结果。C1—C4及H1—H4继续为`TO_VERIFY`，评论只能解释为评论者公开表达的诱发反应，不能外推为所有观众内在心理状态。
+
+### 风险、问题与阻塞
+
+- Video2Reaction的workshop归档状态及ECCV 2026正式论文集状态尚未闭合，后续只能按当前分层证据措辞，不能写成“未录用”或“正式出版已确认”。
+- CARM是否构成超越直接前作的贡献仍取决于未来强基线、四类消融、错误检索负对照、OOD、校准与选择性拒绝的真实结果；本次文档中修不等于创新性已获实验证明。
+- 外部Word仍是历史v1.14派生文档；若继续人工双向编辑会产生双源漂移。
+- 完整跨材料语义一致性门仍受本机`light-consistency`缺依赖限制；当前只有项目专用文本门通过。
+
+### 下一步
+
+下一步先有意提交并推送本批00所有权文件，再通知Task20刷新v1.19并解除文档暂停；随后总控应审查Task20最终收尾并决定Task30是否满足创建条件。外部Word仅在用户要求生成新派生版时按回填合同从v1.19导出，不允许反向覆盖SSOT。
+
+### Git状态
+
+本条写入时共享主仓库基线为`main=origin/main=51c92351efeb39bb5d5e56b9839af8948b2d8367`；本批仅修改或新增00所有权的SSOT、台账、验证器、规划和handoff文件。`tmp/`继续未跟踪且归Task20所有，不进入本批暂存或提交。

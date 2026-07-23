@@ -3,6 +3,7 @@
 > 审计日期：2026-07-14
 > 决策：`FROZEN_v1_CONFIRMED`
 > 事实源优先级：总纲v1.5 > 本审计 > `research-question-v1.md` / `experiment-protocol-v1.md`的便捷表达。
+> 当前状态：历史v1审计；2026-07-24起由`RESEARCH_PROTOCOL_FREEZE_AUDIT_V2_20260724.md`覆盖论文定位与任务30—60增量，数据/split/H1—H4编号仍沿用本历史合同。
 
 ## 1. 研究问题v1
 

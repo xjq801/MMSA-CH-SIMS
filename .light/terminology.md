@@ -3,9 +3,12 @@
 | 类别 | 标准叫法 | 缩写 | 英文 | 备注 |
 |---|---|---|---|---|
 | 构念 | 公众诱发受众情绪 | — | public-induced audience affect | 不是说话者情绪、画面群体情绪或传播链 |
+| 构念观测边界 | 评论者公开表达的诱发反应分布 | — | publicly expressed induced-reaction distribution among commenters | 不代表所有观看者内在心理状态或总体人口参数 |
 | 方法工作代号 | 受众反应记忆 | CARM | Audience-Response Memory | 仅历史工作包代号；完整方法尚未验证，且CARM重名，不得作为正式标题或首创标识 |
 | C1贡献边界 | 严格T0受众反应分布预测协议与证据 | — | strict-T0 audience-reaction distribution protocol and evidence | Video2Reaction已覆盖任务层目标；禁止“首次video-to-reaction-distribution” |
 | C2候选差异 | 评论特权监督与train-only历史反应记忆 | — | comment-privileged supervision and train-only historical response memory | 组件已有前作；只有随机/普通近邻对照和负迁移拒绝证据成立才可作完整方法claim |
+| 论文定位 | 分布偏移与目标响应不可用下的可靠内容到受众反应分布预测 | — | reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses | Video2Reaction为closest/direct prior |
+| 直接前作 | Video2Reaction | V2R | Video2Reaction | 共同任务必须承认；workshop展示确认、归档状态待核；ECCV为作者报告待正式条目 |
 | 预测时点 | T0内容预测 | T0 | content-only prediction at publication time | 禁止未来评论/互动/推荐结果 |
 | 数据层级 | 人工金标 | HUMAN_GOLD | human-annotated gold labels | CSMV与LAI-GAI |
 | 数据层级 | 银标 | SILVER | automatically derived labels | 不进入人工test |

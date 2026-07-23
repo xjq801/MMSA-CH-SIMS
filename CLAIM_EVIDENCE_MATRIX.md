@@ -1,14 +1,14 @@
 # Claim—Evidence矩阵
 
-> 版本：v1.0；日期：2026-07-14  
+> 版本：v1.1；日期：2026-07-24  
 > 原则：没有证据的主张保持`TO_VERIFY`，不得写成论文结论。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
 |---|---|---|---|---|---|
-| C1 | 无泄漏T0协议能形成可审计的公众诱发情绪分布预测任务 | 两个公开人工标注集、视频级划分、物理泄漏隔离、Data Card | G1/G2、E0、`T0_INPUT_POLICY.md` | TO_VERIFY | 仅可描述研究问题与协议 |
+| C1 | 无泄漏T0协议能形成可审计的公众公开表达诱发反应分布预测证据 | 两个公开人工标注集、内容单元划分、物理泄漏隔离、Data Card | G1/G2、E0、`T0_INPUT_POLICY.md` | TO_VERIFY | 仅可描述协议/证据贡献；任务与分布输出均不称首创 |
 | C2 | 评论特权教师能改善仅看内容学生的分布预测或校准 | content-only、teacher上界、普通蒸馏、目标方法；至少5种子与CI | H1、E2、任务30 | TO_VERIFY | 不得宣称有效 |
-| C3 | train-only反应记忆与可靠性路由优于无检索和随机检索，并减少负迁移 | 无/随机/稀疏/稠密/可学习检索、负对照、risk-coverage | H2/H3、E3—E5、任务40/50 | TO_VERIFY | 不得宣称检索增益 |
-| C4 | 方法在跨话题、跨数据、缺失模态场景具有更稳健表现 | OOD、跨数据、缺失模态、中文压力测试；统计与失败案例 | H4、E6—E9、任务50 | TO_VERIFY | 不得宣称泛化 |
+| C3 | train-only反应记忆、可靠性router与rejection优于无/随机检索并减少错误证据负迁移 | 去memory/router/rejection、稀疏/稠密/可学习检索、错域邻居、risk-coverage | H2、E2/E4/E7、任务40/50 | TO_VERIFY | 不得宣称检索或路由增益 |
+| C4 | 方法在movie/group、topic、time、platform、跨数据和适用缺失场景具有更可靠表现 | 严格OOD、跨数据、适用缺失、中文压力测试；统计与失败案例 | C3、E5—E9、任务50 | TO_VERIFY | 不得宣称泛化或代表所有观众 |
 
 状态只能是`TO_VERIFY`、`SUPPORTED_LIMITED`、`SUPPORTED`、`REFUTED`。任何状态变更必须填写结果文件、统计证据和复核日期。
 
@@ -27,11 +27,18 @@
 
 | Claim/边界 | 新近前作 | 对允许措辞的限制 | 强制证据动作 |
 |---|---|---|---|
-| C1任务定位 | Video2Reaction，arXiv:2607.06875 v1 | C1只能称严格T0、HUMAN_GOLD、group-held-out和future-comment isolation的协议/证据贡献；禁止任务首创与“首次video-to-reaction-distribution” | 任务50执行其VLM/LDL设置的公平适配，或提交输入/标签/许可/资源不可比审计 |
+| C1任务定位 | Video2Reaction，arXiv:2607.06875 v1；workshop展示已确认；ECCV为作者报告待正式条目 | C1只能称严格T0、HUMAN_GOLD、group-held-out和future-comment isolation的协议/证据贡献；禁止任务首创与“分布输出即创新” | 任务50执行其VLM直接微调/LDL公平适配，或提交输入/标签/split/许可/资源/预算不可比审计 |
 | C2-H1评论教师 | Video2Reaction未覆盖已定位的训练期评论特权链，但LUPI/M2PKD/评论增强已覆盖组件 | 只能检验严格T0下的特权评论收益，不能把teacher/student或蒸馏写成新机制 | 普通KD、特权蒸馏、错配评论和teacher upper-bound对照 |
 | C2-H2反应记忆 | Video2Reaction未覆盖已定位的train-only反应记忆与负迁移拒绝；RAMER/SelectiveNet覆盖相邻组件 | 不得以模块组合证明创新；必须证明学习检索优于随机/普通近邻且路由识别有害邻居 | E2/E4/E7、错误邻居、OOD、负迁移率和risk-coverage |
 
 本节不改变C1—C4的`TO_VERIFY`状态，不追溯改变G1—G3；它只收紧后续论文主张和公平对比义务。
+
+## 2026-07-24 Claim blacklist与构念边界
+
+- `TAFFC_CLAIM_BLACKLIST_20260724.md`是活动主张禁用表，覆盖标题、摘要、引言、贡献、相关工作、结论、PPT和答辩材料。
+- 社媒评论标签只支持“评论者公开表达的诱发反应分布”，不支持“所有观看者真实内在情绪”。
+- Video2Reaction必须称`closest/direct prior`；“尚未定位完全同构方法”只允许写成scoping未检出，不得写世界首创。
+- 本节不升级任何有效性状态。
 
 ## 2026-07-16 CSMV输入与主张上限
 

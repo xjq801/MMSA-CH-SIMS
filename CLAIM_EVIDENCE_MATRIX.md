@@ -23,6 +23,16 @@
 
 上述查新只冻结主张上限，不把C1—C3从`TO_VERIFY`升级为`SUPPORTED`；任何有效性表述仍须等待预注册实验与统计证据。
 
+## 2026-07-23 Video2Reaction增量约束
+
+| Claim/边界 | 新近前作 | 对允许措辞的限制 | 强制证据动作 |
+|---|---|---|---|
+| C1任务定位 | Video2Reaction，arXiv:2607.06875 v1 | C1只能称严格T0、HUMAN_GOLD、group-held-out和future-comment isolation的协议/证据贡献；禁止任务首创与“首次video-to-reaction-distribution” | 任务50执行其VLM/LDL设置的公平适配，或提交输入/标签/许可/资源不可比审计 |
+| C2-H1评论教师 | Video2Reaction未覆盖已定位的训练期评论特权链，但LUPI/M2PKD/评论增强已覆盖组件 | 只能检验严格T0下的特权评论收益，不能把teacher/student或蒸馏写成新机制 | 普通KD、特权蒸馏、错配评论和teacher upper-bound对照 |
+| C2-H2反应记忆 | Video2Reaction未覆盖已定位的train-only反应记忆与负迁移拒绝；RAMER/SelectiveNet覆盖相邻组件 | 不得以模块组合证明创新；必须证明学习检索优于随机/普通近邻且路由识别有害邻居 | E2/E4/E7、错误邻居、OOD、负迁移率和risk-coverage |
+
+本节不改变C1—C4的`TO_VERIFY`状态，不追溯改变G1—G3；它只收紧后续论文主张和公平对比义务。
+
 ## 2026-07-16 CSMV输入与主张上限
 
 | 边界 | 冻结证据 | 允许措辞 | 禁止措辞 |

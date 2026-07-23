@@ -1,7 +1,7 @@
 # M1 步骤19：四路贡献级查新报告
 
-> 状态：SCOPING_COMPLETE_v1
-> 截止日期：2026-07-14
+> 状态：SCOPING_COMPLETE_v2
+> 截止日期：2026-07-23
 > 范围事实源：`references/search/step19-23/scope-decision.txt`
 > 诚实边界：本报告是中等范围 scoping 查新，不是系统综述，不声称穷尽召回，不据“未检出”判定首创。
 
@@ -84,3 +84,27 @@
 - 中国知网等受限来源未纳入，因此中文覆盖不完整；不得据此作中文首创判断。
 - 自动召回对精确术语和缩写敏感，且四条宽查询噪声高；核心矩阵只使用人工回到主要来源核验的条目。
 - 文献查新可冻结贡献上限，但不能解除第二人工多模态主集缺失、媒体许可、标签映射或物理泄漏隔离等G1/G2阻塞。
+
+## 7. 2026-07-23前沿增量核验：Video2Reaction
+
+### 来源与状态
+
+- Nguyen et al., *Video2Reaction: Mapping Video to Audience Reaction Distribution in the Wild*, arXiv:2607.06875 v1，2026-07-08提交：[arXiv](https://arxiv.org/abs/2607.06875)。
+- 截至2026-07-23只确认arXiv v1预印本及其公开数据页，不声称已同行评审录用。
+- 论文公开表述为从多模态视频内容直接预测受众诱发情绪分布；数据规模为10,348段电影视频，反应标签由社交媒体评论经开源LLM多代理流水线构造，并报告盲测人工核验。
+
+### 对本项目的碰撞判定
+
+| 层级 | 判定 | 说明 |
+|---|---|---|
+| C1任务目标 | `DIRECT_NEAR_COLLISION` | “视频内容→完整受众反应分布”与本项目T0核心目标在target层高度等价，不能再声称任务首创 |
+| 数据/协议 | `RELATED_NOT_IDENTICAL` | Video2Reaction是电影视频与LLM评论标签；本项目以CSMV人工标注评论聚合HUMAN_GOLD，并要求video-group、future-comment isolation和审计链 |
+| H1评论特权教师 | `NOT_COVERED_BY_LOCATED_METHOD` | 已核论文方法主要是LDL/VLM benchmark，未定位到“评论只在训练期作为特权teacher”的同构实现；仍受LUPI/M2PKD/评论增强前作约束 |
+| H2历史反应记忆与拒绝 | `NOT_COVERED_BY_LOCATED_METHOD` | 未定位到train-only历史反应分布记忆、错误邻居负对照和负迁移拒绝链；仍受RAMER与SelectiveNet等组件前作约束 |
+
+### 强制影响
+
+- C1固定降为协议/证据贡献，禁止“首次从视频预测受众反应分布”“首次video-to-reaction-distribution”。
+- Video2Reaction进入相关工作和最相近前作矩阵；任务50须执行其可比适配基线，或形成输入、标签、许可、资源不匹配的书面不可执行审计。
+- 完整方法的新颖性不能来自模块数量，只能来自可证伪差异：严格train-only历史反应案例是否提供随机/普通近邻没有的有效信息，以及可靠性机制是否能识别并减少检索负迁移。
+- “尚未定位到完全同构前作”只表示当前scoping范围内未检出，不是穷尽检索或世界首创证明；投稿前须再次做滚动查新。

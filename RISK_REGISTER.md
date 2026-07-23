@@ -17,6 +17,7 @@
 | `R-IJCV-002` | 缺少第二个像素可得、许可固定的人工主观分布集 | LAI-GAI已冻结；其他图像集仍需逐资产准入 | 仅影响已迁出的IJCV方向，不再是本项目数据门 | 第二像素人工集准入由独立IJCV项目维护；本项目任务10不再取得该数据 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
 | `R-INTEGRITY-001` | IJCV与T-AFFC形成一稿多投或重复发表 | 两路线可能共享研究构念与部分数据基础 | 若未来两项目都形成稿件，仍可能产生投稿伦理风险 | 项目、分支、总纲、claim和主实验已物理分离；跨项目只消费已提交事实并在投稿时披露相关稿 | CONTROLLED_CROSS_PROJECT；不阻塞本项目当前G门 |
 | `R-SCHEDULE-001` | IJCV 2026-12-15固定截稿压缩方法与复现周期 | IJCV方向已独立迁出 | 不再挤占本项目T-AFFC日历与资源优先级 | 本项目恢复2027-05-12 T-AFFC单线日历；IJCV期限由独立项目自行管理 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
-| `R-NOVELTY-001` | CARM被评价为蒸馏、评论增强、检索和拒绝的模块拼接 | generalized distillation、评论增强社会情绪预测、CRC-MRC、RAMER和选择性拒绝均已有前作 | T-AFFC方法新颖性与完整论文定位 | 活动总纲已回退v1.16；收益感知路由和3%/5%/8%门仅保留在非权威建议档案，若未来重新采用须另行批准并预注册公平对照 | CONTROLLED_OPEN；H1/H2判别实验失败或路由无独立收益时降级claim |
+| `R-NOVELTY-001` | CARM被评价为蒸馏、评论增强、检索和拒绝的模块拼接 | generalized distillation、评论增强社会情绪预测、CRC-MRC、RAMER和选择性拒绝均已有前作 | T-AFFC方法新颖性与完整论文定位 | 活动总纲v1.18仅收紧查新边界；收益感知路由和3%/5%/8%门仍只保留在非权威建议档案，若未来重新采用须另行批准并预注册公平对照 | CONTROLLED_OPEN；H1/H2判别实验失败或路由无独立收益时降级claim |
+| `R-NOVELTY-002` | Video2Reaction直接覆盖“视频内容→受众反应分布”的C1任务层目标 | arXiv:2607.06875 v1于2026-07-08公开；截至2026-07-23为预印本，报告10,348段电影视频、评论构造分布与视频内容预测benchmark | “任务首创”失效；若不加入直接对比，相关工作与基线不足可导致拒稿 | 总纲v1.18将C1降为协议/证据贡献；更新查新矩阵与claim边界；任务50要求适配Video2Reaction VLM/LDL设置或提交不可执行审计 | OPEN_HIGH；投稿前滚动查新，只有H1/H2可证伪差异和跨域证据成立时才保留完整方法claim |
 | `R-EVIDENCE-001` | 把单seed强基线或计划阈值写成正式优越性 | 当前temporal-attention只有单seed正式test，任务50尚未完成 | 过度主张、统计无效与拒稿 | 所有效应claim保持TO_VERIFY；正式门要求五种子、原生单位paired bootstrap CI和多重校正 | OPEN_NONBLOCKING_UNTIL_TASK50；G4/G6前不得升级 |
 | `R-OPS-001` | Task20 VC-CSA探索、运行时快照和受限存储生命周期未闭环 | 远端SSH最近不可达，训练无首epoch/checkpoint完成证据；MatBox备份已核但运行快照未建 | 共享核心冲突、费用和受限资产残留 | 探索永久NON_T0/INELIGIBLE；收尾前不创建任务30；保留完成/失败/不可用证据与删除核验 | OPEN_BLOCKS_TASK30_CREATION |

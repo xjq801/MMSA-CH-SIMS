@@ -6644,3 +6644,58 @@ heartbeat在前序RAM高风险告警后继续监控同一进程。2026-07-23 22:
 ### Git状态
 
 本条写入时本批代码、测试、runbook和WR-20260723-011待门禁、提交与推送；既有WR-008—010同属尚未提交的Task20工作。`tmp/`继续未跟踪且归Task20所有，不进入Git。
+
+## WR-20260723-012 — 将Video2Reaction直接近邻查新整合为总纲v1.18
+
+- 时间：2026-07-23 22:48:49 +08:00
+- 类型：RESEARCH | DECISION | DOC | RISK | CONSISTENCY
+- 任务/门：00总控 / T-AFFC创新边界与Task30—60主张合同
+- 状态：完成
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+用户要求记住并把“该方向已有直接前作、Video2Reaction与C1高度接近、完整方法只能依赖可证伪差异”的评估整合进总纲。活动总纲此前已按用户要求从v1.17恢复为v1.16，因此本批必须以恢复后的v1.16全文为基底做窄幅查新升版，不能借机恢复已撤回的收益感知路由定义或3%/5%/8%数值门。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升为v1.18，新增`SC-20260723-01`与0.8查新修正：Video2Reaction固定为C1直接近邻，C1降为严格T0/HUMAN_GOLD/group-held-out/future-comment isolation的协议与证据贡献。
+- 在总纲基线、任务10查新、任务50正式实验和任务60写作合同中加入Video2Reaction公平适配或书面不可执行审计；禁止“首次从视频预测受众反应分布”等任务首创措辞。
+- 将`LITERATURE_SEARCH_REPORT.md`升为scoping v2，将`CONTRIBUTION_PRIOR_ART_MATRIX.md`升为FROZEN_v2，并在`CLAIM_EVIDENCE_MATRIX.md`与`RISK_REGISTER.md`登记直接碰撞、强制证据动作和`R-NOVELTY-002`。
+- 同步`AGENTS.md`、`TASK_REGISTRY.md`、`TAFFC_PAPER_INNOVATION_AND_EXPERIMENT_TARGETS_20260723.md`及`.light/project_card.md`、`decision_log.md`、`version_history.md`、`terminology.md`；CARM继续只是未验证且重名的历史工作代号。
+- 更新`scripts/validate_literature_freeze.py`的文档合同：要求`SCOPING_COMPLETE_v2`、Video2Reaction、`DIRECT_NEAR_COLLISION`和新增禁用措辞，修复报告升版后验证器仍硬编码v1导致的`literature_freeze`假阻塞。
+- 新增`.light/handoff/S22-video2reaction-novelty-amendment-v118.md`，保持S21→S22交接链和自传播提示词。
+
+### 验证与证据
+
+- 官方来源核验：`https://arxiv.org/abs/2607.06875`显示arXiv:2607.06875 v1于2026-07-08提交，标题、作者和“视频内容→受众反应分布”摘要与本批记录一致；截至2026-07-23仅写成预印本。
+- `git diff --check` exit 0。
+- 首次运行`.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`因验证器仍要求`SCOPING_COMPLETE_v1`而exit 1，唯一`blocking_checks=["literature_freeze"]`；该失败保留并触发上述最小验证器修复，不删除或冒充通过。
+- 修复后`.\.venv\Scripts\python.exe scripts\validate_literature_freeze.py`通过：5份文档、4条查询、500条identified、errors=[]；再次运行`run_preparation_checks.py` exit 0、`blocking_checks=[]`、`m1_read_only_work_ready=true`，普通历史`.venv`因faiss缺失继续诚实为`formal_model_work_ready=false`。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`通过149条、0错误、latest=`WR-20260723-012`。
+- `py C:\Users\86183\.codex\skills\light-memory-pm\scripts\handoff_contract.py --card .light/handoff/S22-video2reaction-novelty-amendment-v118.md --as-of 2026-07-23`首次发现已完成项缺验证定位和一条下一步不够可执行；补齐后复跑`handoff contract PASS`。该失败和修复均保留。
+- PowerShell定向覆盖扫描确认Video2Reaction已进入总纲、项目卡、查新报告、prior-art矩阵、claim矩阵、风险登记、AGENTS和任务登记；总纲未命中`3%/5%/8%`或`收益感知可靠性路由`。
+- 修改后、写入本记录前总纲SHA-256为`033af01a59dc68cb8a81b8296a84fe462919f259818aa2a9c6d14ee4e5d32b26`；最终提交前若本文件自身或交接引用导致总纲不再变化，该值可用于复核。
+- `light-memory-pm pm.py`的既知`_shared/passport`包装导入失败未无新mitigation重试；使用显式`.light`底层文件和独立handoff合同。
+- `light-consistency`安装仍缺`_shared/findings_schema`，本批没有重复既知失败或冒充完整机读门；只完成可定位的PARTIAL文本回扫，并保留该覆盖限制。
+
+### 影响与边界
+
+活动SSOT现在是v1.18，而非v1.16或已撤回v1.17。v1.18只改变创新边界、相关工作、强基线义务和论文措辞，不改变数据、split、模型实现、G1—G3、Task20状态或资产授权。C1—C4有效性继续为`TO_VERIFY`；“尚未定位到完整同构前作”只是当前scoping未检出，不是世界首创证明。
+
+### 风险、问题与阻塞
+
+- Video2Reaction使C1任务层创新性显著下降；若H1/H2没有独立、稳定且无泄漏的证据，完整方法稿存在高拒稿风险。
+- Video2Reaction与CSMV在内容域、标签生成、输入和许可上并非完全同构，后续必须先做公平性审计，不能机械照搬数值。
+- Task20探索与私有存储生命周期仍未闭环，Task30继续冻结。
+- 完整consistency机读门和passport包装仍受本机skill布局缺件阻塞；本批只声明PARTIAL覆盖。
+
+### 下一步
+
+1. 验收Task20断点恢复smoke、完整运行结局和存储生命周期。
+2. 形成Video2Reaction适配可行性审计及H1预注册对照包，但不与Task20并发修改实验核心。
+3. Task20闭环后由00按v1.18复核并决定是否创建Task30。
+
+### Git状态
+
+本条写入时本批总纲v1.18、查新/claim/风险/任务台账、`.light`记忆与S22待最终门禁、提交和推送；Task20所有的`tmp/`保持未跟踪且不进入本批。

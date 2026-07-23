@@ -11,11 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "references" / "search" / "step19-23" / "search-protocol.json"
 DOCUMENT_CONTRACT = {
     "LITERATURE_SEARCH_REPORT.md": [
-        "SCOPING_COMPLETE_v1",
+        "SCOPING_COMPLETE_v2",
         "评论特权监督",
         "公众诱发情绪分布",
         "检索增强情绪预测",
         "可靠性拒绝与缺失模态",
+        "Video2Reaction",
+        "DIRECT_NEAR_COLLISION",
         "不声称穷尽召回",
     ],
     "CONTRIBUTION_PRIOR_ART_MATRIX.md": [
@@ -25,6 +27,8 @@ DOCUMENT_CONTRACT = {
         "M2PKD",
         "RAMER",
         "SelectiveNet",
+        "Video2Reaction",
+        "首次video-to-reaction-distribution",
     ],
     "CARM_NAME_AUDIT.md": ["NAME_BLOCKED", "Constraint-Aware Retrieval Module", "CarM"],
     "RESEARCH_PROTOCOL_FREEZE_AUDIT.md": [

@@ -6905,3 +6905,55 @@ G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFE
 ### Git状态
 
 内容提交`63be49c`已经推送`origin/main`；本条与阶段完成状态将作为独立00同步收尾提交推送。`tmp/`继续未跟踪且排除。
+
+## WR-20260724-005 — Task20在新RTX 4090实例恢复VC-CSA全量单种子训练
+
+- 时间：2026-07-24 12:52:00 +08:00
+- 类型：PROGRESS | ENV | DATA | EXPERIMENT | TEST | MONITORING | SECURITY
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 新实例重建、全量输入闭合与精确续训
+- 状态：全量训练已从Epoch 1 step 12精确恢复并持续运行；尚无完整epoch或正式结果
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户提供新的亚太区RTX 4090私人租用实例，要求直接复用私有MatBox中的数据与环境开始全量训练、监测运行速率，并在Codex额度不足时以epoch为单位安全暂停，以便下次从断点继续。本批严格保持唯一`seed=3407`，先闭合实例、固定8210项I3D、全量作者评论输入和既有精确断点，再启动训练；中途loss不作为结果。
+
+### 实际变更
+
+- 形成新实例非秘密绑定摘要：host-key SHA-256=`SHA256:gmztR/PfVEDy6YzkP24iddGQhHqSJ5Ffa+74nfaB8F0`，GPU UUID=`GPU-327f0213-fbc7-2bd4-ce2c-479837224b52`，endpoint digest=`a7a0fc20fb3fda61f9f2e76d6dc5b222b340992fbd4cb8012b3cc015b34df50c`；未记录凭据或端点原文。
+- 当前实例未从平台“我的环境”启动，私有MatBox中的`.snap`仅作为平台专有快照文件可见，不能由`tar`直接解包；本批没有修改或删除该快照，改为从本地固定归档重建`/root/task20-runtime/env`、作者源码、RoBERTa与运行目录。
+- 传入并复核四个既有固定归档，远端SHA-256与本地一致：runtime=`f0fd66accb16db4292ede192c516a8daeae1d1e1d94d2326e4259aa64a813af3`、source=`12c000d289668628ced1335bbe9cbb35c9fc3093a3e06e48c06531ae4689819e`、smoke comments=`ac818f8100fdcd61169fdb91b6fe85521b8dd1dfbe5352f7ab41a3cd986d4cbe`、RoBERTa=`a32207a761222570e7e1003fd3f826828f4b1198bdb55e707b57ead868cefd86`。
+- 重建冻结环境：Python 3.8.20、PyTorch 1.13.1+cu117、transformers 4.26.1、NumPy 1.22.4、SciPy 1.10.1、scikit-learn 1.2.1等；CUDA矩阵乘smoke通过。应用已跟踪精确续训补丁，返回`PATCHED_AND_VERIFIED`，并通过`compileall`。
+- 私有MatBox I3D逐文件重新计算fixity：8210项、2,283,804,928字节、content-tree SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`，文件权限错误0，父目录与I3D目录均为0700。
+- 初次恢复出的comment目录实际是8 train / 4 dev / 0 test smoke副本；本批在启动前发现并阻断误用。随后从作者全量固定副本构建并传入`task20-comments-author-full.tar`，本地/远端SHA-256均为`496b922e58d86f02fa7a6b3195b70cf899d9e521229045311177aaf1e8a9e948`，复核计数train=75,086、dev=10,727、test=21,454、annotations=117,057、video映射=8,210。
+- 复核既有精确断点：大小1,742,988,475字节、mode=0600、SHA-256=`52345285324cb828c7deda3aae0adc1d117b7198705ec2cd086f7755592d0255`；identity固定CSMV、seed=3407、batch=16、max_epoch=120、train=75,086、dev=10,727、steps_per_epoch=4693，游标为epoch_index=0、next_batch_index=12、global_step=12，模型/优化器/scheduler/RNG状态键由运行时加载合同验证。
+- 使用`num_workers=0`、`checkpoint_every_steps=500`和同一私有MatBox断点作为输入/输出启动全量续训，远端PID=809。训练日志确认从`[Epoch 1][Step 12/4692]`继续，不是从头运行；未发现并行`main.py`进程。
+- 建立15分钟线程heartbeat监控，检查进程、GPU/RAM、日志、断点和`.tmp`；仅在epoch+dev+checkpoint闭合、完整完成或新失败时升级。若可观察到额度接近不足，则在最近epoch闭合后SIGTERM并核验exit 143、断点与sync；若无法读取额度，不虚报已检测。
+
+### 验证与证据
+
+- 实例资源：NVIDIA GeForce RTX 4090，24,564 MiB；主机RAM约50 GiB、swap约3.6 GiB。训练稳定后显存约14,184 MiB，主进程RSS约5.2 GiB，swap=0。
+- GPU五次2秒间隔采样为25%、28%、83%、99%、100%，功耗约207–251 W；低瞬时利用率与CPU/I/O取样交替出现，不等于训练停止。
+- 30秒固定窗口从step 138推进至step 202，即64 steps/30 s=`2.13 steps/s`、约`0.469 s/step`；按剩余训练step粗估首个训练epoch约35分钟，dev评估与checkpoint另计。该速率是早期实测，不是完整epoch吞吐结论。
+- 本地尝试调用`tmp/task20_remote_fixity.py`因普通`.venv`缺少`paramiko`而以`ModuleNotFoundError`失败；未安装新包，改用既有SSH会话上的只读逐文件脚本完成相同fixity合同，失败如实保留且未影响资产或训练。
+- `.snap`经`file`仅识别为`data`，`tar -tf`失败；这只证明其不是可直接tar解包的归档，不证明平台控制面环境保存失败。
+- 当前日志中的中途`Loss_sum`仅为运行诊断，不构成epoch成绩或可报告结果；本条写入时尚未完成Epoch 1训练、dev评估或epoch checkpoint。
+
+### 影响与边界
+
+本批证明新4090实例上的固定I3D、作者全量评论、冻结软件栈与step 12精确断点可以共同启动全量训练，并初步规避旧A30多worker内存故障路径。它不证明任何完整epoch或120 epoch已完成，也不把早期loss解释为模型成绩。实验身份永久保持`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；不得进入T0/G3/统一baseline/任务50/论文claim。
+
+### 风险、问题与阻塞
+
+- Codex线程当前没有可读的账户额度遥测；因此不能声称精确知道额度何时耗尽。heartbeat只能依据可见上下文安全预算，在epoch闭合点执行暂停；远端训练本身不会因Codex不持续推理而消耗token。
+- 当前实例未使用平台保存的个人环境启动，故本批发生一次环境重建；后续创建实例时仍应在平台创建页选择该个人环境，不能仅依赖MatBox中可见的`.snap`文件。
+- 首个epoch尚未闭合，仍需继续监测主机RSS、GPU、MatBox FUSE、断点原子替换和dev评估；当前稳定状态不能保证后续120 epoch无平台故障。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；若权利方否认或固定8210覆盖/hash漂移，立即停止并标记`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控同一PID与唯一seed；首次到达500-step断点时核验MatBox原子写入，Epoch 1训练、dev评估与checkpoint全部闭合后记录真实epoch耗时、峰值资源和诊断指标。若额度安全预算不足，在该epoch闭合后SIGTERM并完成exit 143、无`.tmp`、断点hash稳定和`sync`核验；否则继续下一epoch，直至完整训练或新失败。
+
+### Git状态
+
+本条写入时共享主线起点为`e856c86`且与`origin/main`一致；仅`WORK_LOG.md`为本批拟跟踪变更，`tmp/`继续未跟踪且由Task20所有，不进入Git。远端训练正在运行，尚未提交完整epoch结果。

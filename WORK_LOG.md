@@ -6957,3 +6957,50 @@ G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFE
 ### Git状态
 
 本条写入时共享主线起点为`e856c86`且与`origin/main`一致；仅`WORK_LOG.md`为本批拟跟踪变更，`tmp/`继续未跟踪且由Task20所有，不进入Git。远端训练正在运行，尚未提交完整epoch结果。
+
+## WR-20260724-006 — Task20闭合RTX 4090全量续训首个epoch
+
+- 时间：2026-07-24 13:58:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 1训练、dev与断点闭环
+- 状态：Epoch 1诊断闭环完成；同一进程已进入Epoch 2并持续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+承接WR-20260724-005，heartbeat仅在完整epoch训练、dev评估和checkpoint均真实完成后升级状态。本批复核远端日志、Epoch 1损失文件、dev预测与性能文件、作者best模型文件、MatBox精确断点和当前进程，避免把中途loss或仅完成训练段误写成epoch结果。
+
+### 实际变更
+
+- 确认Epoch 1训练段完成并写出`loss_epoc_1.json`；作者日志记录训练段elapsed=2,916秒、speed=0.621527秒/batch。该耗时包含从既有step 12恢复后的本epoch剩余训练。
+- 确认dev评估完成并写出`dev_performance_1.json`与`dev_predict_1.pkl`；损失文件mtime为13:38:30，dev文件mtime为13:42:51，首轮dev评估约4分20秒。
+- 确认作者best模型`best3407_1.1892420993754078_1.pkl`于13:42:53写入，大小1,742,975,997字节；该文件名中的组合值为作者代码的opinion micro-F1加emotion micro-F1，不转换为本项目正式指标。
+- 确认MatBox `last-resume.ckpt`继续以mode=0600原子刷新，13:57:37时大小1,742,990,139字节且无`.tmp`残留；同一PID=809已推进到Epoch 2 step 1333/4692，证明Epoch 1末尾保存与下一epoch恢复游标均已越过边界。
+- 继续保持`num_workers=0`、唯一seed=3407和每500-step精确断点，不新增种子、不选择性重跑、不基于dev/test改变配置。
+
+### 验证与证据
+
+- Epoch 1累计训练损失：total=1124.284859、opinion=537.052027、emotion=587.232831；按75,086个训练样本记录的作者平均loss为0.0149733。该训练loss只作诊断。
+- Epoch 1 dev opinion：accuracy/micro-F1=0.635406，macro-F1=0.575565；emotion：accuracy/micro-F1=0.553836，macro-F1=0.398142。作者组合micro-F1=1.189242。以上均来自作者原设定NON_T0 dev评估，不是T0/G3或统一baseline结果。
+- Epoch 1完整墙钟闭环约53分钟：训练段约48.6分钟、dev约4.3分钟、模型与断点保存约数秒。按该首轮闭环线性外推，120 epochs约106小时；后续epoch仍可能因缓存、定期断点和平台负载变化而波动。
+- Epoch 2监控时显存约17,248 MiB，主机RAM约4.6 GiB、可用约46.6 GiB；无swap增长、无DataLoader worker、无新Killed/OOM。
+- 进程、日志、Epoch 1损失、dev性能、dev预测、best模型和MatBox精确断点七项同时存在；因此本条可以写为首个epoch闭环，但不能写为完整训练完成。
+
+### 影响与边界
+
+该里程碑证明旧A30首epoch内存故障在当前4090、`num_workers=0`和两处内存修复路径下未复现，并给出首个真实完整epoch吞吐基准。实验身份永久保持`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；上述dev数字不得进入T0/G3、统一baseline、任务50或论文claim，也不改变G3=`PASS_WITH_LIMITATIONS`。
+
+### 风险、问题与阻塞
+
+- 首轮线性外推约106小时，不是完成承诺；平台FUSE、定期1.74 GiB断点写入、后续评估和缓存状态都会影响总时长。
+- 当前线程仍无账户token余额遥测，不能声称检测到精确额度阈值；远端训练独立运行不持续消耗token，heartbeat检查才产生少量token使用。
+- 作者best模型每epoch约1.74 GiB，若120轮全部保留将显著占用实例盘；完整训练前需监测磁盘并按既有合同滚动保留必要工件，不得删除当前唯一best或精确断点。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 2及后续epoch的GPU/RAM、实际闭环耗时、根盘空间和MatBox原子断点。仅在完整epoch闭环、训练完成或新失败时追加记录；若可见上下文安全预算不足，在最近epoch闭合后发送SIGTERM并核验exit 143、无`.tmp`、断点稳定与`sync`完成。
+
+### Git状态
+
+本条写入时共享主线为`f752607`且与`origin/main`一致；仅追加`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端同一seed训练持续运行。

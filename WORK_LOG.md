@@ -7094,3 +7094,44 @@ G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFE
 ### Git状态
 
 本条写入时共享主线为`08d0627`且与`origin/main`一致；仅追加`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端训练已停止。
+
+## WR-20260724-009 — Task20持久化Epoch 3暂停工件
+
+- 时间：2026-07-24 15:38:00 +08:00
+- 类型：STORAGE | FIXITY | CHECKPOINT | HANDOFF
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 暂停后最小工件持久化
+- 状态：暂停工件已复制到私有MatBox并完成fixity
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+WR-20260724-008已闭合训练停止与精确断点，但Epoch 1–3日志、指标、预测及作者best模型仍位于实例根盘。为避免用户释放实例后丢失已完成工件，本批将最小恢复与审计工件写入同一私有MatBox受限证据目录。
+
+### 实际变更
+
+- 新建权限0700的`paused-epoch3`受限目录。
+- 将Epoch 1–3小型日志、指标、预测和TensorBoard工件打包为`epoch1-3-small-evidence.tar`；排除重复的历史best大模型。
+- 单独持久化当前作者组合分数最高的Epoch 3模型`best3407_1.2442434977160435_3.pkl`；两项文件权限均为0600。
+- 执行`sync`并计算SHA-256；未复制凭据、端点原文或I3D到Git。
+
+### 验证与证据
+
+- 小型证据包：10,352,640字节，SHA-256=`03fb4ee714a820987ee7345712bf6b619f77b9da255f1a2d88345bb0c15934f9`。
+- Epoch 3 best模型：1,742,975,997字节，SHA-256=`c3bd695b0974723041a4693b766b3107d8ca1edc9c7ee151c3e02dbfe44d1c10`。
+- 精确续训断点仍由WR-20260724-008固定在独立MatBox路径，SHA-256=`f51e249890e2320995fe6513562010982171c3d7c16b7a1c08a008d7e1bea632`。
+
+### 影响与边界
+
+当前即使释放实例，唯一seed的精确续训断点、Epoch 1–3最小证据和Epoch 3 best模型均有私有MatBox副本。该持久化不改变`NON_T0/INELIGIBLE`身份，也不使指标获得正式证据资格。
+
+### 风险、问题与阻塞
+
+MatBox仍受平台私有存储生命周期与ACL控制；下次恢复必须重新核验三项hash、权限和8210项I3D fixity。历史Epoch 1/2 best大模型未复制，但其指标与预测已进入小型证据包。
+
+### 下一步
+
+保持训练和heartbeat暂停。下次继续前按WR-20260724-008游标与本条fixity执行恢复预检；用户若释放当前实例，不得把“根盘消失”写成MatBox删除。
+
+### Git状态
+
+本条写入时共享主线为`3363c2a`且已推送；仅追加`WORK_LOG.md`，受限工件不进入Git。

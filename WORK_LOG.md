@@ -7004,3 +7004,47 @@ G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFE
 ### Git状态
 
 本条写入时共享主线为`f752607`且与`origin/main`一致；仅追加`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端同一seed训练持续运行。
+
+## WR-20260724-007 — Task20闭合RTX 4090全量续训第二个epoch
+
+- 时间：2026-07-24 14:58:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 2训练、dev与断点闭环
+- 状态：Epoch 2诊断闭环完成；同一进程已进入Epoch 3并持续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+按heartbeat合同继续核验完整epoch边界。本批只在Epoch 2训练文件、dev文件、best模型、MatBox精确断点和下一epoch真实进度同时存在后追加记录，不把任一中途loss或部分step当成结果。
+
+### 实际变更
+
+- Epoch 2训练段完成并写出`loss_epoc_2.json`；作者日志记录elapsed=2,915秒、speed=0.621438秒/batch，和Epoch 1训练段速度基本一致。
+- `dev_performance_2.json`、`dev_predict_2.pkl`和`best3407_1.2293278642677357_2.pkl`均已落盘；best模型大小1,742,975,997字节。
+- MatBox `last-resume.ckpt`继续以mode=0600刷新，14:53:42时大小1,742,991,291字节且无`.tmp`残留；同一PID=809已推进到Epoch 3 step 2037/4692。
+- 未改变seed、模型、数据、学习率、调参规则或评测输入；未新增重跑或基于dev选择配置。
+
+### 验证与证据
+
+- Epoch 2作者平均训练loss=0.0117294；训练段约48.6分钟，dev与模型写入约4分钟，完整闭环仍约53分钟。
+- Epoch 2 dev opinion：micro-F1/accuracy=0.646966、macro-F1=0.587209；emotion：micro-F1/accuracy=0.582362、macro-F1=0.471254；作者组合micro-F1=1.229328。相对Epoch 1变化仅作训练轨迹诊断，不构成选择或正式比较。
+- 监控时显存约17,248 MiB，主机RAM约4.7 GiB、可用约46.5 GiB；无swap增长、Killed或OOM。
+- 根盘300 GiB当前仅使用8.3 GiB、可用292 GiB；私有MatBox 55 GiB当前使用11 GiB、可用45 GiB。按每轮约1.74 GiB best模型线性增长，120轮可能占用约209 GiB，当前根盘容量足够但仍需持续监控。
+
+### 影响与边界
+
+连续两个完整epoch闭环且RSS稳定，进一步支持A30内存故障修复在当前4090路径有效；仍不能保证后续所有epoch或平台生命周期无故障。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，所有数字不得进入T0/G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 预计约106小时的总时长与约209 GiB的best模型增长均为线性估计；若平台根盘、FUSE或实例生命周期变化须立即重新评估。
+- 当前线程没有账户token余额遥测，不能精确检测额度阈值；训练本身独立运行，heartbeat才消耗少量token。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 3及后续完整边界、GPU/RAM、根盘增长和MatBox断点原子性。仅在完整epoch、训练完成或新失败时追加记录；需要暂停时只在最近完整epoch闭环后执行并核验断点。
+
+### Git状态
+
+本条写入时共享主线为`3835b3b`且与`origin/main`一致；仅追加`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端同一seed训练持续运行。

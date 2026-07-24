@@ -7048,3 +7048,49 @@ G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFE
 ### Git状态
 
 本条写入时共享主线为`3835b3b`且与`origin/main`一致；仅追加`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端同一seed训练持续运行。
+
+## WR-20260724-008 — Task20在Epoch 3闭环后安全暂停4090全量续训
+
+- 时间：2026-07-24 15:33:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STOP | AUDIT
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 3闭环与用户指令暂停
+- 状态：Epoch 3诊断闭环完成；训练已按信号安全退出，精确断点停在Epoch 4 step 220
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户在Epoch 3训练段结束后明确要求停止。本批先区分训练段完成与完整epoch闭环，确认Epoch 3 dev、best模型和epoch checkpoint均已写入；随后发出SIGTERM并核验进程退出、原子断点、hash、游标、无临时文件和存储同步。由于用户指令到达并执行时程序已经自动进入Epoch 4，必须诚实记录额外完成的220个精确可恢复batch，不能写成恰好停在Epoch 3边界。
+
+### 实际变更
+
+- Epoch 3训练、dev评估、预测文件和`best3407_1.2442434977160435_3.pkl`均已完成；best模型大小1,742,975,997字节。
+- 15:31:16向唯一训练PID=809发送SIGTERM；运行时信号处理器设置停止请求，在当前batch后原子保存精确断点，并以预期exit 143退出。
+- 执行`sync`并确认训练进程为0、GPU利用率0%、显存2 MiB、MatBox断点目录无`.tmp`。
+- 最终`last-resume.ckpt`大小1,742,994,875字节、mode=0600、SHA-256=`f51e249890e2320995fe6513562010982171c3d7c16b7a1c08a008d7e1bea632`。
+- 最终断点schema=`task20-vccsa-exact-resume-v1`，模型、optimizer、scheduler和RNG状态均存在；游标为epoch_index=3、next_batch_index=220、global_step=14299、tensorboard_steps=283。下次须用同一identity从该游标准确恢复。
+
+### 验证与证据
+
+- Epoch 3训练段elapsed=2,877秒、speed=0.613274秒/batch；作者平均训练loss=0.0107506。
+- Epoch 3 dev opinion：micro-F1/accuracy=0.647152、macro-F1=0.569021；emotion：micro-F1/accuracy=0.597091、macro-F1=0.509984；作者组合micro-F1=1.244243。以上仅为NON_T0探索诊断。
+- 停止时作者程序已在Epoch 4 step 218附近输出日志；最终原子断点游标为next_batch_index=220。该差异来自信号请求、当前batch完成和断点写入之间的正常边界，不是重复运行或额外epoch完成。
+- 退出核验：shell报告`Exit 143`；`pgrep -af 'python.*main.py'`无训练进程；断点目录无`.tmp`；`sync`完成；GPU为0%/2 MiB。
+- 根盘300 GiB使用约10 GiB、可用291 GiB；MatBox 55 GiB使用约11 GiB、可用45 GiB。
+
+### 影响与边界
+
+当前全量探索运行累计完成3个完整epoch，并在第4个epoch精确保存220个batch后安全暂停。下次不应从Epoch 4 step 0重跑，也不应把220个batch写成完整Epoch 4。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，任何指标不得进入T0/G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 用户指令到达时Heartbeat刚确认Epoch 3训练段完成但dev尚未闭环；在下一次人工执行前，程序已完成dev并进入Epoch 4，因此无法物理停在严格的Epoch 3末尾。精确断点避免了额外220个batch丢失。
+- 下次恢复必须保持seed=3407、batch=16、max_epoch=120、train=75,086、dev=10,727和steps_per_epoch=4693不变；身份漂移必须fail closed。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+保持远端idle并暂停周期监控。用户下次要求继续时，先复核实例三元绑定、8210项fixity、断点SHA-256/identity/游标和完整输入，再从Epoch 4 next_batch_index=220恢复唯一seed；不得新增种子或选择性回退断点。
+
+### Git状态
+
+本条写入时共享主线为`08d0627`且与`origin/main`一致；仅追加`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端训练已停止。

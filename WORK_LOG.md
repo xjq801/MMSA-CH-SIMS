@@ -7615,3 +7615,49 @@ Epoch 9再次提高冻结组合分数，emotion micro-F1改善而macro-F1略低�
 ### Git状态
 
 本条基于`main=origin/main=012cffa4e923ee537cfd6ff2eef00368f3dd8cbc`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-011 — Task20 VC-CSA Epoch 10—11训练与dev闭环
+
+- 时间：2026-07-27 19:04:14 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 10—11完整闭环
+- 状态：Epoch 10与11的训练、dev评估、best判定、checkpoint和私有MatBox证据同步均已完成；Epoch 12继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+继续按完整曲线和冻结模型选择规则记录唯一seed=3407。本次监控间隔内Epoch 10和11先后闭环，因此同批如实记录两轮结果，不因Epoch 11回落而省略；逐step loss仍只用于运行诊断。
+
+### 实际变更
+
+- Epoch 10总loss为384.3723394665867、opinion为198.54443361563608、emotion为185.82790569402277；4693个batch均值分别为0.08190333、0.04230651、0.03959683。训练耗时2568秒，作者速度0.54752065秒/batch，结束学习率为`4.166666666666667e-05`。
+- Epoch 10 dev opinion accuracy=micro-F1=0.70271278、macro-F1=0.63903372；dev emotion accuracy=micro-F1=0.61499021、macro-F1=0.53317998。冻结组合micro-F1为1.3177029924489605，比Epoch 9 best高0.001771231472；checkpoint确认`best_epoch=10`，真实best更新。
+- Epoch 11总loss为368.46760298125446、opinion为190.0384335075505、emotion为178.42916940152645；4693个batch均值分别为0.07851430、0.04049402、0.03802028。训练耗时2590秒，作者速度0.55204986秒/batch，结束学习率为`4.5833333333333334e-05`。
+- Epoch 11 dev opinion accuracy=micro-F1=0.68705137、macro-F1=0.64041067；dev emotion accuracy=micro-F1=0.61135453、macro-F1=0.52913252。冻结组合micro-F1为1.2984058916752121，比Epoch 10 best低0.019297100774；该轮不是best。
+- 将两轮主日志、作者日志、loss/dev JSON、dev预测和TensorBoard原子同步到私有MatBox的0700 `epoch-evidence/epoch-010`与`epoch-evidence/epoch-011`；仅Epoch 10目录包含真实新best，未将Epoch 11非best候选权重复制到MatBox。目录内文件及manifest均为0600。
+
+### 验证与证据
+
+- Epoch 10证据目录共9个文件、3,501,851,466字节；Epoch 11最小证据目录共8个文件、15,967,178字节。两份`SHA256SUMS`经`sha256sum -c`逐项全部`OK`；同步后MatBox使用23,525,851,136/59,055,800,320字节，可用35,529,949,184字节。
+- 首次生成Epoch 10 manifest时，重定向预创建的`.SHA256SUMS.tmp`被错误包含进待校验清单，`sha256sum -c`因此以exit 1诚实失败；该失败未影响已复制文件。随后将临时manifest移到目录外生成并原子安装，Epoch 10复核全部`OK`，再以同一修正方法完成Epoch 11。
+- 审计时唯一`python main.py`进程继续运行至Epoch 12 step 1038/4692，日志ETA约32分钟；GPU采样41%、显存17,248/24,564 MiB、65°C、约249.74 W，RAM使用约4.93/53.69 GB，未见资源持续增长。
+- 主日志未发现NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。最新周期checkpoint为mode=0600、size=1,743,004,667、无`.tmp`，SHA-256=`f19eef084dcc66d9e92580fd416ee67c18208788abc0f97134bf802c19b98fdd`；cursor为`epoch_index=11`、`next_batch_index=877`、`global_step=52500`、`tensorboard_steps=1040`，且`best_epoch=10`、`best_eval_accuracy=1.3177029924489605`。
+- Epoch 10/11 dev JSON写入时间分别约在当轮loss文件后4分钟；当前作者程序未单独仪表化dev与保存耗时，故不伪造更细的耗时拆分。
+
+### 影响与边界
+
+Epoch 10刷新冻结best，Epoch 11训练loss继续下降但dev组合分数回落，证明必须保留完整曲线并继续按预注册规则选择，不得只报告单调改善轮次。实验永久保持`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，正式证据资格为`INELIGIBLE`；不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- MatBox当前保留6个历史/当前best副本并使用约40%；继续出现best时，应在达到容量安全阈值前执行带hash和tombstone的可审计轮换，当前精确checkpoint不得删除。
+- TensorBoard macro标签继续不作为macro证据；macro值只读取`dev_performance_<epoch>.json`。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 12及后续完整闭环；仅在完整epoch、完整训练或新失败时追加记录，并持续核验周期checkpoint原子写入、资源和MatBox容量。
+
+### Git状态
+
+本条基于`main=origin/main=197f76e26d9777d718c9a4f691eced07ebd56eb1`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

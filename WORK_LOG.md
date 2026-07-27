@@ -7435,3 +7435,48 @@ Epoch 5提供了首个连续完整epoch的可信速度和耗时基线，并继�
 ### Git状态
 
 本条基于`main=origin/main=d0d634b6f21e32afa4339fe0761fa06407fd1271`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-007 — Task20 VC-CSA Epoch 6训练与dev闭环
+
+- 时间：2026-07-27 15:12:20 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 6完整闭环
+- 状态：Epoch 6训练、dev评估、best判定、checkpoint与私有MatBox证据同步均已完成；Epoch 7继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+继续执行每个完整epoch的统一监控与证据合同，核验Epoch 6的loss、dev、冻结选择量、断点和私有持久化，不选择性省略结果。
+
+### 实际变更
+
+- Epoch 6总loss为543.4601403698325、opinion为284.82193273771554、emotion为258.63820758089423；4693个batch均值分别为0.11580229、0.06069080、0.05511149。
+- 完整训练耗时2,658秒，作者速度0.56661191秒/batch；结束学习率为`2.5e-05`。
+- dev opinion accuracy=micro-F1=0.69534819、macro-F1=0.63380722；dev emotion accuracy=micro-F1=0.60743917、macro-F1=0.54105442。
+- 冻结组合micro-F1为1.3027873590006527，相比Epoch 5提高0.015381746994；checkpoint确认`best_epoch=6`，真实best更新。
+- 将Epoch 6主日志、作者日志、loss/dev JSON、dev预测、TensorBoard和真实best原子写入私有MatBox的0700 `epoch-evidence/epoch-006`，文件与manifest均0600。
+
+### 验证与证据
+
+- Epoch 7已启动且唯一进程正常。审计时最新周期checkpoint cursor为epoch_index=6、next_batch_index=842、global_step=29000、tensorboard_steps=574；SHA-256=`4b767d7f7326a0c03a2c4d5080af68bbe4b600b7f700972e71ac52ea7e7f0307`、mode=0600、size=1,742,998,587、无`.tmp`。
+- Epoch 6证据manifest的8项`sha256sum -c`全部`OK`；同步后MatBox使用约18/55 GiB、可用约38 GiB。
+- 主日志无NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。GPU采样96%、显存约17,248/24,564 MiB；RAM约4.8/53.7 GB，显存/RAM未见持续增长。
+- 根盘使用约12.0/322 GB；MatBox空间足够继续当前保留策略，尚未删除Epoch 4/5历史best。
+
+### 影响与边界
+
+Epoch 6继续显示训练loss下降、冻结dev选择量提高，但该趋势尚不能证明最终泛化或正式复现成功。实验身份继续为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，正式证据资格仍为`INELIGIBLE`。
+
+### 风险、问题与阻塞
+
+- 当前best连续三轮更新，每个约1.743 GB。接近MatBox容量阈值前须执行带hash和tombstone的轮换，只保留当前best与必要审计证据；当前checkpoint不得删除。
+- TensorBoard macro标签仍不作为macro证据。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 7及后续完整闭环；持续观察dev趋势、17.2 GiB显存平台期、根盘和MatBox容量。
+
+### Git状态
+
+本条基于`main=origin/main=9b0674bc1334be7cdfadbbc94076fd280b3e5d51`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

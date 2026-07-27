@@ -327,6 +327,6 @@ CSMV命名空间纠正与同源split已获00接受，公共核心19项复现零�
 - [x] 补充任务40的OOF效用标签、T0-only路由输入、强路由对照、coverage匹配、负迁移机制链和可证伪止损
 - [x] 补充任务50的五种子公平比较、效用/负迁移配对统计及success/failure/inconclusive分支
 - [x] 运行工作日志、准备检查、v1.20专项validator、passport和handoff合同
-- [ ] 提交推送并通知Task20刷新
-- **状态：** ready_for_commit
+- [x] 提交推送并通知Task20刷新
+- **状态：** completed
 - **边界：** 不改变任务20冻结接口或远端训练，不改变G1—G3，不创建Task30，不恢复v1.17的3%/5%/8%硬阈值。

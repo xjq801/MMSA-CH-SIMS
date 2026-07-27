@@ -7389,3 +7389,49 @@ Epoch 4是本次跨实例精确续训后的首个完整训练+dev闭环，证明
 ### Git状态
 
 本条基于`main=origin/main=913a44c5174e9a951fc80f4de9e9f7fefdebed29`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed训练继续运行。
+
+## WR-20260727-006 — Task20 VC-CSA Epoch 5训练与dev闭环
+
+- 时间：2026-07-27 14:44:26 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 5完整闭环
+- 状态：Epoch 5训练、dev评估、best判定、checkpoint与私有MatBox证据同步均已完成；Epoch 6继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+按WR-20260727-005建立的连续epoch监控合同，本条汇总首个未跨实例、未中途重启的完整训练epoch，并核验其dev、best、checkpoint和私有持久证据。
+
+### 实际变更
+
+- Epoch 5总loss为627.5510788038373、opinion loss为337.45706369169056、emotion loss为290.0940154986456；按4693个batch计算均值分别为0.13372066、0.07190647、0.06181419。
+- Epoch 5完整训练耗时2,689秒，作者日志速度0.57324755秒/batch；结束学习率为两个参数组均`2.0833333333333336e-05`。
+- dev opinion：accuracy=micro-F1=0.68397502，macro-F1=0.62122263；dev emotion：accuracy=micro-F1=0.60343060，macro-F1=0.53031462。所有macro值来自`dev_performance_5.json`。
+- 冻结选择量为两任务micro-F1之和，Epoch 5得分1.287405612007085，相比Epoch 4的1.2503961965134707提高0.037009415494；checkpoint确认`best_epoch=5`，真实best更新。
+- 在私有MatBox的0700 `epoch-evidence/epoch-005`目录原子持久化主日志、作者日志、loss/dev JSON、dev预测、两个TensorBoard事件文件和真实更新的Epoch 5 best；全部文件及manifest为0600。
+
+### 验证与证据
+
+- Epoch 6已继续运行，唯一进程保持seed=3407、batch=16、`num_workers=0`。
+- 审计时最新周期checkpoint cursor为epoch_index=5、next_batch_index=3035、global_step=26500、tensorboard_steps=525；SHA-256=`5e6d2e038ebac2cea8493b6af2583750f5c16200fbdbd55fb08469052f482469`、mode=0600、size=1,742,997,371且无`.tmp`。
+- `sha256sum -c manifest.sha256`对Epoch 5的8项绑定证据全部返回`OK`；同步后MatBox使用约16/55 GiB、可用约40 GiB。
+- 主日志无NaN、数值Inf、CUDA OOM、Killed、Traceback、数据读取错误或缺文件。周期checkpoint写入期间短暂出现`.tmp`和GPU空闲，20秒后原子替换完成、`.tmp`消失、mode继续0600，属于正常checkpoint窗口。
+- 运行采样显示显存约17,248/24,564 MiB，RAM使用约4.8/53.7 GB；根盘使用约10.3/322 GB。与Epoch 4后相比显存稳定在约17.2 GiB，未见持续增长。
+
+### 影响与边界
+
+Epoch 5提供了首个连续完整epoch的可信速度和耗时基线，并继续改善冻结作者选择量；这只是`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`诊断，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`不变。
+
+### 风险、问题与阻塞
+
+- 单个真实best约1.743 GB；若best持续每epoch更新，MatBox 40 GiB余量不足以保留全部未来best。后续保留当前best和必要审计证据，若出现新best，在确认新副本hash后可按保留策略淘汰被替代的旧best，但不得删除当前可恢复checkpoint。
+- 作者TensorBoard macro标签仍不得用作macro证据。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 6及后续运行。利用连续epoch约44.8分钟训练加约3.4分钟dev的观测更新剩余时间估计；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=d0d634b6f21e32afa4339fe0761fa06407fd1271`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

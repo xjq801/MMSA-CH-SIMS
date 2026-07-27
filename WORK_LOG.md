@@ -7661,3 +7661,48 @@ Epoch 10刷新冻结best，Epoch 11训练loss继续下降但dev组合分数回�
 ### Git状态
 
 本条基于`main=origin/main=197f76e26d9777d718c9a4f691eced07ebd56eb1`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-012 — Task20 VC-CSA Epoch 12训练与dev闭环
+
+- 时间：2026-07-27 20:00:49 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 12完整闭环
+- 状态：Epoch 12训练、dev评估、非best判定、checkpoint与私有MatBox最小证据同步均已完成；Epoch 13继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+继续按冻结模型选择规则和完整曲线记录唯一seed=3407，闭合Epoch 12的训练、dev、断点与持久化证据；不把逐step loss或作者每轮候选权重误写成正式结果或真实best。
+
+### 实际变更
+
+- Epoch 12总loss为353.1828458542004、opinion为181.79720188537613、emotion为171.38564383983612；4693个batch均值分别为0.07525737、0.03873795、0.03651942。
+- 训练耗时2569秒，约0.5474秒/batch；结束学习率为`5.00e-05`。loss文件至dev performance/prediction文件的观测间隔为202秒，作者程序仍未单独仪表化dev与保存耗时。
+- dev opinion accuracy=micro-F1=0.71184861、macro-F1=0.64798357；dev emotion accuracy=micro-F1=0.59373543、macro-F1=0.52055283。
+- 冻结组合micro-F1为1.3055840402722103，比Epoch 10 best低0.012118952177；checkpoint保持`best_epoch=10`和`best_eval_accuracy=1.3177029924489605`，Epoch 12候选不是best。
+- 将主日志、作者日志、loss/dev JSON、dev预测和TensorBoard原子同步至私有MatBox的0700 `epoch-evidence/epoch-012`；按合同未复制约1.743 GB的Epoch 12非best候选权重，目录内文件及manifest均为0600。
+
+### 验证与证据
+
+- Epoch 12最小证据目录共8个文件、17,547,386字节；`SHA256SUMS`经`sha256sum -c`逐项全部`OK`，无残留`.tmp`或mode错误。同步后MatBox使用23,534,239,744/59,055,800,320字节，可用35,521,560,576字节。
+- 审计时唯一`python main.py`进程运行于Epoch 13；15秒窗口由step 2182推进至2200，观测速度1.20 steps/s、按该短窗估算剩余约34.6分钟，作者进度条同期曾给出约25分钟。短窗受周期断点和存储I/O影响，仅作运行监控，不作性能结论。
+- 最新周期checkpoint为mode=0600、size=1,743,005,947、无`.tmp`，SHA-256=`c1b4222296c50315b3b7a79f7a1cc27f4a2bc82c64caa38d582df3b4d93c76e6`；cursor为`epoch_index=12`、`next_batch_index=2184`、`global_step=58500`、`tensorboard_steps=1159`。
+- 主日志未发现NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。GPU采样71%、显存17,248/24,564 MiB、60°C、约253.59 W；RAM使用约4.90/53.69 GB，根盘约22.35/322.12 GB，资源稳定。
+
+### 影响与边界
+
+Epoch 12训练loss继续下降，opinion指标提高，但emotion micro/macro及冻结组合分数低于当前best；该分化继续支持保留完整多指标曲线而非只挑单项或单轮。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- MatBox仍使用约40%，当前无需轮换；若后续真实best持续增加，须在容量安全阈值前执行带hash与tombstone的可审计历史best轮换，精确checkpoint不得删除。
+- TensorBoard macro标签继续不作为macro证据，macro值只读取`dev_performance_12.json`。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 13及后续完整闭环；仅在完整epoch、完整训练或新失败时追加记录，持续核验唯一进程、资源和周期checkpoint原子写入。
+
+### Git状态
+
+本条基于`main=origin/main=12c82f50b4fb2e75a96e091120d96e42b65ac057`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

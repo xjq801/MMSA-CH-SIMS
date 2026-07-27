@@ -7525,3 +7525,48 @@ Epoch 7训练loss继续下降，但冻结dev组合分数首次小幅低于上一
 ### Git状态
 
 本条基于`main=origin/main=d191605adbe6045ece4d77c8701f82cea909776c`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-009 — Task20 VC-CSA Epoch 8训练与dev闭环
+
+- 时间：2026-07-27 16:40:46 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 8完整闭环
+- 状态：Epoch 8训练、dev评估、best判定、checkpoint与私有MatBox证据同步均已完成；Epoch 9继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+延续完整曲线与冻结选择规则，记录Epoch 8在Epoch 7小幅回落后的实际结果，并闭合新best与私有持久化。
+
+### 实际变更
+
+- Epoch 8总loss为441.0033884048462、opinion为227.09305870067328、emotion为213.9103295886889；4693个batch均值为0.09397046、0.04838974、0.04558072。
+- 完整训练耗时2,598秒，作者速度0.55391230秒/batch；结束学习率为`3.3333333333333335e-05`。
+- dev opinion accuracy=micro-F1=0.69749231、macro-F1=0.63752120；dev emotion accuracy=micro-F1=0.60902396、macro-F1=0.54568902。
+- 冻结组合micro-F1为1.3065162673627295，相比Epoch 6 best提高0.003728908362；checkpoint确认`best_epoch=8`，真实best更新。
+- 将Epoch 8主日志、作者日志、loss/dev JSON、dev预测、TensorBoard及新best原子同步至私有MatBox的0700 `epoch-evidence/epoch-008`，文件和manifest均0600。
+
+### 验证与证据
+
+- Epoch 9已继续运行。最新周期checkpoint cursor为epoch_index=8、next_batch_index=456、global_step=38000、tensorboard_steps=753；SHA-256=`a22f0286d62ebc0c707e7685f0e8e96e986faf8c9d1d96350a05526d50ebf32c`、mode=0600、size=1,743,001,019、无`.tmp`。
+- Epoch 8证据manifest的8项`sha256sum -c`全部`OK`；MatBox使用约19/55 GiB、可用约37 GiB。
+- 主日志无NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误；GPU采样100%、显存约17,248/24,564 MiB，RAM约4.9/53.7 GB，资源稳定。
+- 根盘使用约15.5/322 GB，MatBox与根盘仍有充足余量。
+
+### 影响与边界
+
+Epoch 8恢复并超过此前冻结best，但改进幅度较小，不能据此推断后续单调改善。完整曲线继续保留Epoch 7回落。实验仍为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且正式证据`INELIGIBLE`。
+
+### 风险、问题与阻塞
+
+- MatBox累计保存Epoch 4、5、6、8四个历史/当前best；若best继续更新，需在容量阈值前执行带hash和tombstone的轮换。
+- TensorBoard macro标签继续不作为macro证据。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 9及后续闭环，观察冻结best是否稳定、dev emotion波动和存储增长。
+
+### Git状态
+
+本条基于`main=origin/main=de6aae414398fc5c2ea3a97d84da583639ba7fdd`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

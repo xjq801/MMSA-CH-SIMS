@@ -7570,3 +7570,48 @@ Epoch 8恢复并超过此前冻结best，但改进幅度较小，不能据此推
 ### Git状态
 
 本条基于`main=origin/main=de6aae414398fc5c2ea3a97d84da583639ba7fdd`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-010 — Task20 VC-CSA Epoch 9训练与dev闭环
+
+- 时间：2026-07-27 17:39:12 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 9完整闭环
+- 状态：Epoch 9训练、dev评估、best判定、checkpoint与私有MatBox证据同步均已完成；Epoch 10继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+持续记录完整训练曲线和冻结模型选择，不提前停止或选择性回退；闭合Epoch 9结果、断点与私有证据。
+
+### 实际变更
+
+- Epoch 9总loss为404.54632781632245、opinion为207.4302126490511、emotion为197.11611516214907；4693个batch均值为0.08620207、0.04419992、0.04200216。
+- 完整训练耗时2,554秒，作者速度0.54452370秒/batch；结束学习率为`3.7500000000000003e-05`。
+- dev opinion accuracy=micro-F1=0.69879743、macro-F1=0.64045723；dev emotion accuracy=micro-F1=0.61713433、macro-F1=0.54067972。
+- 冻结组合micro-F1为1.3159317609769738，相比Epoch 8提高0.009415493614；checkpoint确认`best_epoch=9`，真实best更新。
+- 将Epoch 9主日志、作者日志、loss/dev JSON、dev预测、TensorBoard及新best原子同步到私有MatBox的0700 `epoch-evidence/epoch-009`；文件和manifest均0600。
+
+### 验证与证据
+
+- Epoch 10已运行。最新周期checkpoint cursor为epoch_index=9、next_batch_index=1763、global_step=44000、tensorboard_steps=872；SHA-256=`160e45466913be4248536075b4c0b4754544da623e3a00dc45ece6d86f1b2d5e`、mode=0600、size=1,743,002,235、无`.tmp`。
+- Epoch 9证据manifest的8项`sha256sum -c`全部`OK`；MatBox使用约21/55 GiB、可用约35 GiB。
+- 主日志无NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误；GPU采样97%、显存约17,248/24,564 MiB，RAM约4.9/53.7 GB。
+- 根盘使用约17.3/322 GB，资源与断点持续正常。
+
+### 影响与边界
+
+Epoch 9再次提高冻结组合分数，emotion micro-F1改善而macro-F1略低于Epoch 8，说明不同指标并非同步单调变化。最终分析仍须使用完整曲线和冻结选择量。实验继续为`NON_T0/INELIGIBLE`。
+
+### 风险、问题与阻塞
+
+- MatBox已保存5个best副本并使用约37%；若best持续更新，后续需执行带hash/tombstone的历史best轮换。
+- TensorBoard macro标签继续不作为macro证据。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 10及后续完整闭环，并在MatBox可用空间接近安全阈值前实施可审计best轮换。
+
+### Git状态
+
+本条基于`main=origin/main=012cffa4e923ee537cfd6ff2eef00368f3dd8cbc`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

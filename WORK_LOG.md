@@ -7752,3 +7752,48 @@ Epoch 13训练loss继续下降且emotion指标较Epoch 12恢复，但opinion与�
 ### Git状态
 
 本条基于`main=origin/main=7aad47ba8d0573e670d2d47625e9711fbde6ac06`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-014 — Task20 VC-CSA Epoch 14训练与dev闭环
+
+- 时间：2026-07-27 22:01:46 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 14完整闭环
+- 状态：Epoch 14训练、dev评估、新best判定、checkpoint与私有MatBox证据同步均已完成；Epoch 15继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+继续按冻结模型选择规则记录唯一seed=3407的完整曲线，闭合Epoch 14的训练、dev、真实best更新、精确断点和私有证据，不基于中途loss或单项指标提前选择。
+
+### 实际变更
+
+- Epoch 14总loss为301.6734919771552、opinion为154.3935854085721、emotion为147.279906549491；4693个batch均值分别为0.06428159、0.03289870、0.03138289。
+- 训练耗时3150秒，约0.6712秒/batch；结束学习率为`4.91e-05`。loss文件至dev performance/prediction文件的观测间隔为200秒，作者程序未单独仪表化dev与保存耗时。
+- dev opinion accuracy=micro-F1=0.71688263、macro-F1=0.66310707；dev emotion accuracy=micro-F1=0.61331220、macro-F1=0.54453725。
+- 冻结组合micro-F1为1.3301948354619184，比Epoch 10 best高0.012491843013；checkpoint确认`best_epoch=14`和`best_eval_accuracy=1.3301948354619184`，真实best更新。
+- 将主日志、作者日志、loss/dev JSON、dev预测、TensorBoard和真实新best原子同步至私有MatBox的0700 `epoch-evidence/epoch-014`；目录内文件及manifest均为0600。
+
+### 验证与证据
+
+- Epoch 14证据目录共9个文件、3,506,214,378字节；`SHA256SUMS`经`sha256sum -c`逐项全部`OK`，无残留`.tmp`或mode错误。同步后MatBox使用25,308,430,336/59,055,800,320字节，可用33,747,369,984字节。
+- 最新周期checkpoint为mode=0600、size=1,743,008,827、无`.tmp`，SHA-256=`1e4b8de14bdf11d0489caae5680ae5d284b643f4b8cf834e8b3fa68dbdb7c171`；cursor为`epoch_index=14`、`next_batch_index=2798`、`global_step=68500`、`tensorboard_steps=1357`。
+- 审计时唯一`python main.py`进程运行于Epoch 15；15秒窗口由step 2952推进至2984，观测2.1333 steps/s，按该窗口估算剩余约13.3分钟。
+- 主日志未发现NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。GPU采样99%、显存17,248/24,564 MiB、64°C、约276.37 W；RAM约5.03/53.69 GB，根盘约25.85/322.12 GB，资源未见持续增长。
+
+### 影响与边界
+
+Epoch 14同时提高opinion、emotion macro和冻结组合分数并刷新best，但仍只是NON_T0探索路径中的dev模型选择证据，不代表最终测试或正式复现完成。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 14训练耗时较此前约2569—2619秒增加约20%；同期未见GPU/RAM异常、错误或断点停滞，可能受MatBox周期checkpoint和证据I/O影响。继续观察后续完整epoch，尚不据单轮判定性能退化。
+- MatBox现保留7个历史/当前best副本并使用约43%；若真实best继续增加，应在容量安全阈值前执行带hash与tombstone的可审计历史best轮换，精确checkpoint不得删除。
+- TensorBoard macro标签继续不作为macro证据；I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 15及后续完整闭环，重点观察训练吞吐是否恢复及MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=e86c676ce4391e92ae9a472497d666806dec8953`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

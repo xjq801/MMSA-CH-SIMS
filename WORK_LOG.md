@@ -7238,3 +7238,106 @@ WR-20260727-001已完成第17节内容、台账和机器门。本条只记录有
 ### Git状态
 
 核心提交`6810358`已推送；本条及阶段完成状态将作为独立00同步收尾提交推送。`tmp/`继续未跟踪且排除。
+
+## WR-20260727-003 — 恢复13区Task20固定环境并等待精确断点
+
+- 时间：2026-07-27 12:14:22 +08:00
+- 类型：PROGRESS | ENVIRONMENT | CHECKPOINT | TEST | BLOCKER
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / RTX 4090跨区续训准备
+- 状态：环境、源码、数据与GPU预检完成；精确断点尚未迁入，训练未启动
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户要求在新的13区RTX 4090实例保持配置和唯一seed不变，从WR-20260724-008固定的Epoch 4、`next_batch_index=220`精确断点继续全量探索训练。00已授权继续既有`NON_T0/INELIGIBLE`路径，并明确禁止以Epoch 3 best模型替代精确checkpoint。
+
+### 实际变更
+
+- 复核新实例非秘密绑定：GPU为RTX 4090，UUID=`GPU-cffe1f0e-be10-363c-f43d-4d809aaece81`，驱动560.35.03；endpoint digest=`0c154354e968e9648f9bb9fbc9f6d6babedb55281b9552c0fa43f3639c48f257`，host-key继续匹配既有受信ED25519指纹。
+- 对13区私有MatBox的8210项I3D执行全量逐文件fixity，得到count=8210、bytes=2,283,804,928、content-tree SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`、mode errors=0；将父目录和I3D目录收紧为0700，内容未变。
+- 校验并展开固定runtime、作者源码、RoBERTa和全量评论归档；恢复独立环境Python 3.8.20、PyTorch 1.13.1+cu117、NumPy 1.22.4、SciPy 1.10.1、scikit-learn 1.2.1、transformers 4.26.1、tensorboardX 2.6.2.2。
+- 远端GitHub直连超时后，从本地只读克隆作者仓库固定commit `3e8c42608f4e89bc2082c55760aa63535e8e276a`，生成并传输SHA-256=`5b4bc4f8017e9219594f1992689fb01024104c63c01222005a53f77ae556b298`的Git bundle；远端检出同一commit后应用既有兼容与精确续训补丁。
+- 补丁报告为`PATCHED_AND_VERIFIED`；关键hash为`csmv_dataset.py=f7f39355766b8ae336453aa63b9c80a3857fa06450960faeb3dc93306b3df325`、`main.py=949e82066905cf8684a9420d5878a042804d5de6a404b3a7aa3086d6962164b3`、`train_vccsv.py=c1ecf88c7a548c23ba693ff02ff4738ea57ebab2d135242635fad641028343f3`、`resume_utils.py=0726a788a11639348c58691809120b503bf64c2e36131843e63852fbfb583b95`。
+- 用户报告环境跨区迁移完成后，13区新增可见环境快照1项，大小7,252,834,254 bytes、mode=0600；新建0700的目标断点目录以接收单独跨区复制。
+
+### 验证与证据
+
+- `python -m compileall -q`通过；CUDA预检返回`cuda_available=true`、RTX 4090可见、环境版本与冻结合同一致。
+- 全量输入聚合为train=75,086、dev=10,727、test=21,454、annotations=117,057、videos=8,210，与冻结identity一致。
+- 13区GPU预检时显存2 MiB、利用率0%，不存在训练进程；未将环境恢复写成训练启动。
+- `find /mnt -type f -name last-resume.ckpt`无输出；非I3D持久文件仅含环境快照和两个配置清单，故WR-20260724-008固定SHA-256=`f51e249890e2320995fe6513562010982171c3d7c16b7a1c08a008d7e1bea632`尚未在13区复核。
+
+### 影响与边界
+
+13区训练环境、作者固定revision、既有兼容补丁、全量输入和GPU已恢复到可预检状态，但精确断点仍是硬阻塞。实验永久保持`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；不进入T0/G3、统一baseline、任务30—50或论文claim。
+
+### 风险、问题与阻塞
+
+- 首次Conda和pip下载分别因清华镜像HTTP 403失败；官方PyPI实测约20—26 KiB/s，取消未完成下载后改用可访问镜像，固定版本恢复成功。这些是依赖源故障，不是GPU或训练失败。
+- 固定源码tar不含`.git`，两次补丁CLI预检分别因缺revision元数据和目录层级多传一层而fail closed，均未修改源码；使用固定Git bundle和正确仓库根目录后闭合。
+- 环境`.snap`跨区成功不包含原亚太2区MatBox中的独立`last-resume.ckpt`。精确断点未迁入前不得启动，也不得用Epoch 3 best权重替代。
+- I3D许可、官方revision权利状态和权利方包身份/fixity继续为UNKNOWN；8210覆盖/hash漂移或权利方否认仍立即触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+1. 用户在MatBox中单独跨区复制`last-resume.ckpt`到已创建的13区目标目录。
+2. 文件出现后核验大小、0600、SHA-256、schema、完整identity、model/optimizer/scheduler/RNG和Epoch 4 step 220游标。
+3. 全部闭合后启动唯一seed=3407，并恢复30分钟监控；任何不匹配立即停止。
+
+### Git状态
+
+本条基于`main=origin/main=7097639ca3f9bc7355938d795a3d1220c0e53cd2`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。训练未启动，远端精确断点仍待迁入。
+
+## WR-20260727-004 — Task20在亚太2区从精确断点恢复唯一seed并闭合监控
+
+- 时间：2026-07-27 12:44:00 +08:00
+- 类型：PROGRESS | ENVIRONMENT | FIXITY | CHECKPOINT | EXPERIMENT | MONITORING | TEST
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / RTX 4090全量精确续训
+- 状态：精确续训已从Epoch 4 step 220恢复；运行时权限修复后从step 476再次精确恢复，当前持续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户放弃13区训练并租用新的亚太2区RTX 4090，要求配置、环境和唯一seed保持不变，从WR-20260724-008固定的精确断点继续训练，并每30分钟检查一次。该实例未自动恢复此前个人环境快照，因此本批必须先从固定制品重建独立环境、作者代码和输入，再核验MatBox断点与8210项I3D；任何不一致均不得启动。
+
+### 实际变更
+
+- 记录新实例非秘密绑定：RTX 4090，GPU UUID=`GPU-85f89e0f-13eb-3dcd-8bc2-7bd5b193d01e`，endpoint digest=`3dcc44360fc971f18c6056c694913722a70708b45d9edf4c8da20aa0431ba173`，host-key匹配既有受信ED25519指纹。
+- 对亚太2区私有MatBox的I3D执行完整逐文件fixity：count=8210、bytes=2,283,804,928、content-tree SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`、mode errors=0，父目录与I3D目录均为0700。
+- 复核`last-resume.ckpt`传入SHA-256=`f51e249890e2320995fe6513562010982171c3d7c16b7a1c08a008d7e1bea632`、size=1,742,994,875、mode=0600；schema、模型、optimizer、scheduler、RNG均完整，identity固定为seed=3407、batch=16、max_epoch=120、steps_per_epoch=4693、train=75,086、dev=10,727，游标为epoch_index=3、next_batch_index=220、global_step=14299、tensorboard_steps=283。
+- 重建冻结环境Python 3.8.20、PyTorch 1.13.1+cu117、NumPy 1.22.4、SciPy 1.10.1、scikit-learn 1.2.1、transformers 4.26.1和tensorboardX 2.6.2.2；CUDA可见RTX 4090。
+- 从固定Git bundle恢复作者commit `3e8c42608f4e89bc2082c55760aa63535e8e276a`并应用既有精确续训补丁，报告为`PATCHED_AND_VERIFIED`；四个关键源码hash继续与合同一致。
+- 本地到远端的大型RoBERTa归档因约0.18 MiB/s而有意取消未完成副本；改从作者固定revision `e2da8e2f811d1448a5b465c236feacd80ffbac7b`在实例内下载7个模型/词表文件，逐文件SHA-256与本地固定归档完全一致。未把取消的部分文件当作有效制品。
+- 展开全量作者输入并复核train=75,086、dev=10,727、test=21,454、annotations=117,057、videos=8,210；运行`python -m compileall -q`通过后，以`num_workers=0`和唯一seed=3407启动。
+- 首次进程从Epoch 4 step 220正确续跑。第一次周期checkpoint原子替换后因实例默认`umask 022`出现mode=0644；立即以SIGTERM触发精确保存并以预期exit 143停止，修复为0600，断点推进至next_batch_index=476、global_step=14555且无`.tmp`。
+- 以`umask 077`从step 476再次精确恢复同一seed。下一次周期checkpoint在global_step=15000写入，游标next_batch_index=921、mode=0600、无`.tmp`，证明后续原子替换权限修复闭合；该checkpoint SHA-256=`358a2f641831002ad51151d52f92235bead530b996a74cab7de6b2aa8b628991f`。
+- 将既有`task20-vc-csa` heartbeat恢复为ACTIVE并改为每30分钟检查；监控覆盖进程、step/速率/ETA、三项loss/LR、NaN/Inf/OOM/Killed/读取错误、GPU/RAM/磁盘、checkpoint原子性与epoch闭环，不要求逐step人工盯盘。
+- 每个epoch闭环后，监控将主日志、作者日志、loss/dev JSON、dev预测、TensorBoard增量和仅在真实best更新时的对应权重原子同步到私有MatBox evidence目录，并复核0700/0600与hash；不把每轮非best候选权重重复写入容量有限的MatBox。
+
+### 验证与证据
+
+- 精确恢复日志首段从`[Epoch  4][Step  220/4692]`开始；权限修复后的第二次恢复首条为`[Epoch  4][Step  476/4692]`，不存在从头训练或新增seed。
+- 20秒稳定窗口从step 1001推进至1043：2.098 steps/s、0.477 s/step，按当时游标估算本epoch剩余训练约29.0分钟；该速率为运行诊断，不是最终性能结果。
+- 运行监控样本：GPU利用率97%、显存14,184/24,564 MiB、温度60°C、功耗271.23 W；RAM 4.5/50 GiB，available 45 GiB；根盘使用6.4/300 GiB，MatBox使用13/55 GiB。没有OOM、Killed、NaN/Inf、读取错误或持续内存增长证据。
+- 作者程序已将逐step total/opinion/emotion loss与LR写入主日志，并用TensorBoard保存逐step及epoch loss；每个epoch还生成`loss_epoc_<n>.json`、`dev_performance_<n>.json`、预测文件、best候选和精确checkpoint。
+- 源码审计发现作者TensorBoard的`opinion_macro_*`与`emotion_macro_*`标签实际误取`accuracy[*]["micro"]`；不在faithful运行中途改写作者路径。后续macro-F1只读取`dev_performance_<n>.json`中的真实`macro`字段，TensorBoard macro标签不得作为证据。单标签任务下accuracy与micro-F1数值可一致，但仍按原始JSON字段诚实记录。
+- 监控只在完整epoch训练、dev评估、best判定和checkpoint闭合后形成epoch汇总；中途loss和当前速率均不升级为结果。最终分析使用完整曲线、冻结选择规则和最终评测，不选择性报告少数epoch。
+
+### 影响与边界
+
+Task20唯一seed已在同区域私有MatBox上从精确断点恢复，且A30时期的DataLoader worker被Killed路径通过`num_workers=0`规避。运行仍永久标记为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`和`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`；任何loss、dev指标或最终结果均不得进入T0/G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 当前个人环境快照没有自动挂载为实例根环境，本批以固定版本和逐文件hash重建；这不应写成平台镜像自动恢复成功。
+- checkpoint首次原子替换的0644权限问题已通过`umask 077`工程重启闭合；后续监控仍须在每次周期保存和epoch保存后检查0600与无`.tmp`，再次漂移立即报告。
+- 作者TensorBoard macro标签存在已确认的日志语义错误；JSON评测文件保留真实macro指标，监控和最终汇总不得误用TensorBoard macro曲线。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+每30分钟继续监控同一进程。Epoch 4训练、dev评估、best判定和checkpoint全部完成后，记录完整三项平均loss、LR、耗时、dev micro/macro指标、best变化、断点游标/hash/权限，并将最小可恢复/分析证据同步到私有MatBox；完整训练完成或新失败时立即单独闭环，不提前启动任务30—50。
+
+### Git状态
+
+本条基于`main=origin/main=7097639ca3f9bc7355938d795a3d1220c0e53cd2`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端同一seed训练正在运行。

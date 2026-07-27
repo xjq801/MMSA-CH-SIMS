@@ -318,3 +318,15 @@ CSMV命名空间纠正与同源split已获00接受，公共核心19项复现零�
 | `py_compile`尝试写`scripts/__pycache__`被当前只读沙箱拒绝 | 1 | 后续改用`ast.parse`只读语法检查，不重复写缓存 |
 | 底层passport `set-status`写回因只读沙箱PermissionError，随后validate发现state_hash不一致 | 1 | 不重试`pm.py`；对已知底层passport命令申请写权限后重算state hash并复验 |
 | 文献冻结门仍要求v2、任务首创与旧G1阻塞令牌，导致准备检查仅`literature_freeze`阻塞 | 1 | 升级机器合同为v3/v2、closest-prior、claim blacklist与当前G1—G3令牌；专项及综合门复跑通过 |
+
+### 阶段25：第17节收益感知路由执行规格补强与SSOT v1.20（2026-07-27）
+
+- [x] 刷新共享主仓库、最新WORK_LOG、S23/passport/project_card和Task20实时线程
+- [x] 核对第17节任务30—50与“收益感知历史反应记忆”创新判断的覆盖差距
+- [x] 保留已存在的Video2Reaction、五种子、bootstrap、OOD和四组件消融条款
+- [x] 补充任务40的OOF效用标签、T0-only路由输入、强路由对照、coverage匹配、负迁移机制链和可证伪止损
+- [x] 补充任务50的五种子公平比较、效用/负迁移配对统计及success/failure/inconclusive分支
+- [x] 运行工作日志、准备检查、v1.20专项validator、passport和handoff合同
+- [ ] 提交推送并通知Task20刷新
+- **状态：** ready_for_commit
+- **边界：** 不改变任务20冻结接口或远端训练，不改变G1—G3，不创建Task30，不恢复v1.17的3%/5%/8%硬阈值。

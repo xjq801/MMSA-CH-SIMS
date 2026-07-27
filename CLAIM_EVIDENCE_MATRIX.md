@@ -1,13 +1,13 @@
 # Claim—Evidence矩阵
 
-> 版本：v1.1；日期：2026-07-24  
+> 版本：v1.2；日期：2026-07-27  
 > 原则：没有证据的主张保持`TO_VERIFY`，不得写成论文结论。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
 |---|---|---|---|---|---|
 | C1 | 无泄漏T0协议能形成可审计的公众公开表达诱发反应分布预测证据 | 两个公开人工标注集、内容单元划分、物理泄漏隔离、Data Card | G1/G2、E0、`T0_INPUT_POLICY.md` | TO_VERIFY | 仅可描述协议/证据贡献；任务与分布输出均不称首创 |
 | C2 | 评论特权教师能改善仅看内容学生的分布预测或校准 | content-only、teacher上界、普通蒸馏、目标方法；至少5种子与CI | H1、E2、任务30 | TO_VERIFY | 不得宣称有效 |
-| C3 | train-only反应记忆、可靠性router与rejection优于无/随机检索并减少错误证据负迁移 | 去memory/router/rejection、稀疏/稠密/可学习检索、错域邻居、risk-coverage | H2、E2/E4/E7、任务40/50 | TO_VERIFY | 不得宣称检索或路由增益 |
+| C3 | train-only反应记忆与收益感知router能预判检索相对content-only是否有益，并通过融合/降权/rejection减少错误证据负迁移 | train内部OOF效用标签；去memory/router/rejection；no/random/BM25/CLIP-kNN/learned；固定融合/相似度/熵/SelectiveNet式路由；coverage匹配；错域邻居；五种子、原生内容单元CI、risk-coverage | H2、E2/E4/E7、任务40/50 | TO_VERIFY | 不得宣称检索、效用预测或路由增益 |
 | C4 | 方法在movie/group、topic、time、platform、跨数据和适用缺失场景具有更可靠表现 | 严格OOD、跨数据、适用缺失、中文压力测试；统计与失败案例 | C3、E5—E9、任务50 | TO_VERIFY | 不得宣称泛化或代表所有观众 |
 
 状态只能是`TO_VERIFY`、`SUPPORTED_LIMITED`、`SUPPORTED`、`REFUTED`。任何状态变更必须填写结果文件、统计证据和复核日期。
@@ -32,6 +32,13 @@
 | C2-H2反应记忆 | Video2Reaction未覆盖已定位的train-only反应记忆与负迁移拒绝；RAMER/SelectiveNet覆盖相邻组件 | 不得以模块组合证明创新；必须证明学习检索优于随机/普通近邻且路由识别有害邻居 | E2/E4/E7、错误邻居、OOD、负迁移率和risk-coverage |
 
 本节不改变C1—C4的`TO_VERIFY`状态，不追溯改变G1—G3；它只收紧后续论文主张和公平对比义务。
+
+## 2026-07-27 第17节收益感知路由执行合同
+
+- 收益感知router不是通过改名获得创新资格：任务40必须用train内部cross-fitting/out-of-fold预测构造检索效用标签，路由推理不得读取真实标签、目标响应或评测后误差。
+- 强对照至少包括固定融合、相似度阈值、预测熵阈值和SelectiveNet式拒绝；选择性方法必须匹配coverage或风险预算。
+- 正式证据必须覆盖五种子、按原生内容单元paired bootstrap、检索效用、负迁移率、被避免负迁移比例、AURC/risk-coverage和OOD/污染负对照。
+- 若上述机制链不成立，C3降级为普通检索融合或负结果；不得用平均分小幅改善替代路由机制证据。
 
 ## 2026-07-24 Claim blacklist与构念边界
 

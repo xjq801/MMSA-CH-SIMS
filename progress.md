@@ -479,3 +479,12 @@
 - 项目专用定位校验、文献冻结专项门、综合准备检查、passport与handoff合同均通过；跨材料一致性仅声明项目专用文本门通过，不冒充缺依赖的完整语义一致性审计。
 - G1=`PASS`、G2=`PASS_WITH_ACCEPTED_ASSET_RISK`、G3=`PASS_WITH_LIMITATIONS`均未改变；Task30仍未创建。
 - SSOT内容提交`63be49c`已推送`origin/main`，并已通知Task20刷新v1.19、解除文档暂停及保持新增任务30—50实验义务不在Task20并发实现。
+
+## 2026-07-27 — 第17节收益感知路由执行规格补强
+
+- **状态：** ready_for_commit
+- 用户指出第17节任务树对收益感知历史反应记忆的落实不足；复核确认Video2Reaction强基线、五种子、bootstrap、OOD与四组件消融已存在，应保持不动。
+- 总纲拟升v1.20、第17节规格拟升v1.4；新增部分仅聚焦任务40/50的train内部OOF效用标签、T0-only路由输入、固定融合/相似度/熵/SelectiveNet式强对照、coverage匹配、负迁移机制链和可证伪止损。
+- G1—G3、任务20评测核心、I3D风险和Task30未创建状态不变；v1.17的3%/5%/8%硬效应门不恢复。
+- Task20实时状态已刷新：此前完成3个完整NON_T0 epoch并固定Epoch 4 step 220恢复锚；13区8210项I3D已复核、环境恢复中，但精确断点仍在亚太2区，跨区复制与SHA-256闭合前续训阻塞；仍永久`NON_T0/INELIGIBLE`。
+- v1.20专项validator、文献冻结门、工作日志、综合准备、passport和S24 handoff合同均已通过；专项门只验证执行合同存在，不证明方法实证有效。

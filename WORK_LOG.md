@@ -7135,3 +7135,60 @@ MatBox仍受平台私有存储生命周期与ACL控制；下次恢复必须重�
 ### Git状态
 
 本条写入时共享主线为`3363c2a`且已推送；仅追加`WORK_LOG.md`，受限工件不进入Git。
+
+## WR-20260727-001 — 补强第17节收益感知路由执行规格并发布SSOT v1.20候选
+
+- 时间：2026-07-27 11:47:22 +08:00
+- 类型：DECISION | DOCUMENTATION | PLAN | AUDIT | TEST
+- 任务/门：00-T-AFFC总控 / 第17节任务40—50研究方案与执行合同
+- 状态：v1.20内容与专项验证已完成，待综合门禁和有意提交推送
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+用户指出总纲前部已强化“收益感知历史受众反应记忆”，但第17节Codex任务树可能没有对应落实，要求核对后适度完善；无需改变的内容应保持不动。00逐项比较第5—7节与第17节任务20—50，确认Video2Reaction强基线、teacher/memory/router/rejection消融、五种子、原生内容单元bootstrap和严格OOD已经存在，但任务40仍缺少“显式预测检索相对content-only是否有益”的效用标签、强路由对照、公平coverage和可证伪止损，因此需要小范围中修。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升级为v1.20、第17节规格升级为v1.4；任务20冻结接口保持不变，主要修改任务40和任务50。
+- 任务40新增train内部cross-fitting/out-of-fold逐样本效用标签、效用manifest、T0-only路由输入、dev-only阈值选择，以及固定融合、相似度阈值、预测熵阈值、SelectiveNet式拒绝等强路由对照；选择性方法必须匹配coverage或风险预算。
+- 任务40新增效用识别AUROC/AUPRC、预测/真实效用相关、负迁移率、被避免负迁移比例、AURC/risk-coverage和OOD/污染机制链；若学习检索不优于普通近邻，或router在公平比较后不能减少负迁移，则撤掉收益感知/完整检索创新claim。
+- 任务50新增content-only、memory-only、完整router和强对照同一五种子，效用差/负迁移率/AURC的原生内容单元paired bootstrap，以及success/failure/inconclusive三分支；没有恢复v1.17的3%/5%/8%硬效应门。
+- 同步`CONTRIBUTION_PRIOR_ART_MATRIX.md`至`FROZEN_v4`、`CLAIM_EVIDENCE_MATRIX.md`至v1.2，并更新`RISK_REGISTER.md`、`TASK_REGISTRY.md`、论文创新档案、claim blacklist、Word回填合同、paper入口、`AGENTS.md`及`.light`决策/版本/术语/项目卡/passport。
+- 新建`scripts/validate_taffc_v120_task_tree.py`，检查第17节13项核心合同、7个活动文件和“Task20未被收益感知路由扩写”边界；升级`scripts/validate_literature_freeze.py`要求`FROZEN_v4`、OOF效用与coverage匹配。
+- 新建`.light/handoff/S24-task-tree-benefit-routing-v120.md`，记录S23→S24交接、当前Task20跨区断点阻塞和S25接续提示。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\validate_taffc_v120_task_tree.py`输出`passed=true`、master terms=13、current files=7、errors空；覆盖等级为`PROJECT_SPECIFIC_TEXT_CONTRACT_NOT_EMPIRICAL_METHOD_VALIDATION`，不冒充方法有效性证明。
+- `.\.venv\Scripts\python.exe scripts\validate_literature_freeze.py`输出`passed=true`、documents=6、queries=4、identified=500、errors空。
+- 新validator通过只读`ast.parse`，输出`AST_PARSE_PASS`；`git diff --check`通过。
+- 底层passport执行stage20 `in_progress → in_progress`重算state hash并exit 0；validate exit 0，只保留历史stage10 gate缺passport内部hash/timestamp的WARN。已知`light-memory-pm pm.py`缺`_shared/passport`，本批未无新mitigation重复失败。
+- `light-research-plan`人工门复核：强基线不放水、router可由明确失败条件证伪、单变量消融和负对照可隔离、五种子不冒充独立样本量；专项文本门只检查合同存在，最终公平性与可证伪性仍须任务40/50实证和00人工终判。
+- 一次递归PowerShell文本扫描因目录遍历范围过宽长期无新增输出；按命令行核对后仅终止对应PID=13656的只读进程，改用定向文件列表，未造成文件变更。
+- S24交接卡首次运行`handoff_contract.py` exit 1：一条已完成项缺逐条验证短语，且一条下一步未被解析为动作；同批补充专项validator证据并将下一步改为“读取/起草/执行”开头，保留失败后复跑。
+- S24交接卡第二次仍exit 1，因为合同动作正则不识别“起草/执行”；读取validator动作词集合后改为其支持的“读取/生成/验收”，没有降低交接内容要求。
+- S24交接卡第三次输出`handoff contract PASS`、exit 0；工作日志159条通过，综合准备检查exit 0且`blocking_checks=[]`、`m1_read_only_work_ready=true`。普通本地环境仍因faiss缺失诚实为`formal_model_work_ready=false`，不改变Task20独立环境、G3或本次文档合同。
+
+### 影响与边界
+
+v1.20把此前创新档案中的非数值“收益感知路由”建议正式落入第17节执行规格，但没有把方法有效性从`TO_VERIFY`升级。G1=`PASS`、`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`、G3=`PASS_WITH_LIMITATIONS`均不改变；Task30仍未创建，任务20评测代码与远端训练均未由00修改。
+
+第17节原有Video2Reaction式VLM/LDL强基线、四组件消融、五种子、bootstrap、OOD、校准、选择性预测和claim blacklist保持不动。外部Word仍是历史派生版，本批只更新单向回填合同，不直接改写Word。
+
+### 风险、问题与阻塞
+
+- 收益感知router可能不优于固定融合、相似度阈值、预测熵或SelectiveNet式拒绝；若不能在公平coverage与OOD负对照下减少负迁移，必须降级，不得以模块命名或平均分小幅提升维持创新claim。
+- Task20实时刷新显示：13区8210项I3D已完整核验，冻结环境正在恢复，但精确`last-resume.ckpt`仍只在亚太2区；跨区复制并匹配SHA-256=`f51e249890e2320995fe6513562010982171c3d7c16b7a1c08a008d7e1bea632`前不得续训。该状态是存储可得性阻塞，不是模型/GPU失败。
+- Task20探索和受限存储生命周期仍未闭环，继续阻止Task30创建；`tmp/`归Task20所有，00未读取或暂存。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，资产止损条件不变。
+
+### 下一步
+
+1. 运行工作日志、综合准备、v1.20专项、passport和S24 handoff最终门禁，提交并推送00所有权文件。
+2. 通知Task20刷新v1.20并解除文档暂停；Task20只继续跨区断点与既有NON_T0探索，不实现任务30—50新方法。
+3. Task20闭环后，按v1.20起草H1/H2 target chain、实验矩阵、failure tree和公平baseline预算，再由00决定是否创建Task30。
+
+### Git状态
+
+本条写入时共享主线为`main=origin/main=67aa0ff61b0a05531794eefeae5ae41194d60097`；本批00文档、台账、validator、规划、日志与S24待门禁和有意提交。`tmp/`继续未跟踪且明确排除。

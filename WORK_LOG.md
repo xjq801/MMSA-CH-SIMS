@@ -7797,3 +7797,49 @@ Epoch 14同时提高opinion、emotion macro和冻结组合分数并刷新best，
 ### Git状态
 
 本条基于`main=origin/main=e86c676ce4391e92ae9a472497d666806dec8953`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-015 — Task20 VC-CSA Epoch 15训练与dev闭环
+
+- 时间：2026-07-27 23:01:59 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 15完整闭环
+- 状态：Epoch 15训练、dev评估、非best判定、checkpoint与私有MatBox最小证据同步均已完成；Epoch 16继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+继续按冻结选择规则闭合唯一seed=3407的Epoch 15，记录训练与dev完整曲线、真实best状态、精确断点、资源和私有持久化证据，并复核Epoch 14开始的训练耗时增加是否伴随故障。
+
+### 实际变更
+
+- Epoch 15总loss为269.26543533056974、opinion为138.5285425700713、emotion为130.73689257283695；4693个batch均值分别为0.05737597、0.02951812、0.02785785。
+- 训练耗时3178秒，约0.6772秒/batch；结束学习率为`4.86e-05`。loss文件至dev performance/prediction文件的观测间隔为202秒，作者程序未单独仪表化dev与保存耗时。
+- dev opinion accuracy=micro-F1=0.71380628、macro-F1=0.64969707；dev emotion accuracy=micro-F1=0.61172742、macro-F1=0.53073955。
+- 冻结组合micro-F1为1.3255337000093226，比Epoch 14 best低0.004661135453；checkpoint保持`best_epoch=14`和`best_eval_accuracy=1.3301948354619184`，Epoch 15候选不是best。
+- 将主日志、作者日志、loss/dev JSON、dev预测和TensorBoard原子同步至私有MatBox的0700 `epoch-evidence/epoch-015`；未复制Epoch 15非best候选权重，目录内文件及manifest均为0600。
+
+### 验证与证据
+
+- Epoch 15最小证据目录共8个文件、21,610,496字节；`SHA256SUMS`经`sha256sum -c`逐项全部`OK`，无残留`.tmp`或mode错误。周期checkpoint临时文件清除后，MatBox使用25,316,818,944/59,055,800,320字节，可用33,738,981,376字节。
+- 同步后采样再次恰逢1.743 GB周期checkpoint写入，`.tmp`增长至1,706,373,120字节且GPU短暂为0%；约20秒后原子替换完成、`.tmp`消失、GPU恢复61%，未构成失败。
+- 最新完整checkpoint为mode=0600、size=1,743,010,107、无`.tmp`，SHA-256=`bd645bb0c23f3def161524e9929eee810007906d6f890f6e88ee41797405061b`；cursor为`epoch_index=15`、`next_batch_index=3105`、`global_step=73500`、`tensorboard_steps=1457`。
+- 审计时唯一`python main.py`进程运行于Epoch 16；15秒窗口由step 3253推进至3286，观测2.20 steps/s，按该窗口估算剩余约10.7分钟。主日志未发现NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。
+- 常态GPU显存17,248/24,564 MiB、温度约56—57°C；RAM约5.12/53.69 GB，根盘约27.60/322.12 GB，未见显存或RAM持续增长。
+
+### 影响与边界
+
+Epoch 15训练loss继续下降、dev组合分数仅小幅低于Epoch 14，但不是新best；完整曲线保留该回落。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 14和15完整训练耗时连续约3150—3178秒，高于此前约2569—2619秒，说明耗时增加并非单轮偶发；但当前短窗吞吐约2.20 steps/s、资源稳定且无错误。继续观察并保留真实耗时，不在运行中为提速改变冻结配置。
+- MatBox保留7个历史/当前best并使用约43%；后续真实best增加时应在容量安全阈值前执行带hash与tombstone的可审计轮换，精确checkpoint不得删除。
+- TensorBoard macro标签继续不作为macro证据；I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 16及后续完整闭环，记录实际训练耗时趋势、dev与断点状态；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=730e5080e1be27cb60a0d541653e412d5575eb98`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

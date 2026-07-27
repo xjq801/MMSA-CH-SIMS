@@ -7341,3 +7341,51 @@ Task20唯一seed已在同区域私有MatBox上从精确断点恢复，且A30时�
 ### Git状态
 
 本条基于`main=origin/main=7097639ca3f9bc7355938d795a3d1220c0e53cd2`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端同一seed训练正在运行。
+
+## WR-20260727-005 — Task20 VC-CSA Epoch 4训练与dev闭环
+
+- 时间：2026-07-27 13:36:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 4完整闭环
+- 状态：Epoch 4训练、dev评估、best判定、checkpoint与私有MatBox证据同步均已完成；Epoch 5继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+WR-20260727-004已从精确断点恢复唯一seed，并闭合周期checkpoint权限。按用户要求，本条只在完整epoch训练、dev评估、best判定和checkpoint全部完成后汇总，不把中途step loss当作结果；同时将最小可恢复/分析证据持久化到私有MatBox。
+
+### 实际变更
+
+- Epoch 4已完成4693个batch。`loss_epoc_4.json`记录总和：total=700.6711865365505、opinion=383.7537535857409、emotion=316.91743320040405；按4693个batch换算均值分别为0.14930134、0.08177152、0.06752982。
+- Epoch 4结束学习率为两个参数组均`1.6666666666666667e-05`。作者日志给出本次恢复进程内训练段计时2,406秒；该计时从step 476后的工程重启重新起算，不包含A30上的step 0—219和本实例权限修复前的step 220—475，故不得冒充跨实例完整wall-clock。
+- dev评估及预测JSON/PKL写入约202.7秒，随后best候选文件写入约1.4秒。作者代码未独立记录epoch checkpoint写入耗时，因此不伪造该分项。
+- dev opinion：accuracy=micro-F1=0.65824555，macro-F1=0.60935918；dev emotion：accuracy=micro-F1=0.59215065，macro-F1=0.50663919。macro值来自`dev_performance_4.json`，未使用作者TensorBoard中误取micro的macro标签。
+- 作者冻结选择量为两任务micro-F1之和。Epoch 4得分1.2503961965134707，高于此前Epoch 3的1.2442434977160435，提升0.006152698797；checkpoint中的`best_epoch=4`且`best_eval_accuracy=1.2503961965134707`，故真实best已更新。
+- 在私有MatBox新建0700的`epoch-evidence/epoch-004`，原子复制主日志、作者日志、loss JSON、dev performance JSON、dev prediction、两个TensorBoard事件文件和真实更新的Epoch 4 best权重；全部文件及SHA-256 manifest均为0600。未复制非best候选权重。
+
+### 验证与证据
+
+- heartbeat检查时训练已进入Epoch 5；唯一训练进程仍为seed=3407、batch=16、`num_workers=0`，GPU继续工作。
+- 审计时最新周期checkpoint：schema保持精确续训合同，cursor为epoch_index=4、next_batch_index=1228、global_step=20000、tensorboard_steps=396；SHA-256=`af494d11208d8643d2f1227c7557169998fd1b36654ae1754f1a06cf8206f953`、mode=0600、size=1,742,996,155，无`.tmp`。
+- 私有MatBox证据目录逐项执行`sha256sum -c manifest.sha256`，8个被绑定文件全部`OK`；目录层级0700、文件0600。同步后MatBox使用14/55 GiB、可用约42 GiB。
+- 主日志未出现NaN、数值Inf、CUDA OOM、Killed、Traceback、数据读取错误或缺文件。初次字符串扫描的3个`Inf`命中经上下文复核均来自Loguru等级词`INFO`，属于误报。
+- Epoch 5运行采样时GPU利用率100%、显存17,248/24,564 MiB、RAM约4.8/53.7 GB，根盘约8.5/322 GB；未见资源持续增长异常。显存相较训练阶段早期约14.2 GiB增加到17.2 GiB，但仍有余量，后续继续做趋势检查，不把单点变化写成泄漏。
+
+### 影响与边界
+
+Epoch 4是本次跨实例精确续训后的首个完整训练+dev闭环，证明断点、优化器、scheduler、RNG、epoch累计loss和模型选择状态可以继续运行。该结果仍永久属于`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0/G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 作者训练计时在进程恢复后重置，且用绝对step计算日志中的`Speed(s/batch)`；因此Epoch 4的2,406秒和作者速度字段不能表示跨实例完整epoch wall-clock。后续连续epoch才可直接比较完整耗时。
+- 作者TensorBoard macro标签继续不可信，正式监控只读dev JSON的macro字段。
+- 根盘会保留作者每epoch写出的候选大权重；MatBox只保留真实best更新权重。继续监控根盘容量，必要时仅删除已确认非best且已有指标/预测/hash证据的候选，不影响当前训练。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 5及后续训练；仅在完整epoch闭环、完整训练完成或新失败时追加记录。下一完整epoch将获得不中断的训练耗时，可用于更可信地估算剩余总时间。
+
+### Git状态
+
+本条基于`main=origin/main=913a44c5174e9a951fc80f4de9e9f7fefdebed29`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed训练继续运行。

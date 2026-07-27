@@ -7480,3 +7480,48 @@ Epoch 6继续显示训练loss下降、冻结dev选择量提高，但该趋势尚
 ### Git状态
 
 本条基于`main=origin/main=9b0674bc1334be7cdfadbbc94076fd280b3e5d51`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260727-008 — Task20 VC-CSA Epoch 7训练与dev闭环
+
+- 时间：2026-07-27 16:07:06 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 7完整闭环
+- 状态：Epoch 7训练、dev评估、非best判定、checkpoint与私有MatBox最小证据同步均已完成；Epoch 8继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+继续按完整曲线记录Epoch 7，明确区分“作者每epoch均写候选权重”和“冻结选择规则下真实best更新”，不因分数未创新高而静默删除该轮指标。
+
+### 实际变更
+
+- Epoch 7总loss为482.16673691757023、opinion为248.79893375746906、emotion为233.36780306044966；4693个batch均值分别为0.10274169、0.05301490、0.04972679。
+- 完整训练耗时2,616秒，作者速度0.55757021秒/batch；结束学习率为`2.916666666666667e-05`。
+- dev opinion accuracy=micro-F1=0.69581430、macro-F1=0.63623623；dev emotion accuracy=micro-F1=0.60576116、macro-F1=0.52125385。
+- 冻结组合micro-F1为1.3015754637829775，比Epoch 6 best低0.001211895218；checkpoint保持`best_epoch=6`和`best_eval_accuracy=1.3027873590006527`。Epoch 7候选不是best。
+- 将主日志、作者日志、loss/dev JSON、dev预测和TensorBoard原子同步至私有MatBox的0700 `epoch-evidence/epoch-007`；按合同未复制Epoch 7非best大权重，文件与manifest均0600。
+
+### 验证与证据
+
+- Epoch 8已运行。审计时最新周期checkpoint cursor为epoch_index=7、next_batch_index=1649、global_step=34500、tensorboard_steps=683；SHA-256=`5ce93ed96e44c6be7d9fe4ac38d06c5bbc306547d7676a29042a86465d5d0015`、mode=0600、size=1,742,999,803、无`.tmp`。
+- Epoch 7最小证据manifest的7项`sha256sum -c`全部`OK`；MatBox仍使用约18/55 GiB、可用约38 GiB，未因非best候选增长。
+- 主日志无NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。GPU采样99%、显存约17,248/24,564 MiB，RAM约4.8/53.7 GB；资源稳定。
+- 一次20秒速率窗口因恰逢1.743 GB周期checkpoint写入仅约1.0 steps/s；原子替换完成后无`.tmp`且复测为2.096 steps/s，故判定为正常checkpoint开销而非性能退化。
+
+### 影响与边界
+
+Epoch 7训练loss继续下降，但冻结dev组合分数首次小幅低于上一best；这证明监控没有只保留单调改善轮次。单轮回落不足以判定退化，继续观察完整曲线。实验仍为`NON_T0/INELIGIBLE`探索。
+
+### 风险、问题与阻塞
+
+- dev emotion macro-F1从Epoch 6的0.541054降至0.521254，需继续观察而不能据单轮挑选结论。
+- 作者根盘仍保留Epoch 7非best候选；MatBox不复制。继续监控根盘，必要时按可审计保留策略清理非best。
+- I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 8及后续完整闭环，重点观察dev emotion macro与组合选择量是否恢复或形成连续下降。
+
+### Git状态
+
+本条基于`main=origin/main=d191605adbe6045ece4d77c8701f82cea909776c`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

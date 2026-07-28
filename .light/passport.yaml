@@ -2,10 +2,10 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-07-27T11:48"
+updated: "2026-07-28T13:42"
 current_stage: 20
-state_revision: 6
-state_hash: "sha256:8b21aa2351280956700f7fea221006a7a0c3d7e68ec329ddec2fae3ef136fa46"
+state_revision: 7
+state_hash: "sha256:2e1dfd954e6a9cfe7477c2af6864c168381c0e3e36ee6497bdf8a96158ec2fa0"
 evidence_state: PLANNED
 next_action: continue stage 20 from status in_progress
 delivery_status: IN_PROGRESS
@@ -29,4 +29,4 @@ stages:
     input: 冻结dataset/split/label与I3D协议
     output: 统一评测器、强基线、G3证据与隔离VC-CSA探索收尾
     artifacts: [HANDOFF_20.md, TASK00_G3_FINAL_REVIEW_20260718.md, BASELINE_TABLE_V1.md, experiments/EXPERIMENT_REGISTRY.md, TASK20_VCCSA_EXACT_RESUME_RUNBOOK_20260723.md]
-    gaps: [VC-CSA NON_T0 exploration has 3 complete epochs and a verified epoch 4 step 220 resume anchor; the 2026-07-27 region-13 instance lacks the exact checkpoint still stored in AP2 and resume is blocked pending cross-region copy plus SHA-256 verification; restricted storage lifecycle not closed; stage 30 not authorized]
+    gaps: [VC-CSA NON_T0 exploration has completed epoch 28 and epoch 29 is running; it remains permanently ineligible for formal evidence; restricted storage lifecycle not closed; Video2Reaction dual-track execution is planned for stage 50 and its public revision/fixity are not frozen; stage 30 not authorized]

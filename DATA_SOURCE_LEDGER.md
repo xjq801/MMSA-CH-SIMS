@@ -1,6 +1,6 @@
 # 数据来源、许可与完整性台账
 
-> 版本：v1.5
+> 版本：v1.6
 > 建立日期：2026-07-14  
 > 原则：来源、许可、访问条件、下载时间和 SHA-256 未核验前一律记为 `PENDING` 或 `UNKNOWN`，不得把“能下载”视为“可用于研究或发布”。
 
@@ -19,6 +19,7 @@
 | DS-009 | Emotion6 | 第二人工主集元数据候选 | 每图15人、七类诱发情绪经验分布 | https://openaccess.thecvf.com/content_cvpr_2015/papers/Peng_A_Mixed_Bag_2015_CVPR_paper.pdf | NO_GO_MEDIA_LICENSE_ACCESS_AND_MODALITY | 数据许可、现行官方入口和Flickr逐图权利UNKNOWN | 未下载 | UNKNOWN | 1980单图；论文随机7:3；标签构念高度匹配但非视频/多模态且媒体准入未证实 |
 | DS-010 | Video Cognitive Empathy (VCE) | 第二视频主集修复候选 | `HUMAN_GOLD`；每视频约13人、27类自身诱发情绪 | https://proceedings.neurips.cc/paper_files/paper/2022/hash/75ff01252ab45ce278cb060effce4ca1-Abstract-Datasets_and_Benchmarks.html | NO_GO_MEDIA_LICENSE_AND_AUDIO | annotations CC BY-SA 4.0、代码MIT；Reddit/Instagram媒体无正式许可，作者依赖美国Fair Use | 未下载 | UNKNOWN | 构念匹配但媒体权利不满足严格合法门；标注时无音频，不冻结为第二多模态主集 |
 | DS-011 | LAI-GAI v05 | 第二人工跨域图像主集/缺失模态验证集 | `HUMAN_GOLD`；六项研究逐人诱发评分聚合 | https://www.affectdatabases.amu.edu.pl/ | FROZEN_00_APPROVED | 官方Data Card明确图像/元数据CC BY 4.0；评分OSF组件CC BY 4.0；旧K8XVH空节点与协议偏差只保留为历史观察，新授权从官网847图文件树独立闭合 | `data/raw/lai-gai/second-primary-resolution/20260714/`（Git忽略） | 847图逐图size/SHA-256/dHash见`lai-gai-second-primary-raw-v1.manifest.json`；标签与split见三个`lai-gai-*-v1.manifest.json` | 847/847图像—人工评分闭合；63682个有效逐图反应；379个source group；594/127/126正式split；专项validator全PASS；复审`REVIEW-00-LAI-GAI-FREEZE-20260715` |
+| DS-012 | Video2Reaction | closest/direct prior；CSMV公平适配来源；原生银标视频域外部验证 | `SILVER_LLM_HUMAN_VERIFIED`；评论经两阶段多代理LLM生成分布并经人工质量核验 | https://huggingface.co/datasets/infofusionlab/Video2Reaction；https://arxiv.org/abs/2607.06875 | APPROVED_PLANNED_DUAL_TRACK_INTAKE_NOT_FROZEN | annotations/派生分布CC BY-NC-SA 4.0；底层CondensedMovies/Movieclips/YouTube视频另受来源许可与平台条款约束，不能由annotation许可外推 | 未下载；未来只进入Git忽略隔离区 | UNKNOWN；须在任务50冻结HF revision、文件树、size与SHA-256 | 公开10,348条、7,243/1,035/2,070 split、21类、clip description与ViT/CLAP/HuBERT/BERT派生特征；原始视频/独立音频/完整转写/原始评论不随公开包保证提供。先做`VIDEO2REACTION_DATA_INTAKE.md`与source manifest，再执行CSMV公平适配和原生复现/movie-disjoint审计；不作第三HUMAN_GOLD主集 |
 
 ## 2. 本地文件快照
 
@@ -64,5 +65,6 @@
 | Emotion6 | CVPR官方论文 | 1980图像、432受试者、每图15人；七类诱发情绪分布；论文随机7:3 | 现行官方数据入口、许可、包体量/hash、Flickr逐图权利；仅图像模态 |
 | VCE | NeurIPS官方论文页与supplement | 约60000视频、400名合格标注者、每视频12—15人；27类自身诱发情绪分布 | Reddit/Instagram媒体无正式许可且标注无音频；包revision/size/hash |
 | LAI-GAI | 官方项目页/Data Card、官网图片浏览器、论文v05、OSF DOI、评分组件固定元数据与本地不可变manifest | 官网847图文件树与最终AI评分清单一一闭合；847图逐图hash；12项最小评分文件OSF hash闭合；图像/元数据CC BY 4.0；63682个合规人工反应；00已正式冻结 | 旧K8XVH空列表与0.996519秒偏差不获旧授权门信用；单图域不承担CSMV的视频H1/H2证据 |
+| Video2Reaction | 官方Hugging Face数据卡、arXiv:2607.06875与项目页 | 10,348 clips、约390小时、1,545 movies、21类；7,243/1,035/2,070；clip metadata、reaction distribution及ViT/CLAP/HuBERT/BERT派生特征；Hub显示下载约8.95 GB、展开约41.12 GB；annotation层CC BY-NC-SA 4.0 | 固定revision/逐文件hash尚未生成；原始视频不直接再分发、YouTube可用率未知；独立音频、完整字幕/转写和原始评论不保证公开；movie split overlap待审计；底层媒体许可与平台条款须逐层处理 |
 
 下载成功不等于`FIT`。CSMV标签、URL元数据lineage和同源split已由00接受，19项公共核心复现也已由00独立确认当前PASS，但URL hash不能替代正式模型输入资产。LAI-GAI已冻结，G1=`PASS`。按`SC-20260717-01`，`G2_PROTOCOL_DATA=PASS_WITH_LIMITATIONS`、`ASSET_ADMISSIBILITY=DEFERRED_ACCEPTED_RISK`、总门=`PASS_WITH_ACCEPTED_ASSET_RISK`、全局`formal_split=true`，任务20获内部研究授权。许可、稳定revision与权利方包身份/fixity仍未获确认；禁止I3D再分发及虚构许可信用，权利方否认或hash/覆盖漂移触发停用和结果失效。

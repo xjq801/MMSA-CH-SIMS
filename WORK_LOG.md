@@ -8164,3 +8164,50 @@ Epoch 27和28训练loss继续下降，但dev组合分数仍低于Epoch 22，且E
 ### Git状态
 
 本条基于`main=origin/main=058e773339d1fa99209ad78402118149252cb2c3`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260728-008 — 总纲v1.21冻结Video2Reaction双轨强基线合同
+
+- 时间：2026-07-28 13:42:50 +08:00
+- 类型：DECISION | DOC | DATA | TEST
+- 任务/门：00总控 / M4—M8规划与G4—G6证据合同
+- 状态：完成
+- 负责人：00-T-AFFC总控Codex
+
+### 背景与目标
+
+用户确认将Video2Reaction作为最近直接强基线并要求按已讨论方案完善总纲。本批目标是把已有“closest prior”文字升级为可执行的数据边界、双轨实验和交付合同，同时不追溯改变已通过G门或任务20冻结核心。
+
+### 实际变更
+
+- `TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升级v1.21/第17节v1.5：V2R-A固定为CSMV同split、T0、评测器、五种子与预算的公平适配主对比；V2R-B固定为原生公开特征复现、movie-disjoint和适用memory/router银标外部验证。
+- `DATA_SOURCE_LEDGER.md`新增DS-012，固定公开10,348条、7,243/1,035/2,070 split、21类与ViT/CLAP/HuBERT/BERT派生特征边界；原始视频不直接再分发，独立音频、完整转写和原始评论不保证提供；标签记`SILVER_LLM_HUMAN_VERIFIED`。
+- 同步`CLAIM_EVIDENCE_MATRIX.md`、`CONTRIBUTION_PRIOR_ART_MATRIX.md`、`RISK_REGISTER.md`、`TASK_REGISTRY.md`、`AGENTS.md`及`.light`决策/版本/术语/项目卡/passport；旧`CODEX_TASK_TREE_EXECUTION_SPEC.md`明确降为停止同步的历史便捷副本。
+- 新增`scripts/validate_taffc_v121_video2reaction_plan.py`与`.light/handoff/S25-video2reaction-dual-track-v121.md`。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\validate_taffc_v121_video2reaction_plan.py`首次发现3个术语缺口后exit 1；补齐V2R-A/V2R-B与银标枚举后复跑`passed=true`、8个活动文件、`errors=[]`。
+- 底层`passport.py validate --file .light\passport.yaml`返回`WARN`，唯一告警为历史stage10 gate缺hash/timestamp；state hash重算为`sha256:2e1dfd954e6a9cfe7477c2af6864c168381c0e3e36ee6497bdf8a96158ec2fa0`。
+- `check_project_card.py --root .`因参数不存在exit 2；改用`check_project_card.py --project-dir .`后累计0条发现并通过。
+- `git diff --check`在写日志前exit 0；官方事实来源为arXiv:2607.06875与`https://huggingface.co/datasets/infofusionlab/Video2Reaction`数据卡。本批未下载数据、未执行模型实验。
+- 首次`run_preparation_checks.py`因`validate_literature_freeze.py`仍要求历史`FROZEN_v4`而把`literature_freeze`列为唯一blocking check；同步validator到`FROZEN_v5`并加入V2R-A/V2R-B/银标令牌后重新执行，不删除首次失败。
+- 首次handoff合同审计发现5项机器可读格式错误；补齐artifact—verification分隔、可执行动词和强制刷新句后重新审计。
+- 修复后`run_preparation_checks.py` exit 0、`blocking_checks=[]`、`m1_read_only_work_ready=true`；默认`.venv`仍诚实为`faiss_available=false`、`formal_model_work_ready=false`，本批为文档/规划变更，不据此声称正式模型环境ready。
+
+### 影响与边界
+
+Video2Reaction现有明确双重作用：V2R-A服务主论文公平直接比较，V2R-B服务另一个视频域的有限外部效度；两者必须分表，原生Top-3 F1不得与CSMV绝对指标横比。它不是第三HUMAN_GOLD主集，原生H1因评论不公开固定为`NOT_APPLICABLE_DATA_NOT_RELEASED`。G1—G3、任务20`PASS_WITH_LIMITATIONS`、VC-CSA`NON_T0/INELIGIBLE`、I3D风险和Task30未创建状态均不变。
+
+### 风险、问题与阻塞
+
+Video2Reaction固定revision、逐文件SHA-256、movie overlap、媒体恢复率和运行预算尚未闭合；总纲合同通过不等于数据已取得或基线已复现。Task20探索和受限存储生命周期仍未闭环，继续阻止Task30创建。`light-memory-pm pm.py`既知包装布局故障未重复触发，改用底层passport与独立handoff合同。
+
+### 下一步
+
+1. 持续只读监督Task20完成唯一seed探索及受限存储收尾。
+2. Task50开工前先生成Video2Reaction intake、source manifest与双轨预注册预算。
+3. Task20闭环后再审核H1/H2预注册并决定是否创建Task30。
+
+### Git状态
+
+本条基于`main=origin/main=4b68eb0d841427cd2e6dc8228c1467d513e0652c`追加；v1.21总纲、配套台账、validator、passport、S25和本条待本批门禁通过后有意提交推送。用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`未跟踪目录未读取、未暂存、未修改。

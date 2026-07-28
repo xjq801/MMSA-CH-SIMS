@@ -1,7 +1,7 @@
 # IEEE T-AFFC 第四章研究十个月总纲（项目唯一主路线）
 
-> 版本：v1.20（基于v1.19补强第17节收益感知路由执行规格；v1.17已撤回且不恢复）  
-> 冻结日期：2026-07-27  
+> 版本：v1.21（基于v1.20加入Video2Reaction公开资产边界与双轨强基线执行合同；v1.17已撤回且不恢复）  
+> 冻结日期：2026-07-28  
 > 执行周期：2026-07-13—2027-05-12  
 > 首要目标：在2027-05-12前形成可直接提交 IEEE Transactions on Affective Computing（T-AFFC）的CARM群体情绪预测论文、代码、数据说明和完整证据链。  
 > 研究范围：只继承毕业论文第四章“基于多模态感知与检索的群体情绪预测”；第三章传播链、Temporal GNN 和传播拓扑不作为新论文的方法贡献。  
@@ -97,6 +97,17 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 - 当前scoping尚未定位到同时实现“评论仅训练期可见 + train-only历史反应分布记忆 + OOD/污染下显式识别检索负迁移”的完全同构前作；这只是待持续证否的候选差异，不是世界首创结论。
 - Video2Reaction必须作为closest/direct prior进入引言、相关工作、基线与审稿预演；其公开VLM/LDL设置在输入、标签、许可和预算可比时必须适配，无法执行时提交00接受的差异/不可执行审计。
 - 本修正不追溯推翻G1—G3，不改变Task20的`PASS_WITH_LIMITATIONS`或VC-CSA探索的`NON_T0/INELIGIBLE`身份；它新增的是任务30—60的主张上限和正式证据义务。
+
+#### 0.8.1 Video2Reaction公开资产边界与双轨证据角色（v1.21，`SC-20260728-01`）
+
+截至2026-07-28，官方Hugging Face数据卡公开10,348条样本、7,243/1,035/2,070 train/val/test、21类反应分布、clip description及BERT文本特征、ViT视觉特征、CLAP/HuBERT音频特征；Hub自动生成包下载量约8.95 GB、展开后约41.12 GB。原始视频和独立原始音频不随公开包直接再分发：视频只能按`video_id`从原YouTube源自行取得或依作者申请入口获取，音频须从合法取得的视频中提取；视频可失效，完整字幕、转写和原始评论也不是公开包保证字段。
+
+- 标签由评论经过两阶段多代理LLM生成，并以人工—LLM相关和双盲人工核验评估质量；本项目统一标记为`SILVER_LLM_HUMAN_VERIFIED`，不能改称`HUMAN_GOLD`，也不能取代CSMV与LAI-GAI两个人工金标主集。
+- annotations与派生反应分布为CC BY-NC-SA 4.0；底层片段另受CondensedMovies、Movieclips/YouTube来源许可与平台条款约束。公开可下载不等于原始媒体可自由再分发，正式取得前必须冻结revision、文件树、字节数、SHA-256、许可层与恢复率。
+- 证据采用双轨：A轨为**CSMV公平适配主对比**，在同一CSMV split、T0输入、标签、评测器、种子和调参预算下实现Video2Reaction式直接内容模型/LDL；B轨为**Video2Reaction原生外部验证**，先复现作者协议，再加入movie-disjoint与CARM可适用组件。
+- A轨回答“在本项目同一证据地基上，CARM是否优于最近直接方法”；B轨回答“在最近前作原生视频域和银标体系中，可靠性机制是否仍有外部效度”。两轨必须分表报告，禁止把Video2Reaction论文的Top-3 F1或原生指标与CSMV指标直接横比。
+- B轨因不公开原始评论，H1评论teacher固定为`NOT_APPLICABLE_DATA_NOT_RELEASED`；memory只能使用训练split的内容表示与已发布反应分布，router仍只能读取T0查询和train-only邻居诊断。目标/未来信息、跨split建库和test调参继续fail closed。
+- Video2Reaction在本项目中同时承担closest/direct prior、CSMV上的最强直接基线来源和原生视频域外部验证，但不是“第三个人工金标主集”，不改变现有G1—G3。
 
 ### 0.9 Claim blacklist与构念红线（v1.19）
 
@@ -314,7 +325,7 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 1. 总体均值/主题均值/多数类/经验分布基线；
 2. 原论文48维 + CatBoost、HGB、LightGBM；
 3. CSMV官方VC-CSA及数据集官方基线；
-4. Video2Reaction式VLM直接微调与LDL设置的可比适配版；不能公平执行时提交输入、标签、split、许可、资源与预算差异审计；
+4. Video2Reaction双轨强基线：CSMV同split/T0/评测/预算的直接内容模型与LDL公平适配为主对比；其公开原生协议复现与movie-disjoint审计为外部验证；不能执行时提交输入、标签、split、许可、资源与预算差异审计；
 5. 冻结CLIP/SigLIP/VideoMAE + MLP、late fusion、cross-attention；
 6. content-only student、teacher-only上界、普通蒸馏；
 7. 无检索、随机检索、BM25/TF-IDF、CLIP/SBERT kNN、可学习检索；
@@ -418,7 +429,7 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 任务：
 
 - 复现CSMV官方基线；
-- 适配Video2Reaction式VLM直接微调/LDL最近强基线，或提交经00接受的不可执行审计；
+- 冻结Video2Reaction公开revision与资产边界；任务20不追溯扩项，正式双轨执行留到任务50：CSMV公平适配为主对比，原生复现为外部验证；
 - 跑统计、传统ML、冻结深度编码器、普通融合和旧M-DRGE基线；
 - 建立分布、校准、OOD和检索的统一评测器；
 - 等预算调参，记录配置、种子、环境、日志和预测文件；
@@ -670,13 +681,14 @@ flowchart TD
 | 2026-07-16 | `SC-20260716-02`批准IJCV—T-AFFC条件双论文路线 | IJCV官方专刊与主观视觉情绪分布高度匹配，但冻结I3D+CARM不足以达到IJCV视觉方法门；同稿不得同时送审 | CARM原稿换标题投IJCV；同稿双投；为赶截稿弱化数据/统计门 | IJCV独立为响应分布几何视觉表征，J0/J1/J2硬门；T-AFFC保留CARM；条件增加任务25/65 |
 | 2026-07-16 | `SC-20260716-03`将IJCV方向迁出为独立项目，本项目恢复T-AFFC单路线 | 用户已新建IJCV项目并要求当前项目继续完成原定T-AFFC路线；避免双路线争夺总纲、任务树和共享代码 | 继续在一个总纲维护两篇论文；删除历史决策；让两个项目同时改主分支 | v1.14完整留在IJCV分支`codex/ijcv-j0@c64c954`；本总纲升v1.15并移除IJCV活动门/任务/日历 |
 | 2026-07-17 | `SC-20260717-01`接受I3D资产外部证明延期风险并放行任务20 | 非资产G2现场复审全部通过；本地I3D文件树、hash、schema和8210覆盖已闭合；用户明确要求修改总纲并放行20 | 把UNKNOWN写成许可证据；公开再分发I3D；继续无限等待维护者；无记录直接绕门 | G2拆为协议/数据PASS与资产风险延期接受；`formal_split=true`；只授权内部研究使用并强制披露/止损 |
+| 2026-07-28 | `SC-20260728-01`批准Video2Reaction双轨强基线合同 | 它是最新且最直接前作，公开特征/标签足以原生复现，但原始媒体、评论、许可层和银标性质不允许把它直接当第三人工金标主集 | 只引用论文数值；把银标写成人工金标；用原生Top-3 F1与CSMV横比；追溯改写Task20/G3 | A轨在CSMV同协议公平适配；B轨冻结公开revision后做原生复现、movie-disjoint与适用CARM组件；分表报告并保持G1—G3不变 |
 
 ## 15. 后续每项任务的引用格式
 
 从下一项任务起，开工前必须写清：
 
 ```text
-主纲版本：v1.20（2026-07-27）
+主纲版本：v1.21（2026-07-28）
 所属月份/工作包：M? / E?
 服务假设：H?
 数据版本与split：...
@@ -687,11 +699,12 @@ flowchart TD
 
 任何不属于本纲的想法，只能登记为“探索性候选”，先判断是否会改变研究问题、数据或十个月期限，再决定是否纳入；不能直接插入主模型。
 
-## 16. 关键外部依据（快照：2026-07-24）
+## 16. 关键外部依据（快照：2026-07-28）
 
 - T-AFFC官方范围包含群体情绪识别、情感数据收集与多模态情感计算：<https://www.computer.org/digital-library/journals/ta/tac-general-call-for-papers>
 - CSMV/MSA-CRVI，NeurIPS 2024 Datasets & Benchmarks：<https://proceedings.neurips.cc/paper_files/paper/2024/hash/bbf090d264b94d29260f5303efea868c-Abstract-Datasets_and_Benchmarks_Track.html>
 - Video2Reaction，arXiv:2607.06875 v1（2026-07-08）：<https://arxiv.org/abs/2607.06875>
+- Video2Reaction官方Hugging Face数据卡（公开字段、体量、split、媒体恢复与许可边界）：<https://huggingface.co/datasets/infofusionlab/Video2Reaction>
 - CVPR 2026 DataMFM accepted papers（workshop展示确认；归档状态待核）：<https://datamfm.github.io/>
 - ECCV 2026状态当前仅有作者/合作者公开报告，正式ECCV/ECVA论文集条目待核；投稿前滚动复核。
 - CSMV官方数据与代码：<https://github.com/IEIT-AGI/MSA-CRVI>
@@ -704,11 +717,11 @@ flowchart TD
 
 ## 17. Codex任务树详细执行规格
 
-> 规格版本：v1.4  
-> 初次并入：2026-07-14；本次修订：2026-07-27  
+> 规格版本：v1.5  
+> 初次并入：2026-07-14；本次修订：2026-07-28  
 > 权威性：本节是总纲的一部分，负责规定00—60各Codex任务的启动条件、执行步骤、质量水平、退出门和交接要求。  
 > 独立文件 `CODEX_TASK_TREE_EXECUTION_SPEC.md` 仅作为便捷副本；若与本节冲突，以本总纲第17节为准。
-> v1.4修订边界：只把C2后半的“收益感知历史反应记忆”落实为可执行、可证伪的任务40/50合同；不改变G1—G3、任务20冻结接口、I3D风险或Task30创建状态，也不恢复v1.17的3%/5%/8%硬效应门。
+> v1.5修订边界：保留v1.4收益感知路由合同，并把Video2Reaction落实为“CSMV公平适配 + 原生外部验证”双轨强基线；不改变G1—G3、任务20冻结接口、I3D风险或Task30创建状态，也不恢复v1.17的3%/5%/8%硬效应门。
 
 ### 1. 全任务统一规则
 
@@ -731,7 +744,7 @@ flowchart TD
 每个任务首次回复和每个正式实验必须填写：
 
 ```text
-主纲版本：v1.20（2026-07-27）
+主纲版本：v1.21（2026-07-28）
 任务编号与名称：
 所属月份/工作包：M? / E?
 服务假设：H? / C?
@@ -857,7 +870,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 3.3 当前输入
 
-- 总纲v1.20；
+- 总纲v1.21；
 - `T0_INPUT_POLICY.md`；
 - `DATA_SOURCE_LEDGER.md`；
 - `ENVIRONMENT_LOCK.md`与`requirements-lock.txt`；
@@ -1048,6 +1061,7 @@ task_timepoint：T0 或独立的 T+Δ
 10. 运行去teacher/去蒸馏/错配teacher E3，确认收益不是软标签、数据量、参数量或目标评论捷径。
 11. 检查teacher/student训练日志、梯度、分布归一化和数值稳定性。
 12. 在CSMV与第二公开人工集各自适用的开发协议上复核趋势；不强制在LAI-GAI复刻缺少字段支持的H1/H2，正式五种子结论留到任务50。
+12a. teacher/student接口不得硬编码CSMV标签数或字段名；为任务50的Video2Reaction原生分支保留数据集特定head，但因其公开包不含原始评论，H1固定为`NOT_APPLICABLE_DATA_NOT_RELEASED`，不得用派生分布反推或伪造评论teacher。
 13. 分析错误案例：讽刺、混合情绪、少评论、高分歧和跨域样本。
 14. 评估校准是否恶化；若分布误差改善但校准显著变差，不能直接宣称成功。
 15. 冻结teacher/student-v1及其配置、预测和消融结果。
@@ -1099,6 +1113,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 1. 读取`HANDOFF_30.md`，冻结student表示和输出头接口。
 2. 设计memory schema：train sample ID、内容表示、经验反应分布、置信度、域、时间和模态质量。
+2a. memory与router接口须支持数据集特定标签head；Video2Reaction原生分支只允许把其train split公开内容表示与反应分布建库，不读取原始评论、不跨split共享邻居，也不把银标域结果并入人工金标主表。
 3. 严格实现“先split后建库”；索引manifest保存成员ID、配置、hash和创建时间。
 4. 有可靠时间时强制`candidate_time < query_time`；无可靠时间时只声称train-only。
 5. 实现无检索和随机检索负对照。
@@ -1150,7 +1165,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 7.1 定位
 
-将冻结的方法和评测协议转化为T-AFFC可审计证据：两个人工标注主集、Video2Reaction最近强基线、五种子、完整E0—E9、严格OOD、适用的缺失模态、统计、中文压力测试和结果冻结。
+将冻结的方法和评测协议转化为T-AFFC可审计证据：两个HUMAN_GOLD主集、Video2Reaction双轨最近强基线、五种子、完整E0—E9、严格OOD、适用的缺失模态、统计、中文压力测试和结果冻结。
 
 #### 7.2 对应总纲
 
@@ -1187,6 +1202,18 @@ task_timepoint：T0 或独立的 T+Δ
 14. 执行G4：H1/H2至少一条在CSMV成立，第二集对适用的跨域分布、校准/OOD或H3提供独立证据；否则降级或转数据/评测贡献。
 15. 只在G4支持且资源允许时决定是否加入NEmo+的H4配对模态增强。
 
+#### 7.5A 工作包B2：Video2Reaction双轨直接前作对比
+
+15a. 在任何下载或运行前生成`VIDEO2REACTION_DATA_INTAKE.md`与`data/manifests/video2reaction-source-v1.manifest.json`，冻结Hugging Face revision、文件树、split、字节数、SHA-256、许可层、公开字段、原始媒体恢复率和不可再分发边界；只下载公开且无需绕过访问控制的资产。  
+15b. A轨在CSMV冻结split上实现至少一个Video2Reaction式直接内容模型和一个LDL基线；两者使用相同T0 I3D输入、CSMV标签、评测器、五种子、模型选择规则和可比调参预算，与content-only、teacher/student、memory、固定融合、router/rejection同表比较。  
+15c. A轨不得引用Video2Reaction论文原生Top-3 F1作为CSMV性能目标，也不得因CSMV只有冻结I3D视觉输入而虚构音频或文本；不可适配的VLM输入差异逐项登记。  
+15d. B轨先在官方split和公开派生特征上复现至少一个作者LDL/直接模型，输出`VIDEO2REACTION_REPRODUCTION_REPORT.md`；若原始视频合法恢复率不足，原始VLM复现记限制，但公开特征基线仍按可得范围执行。  
+15e. 以`imdbid`/movie identity审计官方train/val/test重叠，输出`VIDEO2REACTION_MOVIE_SPLIT_AUDIT.md`；存在movie overlap时另建movie-disjoint split，与官方split分表报告，不把对方split缺陷当作本稿主要贡献。  
+15f. B轨比较直接内容模型、train-only reaction memory、固定融合、收益感知router与rejection；不公开原始评论使comment teacher固定`NOT_APPLICABLE_DATA_NOT_RELEASED`。所有memory成员和邻居来源必须可审计且严格限于train。  
+15g. B轨报告JSD/NLL/EMD、Macro-F1、Brier/ECE/AURC/risk-coverage及作者原生指标；正式CARM比较使用五种子和以video/movie为适当单位的区间。作者论文数值只用于同协议复现差异，不与CSMV绝对值横比。  
+15h. 两轨输出独立结果表与`V2R_BASELINE_ADAPTATION_REPORT.md`：A轨服务主要公平比较，B轨只作银标视频域外部效度；两者都不能把Video2Reaction升级为第三HUMAN_GOLD主集。  
+15i. 若公开revision、许可、资源或媒体恢复使B轨无法完整执行，提交六维差异/不可执行审计；A轨仍是必须优先完成的直接基线义务，除非00另行书面接受其不可执行证据。
+
 #### 7.6 工作包C：M7 OOD与中文压力测试
 
 16. 完成movie/group、topic/hashtag、publisher/source、time和platform held-out E6；若复核确认Video2Reaction公开split存在movie overlap，再报告其官方split与movie-disjoint的对照，但不把攻击其split写成主要贡献。
@@ -1215,6 +1242,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 - 正式实验登记与run manifests；
 - 两主集五种子主实验、完整E0—E9；
+- `VIDEO2REACTION_DATA_INTAKE.md`、`video2reaction-source-v1.manifest.json`、原生复现与movie split审计、CSMV公平适配报告及双轨独立结果表；
 - `OOD-table-v1`、跨场景矩阵、中文压力测试报告；
 - `ablation-final`、`statistics-report`、效率和失败案例；
 - `results-freeze-v1`、`claim-evidence-map`；
@@ -1224,7 +1252,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 **G4/L2**：至少H1/H2之一在CSMV成立；若保留H2收益感知主张，必须在五种子、原生内容单元CI、强检索/路由对照、匹配coverage及OOD/污染负对照下证明其减少负迁移或形成选择性风险优势；第二集在适用的跨域分布、校准/OOD或H3上形成独立证据或明确边界；校准不恶化；随机split不是唯一优势。  
 **G5/L2**：跨话题/来源/时间/平台的失败可量化、解释或被拒绝机制识别。  
-**G6/L3**：E0—E9、两集各自适用的五种子实验、按原生内容单元的CI、强基线、公平预算、完整统计、效率、失败案例和中文压力测试全部冻结且可追溯；不适用项有预注册说明。  
+**G6/L3**：E0—E9、两个人工金标主集各自适用的五种子实验、按原生内容单元的CI、Video2Reaction A轨公平适配与B轨原生外部验证、强基线、公平预算、完整统计、效率、失败案例和中文压力测试全部冻结且可追溯；不适用项有预注册说明。  
 **T-AFFC目标水平**：在主要分布指标上对最强公平基线有统计支持的优势且校准不恶化，或形成“分布误差不劣、OOD校准/选择性风险更优”的清晰Pareto优势。
 
 #### 7.10 止损与禁止
@@ -1232,6 +1260,7 @@ task_timepoint：T0 或独立的 T+Δ
 - G4/G5/G6失败时延期、降级或重新匹配投稿层级，不用不完整实验硬冲；
 - 不把中文银标/无标签集准确率写成核心证据；
 - 不隐藏失败种子、负结果或不利OOD；
+- 不把Video2Reaction银标写成人工金标，不把其原生Top-3 F1与CSMV指标横比，不把缺失的原始评论或媒体静默补成已公开字段；
 - 不在结果出现后改变主指标、阈值、假设或数据划分。
 
 ---

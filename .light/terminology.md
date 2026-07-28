@@ -10,6 +10,9 @@
 | C2核心候选机制 | 收益感知可靠性路由 | — | benefit-aware reliability routing | 用train内部OOF误差差学习检索相对content-only是否有益；推理只看T0查询与邻居诊断；须优于固定融合、相似度/熵阈值和SelectiveNet式拒绝并减少负迁移，不能称模块首创 |
 | 论文定位 | 分布偏移与目标响应不可用下的可靠内容到受众反应分布预测 | — | reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses | Video2Reaction为closest/direct prior |
 | 直接前作 | Video2Reaction | V2R | Video2Reaction | 共同任务必须承认；workshop展示确认、归档状态待核；ECCV为作者报告待正式条目 |
+| V2R标签层级 | LLM生成且人工核验银标 | SILVER_LLM_HUMAN_VERIFIED | LLM-derived, human-verified silver labels | 不是逐样本HUMAN_GOLD，不替代CSMV/LAI-GAI主测试 |
+| V2R对比A轨 | CSMV公平适配 | V2R-A | CSMV fair adaptation | 同split、T0输入、评测、种子与预算；服务主对比 |
+| V2R对比B轨 | Video2Reaction原生外部验证 | V2R-B | Video2Reaction-native external validation | 公开特征复现、movie-disjoint和适用CARM组件；独立分表 |
 | 预测时点 | T0内容预测 | T0 | content-only prediction at publication time | 禁止未来评论/互动/推荐结果 |
 | 数据层级 | 人工金标 | HUMAN_GOLD | human-annotated gold labels | CSMV与LAI-GAI |
 | 数据层级 | 银标 | SILVER | automatically derived labels | 不进入人工test |

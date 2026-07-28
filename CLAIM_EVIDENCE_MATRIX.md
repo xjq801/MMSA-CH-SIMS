@@ -1,6 +1,6 @@
 # Claim—Evidence矩阵
 
-> 版本：v1.2；日期：2026-07-27  
+> 版本：v1.3；日期：2026-07-28  
 > 原则：没有证据的主张保持`TO_VERIFY`，不得写成论文结论。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
@@ -32,6 +32,18 @@
 | C2-H2反应记忆 | Video2Reaction未覆盖已定位的train-only反应记忆与负迁移拒绝；RAMER/SelectiveNet覆盖相邻组件 | 不得以模块组合证明创新；必须证明学习检索优于随机/普通近邻且路由识别有害邻居 | E2/E4/E7、错误邻居、OOD、负迁移率和risk-coverage |
 
 本节不改变C1—C4的`TO_VERIFY`状态，不追溯改变G1—G3；它只收紧后续论文主张和公平对比义务。
+
+## 2026-07-28 Video2Reaction双轨证据合同
+
+| 轨道 | 证据角色 | 必须保持一致/必须审计 | 可支持的主张 | 不可支持的主张 |
+|---|---|---|---|---|
+| A：CSMV公平适配 | closest prior在本项目证据地基上的最强直接基线 | 同CSMV split、T0输入、标签、评测器、五种子、模型选择与调参预算；VLM输入不可得项显式登记 | CARM相对最近直接方法在同协议下的分布、校准或选择性差异 | 用Video2Reaction论文原生Top-3 F1代替公平对比；虚构CSMV音频/文本 |
+| B：Video2Reaction原生外部验证 | 银标电影视频域上的复现、movie-disjoint和适用机制外部效度 | HF revision/许可/fixity；官方split与movie identity；train-only memory；原始评论不可得；作者指标与本项目指标分栏 | C3/C4在另一视频域的有限外部支持，或清晰失败边界 | 第三HUMAN_GOLD主集；H1评论teacher证据；与CSMV绝对指标横比 |
+
+- B轨标签固定为`SILVER_LLM_HUMAN_VERIFIED`；双盲人工核验质量不能把逐样本分布升级为人工金标。
+- A轨优先级高于B轨原始VLM恢复；B轨媒体恢复受阻时，先完成公开派生特征基线与不可执行审计。
+- 两轨所需档案固定为`VIDEO2REACTION_DATA_INTAKE.md`、`video2reaction-source-v1.manifest.json`、`VIDEO2REACTION_REPRODUCTION_REPORT.md`、`VIDEO2REACTION_MOVIE_SPLIT_AUDIT.md`和`V2R_BASELINE_ADAPTATION_REPORT.md`。
+- 本合同不升级C1—C4，不改变G1—G3；任何“优于Video2Reaction式方法”仍须等待任务50五种子与原生内容单位统计。
 
 ## 2026-07-27 第17节收益感知路由执行合同
 

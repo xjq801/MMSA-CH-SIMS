@@ -23,7 +23,7 @@ DOCUMENT_CONTRACT = {
         "不声称穷尽召回",
     ],
     "CONTRIBUTION_PRIOR_ART_MATRIX.md": [
-        "FROZEN_v4",
+        "FROZEN_v5",
         "最相近前作",
         "必须对比实验",
         "NEmo+",
@@ -35,6 +35,9 @@ DOCUMENT_CONTRACT = {
         "TAFFC_CLAIM_BLACKLIST_20260724.md",
         "train内部cross-fitting/OOF误差差",
         "coverage匹配",
+        "V2R-A",
+        "V2R-B",
+        "SILVER_LLM_HUMAN_VERIFIED",
     ],
     "CARM_NAME_AUDIT.md": ["NAME_BLOCKED", "Constraint-Aware Retrieval Module", "CarM"],
     "RESEARCH_PROTOCOL_FREEZE_AUDIT_V2_20260724.md": [

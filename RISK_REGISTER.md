@@ -1,7 +1,7 @@
 # 项目风险登记
 
 > 维护任务：00-总控与决策  
-> 当前快照：2026-07-27  
+> 当前快照：2026-07-28  
 > 规则：风险关闭必须链接到可复核证据；`UNKNOWN`不能按通过处理。
 
 | 风险ID | 风险 | 当前证据 | 影响 | 当前控制 | 状态/恢复条件 |
@@ -17,8 +17,9 @@
 | `R-IJCV-002` | 缺少第二个像素可得、许可固定的人工主观分布集 | LAI-GAI已冻结；其他图像集仍需逐资产准入 | 仅影响已迁出的IJCV方向，不再是本项目数据门 | 第二像素人工集准入由独立IJCV项目维护；本项目任务10不再取得该数据 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
 | `R-INTEGRITY-001` | IJCV与T-AFFC形成一稿多投或重复发表 | 两路线可能共享研究构念与部分数据基础 | 若未来两项目都形成稿件，仍可能产生投稿伦理风险 | 项目、分支、总纲、claim和主实验已物理分离；跨项目只消费已提交事实并在投稿时披露相关稿 | CONTROLLED_CROSS_PROJECT；不阻塞本项目当前G门 |
 | `R-SCHEDULE-001` | IJCV 2026-12-15固定截稿压缩方法与复现周期 | IJCV方向已独立迁出 | 不再挤占本项目T-AFFC日历与资源优先级 | 本项目恢复2027-05-12 T-AFFC单线日历；IJCV期限由独立项目自行管理 | TRANSFERRED_TO_IJCV_PROJECT_20260716 |
-| `R-NOVELTY-001` | CARM被评价为蒸馏、评论增强、检索和拒绝的模块拼接 | generalized distillation、评论增强社会情绪预测、CRC-MRC、RAMER和选择性拒绝均已有前作 | T-AFFC方法新颖性与完整论文定位 | 总纲v1.20仅采用非数值的收益感知路由执行合同：train内部OOF效用标签、强路由对照、coverage匹配、负迁移与OOD机制链；已撤回的3%/5%/8%门仍不恢复 | OPEN_HIGH；若学习检索不优于普通近邻，或router不优于固定融合/相似度/熵/SelectiveNet式拒绝并不能减少负迁移，删除完整检索创新claim |
-| `R-NOVELTY-002` | Video2Reaction直接覆盖“视频内容→受众反应分布”的C1任务层目标 | arXiv:2607.06875于2026-07-08公开；DataMFM workshop展示确认但归档状态待核；ECCV录用为作者报告、正式论文集待核 | “任务首创”和“分布输出即创新”失效；若不加入直接对比可导致拒稿 | 总纲v1.20保持无目标响应与分布偏移下的可靠预测定位；claim blacklist；任务50适配VLM/LDL或六维不可执行审计 | OPEN_HIGH；投稿前滚动查新，只有H1/H2和OOD选择性证据成立才保留完整方法claim |
+| `R-NOVELTY-001` | CARM被评价为蒸馏、评论增强、检索和拒绝的模块拼接 | generalized distillation、评论增强社会情绪预测、CRC-MRC、RAMER和选择性拒绝均已有前作 | T-AFFC方法新颖性与完整论文定位 | 总纲v1.21保留非数值收益感知路由合同：train内部OOF效用标签、强路由对照、coverage匹配、负迁移与OOD机制链；已撤回的3%/5%/8%门仍不恢复 | OPEN_HIGH；若学习检索不优于普通近邻，或router不优于固定融合/相似度/熵/SelectiveNet式拒绝并不能减少负迁移，删除完整检索创新claim |
+| `R-NOVELTY-002` | Video2Reaction直接覆盖“视频内容→受众反应分布”的C1任务层目标 | arXiv:2607.06875于2026-07-08公开；官方HF包已公开标签、metadata和多模态派生特征；DataMFM展示确认，ECCV正式论文集状态待核 | “任务首创”和“分布输出即创新”失效；若只引用、不做公平直接对比可导致拒稿 | 总纲v1.21保持可靠预测定位；任务50双轨：CSMV同协议适配为主，Video2Reaction原生复现/movie-disjoint为外部验证；分表且禁绝对指标横比 | OPEN_HIGH；投稿前滚动查新，只有H1/H2和OOD选择性证据成立才保留完整方法claim |
+| `R-DATA-004` | Video2Reaction公开包被误写为完整原始音视频文本与人工金标 | HF公开派生视觉/音频/文本特征、metadata和LLM生成分布；原始视频不直接再分发，独立音频、完整转写、原始评论不保证提供；底层媒体受第三方许可/平台条款约束 | 错误数据预算、许可外推、H1不可执行、银标冒充人工金标及跨数据不公平比较 | DS-012固定`SILVER_LLM_HUMAN_VERIFIED`；任务50先冻结revision/fixity/恢复率；原始评论缺失使原生H1 N/A；A/B轨独立表 | OPEN_CONTROLLED；source manifest、媒体恢复审计和movie split审计闭合后重评 |
 | `R-CONSTRUCT-001` | 把社媒评论分布外推为所有观众的真实内在情绪 | 评论者自选择、公开表达与未评论观看者不可观测；Video2Reaction同样依赖社媒反应 | 构念效度被拒稿、伦理与应用主张过度 | 统一称“评论者公开表达的诱发反应分布”；HUMAN_GOLD主测试与SILVER训练隔离；报告评论数、分歧、置信度和代表性限制 | OPEN_HIGH；任务60必须通过claim blacklist与构念人工审计 |
 | `R-EVIDENCE-001` | 把单seed强基线或计划阈值写成正式优越性 | 当前temporal-attention只有单seed正式test，任务50尚未完成 | 过度主张、统计无效与拒稿 | 所有效应claim保持TO_VERIFY；正式门要求五种子、原生单位paired bootstrap CI和多重校正 | OPEN_NONBLOCKING_UNTIL_TASK50；G4/G6前不得升级 |
 | `R-OPS-001` | Task20 VC-CSA探索与受限存储生命周期未闭环 | 已完成3个完整epoch并持久化最小证据；恢复锚为Epoch 4 step 220。2026-07-27新4090位于13区：8210项I3D已复核、环境恢复中，但`last-resume.ckpt`仍只在亚太2区，跨区复制与SHA-256复核未完成 | 共享核心冲突、费用、跨区断点可得性和受限资产残留 | 探索永久NON_T0/INELIGIBLE；精确断点未到位不得训练；收尾前不创建任务30；复制后必须匹配冻结SHA-256并保留完成/失败/删除核验 | OPEN_BLOCKS_TASK30_CREATION_AND_RESUME；不是模型/GPU失败，以Task20最新线程/WORK_LOG刷新 |

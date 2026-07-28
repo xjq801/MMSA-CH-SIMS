@@ -8072,3 +8072,49 @@ Epoch 23将opinion micro/macro推至当前较高值，但emotion回落使冻结�
 ### Git状态
 
 本条基于`main=origin/main=08c71e1884595d68df41bf1a9beab9cd330b5788`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260728-006 — Task20 VC-CSA Epoch 25—26训练与dev闭环
+
+- 时间：2026-07-28 10:15:08 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 25—26完整闭环
+- 状态：Epoch 25与26的训练、dev评估、非best判定、checkpoint和私有MatBox最小证据同步均已完成；Epoch 27继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+长监控间隔内Epoch 25和26先后闭环，因此同批记录两轮完整训练/dev曲线、冻结best判定、精确断点和私有证据；两轮均未超过Epoch 22 best，不做选择性省略或重跑。
+
+### 实际变更
+
+- Epoch 25总loss为112.9908674552571、opinion为53.87179796106648、emotion为59.11906946651288；4693个batch均值分别为0.02407647、0.01147918、0.01259729。训练耗时3454秒，约0.7360秒/batch，结束学习率为`4.40e-05`。
+- Epoch 25 dev opinion accuracy=micro-F1=0.72396756、macro-F1=0.65639248；dev emotion accuracy=micro-F1=0.61377832、macro-F1=0.53250807；冻结组合micro-F1为1.3377458748951245，比Epoch 22 best低0.018644541810，非best。
+- Epoch 26总loss为105.73925603867974、opinion为49.55869535509919、emotion为56.180560724576935；4693个batch均值分别为0.02253127、0.01056013、0.01197114。训练耗时3425秒，约0.7298秒/batch，结束学习率为`4.35e-05`。
+- Epoch 26 dev opinion accuracy=micro-F1=0.72154377、macro-F1=0.66180479；dev emotion accuracy=micro-F1=0.61685467、macro-F1=0.54345693；冻结组合micro-F1为1.338398433858488，比Epoch 22 best低0.017991982847，非best。
+- 两轮loss文件至dev performance/prediction文件的观测间隔分别为198秒和195秒。将两轮主日志、作者日志、loss/dev JSON、dev预测和TensorBoard原子同步至私有MatBox的0700 `epoch-evidence/epoch-025`与`epoch-evidence/epoch-026`；未复制两轮非best候选权重。
+
+### 验证与证据
+
+- Epoch 25和26最小证据目录分别为8个文件/35,158,380字节与8个文件/35,158,414字节；两份`SHA256SUMS`经`sha256sum -c`逐项全部`OK`，文件及manifest均为0600。同步后MatBox使用29,620,174,848/59,055,800,320字节，可用29,435,625,472字节。
+- 最新完整checkpoint为mode=0600、size=1,743,023,611、无`.tmp`，SHA-256=`e7265fe0c4f9da29e6ed116d9ed6b9b14243c7f8224907ea5b15d49df7a30132`；cursor为`epoch_index=26`、`next_batch_index=1482`、`global_step=123500`、`tensorboard_steps=2447`，并保持`best_epoch=22`和`best_eval_accuracy=1.3563904167055094`。
+- 首个15秒窗口跨越周期checkpoint尾部，仅从step 1480推进至1485、表观0.3333 steps/s；无`.tmp`后复测窗口由step 1632推进至1665，恢复2.20 steps/s、Epoch 27剩余约22.9分钟。因此前一短窗不是持续性能退化。
+- 审计时唯一`python main.py`进程运行于Epoch 27。主日志未发现NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。
+- GPU采样25%、显存17,248/24,564 MiB、57°C、约257.62 W；常态复测GPU为45%、62°C、约259.46 W。RAM约5.20/53.69 GB，根盘约46.81/322.12 GB，未见显存或RAM持续增长。
+
+### 影响与边界
+
+Epoch 25和26训练loss继续下降，但dev组合分数基本持平并低于Epoch 22；完整曲线继续显示训练优化与dev泛化已分化。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 25和26训练耗时为3425—3454秒，仍处于近期区间；常态短窗吞吐恢复至2.20 steps/s且资源正常，不改变冻结配置。
+- MatBox保留9个历史/当前best并使用约51%，仍有约29.44 GB可用。下一次真实best同步前必须继续核验容量，达到安全阈值前执行带hash与tombstone的可审计历史best轮换，精确checkpoint不得删除。
+- TensorBoard macro标签继续不作为macro证据；I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 27及后续完整闭环，记录训练耗时、dev曲线、周期checkpoint与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=94bd261849b87d5affa7f22d9aa7d76425017887`追加；仅修改`WORK_LOG.md`，`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

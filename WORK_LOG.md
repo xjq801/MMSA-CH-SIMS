@@ -8303,3 +8303,47 @@ Epoch 31和32训练loss继续下降，但dev组合分数仍低于Epoch 22，继�
 ### Git状态
 
 本条基于`main=origin/main=9ff5cceec9b51023701a786eaa2fcd8f74d1667f`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260728-011 — Task20 VC-CSA完整epoch训练loss曲线
+
+- 时间：2026-07-28 16:55:00 +08:00
+- 类型：PROGRESS | FIGURE | TEST | PROVENANCE
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 训练诊断图
+- 状态：完成Epoch 4—33训练loss数据冻结、程序化绘图、视觉诚实检查与渲染回看
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+用户要求绘制当前VC-CSA训练loss曲线。目标是使用每个完整epoch的冻结`loss_epoc_<epoch>.json`，绘制total、opinion和emotion三条batch均值曲线，并标出冻结dev最佳Epoch 22；不使用逐step抖动值、不补造缺失Epoch 1—3，也不把训练loss当正式性能结果。
+
+### 实际变更
+
+- 新增`paper/figures/task20_vccsa_loss_curve.csv`，保存远端完整epoch产物可核验的Epoch 4—33共30行训练loss均值；每轮分母固定为4693个batch。
+- 新增`scripts/plot_task20_vccsa_loss_curve.py`，使用matplotlib、Okabe–Ito色盲安全配色以及线型/marker冗余编码，程序化输出300 dpi PNG和矢量SVG。
+- 新增`paper/figures/task20_vccsa_loss_curve.png`与`paper/figures/task20_vccsa_loss_curve.svg`。纵轴从0开始、无双轴、无jet/rainbow；图注明示单seed探索运行无不确定性带、Epoch 1—3未重构。
+- 首次渲染回看发现底部说明与横轴标签重叠；调整画布bottom margin和说明位置后重渲染，最终版无可见标签重叠或裁切。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\plot_task20_vccsa_loss_curve.py` exit 0；最终PNG为229,655字节，SVG为26,095字节。
+- 数据检查首次以`1e-12`要求total与两分项浮点加和完全一致时触发`AssertionError`；核查发现最大累计浮点残差为`8.235645498899657e-11`，并非数据错位。改用只读审计容差`1e-9`后，30行、连续Epoch 4—33和加和关系全部PASS；未修改原始数值。
+- `figure_integrity_lint.py --file scripts\plot_task20_vccsa_loss_curve.py --json`返回`n=0`、`findings=[]`；`git diff --check` exit 0。
+- SHA-256：CSV=`5f99e7825934c8440f2fb1e0d73d848a5dcbf2095435e18d141ff819a0483163`；PNG=`57bbfe1707ac070c2931c4a337e2a8ea98d416d4410b7d0cd305f8343dc9160f`；SVG=`434a8fa47731b7ee2a83c0a875addd74f4cee6d4356370fe97cde2ed4c19a16e`；绘图脚本=`b02d082b7a90fe6b2ed8767bb584321b7137daaa7c97d3f075bed51b270b11c7`。
+
+### 影响与边界
+
+图清楚显示Epoch 4—33训练total及两个分项loss持续下降，并显示训练loss在冻结dev最佳Epoch 22之后仍继续下降，因此只能作为优化/过拟合诊断，不能替代dev/test结果。图受到Light figure技能的视觉诚实规范影响：采用零基线、色盲安全配色、程序化可复现输出及真实渲染回看。实验身份仍为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，图不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 1—3完整loss JSON当前不可用，图从Epoch 4开始并明确披露，禁止从部分step日志补齐。
+- 当前只有单seed、每epoch单个聚合值，无合理误差条或置信区间；图注已明确“no uncertainty band”。
+- Epoch 33训练loss文件已存在，但本记录不据此宣称其dev、checkpoint和证据同步闭环；该状态继续由监控流程独立核验。
+
+### 下一步
+
+后续每个完整epoch闭环后可从冻结JSON追加CSV并重新生成；完整训练结束后再配套绘制dev micro/macro-F1曲线，联合判断过拟合和冻结模型选择。
+
+### Git状态
+
+本条基于`main=origin/main=6f1bb67b55d9b5a97a1720b341b21c979b4a43bf`追加；本批仅纳入绘图CSV、脚本、PNG、SVG与`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`和Task20 `tmp/`继续不读取、不暂存、不修改。

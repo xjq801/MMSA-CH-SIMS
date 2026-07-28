@@ -8211,3 +8211,50 @@ Video2Reaction固定revision、逐文件SHA-256、movie overlap、媒体恢复�
 ### Git状态
 
 本条基于`main=origin/main=4b68eb0d841427cd2e6dc8228c1467d513e0652c`追加；v1.21总纲、配套台账、validator、passport、S25和本条待本批门禁通过后有意提交推送。用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`未跟踪目录未读取、未暂存、未修改。
+
+## WR-20260728-009 — Task20 VC-CSA Epoch 29—30训练与dev闭环
+
+- 时间：2026-07-28 14:23:06 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 29—30完整闭环
+- 状态：Epoch 29与30的训练、dev评估、非best判定、checkpoint和私有MatBox最小证据同步均已完成；Epoch 31继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+长监控间隔内Epoch 29和30先后闭环，因此同批记录两轮完整训练/dev曲线、冻结best判定、精确断点和私有证据；两轮均未超过Epoch 22 best，不做选择性省略或重跑。总纲已由00更新至v1.21，但该变更不改变Task20现有探索身份和冻结接口。
+
+### 实际变更
+
+- Epoch 29总loss为88.63256085698958、opinion为40.799036287025956、emotion为47.83352448727237；4693个batch均值分别为0.01888612、0.00869359、0.01019253。训练耗时3319秒，约0.7072秒/batch，结束学习率为`4.21e-05`。
+- Epoch 29 dev opinion accuracy=micro-F1=0.72629813、macro-F1=0.66241368；dev emotion accuracy=micro-F1=0.61862590、macro-F1=0.54719299；冻结组合micro-F1为1.3449240234921227，比Epoch 22 best低0.011466393213，非best。
+- Epoch 30总loss为84.94670271122595、opinion为40.57828918487576、emotion为44.36841353552154；4693个batch均值分别为0.01810073、0.00864656、0.00945417。训练耗时3131秒，约0.6672秒/batch，结束学习率为`4.17e-05`。
+- Epoch 30 dev opinion accuracy=micro-F1=0.72331500、macro-F1=0.66479632；dev emotion accuracy=micro-F1=0.61359187、macro-F1=0.53960755；冻结组合micro-F1为1.336906870513657，比Epoch 22 best低0.019483546192，非best。
+- 两轮loss文件至dev performance/prediction文件的观测间隔分别为200秒和201秒。将两轮主日志、作者日志、loss/dev JSON、dev预测和TensorBoard原子同步至私有MatBox的0700 `epoch-evidence/epoch-029`与`epoch-evidence/epoch-030`；未复制两轮非best候选权重。
+
+### 验证与证据
+
+- Epoch 29和30最小证据目录分别为8个文件/40,519,122字节与8个文件/40,519,660字节；两份`SHA256SUMS`经`sha256sum -c`逐项全部`OK`，文件及manifest均为0600。同步后MatBox使用29,003,612,160/59,055,800,320字节，可用30,052,188,160字节。
+- SSH监控会话曾因本地会话失效而重连；远端PID 1005训练进程、GPU UUID和运行参数均未变化，不构成训练中断。
+- 初次监控恰逢周期checkpoint，`.tmp`为633,995,264字节且GPU为0%；约60秒后原子替换完成、`.tmp`消失并恢复训练。首个15秒吞吐复测仍跨checkpoint尾部未推进；再次复测由step 2864推进至2895，观测2.0667 steps/s、Epoch 31剩余约14.5分钟。
+- 最新完整checkpoint为mode=0600、size=1,743,028,475、无`.tmp`，SHA-256=`1b62ae0d84314933252be75f8ab10ed5c01f529c40b0a541dffe328b115c182f`；cursor为`epoch_index=30`、`next_batch_index=2210`、`global_step=143000`、`tensorboard_steps=2834`，并保持`best_epoch=22`和`best_eval_accuracy=1.3563904167055094`。
+- 审计时唯一`python main.py`进程运行于Epoch 31。主日志未发现NaN、数值Inf、CUDA OOM、Killed、Traceback或读取错误。
+- 常态GPU显存17,248/24,564 MiB、温度约66—67°C、功耗约246—255 W；RAM约5.06/53.69 GB，根盘约53.79/322.12 GB，未见显存或RAM持续增长。
+
+### 影响与边界
+
+Epoch 29和30训练loss继续下降，但dev组合分数仍低于Epoch 22，继续支持按冻结dev选择而非训练loss选择。总纲v1.21的Video2Reaction双轨强基线属于后续任务边界，本批未实现或运行。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 29和30训练耗时改善至3319和3131秒；常态吞吐与资源正常，不改变冻结配置。
+- MatBox保留9个历史/当前best并使用约49%，仍有约30.05 GB可用。下一次真实best同步前必须继续核验容量，达到安全阈值前执行带hash与tombstone的可审计历史best轮换，精确checkpoint不得删除。
+- TensorBoard macro标签继续不作为macro证据；I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续每30分钟监控Epoch 31及后续完整闭环，记录训练耗时、dev曲线、周期checkpoint与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=cdf9950cfd04183d2316ab49cf7c54cff316f54c`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与`tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

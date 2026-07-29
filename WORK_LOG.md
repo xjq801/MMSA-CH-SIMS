@@ -8915,3 +8915,49 @@ Epoch 54—56保持低loss但dev组合分数仍未刷新Epoch 22，继续支持�
 ### Git状态
 
 本条基于`main=origin/main=5939bc1ba90d04cf56fbdf971c81d00b621bcaf7`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260729-011 — Task20 VC-CSA Epoch 64—66闭环与证据同步
+
+- 时间：2026-07-29 20:32:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING | FIX
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 64—66完整闭环
+- 状态：Epoch 64—66训练、dev评估、checkpoint及私有MatBox最小证据同步完成；三轮均未刷新Epoch 61冻结best；Epoch 67继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+定时监控确认Epoch 64—65已在上一监控窗口后形成完整loss、dev performance与prediction三件套，Epoch 66也在本批监控期间完成训练和dev评估。本批按冻结选择规则记录三轮结果、补齐私有MatBox证据并复核断点、异常模式和资源状态。
+
+### 实际变更
+
+- Epoch 64总/opinion/emotion loss为16.95603164492104/7.858351317448992/9.097680333223536，4693个batch均值为0.00361305/0.00167448/0.00193856；训练耗时2733秒，LR=`2.59e-05`，loss文件至dev performance文件的观测间隔199秒。dev opinion micro/macro-F1=0.72182344/0.65840231，emotion micro/macro-F1=0.61788012/0.53965071，组合micro-F1=1.3397035517852148，低于冻结best 0.017432646593。
+- Epoch 65总/opinion/emotion loss为17.21857277466279/8.278922007823446/8.939650763930729，batch均值为0.00366899/0.00176410/0.00190489；训练耗时2667秒，LR=`2.55e-05`，loss文件至dev performance文件的观测间隔188秒。dev opinion micro/macro-F1=0.72200988/0.65395107，emotion micro/macro-F1=0.62449893/0.54469468，组合micro-F1=1.3465088095460054，低于冻结best 0.010627388832。
+- Epoch 66总/opinion/emotion loss为15.639877690484354/6.841317227333072/8.798560454456549，batch均值为0.00333260/0.00145777/0.00187483；训练耗时2587秒，LR=`2.50e-05`，loss文件至dev performance文件的观测间隔202秒，随后36秒完成epoch末断点落盘。dev opinion micro/macro-F1=0.72173021/0.66365915，emotion micro/macro-F1=0.61806656/0.53307712，组合micro-F1=1.3397967744942667，低于冻结best 0.017339423884。
+- 将主日志、作者日志、对应loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录`epoch-064`至`epoch-066`；三轮均为nonbest，未复制候选权重。
+
+### 验证与证据
+
+- `epoch-064`、`epoch-065`、`epoch-066`的目录字节数依次为85,477,078、85,477,074、85,588,418；每个目录均含8个文件，目录0700、文件0600，各自`SHA256SUMS`经`sha256sum -c`逐项全部`OK`。
+- 首次同步Epoch 64时错误使用run根目录的TensorBoard glob，命令因源文件不存在失败并留下未发布临时目录；已清理该临时目录，改用真实`train_tersorboard/`源目录后原子完成三轮同步，未把失败隐去。
+- 最新稳定checkpoint mode=0600、size=1,743,072,443、SHA-256=`bb018ebf60f1aa64ebe017f7a757e80e3131a571f60d01684a173ff7b2ab884a`；hash前后size/mtime不变且无`.tmp`，cursor=`epoch_index=66`、`next_batch_index=0`、`global_step=309738`、`tensorboard_steps=6138`，冻结`best_epoch=61`与`best_eval_accuracy=1.3571361983779249`未变。
+- 完整主日志精确模式扫描为NaN=0、数值Inf=0、CUDA OOM=0、Killed=0、Traceback=0、读取错误=0。MatBox采样使用31,956,402,176/59,055,800,320字节，可用27,099,398,144字节。
+- Epoch 67的10秒吞吐窗口由step 102推进至123，为2.1000 steps/s，训练阶段ETA约36分钟；采样GPU 44%、显存17,248/24,564 MiB、72°C、约263.21 W，RAM约5.19/53.69 GB，根盘约116.66/322.12 GB。
+- 一次checkpoint摘要脚本误按顶层键读取游标而得到`null`，随后按实际`cursor`与`training_state`嵌套结构复核；一次JSON输出又因checkpoint内Tensor不可序列化退出，最终改用标量化读取获得上述真实游标。两次解析失败均未改变远端训练或断点。
+
+### 影响与边界
+
+Epoch 64—66的训练loss总体处于既有低位波动区，但三轮dev组合分数均未超过Epoch 61，故冻结best不变，不按loss或最新epoch换模，不查看test、不新增seed、不选择性重跑。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- TensorBoard macro标签继续不作为macro证据；本批macro均读取`dev_performance_<epoch>.json`。
+- 证据快照中的主日志可能包含后续epoch片段，必须以epoch专属JSON/prediction和manifest界定对应轮次。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 67及后续完整闭环，核验冻结best、每500 global steps原子checkpoint、资源与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=3646b30562a2b89d4dd897f014c4b2f7f85a086b`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

@@ -8783,3 +8783,44 @@ Epoch 54—56保持低loss但dev组合分数仍未刷新Epoch 22，继续支持�
 ### Git状态
 
 本条基于`main=origin/main=77f016f4d335c4d432d13e350d79330726b9b054`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260729-008 — Task20 VC-CSA远端监控访问失败
+
+- 时间：2026-07-29 14:18:00 +08:00
+- 类型：MONITORING | FAILURE | SECURITY
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / RTX 4090远端监控
+- 状态：阻塞；实例TCP端口可达，但SSH在凭据提交后立即关闭，当前训练状态未知
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+按用户要求继续检查唯一seed=3407训练进程、GPU/RAM、主日志及MatBox精确断点。原长期SSH会话已失效，因此尝试使用当前已授权实例重新建立监控连接。
+
+### 实际变更
+
+- 原SSH会话句柄返回`Unknown process id`，未再可用。
+- 对当前授权实例发起一次交互式SSH重连；凭据仅经交互stdin临时提交，未回显、未落盘、未提交。服务器随后立即关闭连接。
+- 未重复撞击登录，未执行远端文件、资产、训练进程或checkpoint操作。
+
+### 验证与证据
+
+- `Test-NetConnection`对当前端口返回`TcpTestSucceeded=True`，说明网络端口可达。
+- SSH返回`Connection closed by ... port ...`，发生在口令提交之后，未取得shell。
+- 因未取得shell，本批无法核验训练PID、Epoch 57进度、GPU/RAM、日志增量、checkpoint mtime/hash/cursor或`.tmp`状态；这些字段均保持UNKNOWN，不沿用旧值冒充当前值。
+
+### 影响与边界
+
+本次事实仅证明监控访问失败，不证明训练进程失败、停止或完成。最后经完整证据闭合并已记录的状态仍是Epoch 54—56完成、Epoch 57此前运行；当前Epoch 57及后续状态未知。实验身份与claim边界不变。
+
+### 风险、问题与阻塞
+
+- 可能原因包括实例已释放、SSH凭据/映射变化或平台侧会话策略变化；当前证据不足以区分。
+- 在恢复访问前无法确认断点是否继续原子更新，也无法安全报告吞吐或ETA。
+
+### 下一步
+
+等待用户确认该实例仍处于运行状态，并提供平台当前显示的SSH连接信息；恢复后先核对非秘密实例绑定，再读取进程、日志和断点，禁止把访问中断期间状态推测为结果。
+
+### Git状态
+
+本条基于`main=origin/main=80d41e3f4e99c1bac114a6705634336994708639`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。

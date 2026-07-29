@@ -8696,3 +8696,46 @@ Epoch 50—51训练loss下降，但dev组合分数仍未刷新Epoch 22，继续�
 ### Git状态
 
 本条基于`main=origin/main=eaee2902c9108d644a4d80e18912ac020a5a90be`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260729-006 — Task20 VC-CSA Epoch 52—53训练与dev闭环
+
+- 时间：2026-07-29 10:27:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 52—53完整闭环
+- 状态：Epoch 52—53训练、dev评估、非best判定、checkpoint和私有MatBox最小证据同步均已完成；Epoch 54继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+定时监控确认Epoch 52和53均已形成完整loss、dev performance与prediction三件套；本批按冻结规则记录两轮结果并同步最小证据。两轮均未超过Epoch 22 best，不改变配置、seed或模型选择规则。
+
+### 实际变更
+
+- Epoch 52总/opinion/emotion loss为28.517963347423574/13.13964352840452/15.37831980231715，4693个batch均值为0.00607670/0.00279984/0.00327686；作者日志训练耗时3411秒，结束LR=`3.15e-05`。dev opinion micro/macro-F1=0.72760324/0.66274241，emotion micro/macro-F1=0.61610888/0.53755529，组合micro-F1=1.3437121282744475，低于冻结best 0.012678288431。
+- Epoch 53总/opinion/emotion loss为27.119105596441614/12.623560738785102/14.495544864305884，batch均值为0.00577863/0.00268987/0.00308876；作者日志训练耗时3043秒，结束LR=`3.10e-05`。dev opinion micro/macro-F1=0.71874709/0.66515205，emotion micro/macro-F1=0.62636338/0.54850872，组合micro-F1=1.3451104689102267，低于冻结best 0.011279947795。
+- 两轮loss至dev artifact间隔分别为197秒与184秒。将主日志、作者日志、对应loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录`epoch-052`与`epoch-053`；未复制两轮非best候选权重。日志/TensorBoard为包含Epoch 54片段的延迟快照，对应epoch专属JSON和prediction身份不变。
+
+### 验证与证据
+
+- 两个证据目录均为8个文件，总字节数分别为34,952,938与34,953,195；各自`SHA256SUMS`经`sha256sum -c`逐项全部`OK`，目录0700、文件0600。同步后MatBox使用29,695,672,320/59,055,800,320字节，可用29,360,128,000字节。
+- 最新稳定checkpoint mode=0600、size=1,743,056,571、SHA-256=`453982bdd85da73efbcdb26b56c26c70b6f7ccf9823ae3775c48b0aa0a3a9e30`、无`.tmp`；cursor=`epoch_index=53`、`next_batch_index=3271`、`global_step=252000`、`tensorboard_steps=4994`，保持`best_epoch=22`与`best_eval_accuracy=1.3563904167055094`。
+- 审计时仍仅有PID 1005的唯一seed=3407训练进程。完整主日志模式扫描得到NaN=0、数值Inf=0、CUDA OOM=0、Killed=0、Traceback=0、DataLoader/读取错误=0。
+- Epoch 54的15秒吞吐窗口由step 3290推进至3323，为2.2000 steps/s，训练阶段ETA约10.37分钟；采样GPU 80%、显存17,248/24,564 MiB、69°C、约246.91 W，RAM约5.15/53.69 GB，根盘约93.96/322.12 GB，未见持续资源增长。
+
+### 影响与边界
+
+Epoch 52—53训练loss继续下降，但dev组合分数仍未刷新Epoch 22，继续支持冻结dev模型选择，不得按训练loss或最新epoch换模。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 后期dev指标存在正常轮间波动，未伴随数值错误、系统错误或checkpoint停更，不触发选择性重跑。
+- 延迟日志快照包含后续epoch片段，已明确披露；对应epoch专属文件与校验清单可区分。
+- TensorBoard macro标签继续不作为macro证据；I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 54及后续完整闭环，核验loss波动、冻结best、周期checkpoint、资源与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=6a3d5148f5f26080d14d4b15dc24c0a330b958df`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

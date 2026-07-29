@@ -8870,3 +8870,48 @@ Epoch 54—56保持低loss但dev组合分数仍未刷新Epoch 22，继续支持�
 ### Git状态
 
 本条基于`main=origin/main=54b6d4d065c5a16da7a67a0ff03987fd1f2926fc`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260729-010 — Task20 VC-CSA Epoch 61—63闭环及冻结best更新
+
+- 时间：2026-07-29 18:38:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING | FIX
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 61—63完整闭环
+- 状态：Epoch 61—63训练、dev评估、checkpoint及私有MatBox证据同步完成；Epoch 61真实更新冻结best；Epoch 64继续运行
+- 负责人：20-M3基线与统一评测Codex
+
+### 背景与目标
+
+定时监控确认Epoch 61—63均已形成完整loss、dev performance与prediction三件套；本批按冻结规则记录三轮结果、核验是否刷新best，并仅为真实best轮同步对应权重。
+
+### 实际变更
+
+- Epoch 61总/opinion/emotion loss为18.808642913385484/8.422251240819314/10.386391704841913，4693个batch均值为0.00400781/0.00179464/0.00221317；耗时2525秒，LR=`2.73e-05`。dev opinion micro/macro-F1=0.72723035/0.65555771，emotion micro/macro-F1=0.62990585/0.55060407，组合micro-F1=1.3571361983779249，较原Epoch 22 best提高0.000745781672；因此按冻结规则更新`best_epoch=61`。
+- Epoch 62总/opinion/emotion loss为20.49120330559208/9.614560512758857/10.876642769420926，batch均值为0.00436633/0.00204870/0.00231763；耗时2495秒，LR=`2.69e-05`。dev opinion micro/macro-F1=0.72340822/0.66288225，emotion micro/macro-F1=0.61955812/0.54520425，组合micro-F1=1.3429663466020320，低于新best 0.014169851776。
+- Epoch 63总/opinion/emotion loss为17.334210721307272/8.24074714016281/9.093463560938432，batch均值为0.00369363/0.00175597/0.00193767；耗时2472秒，LR=`2.64e-05`。dev opinion micro/macro-F1=0.72676424/0.66499302，emotion micro/macro-F1=0.62505826/0.54645572，组合micro-F1=1.3518225039619651，低于新best 0.005313694416。
+- 将主日志、作者日志、对应loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录`epoch-061`至`epoch-063`。仅Epoch 61真实刷新best，因此仅将`best3407_1.3571361983779249_61.pkl`以0600同步至`epoch-061`；Epoch 62—63未复制候选权重。
+
+### 验证与证据
+
+- `epoch-061`含9个文件，总字节数1,784,166,229；`epoch-062`与`epoch-063`各含8个文件，总字节数41,189,095与41,189,333。三目录均0700、文件0600，各自`SHA256SUMS`经`sha256sum -c`逐项全部`OK`。同步后MatBox使用31,826,378,752/59,055,800,320字节，可用27,229,421,568字节。
+- 首次为Epoch 61补入best权重的前台复制/校验命令因60秒本地超时返回124，但远端复制和manifest生成已完成；随后独立检查发现临时manifest曾错误纳入自身`SHA256SUMS.tmp`，导致后台复核仅该临时条目失败。已删除残留验证临时文件，以排除`SHA256SUMS*`/验证文件的规则重新生成manifest，并再次前台逐项复核全部`OK`；没有静默删除失败事实。
+- 最新稳定checkpoint mode=0600、size=1,743,068,859、SHA-256=`bbc2fb27c8bda0ab908736534f48f03f43f0b8e1f255e564593c7ce5d554a355`，hash前后mtime不变且无`.tmp`；cursor=`epoch_index=63`、`next_batch_index=2341`、`global_step=298000`、`tensorboard_steps=5905`，训练状态确认`best_epoch=61`与`best_eval_accuracy=1.3571361983779249`。
+- 完整主日志精确模式扫描得到NaN=0、数值Inf=0、CUDA OOM=0、Killed=0、Traceback=0、DataLoader/读取错误=0；早先宽泛`grep inf`得到180为INFO文本误命中，未作为异常证据。
+- Epoch 64的10秒吞吐窗口由step 2449推进至2466，为1.7000 steps/s，训练阶段ETA约21.82分钟；采样GPU 12%、显存17,248/24,564 MiB、55°C、约222.26 W，RAM约5.19/53.69 GB，根盘约111.43/322.12 GB。
+
+### 影响与边界
+
+冻结dev模型选择从Epoch 22更新至Epoch 61，完全由预注册的组合micro-F1规则触发，未查看test、未新增seed、未选择性重跑。该更新只属于`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`诊断，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`不变，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 61相对旧best的增量较小，最终解释必须保留完整训练曲线，不能把单轮刷新夸大为稳健提升。
+- 延迟日志快照包含后续epoch片段，已明确披露；对应epoch专属文件与校验清单可区分。
+- TensorBoard macro标签继续不作为macro证据；I3D许可、官方revision、权利方包身份/fixity仍为UNKNOWN，固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 64及后续完整闭环，核验新best是否被后续轮次超过、周期checkpoint、资源与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=5939bc1ba90d04cf56fbdf971c81d00b621bcaf7`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

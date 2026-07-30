@@ -9708,3 +9708,48 @@ Epoch 98以冻结组合指标产生第二次严格best更新；Epoch 99的opinio
 ### Git状态
 
 本条基于`main=origin/main=459a2d28f0270e2e000c043562aa9610f9074e6b`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-003 — Task20 VC-CSA Epoch 100–101闭环与冻结best更新
+
+- 时间：2026-07-31 04:22:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 100–101完整闭环
+- 状态：Epoch 100–101训练、dev评估、checkpoint及私有MatBox证据同步完成；Epoch 100严格超过Epoch 98并更新冻结best，Epoch 102继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+定时监控确认Epoch 100–101已形成完整loss、dev performance与prediction三件套。本批继续按冻结组合micro-F1严格大于规则更新best，仅为真实best更新轮同步权重，并复核断点、错误模式、吞吐、资源状态和SwanLab旁路同步。
+
+### 实际变更
+
+- Epoch 100总/opinion/emotion loss为2.2304155637814054/1.0094237102485408/1.2209918515722384，4693个batch均值为0.00047526/0.00021509/0.00026017；训练耗时2663秒，LR由`9.72e-06`衰减至`9.26e-06`，loss至dev performance间隔193秒。dev opinion micro/macro-F1=0.73701874/0.67518375，emotion micro/macro-F1=0.63167708/0.56047307，组合micro-F1=1.3686958143003636，严格超过Epoch 98旧best 0.002610235853，冻结best更新为Epoch 100。
+- Epoch 101总/opinion/emotion loss为2.095255741627127/0.9048100433395991/1.1904457072716363，batch均值为0.00044646/0.00019280/0.00025366；训练耗时3299秒，LR由`9.26e-06`衰减至`8.80e-06`，loss至dev performance间隔182秒。dev opinion micro/macro-F1=0.72974737/0.67149229，emotion micro/macro-F1=0.63158385/0.56218642，组合micro-F1=1.3613312202852614，低于新best 0.007364594015。
+- 将两轮主日志、作者日志、对应loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录；仅`epoch-100`额外同步真实冻结best权重`best3407_1.3686958143003636_100.pkl`，`epoch-101`未复制权重。
+- SwanLab只读sidecar保持独立存活并已同步至Epoch 101；期间数次网络上传告警均由SDK自动重试并明确恢复，作者训练未受影响。
+
+### 验证与证据
+
+- `epoch-100`含9个文件、实际文件字节合计1,808,550,289；`epoch-101`含8个文件、实际文件字节合计65,596,366。两目录均为0700、文件均为0600，各自`SHA256SUMS`经`sha256sum -c`逐项全部`OK`。
+- 最新稳定checkpoint mode=0600、size=1,743,115,259、SHA-256=`512c65467e09a7f4ca8f3439c93cca70f5c0b2f5ef0789c91e45a7a983b0aac5`；两次hash间size/mtime不变且无`.tmp`，原子写入闭合。
+- 完整主日志精确模式扫描为NaN=0、数值Inf=0、CUDA OOM=0、Killed=0、Traceback=0、读取错误=0。证据同步后MatBox使用42,601,545,728/59,055,800,320字节，可用16,454,254,592字节。
+- 唯一训练进程保持PID 1005。Epoch 102十秒窗口由step 4433推进至4455，吞吐2.2000 steps/s，训练阶段计算ETA约1.80分钟，日志显示约2分钟。资源采样为GPU 38%、显存17,248/24,564 MiB、66°C、约265.20 W，RAM约5.69/53.69 GB，根盘使用178,069,295,104/322,122,547,200字节。
+
+### 影响与边界
+
+Epoch 100以冻结组合指标产生第三次严格best更新；Epoch 101的emotion macro略高但opinion micro下降使组合分数未超过Epoch 100，因此不以单分量选择模型。作者每轮候选文件命名仍不改变冻结裁定。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，该best不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 100相对Epoch 98提升0.00261024，仍是单seed探索性差异，不得宣称稳定改进或统计显著。
+- SwanLab云端网络近期有多次瞬时波动但均已恢复；MatBox hash证据继续作为权威运行证据。
+- TensorBoard macro标签继续不作为macro证据；本批macro均读取`dev_performance_<epoch>.json`。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 102及后续完整闭环，核验Epoch 100新best是否被严格超过、每500 global steps原子checkpoint、SwanLab同步、资源与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=e7ff3525f8acfe0f5baf289995346adb0d8496cd`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

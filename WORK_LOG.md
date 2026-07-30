@@ -9351,3 +9351,46 @@ Epoch 83–84训练loss继续下降，但两轮dev组合分数均未超过Epoch 
 ### Git状态
 
 本条基于`main=origin/main=73da67d6d227fbc0d3af7f136b7ceb0a222a7476`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260730-009 — Task20 VC-CSA Epoch 85–86闭环
+
+- 时间：2026-07-30 14:20:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 85–86完整闭环
+- 状态：Epoch 85–86训练、dev评估、checkpoint及私有MatBox最小证据同步完成；两轮均未刷新Epoch 73冻结best；Epoch 87继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+定时监控确认Epoch 85–86已形成完整loss、dev performance与prediction三件套。本批按冻结组合micro-F1规则记录结果、判定best、同步nonbest最小证据，并复核周期断点、错误模式、吞吐和资源状态。
+
+### 实际变更
+
+- Epoch 85总/opinion/emotion loss为6.0164407514308/2.973983135778048/3.042457608229534，4693个batch均值为0.00128200/0.00063371/0.00064830；训练耗时3286秒，LR=`1.62e-05`，loss文件至dev performance文件的观测间隔184秒。dev opinion micro/macro-F1=0.73412883/0.67042937，emotion micro/macro-F1=0.62440571/0.54828323，组合micro-F1=1.3585345390137000，低于冻结best 0.004847580871。
+- Epoch 86总/opinion/emotion loss为6.166714902748151/2.987784495224173/3.178930417198714，batch均值为0.00131402/0.00063665/0.00067738；训练耗时3430秒，LR=`1.57e-05`，loss文件至dev performance文件的观测间隔187秒。dev opinion micro/macro-F1=0.72378111/0.66574390，emotion micro/macro-F1=0.62552438/0.55353827，组合micro-F1=1.3493054908175600，低于冻结best 0.014076629067。
+- 将主日志、作者日志、对应loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录`epoch-085`与`epoch-086`；两轮均为nonbest，未复制候选权重。
+
+### 验证与证据
+
+- `epoch-085`与`epoch-086`均含8个文件，实际文件字节合计分别为55,997,346与55,997,987；两目录均为0700、文件均为0600，各自`SHA256SUMS`经`sha256sum -c`逐项全部`OK`。
+- checkpoint核验期间恰逢每500 global steps原子写入，观察到增长中的`last-resume.ckpt.tmp`；等待后临时文件消失。最新稳定checkpoint mode=0600、size=1,743,096,891、SHA-256=`08eea563b4df2a9aecc4e0071e82c918405a099eac332493c2635a9243ad21fe`，hash前后size/mtime不变且无`.tmp`，正常原子闭合。
+- 完整主日志精确模式扫描为NaN=0、数值Inf=0、CUDA OOM=0、Killed=0、Traceback=0、读取错误=0。证据同步后MatBox使用36,427,530,240/59,055,800,320字节，可用22,628,270,080字节。
+- 唯一训练进程保持PID 1005。Epoch 87十秒窗口由step 4040推进至4062，吞吐2.2000 steps/s，对应训练阶段ETA约4.8分钟；日志显示约7分钟。资源采样GPU 25%、显存17,248/24,564 MiB、54°C、约232.81 W，RAM约5.54/53.69 GB，根盘使用151,593,603,072/322,122,547,200字节；GPU利用率为瞬时采样，不与持续step推进证据冲突。
+
+### 影响与边界
+
+Epoch 85–86的dev组合分数均未超过Epoch 73，冻结best保持不变；不按loss或最新epoch换模，不查看test、不新增seed、不选择性重跑。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 86训练loss较Epoch 85小幅回升且dev下降，但未出现数值异常；按完整曲线记录，不选择性重跑。
+- TensorBoard macro标签继续不作为macro证据；本批macro均读取`dev_performance_<epoch>.json`。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 87及后续完整闭环，核验Epoch 73 best是否被后续轮次超过、每500 global steps原子checkpoint、资源与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=cf86d5fdfc912d1899415326ebc43b116e3ab62d`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

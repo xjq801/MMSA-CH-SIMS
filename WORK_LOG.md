@@ -9437,3 +9437,49 @@ Epoch 87–88的dev组合分数均未超过Epoch 73，冻结best保持不变；�
 ### Git状态
 
 本条基于`main=origin/main=f86deeb9c60aec3852a1e626869e5411c3ab474f`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260730-011 — Task20 VC-CSA SwanLab旁路监控上线
+
+- 时间：2026-07-30 17:15:00 +08:00
+- 类型：FEATURE | TEST | MONITORING | DEPENDENCY | FAILURE | SECURITY
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 私有SwanLab只读sidecar
+- 状态：SwanLab 0.9.2私有cloud run创建成功，完整epoch指标已回填，实时step loss/LR持续同步；作者训练进程未修改且继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+用户要求在SwanLab监测当前唯一seed训练。本批采用独立旁路进程读取既有作者日志和完整epoch JSON，不修改作者训练入口、优化器、scheduler、checkpoint或数据加载器；只上传数值监控指标和非敏感配置。
+
+### 实际变更
+
+- 新增`scripts/monitor_vccsa_swanlab.py`：仅解析作者日志中的epoch、batch、total/opinion/emotion loss与LR，并读取成对存在的`loss_epoc_<epoch>.json`和`dev_performance_<epoch>.json`；不读取评论、标签、I3D、预测、权重或checkpoint。
+- 新增`tests/test_monitor_vccsa_swanlab.py`，覆盖进度行安全标量解析、非指标文本拒绝，以及缺少loss/dev任一工件时fail closed。
+- 远端先安装独立Python 3.8 SwanLab环境；旧镜像源仅提供SwanLab 0.7.20，与当前cloud project API不兼容。随后使用实例既有Python 3.11和官方PyPI建立完全独立的SwanLab 0.9.2环境，不改作者训练环境。
+- 启动独立sidecar进程，回填Epoch 4起成对闭环的86个epoch指标，随后从作者日志当前EOF开始每10 batch同步一次step loss/LR，并在新完整epoch出现时同步dev micro/macro-F1、accuracy与冻结组合micro-F1。
+- 认证仅从进程环境变量读取并以`save=False`登录；禁用Git采集和runtime命令采集，本地SwanLab运行目录放在私有MatBox父目录中。
+
+### 验证与证据
+
+- TDD红测先因模块不存在按预期失败；实现后`.\.venv-task20\Scripts\python.exe -m unittest tests.test_monitor_vccsa_swanlab -v`为2/2通过，`py_compile`通过。
+- 无保存登录探针返回`SWANLAB_LOGIN_OK`。第一次sidecar启动因Windows管道附加CR触发API key格式拒绝，未创建run；入口改为内存内`strip()`后该问题闭合。
+- SwanLab 0.7.20在显式与默认个人workspace两种方式下均于project创建阶段返回HTTP 422；升级至Python 3.11/SwanLab 0.9.2后同一认证成功创建私有project run。
+- sidecar进程持续存活；SwanLab run数据文件在12秒复核窗口由117,798增长至121,884字节，证明实时写入继续。作者训练PID 1005同时持续存活，未被重启或替换。
+- 对sidecar脚本、sidecar日志与私有SwanLab运行目录执行精确凭据字节扫描，`SECRET_FILE_HITS=0`；未保存API key、SSH凭据或端点原文。
+
+### 影响与边界
+
+SwanLab现在可用于观察train step loss/LR、完整epoch train loss、dev F1/accuracy及平台自动硬件指标。该sidecar不改变训练数值路径，不产生新的完成seed，也不改变模型选择规则。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，SwanLab曲线不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 旧SwanLab 0.7.20环境保留为失败诊断，不用于运行；实际sidecar固定使用Python 3.11/SwanLab 0.9.2。
+- SwanLab当前运行文件位于0700私有父目录；SDK内部普通文件默认0644，但因父目录不可遍历而不对其他用户可见。不得把该目录改为公开共享。
+- sidecar只从启动后的日志EOF上传step级曲线；历史部分通过epoch级指标回填，不伪造此前逐step历史。
+
+### 下一步
+
+继续确认SwanLab页面曲线随训练推进；训练结束时由sidecar检测训练PID退出并调用`swanlab.finish()`。现有Task20 heartbeat继续独立核验正式epoch证据与checkpoint，不以SwanLab替代MatBox hash证据。
+
+### Git状态
+
+本条基于`main=origin/main=84759bca2a65310b37e18faa5fec9e76b9414cd9`追加；本批仅新增SwanLab sidecar脚本、单测并修改`WORK_LOG.md`。用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。

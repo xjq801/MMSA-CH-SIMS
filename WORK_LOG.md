@@ -9267,3 +9267,44 @@ Epoch 81–82的dev组合分数均未超过Epoch 73，冻结best保持不变；�
 ### Git状态
 
 本条基于`main=origin/main=bc19acd2bef6597496b6c9f750f1fd015d63d64c`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260730-007 — Task20 VC-CSA Epoch 4–83训练loss诊断图
+
+- 时间：2026-07-30 10:48:00 +08:00
+- 类型：PROGRESS | VISUALIZATION | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 完整epoch训练loss可视化
+- 状态：基于远端已闭环`loss_epoc_<epoch>.json`生成Epoch 4–83训练loss曲线；Epoch 84中途数据未纳入
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+用户要求重新绘制可直接查看的loss曲线。本批只使用已生成epoch级loss JSON，按4693个batch换算每batch均值；不读取或绘制Epoch 84中途loss，不将训练loss解释为最终结果。
+
+### 实际变更
+
+- 生成程序化可视化脚本`task20_vccsa_loss_curve_epoch4_83.py`及PNG/SVG交付物；文件位于Codex可视化工作区，不进入项目Git。
+- 图A展示Epoch 4–83全程total/opinion/emotion平均loss，图B以相同零基线展示Epoch 64–83近期趋势；采用色盲安全蓝/橙/绿配色和颜色之外的marker编码。
+- total loss由opinion与emotion两项组成；图中全部数值均为完整epoch的batch均值，未加入dev/test指标或未闭环轮次。
+
+### 验证与证据
+
+- 远端提取结果包含Epoch 4–83共80个完整loss JSON；最新完整Epoch 83平均total/opinion/emotion loss=0.00148179676215/0.000703252443746/0.000778544320788。
+- PNG大小173,888字节，SVG大小85,726字节；脚本执行成功。
+- 已对PNG执行渲染后视觉检查：标题、坐标、图例、两panel与脚注均可读，无标签重叠、图例遮挡、溢出、双y轴、截断零基线或jet/rainbow配色。
+
+### 影响与边界
+
+该图仅用于监控训练收敛趋势，不能替代dev模型选择、完整训练曲线分析或最终test评测。实验身份仍为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`，`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`不变，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 0–3没有当前运行目录中的`loss_epoc_<epoch>.json`，因此图从可核验的Epoch 4开始，不补造缺失数据。
+- loss下降不等于泛化性能提升；必须结合完整dev曲线和冻结模型选择规则解释。
+
+### 下一步
+
+继续由现有监控自动化跟踪完整epoch闭环；后续需要更新曲线时仅追加已闭环epoch。
+
+### Git状态
+
+本条基于`main=origin/main=244103d0b3fee935f0eb2463ef918138c3fe7f1d`追加；项目Git仅修改`WORK_LOG.md`，图与脚本不进入项目Git。用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪。

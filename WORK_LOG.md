@@ -9527,3 +9527,48 @@ Epoch 89–90训练loss继续下降，但dev组合分数均未超过Epoch 73，�
 ### Git状态
 
 本条基于`main=origin/main=54d7c3544f95ea75a581a7f012e30aba03110ce9`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260730-013 — Task20 VC-CSA Epoch 91–92闭环
+
+- 时间：2026-07-30 20:20:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 91–92完整闭环
+- 状态：Epoch 91–92训练、dev评估、checkpoint及私有MatBox最小证据同步完成；两轮均未刷新Epoch 73冻结best；Epoch 93继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+定时监控确认Epoch 91–92已形成完整loss、dev performance与prediction三件套。本批继续按冻结组合micro-F1规则记录结果、判定best、同步nonbest最小证据，并复核周期断点、错误模式、吞吐、资源状态和SwanLab旁路同步。
+
+### 实际变更
+
+- Epoch 91总/opinion/emotion loss为4.2000621068447135/2.3947279764019562/1.805334120368193，4693个batch均值为0.00089491/0.00051025/0.00038466；训练耗时3757秒，LR由`1.39e-05`衰减至`1.34e-05`，loss文件至dev performance文件的观测间隔196秒。dev opinion micro/macro-F1=0.72928125/0.66918370，emotion micro/macro-F1=0.62832106/0.55220097，组合micro-F1=1.3576023119231845，低于冻结best 0.005779807961。
+- Epoch 92总/opinion/emotion loss为3.604950621701951/1.3599614751711022/2.244989138859866，batch均值为0.00076818/0.00028980/0.00047838；训练耗时3527秒，LR由`1.34e-05`衰减至`1.30e-05`，loss文件至dev performance文件的观测间隔199秒。dev opinion micro/macro-F1=0.72900158/0.67052507，emotion micro/macro-F1=0.63093129/0.56303017，组合micro-F1=1.3599328796494826，低于冻结best 0.003449240235。
+- 将主日志、作者日志、对应loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录`epoch-091`与`epoch-092`；两轮均为nonbest，未复制候选权重。
+- SwanLab只读sidecar保持独立存活并已记录`SWANLAB_EPOCH_SYNCED epoch=91`与`epoch=92`。期间一次网络/服务上传告警由SDK自动重试后明确恢复，作者训练未受影响。
+
+### 验证与证据
+
+- `epoch-091`与`epoch-092`均含8个文件，目录总字节分别为119,062,870与119,062,962；两目录均为0700、文件均为0600，各自`SHA256SUMS`经`sha256sum -c`逐项全部`OK`。
+- 最新稳定checkpoint mode=0600、size=1,743,104,187、SHA-256=`712b28853fc6c9f5ffeb305554a76c71b66aa71df6aa136ba344a8fa3ee0f067`；两次hash间size/mtime不变且无`.tmp`，原子写入闭合。
+- 完整主日志精确模式扫描为NaN=0、数值Inf=0、CUDA OOM=0、Killed=0、Traceback=0、读取错误=0。证据同步后MatBox使用36,796,628,992/59,055,800,320字节，可用22,259,171,328字节。
+- 唯一训练进程保持PID 1005。Epoch 93十秒窗口由step 1883推进至1901，吞吐1.8000 steps/s，训练阶段计算ETA约25.84分钟，日志显示约36分钟。资源采样为GPU 37%、显存17,248/24,564 MiB、56°C、约227.30 W，RAM约5.63/53.69 GB，根盘使用162,350,784,512/322,122,547,200字节。
+
+### 影响与边界
+
+Epoch 92的dev组合分数较Epoch 91回升但仍未超过Epoch 73，冻结best保持不变；不按loss或最新epoch换模，不查看test、不新增seed、不选择性重跑。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 训练loss继续下降但dev组合分数未刷新best；低训练loss不能解释为泛化提升，最终必须使用完整曲线和冻结模型选择规则。
+- SwanLab曾出现一次瞬时上传告警并已自动恢复；MatBox hash证据继续作为权威运行证据，不以云端曲线替代。
+- TensorBoard macro标签继续不作为macro证据；本批macro均读取`dev_performance_<epoch>.json`。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 93及后续完整闭环，核验Epoch 73 best是否被后续轮次超过、每500 global steps原子checkpoint、SwanLab同步、资源与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=8202eadc504901259d7ae9bd049118b1d2429fa9`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。

@@ -10097,3 +10097,42 @@ Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LE
 
 ### Git状态
 本条基于`main=origin/main=4da83dcd24d2ef9a6756f748343deccdd3c6cd44`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-012 — Task20 VC-CSA Epoch 119–120闭环与全量训练完成
+
+- 时间：2026-07-31 21:18:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING | COMPLETION
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 119–120及全量120轮训练收尾
+- 状态：Epoch 119–120训练、dev评估、checkpoint及私有MatBox证据同步完成；训练进程正常退出，冻结best保持Epoch 116
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+本批完成唯一seed=3407的最后两轮闭环，按冻结规则复核best，并在训练进程退出后核验最终日志、断点、SwanLab、受限I3D覆盖和MatBox状态。
+
+### 实际变更
+
+- Epoch 119总/opinion/emotion loss=0.4506611303819928/0.2558587966023134/0.19480233887481713；训练/dev耗时约3166/194秒，LR `9.26e-07→4.63e-07`。dev opinion micro/macro=0.73804419/0.67328384，emotion micro/macro=0.63410087/0.56053248，组合=1.3721450545352849，未刷新best。
+- Epoch 120总/opinion/emotion loss=0.5043280095015847/0.27924144033894827/0.22508657022459258；训练/dev耗时约3599/265秒，LR按预定scheduler从`4.63e-07`降至`0.00e+00`。dev opinion micro/macro=0.73916286/0.67543438，emotion micro/macro=0.63447376/0.56183468，组合=1.3736366178801156，未刷新Epoch 116冻结best 1.3752214039339985。
+- 两轮主日志、log_run、loss/dev JSON、prediction及TensorBoard已原子同步至私有MatBox；两轮均非严格best，未同步候选权重。SwanLab sidecar分别记录Epoch 119与120同步，并在训练进程结束后退出。
+- 唯一训练进程正常退出；作者程序完成预注册的120个epoch，没有新增种子、选择性重跑或额外test声明。
+
+### 验证与证据
+- `epoch-119`含8个文件、实际文件字节77,129,991；`epoch-120`含8个文件、实际文件字节77,186,227。目录0700、文件0600，`SHA256SUMS`逐项通过，无残留临时目录。
+- 最终checkpoint mode=0600、size=1,743,138,427、SHA-256=`cd16e7412eec8d3a255e5fa5bc46c8bc53b604c2fe5e22ae0600b8c064428978`；两次hash/size/mtime一致且无`.tmp`。
+- 主日志未出现NaN、OOM、Killed、Traceback、No-space或I/O错误；训练PID与SwanLab sidecar均已停止。受限MatBox路径仍可读，I3D物理文件count=8210；MatBox使用52,697,235,456/59,055,800,320字节，剩余6,358,564,864字节。
+- 全量训练最终冻结best为Epoch 116：opinion micro/macro=0.7407476461/0.6815051894，emotion micro/macro=0.6344737578/0.5597248062，组合micro-F1=1.3752214039；该值只用于本次探索诊断身份，不是T0或正式复现结果。
+
+### 影响与边界
+`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`唯一seed=3407的120轮训练已完成，但`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`永久不变。结果不得进入T0、G3、统一baseline、任务50或论文claim，也不等同于无泄漏的faithful正式复现。
+
+### 风险、问题与阻塞
+
+- 作者程序每轮均产生候选`best*.pkl`，但证据层只保留严格刷新冻结best的权重；Epoch 119–120候选未进入MatBox证据目录。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认仍触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+- 私有MatBox保留策略、最终环境镜像与可重下载wheel/临时归档清理仍需按存储补充授权执行；本批未自行点击平台保存或删除受限资产。
+
+### 下一步
+用户现在可在平台保存个人环境；保存前建议删除可重下载wheel缓存和临时归档以缩小镜像，不要勾选“保存成功后自动释放机器”，除非用户明确希望立即释放。随后按授权登记私有存储保留截止日与可见层删除计划。
+
+### Git状态
+本条基于`main=origin/main=b881e7693c2e8b7aca821c61ff4aec5b83390345`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端训练已完成并停止。

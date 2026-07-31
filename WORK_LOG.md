@@ -9799,3 +9799,45 @@ Epoch 103成为新的冻结best；后续五轮均未严格超过。SSH监控通�
 ### Git状态
 
 本条基于`main=origin/main=eba6bc15376b1dc0bdeb0fbe19ecd41585418828`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-005 — Task20 VC-CSA Epoch 109闭环
+
+- 时间：2026-07-31 10:40:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 109完整闭环
+- 状态：Epoch 109训练、dev评估、checkpoint及私有MatBox最小证据同步完成；未刷新Epoch 103冻结best；Epoch 110继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+上一批收尾时Epoch 109已接近完成；本批确认其训练、dev与prediction工件闭合，按冻结组合micro-F1规则判定best并同步nonbest最小证据。
+
+### 实际变更
+
+- Epoch 109总/opinion/emotion loss=0.9949565091336913/0.4044552301775231/0.5905012829244624，4693个batch均值=0.00021201/0.00008618/0.00012583；训练/dev耗时2668/210秒，LR由`5.56e-06`衰减至`5.09e-06`。
+- dev opinion micro/macro-F1=0.73431528/0.66801380，emotion micro/macro-F1=0.62888040/0.55549810，组合micro-F1=1.3631956744662999，低于Epoch 103冻结best 0.006898480470。
+- 将主日志、作者日志、loss/dev JSON、dev prediction与TensorBoard同步至私有MatBox 0700目录`epoch-109`；该轮为nonbest，未复制候选权重。SwanLab只读sidecar已同步至Epoch 109。
+
+### 验证与证据
+
+- `epoch-109`含8个文件、实际文件字节合计70,177,831；目录0700、文件0600，`SHA256SUMS`逐项通过。
+- 最新稳定checkpoint mode=0600、size=1,743,124,987、SHA-256=`082c96435a0d971c779be4d2a5217c7eed97db9e5a0af387d7c705ced7a8a9ac`；两次hash间size/mtime不变且无`.tmp`。
+- 主日志扫描NaN/Inf/OOM/Killed/Traceback/读取错误均为0。MatBox使用44,900,024,320/59,055,800,320字节，可用14,155,776,000字节。
+- 唯一训练PID 1005；Epoch 110十秒窗口step 367→389，吞吐2.2000 steps/s，ETA约32.60分钟。GPU 25%、显存17,248/24,564 MiB、68°C、约263.45 W，RAM约5.73/53.69 GB。
+
+### 影响与边界
+
+Epoch 109未刷新冻结best，不改变模型选择。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- MatBox剩余约14.16 GB，继续监控容量。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 110及后续闭环、冻结best、checkpoint、SwanLab和MatBox容量。
+
+### Git状态
+
+本条基于`main=origin/main=798cf7610b399c052f6e6a95381dd6e5040cc55a`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。

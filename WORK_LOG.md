@@ -10136,3 +10136,43 @@ Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LE
 
 ### Git状态
 本条基于`main=origin/main=b881e7693c2e8b7aca821c61ff4aec5b83390345`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端训练已完成并停止。
+
+## WR-20260731-013 — Task20 VC-CSA 最终私有证据包保存
+
+- 时间：2026-07-31 21:37:17 +08:00
+- 类型：PROGRESS | STORAGE | SECURITY | REPRODUCIBILITY | COMPLETION
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / 用户授权的最终证据持久化
+- 状态：完成；私有MatBox最终证据包已原子发布并通过逐文件校验
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+用户要求保存此前列出的可复现与审计材料。为避免重复保存受限资产、评论正文、标签内容、凭据或端点，本批将可复现raw evidence集中为私有最终证据包，并以hash-only方式保留输入溯源。
+
+### 实际变更
+
+- 在私有MatBox的既有Task20运行证据根目录创建`final-run-bundle`，原子发布后权限为目录0700、文件0600。
+- 保存当前实例实际存在的Epoch 4–120共117组loss、dev performance和dev prediction，以及完整主训练日志、`log_run.txt`、TensorBoard事件、Python/pip/GPU环境清单、非秘密运行参数、输入hash记录和总`SHA256SUMS`。
+- 最终checkpoint与Epoch 116冻结best权重已先前私有保存；最终包只记录其受控位置、size和SHA-256，避免重复复制大文件。checkpoint SHA-256=`cd16e7412eec8d3a255e5fa5bc46c8bc53b604c2fe5e22ae0600b8c064428978`；冻结best权重SHA-256=`e5033f5dd35dcf02ae660a3af4139c4385d08fbdb1bc3958c7af50d4c6189771`。
+- 未复制I3D、评论正文、标签内容、候选非best权重、凭据或端点；输入溯源仅保存hash和I3D count=8210。Epoch 1–3原始loss/dev metrics/dev predictions在当前实例和MatBox均不存在，已在包manifest中如实声明，未伪造补齐。
+
+### 验证与证据
+
+- 远端构建器对`final-run-bundle`内362个payload文件逐项重算SHA-256并通过；包含`manifest.json`、`provenance/input_hashes.json`和`SHA256SUMS`。
+- 发布后复核：总文件数363（含`SHA256SUMS`），非0600文件数=0，目录权限0700；包payload总字节=401,916,659。
+- 保存后私有MatBox仍剩余5,955,911,680字节，未发生空间耗尽。
+
+### 影响与边界
+该包为可审计的私有探索运行证据，不改变实验永久身份`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`与`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`。其中数值不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- Epoch 1–3原始三件套缺失，无法从当前来源恢复；这已显式记录为证据缺口。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认仍触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+- 如需保存平台环境，先清理可重下载wheel缓存和临时归档，再保存单一干净的4090环境镜像；无需把MatBox的受限数据再复制入Git。
+- 等待用户决定是否要实施MatBox保留期后的可见层删除计划。
+
+### Git状态
+本条基于`main=origin/main=49c54a5902532f9d6a6f12717cc8acb85305e861`追加；当前仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git，远端存储操作已完成。

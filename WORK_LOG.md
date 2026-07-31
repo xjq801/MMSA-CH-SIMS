@@ -10061,3 +10061,39 @@ Epoch 116成为新的冻结best，但仍为单seed探索性结果。实验永久
 
 ### Git状态
 本条基于开工时`main=origin/main=4fae301ef6d0c4d72015f799b6696c16468d859d`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-011 — Task20 VC-CSA Epoch 118闭环
+
+- 时间：2026-07-31 19:15:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 118完整闭环
+- 状态：Epoch 118训练、dev评估及私有MatBox证据同步完成；未刷新冻结best；Epoch 119继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+Epoch 118训练结束后dev评估持续数分钟；只有`dev_performance_118.json`与prediction真实落盘后，本批才将其登记为完整闭环并执行证据同步。
+
+### 实际变更
+
+- Epoch 118总/opinion/emotion loss=0.44369690550732765/0.2393429090804588/0.2043539921415975；训练/dev耗时约3255/213秒，LR `1.39e-06→9.26e-07`。
+- dev opinion micro/macro=0.7383238556912464/0.6777906535959014，emotion micro/macro=0.6345669805164538/0.5606395268198250，组合micro-F1=1.3728908362077002，低于Epoch 116冻结best 1.3752214039339985，故未同步候选权重。
+- 主日志、log_run、loss/dev JSON、prediction及TensorBoard已原子同步至私有MatBox `epoch-118`；SwanLab sidecar明确记录`SWANLAB_EPOCH_SYNCED epoch=118`。
+
+### 验证与证据
+- `epoch-118`含8个文件、实际文件字节75,928,913；目录0700、文件0600，`SHA256SUMS`逐项通过且无残留临时目录。
+- 训练仍保持唯一PID 1005；Epoch 119采样到step 200/4692、LR `9.06e-07`、训练阶段ETA约36分钟，GPU利用率87%、显存17,248/24,564 MiB、温度60°C。
+- MatBox使用52,542,046,208/59,055,800,320字节，剩余6,513,754,112字节。
+
+### 影响与边界
+Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- SwanLab网络上传曾短暂重试，但已恢复并闭合Epoch 118同步；继续监控后续轮次。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+继续监控Epoch 119–120闭环、冻结best、checkpoint、SwanLab与MatBox容量，并在完整训练结束后核验最终日志、断点、挂载与进程退出。
+
+### Git状态
+本条基于`main=origin/main=4da83dcd24d2ef9a6756f748343deccdd3c6cd44`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。

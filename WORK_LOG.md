@@ -9938,3 +9938,45 @@ Epoch 111成为新的冻结best，但相对旧best仅提升0.00065256，仍是�
 ### Git状态
 
 本条基于`main=origin/main=739c3e3b61cede916e1b0eaf1f265ab68103e698`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-008 — Task20 VC-CSA Epoch 112–113闭环与冻结best更新
+
+- 时间：2026-07-31 14:42:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 112–113完整闭环
+- 状态：两轮训练、dev评估、checkpoint及私有MatBox证据同步完成；Epoch 113严格超过Epoch 111并更新冻结best，Epoch 114继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+定时监控确认Epoch 112–113形成完整loss、dev performance与prediction三件套。本批按冻结组合micro-F1严格大于规则更新best，仅为真实best更新轮同步权重，并复核断点、错误模式、吞吐、资源与SwanLab状态。
+
+### 实际变更
+
+- Epoch 112总/opinion/emotion loss=0.6638791279733975/0.3084931356555534/0.35538598851080694，4693个batch均值=0.00014146/0.00006573/0.00007573；训练/dev耗时3125/196秒，LR `4.17e-06→3.70e-06`。dev opinion micro/macro=0.73617973/0.67927837，emotion micro/macro=0.63372798/0.56205807，组合=1.3699077095180385，未刷新best。
+- Epoch 113总/opinion/emotion loss=0.6740950893913715/0.378727884117641/0.29536720510853165，batch均值=0.00014364/0.00008070/0.00006294；训练/dev耗时3506/191秒，LR `3.70e-06→3.24e-06`。dev opinion micro/macro=0.73692552/0.67795393，emotion micro/macro=0.63493987/0.56296192，组合=1.3718653864081292，严格超过Epoch 111旧best 0.001118672509，冻结best更新为Epoch 113。
+- 同步两轮日志、loss/dev JSON、prediction和TensorBoard至私有MatBox；仅`epoch-113`额外同步`best3407_1.3718653864081292_113.pkl`。SwanLab sidecar已同步至Epoch 113。
+
+### 验证与证据
+
+- `epoch-112`含8个文件、实际文件字节72,996,153；`epoch-113`含9个文件、实际文件字节1,815,974,344。目录0700、文件0600，`SHA256SUMS`逐项通过。
+- 稳定checkpoint mode=0600、size=1,743,129,915、SHA-256=`f8649e377c331fe695c56d237884b289442e1af5a8ee75e6f6212ce6842a66c5`；核验时两次hash/size/mtime一致且无`.tmp`。
+- 主日志NaN/Inf/OOM/Killed/Traceback/读取错误均为0。MatBox使用48,679,092,224/59,055,800,320字节，可用10,376,708,096字节。
+- 唯一训练PID 1005；Epoch 114十秒窗口step 2421→2442，吞吐2.1000 steps/s，训练阶段ETA约17.86分钟。GPU 70%、显存17,248/24,564 MiB、58°C、约279.30 W，RAM约5.78/53.69 GB。
+
+### 影响与边界
+
+Epoch 113成为新的冻结best，但仍为单seed探索性结果。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- MatBox剩余约10.38 GB；按当前最小nonbest证据足够完成余下轮次，但若再次产生多个best权重需关注容量。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 114及后续闭环、冻结best、checkpoint、SwanLab和MatBox容量。
+
+### Git状态
+
+本条基于`main=origin/main=c256b84f34320ce29c3179bd77d3b844ac525050`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。

@@ -10211,3 +10211,81 @@ Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LE
 
 ### Git状态
 当前新增交付文档和本条`WORK_LOG.md`尚未提交；用户已有未跟踪目录未读取、未修改、未暂存。
+
+## WR-20260731-015 — Task20 Word追加Epoch 4–120数据与SwanLab损失曲线
+
+- 时间：2026-07-31 22:03:00 +08:00
+- 类型：DOC | PROGRESS | METRIC | VISUALIZATION | VALIDATION
+- 任务/门：Task20 VC-CSA探索实验 / 用户请求的完整Epoch数据表和SwanLab损失曲线
+- 状态：完成；Word已追加117行逐轮表和嵌入式损失曲线
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+用户要求将Epoch 4–120数据写入现有Word，并依据指定SwanLab run绘制loss曲线。原4090实例端口已拒绝连接，故不依赖已释放实例，而是直接从SwanLab官方API读取同一run的指标序列。
+
+### 实际变更
+
+- 通过SwanLab官方API读取run `xiejianqiu123/CSMV/zij0eb6j`的7条epoch级序列：total/opinion/emotion loss、opinion micro/macro-F1、emotion micro/macro-F1；每条均精确覆盖Epoch 4–120。
+- 更新`deliverables/TASK20_VCCSA_EXPLORATORY_ARCHIVE_SUMMARY_20260731.docx`：新增“Epoch 4–120 原始训练数据”章节、嵌入loss曲线、以及含Epoch、三类loss、四项dev F1和combined micro-F1的117行逐轮表。
+- 新建`deliverables/TASK20_VCCSA_EPOCH_4_120_LOSS_CURVE_20260731.png`，展示SwanLab epoch total/opinion/emotion loss。SwanLab API凭据只在进程环境变量中临时使用，未写入文档、日志、Git或脚本。
+
+### 验证与证据
+
+- API取数脚本严格检查所有7条序列的index集合均为`{4,…,120}`；缺失或额外epoch将fail closed。
+- 结构性重新读取Word：31段落、2张表（9行归档表和118行逐轮表含表头）、1张内嵌图片；章节和SwanLab来源说明均存在。
+- 已人工检查PNG曲线：三条loss曲线完整、图例和坐标轴清晰，无裁切或重叠。
+- 再次调用documents技能的`render_docx.py`尝试DOCX→PNG，但本机仍缺少LibreOffice/soffice并报`WinError 2`；因此未声称Word通过完整页面视觉渲染门。
+
+### 影响与边界
+新增表和曲线是`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`的审计可视化。其`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`边界不变，不能作为T0、G3、统一baseline、任务50或论文性能结论。
+
+### 风险、问题与阻塞
+
+- 已释放实例无法重连；本批通过官方SwanLab API而非远端文件成功恢复epoch级可视化数据。
+- Word完整页面PNG渲染继续因缺少LibreOffice受阻；后续有可用渲染器时应重新执行视觉门。
+
+### 下一步
+
+- 用户可查看更新后的Word和独立曲线图；若需可打印版，可在具备LibreOffice/Word的环境中导出PDF并检查分页。
+
+### Git状态
+当前更新后的Word、loss PNG和本条`WORK_LOG.md`尚未提交；用户已有未跟踪目录未读取、未修改、未暂存。
+
+## WR-20260731-016 — Task20临时SwanLab SDK清理与交付门禁复核
+
+- 时间：2026-07-31 22:09:00 +08:00
+- 类型：SECURITY | VALIDATION | HOUSEKEEPING
+- 任务/门：Task20 VC-CSA探索实验 / Word交付前门禁
+- 状态：完成；临时SDK误报已清理，等待复跑门禁
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+本批Word交付必须在不携带临时依赖和任何凭据的前提下通过项目记录与准备检查。先前失败仅来自本次临时SDK源码的三项通用赋值规则命中，目标是移除该可重装目录并复核真实门禁状态。
+
+### 实际变更
+
+- 删除本批次在`tmp/swanlab_api_pkg`临时安装、仅用于读取官方指标API的第三方SDK副本。删除前已核对其绝对路径和创建时间；未触及`tmp`中的其他内容、`NEmoP/`或`__MACOSX/`等用户未跟踪目录。
+- SDK目录含通用变量赋值，曾触发项目secret scanner的三项`generic_assignment`误报；它不含本次使用的API凭据，凭据也从未落盘。
+
+### 验证与证据
+
+- `git diff --check`通过。
+- `scripts/validate_work_log.py`在本条追加前通过（228 entries，无错误）。本条后将再次执行日志校验和完整`run_preparation_checks.py`，其真实结果随本批交付记录。
+
+### 影响与边界
+
+清理仅移除可重装的临时依赖，Word中的数据表、曲线PNG、SwanLab来源说明和Task20探索边界均未改变。
+
+### 风险、问题与阻塞
+
+- 若后续需要重新调用SwanLab API，必须再次以进程环境变量临时提供凭据，且不得将凭据或第三方SDK副本写入项目目录。
+- `formal_carm_environment`仍显示既有`BLOCKED_M1`（本机faiss不可用）；该状态与本次纯文档交付无关，不能表述为已就绪。
+
+### 下一步
+
+- 复跑`validate_work_log.py`、`run_preparation_checks.py`和`git diff --check`；通过后仅提交本批三项受控文件。
+
+### Git状态
+
+仅计划暂存`WORK_LOG.md`、更新后的Word和独立loss PNG；所有用户既有未跟踪目录继续排除在提交之外。

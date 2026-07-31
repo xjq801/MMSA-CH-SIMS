@@ -9753,3 +9753,49 @@ Epoch 100以冻结组合指标产生第三次严格best更新；Epoch 101的emot
 ### Git状态
 
 本条基于`main=origin/main=e7ff3525f8acfe0f5baf289995346adb0d8496cd`追加；仅修改`WORK_LOG.md`，用户已有`NEmoP/`、`__MACOSX/`与非Task20 `tmp/`继续未跟踪且不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-004 — Task20 VC-CSA Epoch 102–108闭环与冻结best更新
+
+- 时间：2026-07-31 10:30:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING | FAILURE
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 102–108完整闭环
+- 状态：七轮训练、dev评估、checkpoint及私有MatBox证据同步完成；Epoch 103严格超过Epoch 100并更新冻结best，Epoch 109继续运行
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+本次定时监控期间SSH长连接发生挂起及一次connection reset；重连后确认训练未中断且已继续完成Epoch 102–108。本批补齐全部七轮闭环，按冻结组合micro-F1严格大于规则更新best并同步最小证据。
+
+### 实际变更
+
+- Epoch 102总/opinion/emotion loss=2.05731068/1.08200943/0.97530125，batch均值=0.00043838/0.00023056/0.00020782，训练/dev耗时3540/187秒，LR `8.80e-06→8.33e-06`；dev opinion micro/macro=0.73478139/0.67462431，emotion micro/macro=0.63288897/0.55291923，组合=1.3676703645007926，未刷新best。
+- Epoch 103总/opinion/emotion loss=1.75180050/0.89004787/0.86175263，batch均值=0.00037328/0.00018965/0.00018363，训练/dev耗时3434/186秒，LR `8.33e-06→7.87e-06`；dev opinion micro/macro=0.73804419/0.67118572，emotion micro/macro=0.63204997/0.56021149，组合=1.3700941549361425，严格超过Epoch 100旧best 0.001398340636，冻结best更新为Epoch 103。
+- Epoch 104总/opinion/emotion loss=1.58362256/0.88119628/0.70242629，batch均值=0.00033744/0.00018777/0.00014968，训练/dev耗时3531/190秒，LR `7.87e-06→7.41e-06`；组合micro-F1=1.3629160063391441，未刷新best。
+- Epoch 105–108总loss依次为1.90198569/1.20410948/1.20717558/1.31050188，batch均值依次为0.00040528/0.00025658/0.00025723/0.00027925；组合micro-F1依次为1.3642211242658711/1.3617041111214694/1.3683229234641558/1.3666449147012214，均未严格超过Epoch 103。对应训练/dev耗时为3408/182、2730/179、2515/183、2492/191秒，LR连续按scheduler由`7.41e-06`衰减至`5.56e-06`。
+- 将Epoch 102–108的日志、loss/dev JSON、dev prediction和TensorBoard同步至私有MatBox 0700目录；仅`epoch-103`额外同步真实冻结best权重`best3407_1.3700941549361425_103.pkl`。
+
+### 验证与证据
+
+- `epoch-102`至`epoch-108`均完成`SHA256SUMS`逐项核验；实际文件字节分别为67,363,774、1,810,342,483、67,390,863、70,086,258、70,086,878、70,087,544、70,088,055。目录均为0700、文件均为0600。
+- 最新稳定checkpoint mode=0600、size=1,743,123,771、SHA-256=`903f2f2c9cc04157ce08e8b42f5aa4ba93000f67da57be1501551b5ba39acd50`；两次hash间size/mtime不变且无`.tmp`。
+- 完整主日志扫描为NaN=0、Inf=0、OOM=0、Killed=0、Traceback=0、读取错误=0。同步后MatBox使用44,828,721,152/59,055,800,320字节，可用14,227,079,168字节。
+- 唯一训练进程保持PID 1005；Epoch 109十秒窗口由step 4541推进至4561，吞吐2.0000 steps/s，训练阶段ETA约1.09分钟。资源采样为GPU 84%、显存17,248/24,564 MiB、63°C、约247.40 W，RAM约5.79/53.69 GB。
+
+### 影响与边界
+
+Epoch 103成为新的冻结best；后续五轮均未严格超过。SSH监控通道挂起与重置未影响远端训练、checkpoint或证据文件。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，所有结果不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- 首个审计SSH会话长时间无输出，终止本地SSH进程后重试；随后证据同步连接在输出Epoch 103核验时被重置。再次重连确认Epoch 102–104目录完整且hash全部通过，并完成Epoch 105–108同步。
+- Epoch 103相对旧best提升仍为单seed探索性差异，不得宣称稳定改进或统计显著。
+- MatBox剩余约14.23 GB，足够当前nonbest最小证据和少量后续best，但需继续监控容量。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认继续触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+
+继续监控Epoch 109及后续闭环，核验Epoch 103 best、checkpoint、SwanLab同步与MatBox容量；仅在完整epoch、完整训练或新失败时追加记录。
+
+### Git状态
+
+本条基于`main=origin/main=eba6bc15376b1dc0bdeb0fbe19ecd41585418828`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。

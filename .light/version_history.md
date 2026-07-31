@@ -9,3 +9,4 @@
 - [2026-07-24] 总纲 v1.19 — 把Video2Reaction升级为closest/direct prior，重定位为无目标响应与分布偏移下的可靠预测；加入claim blacklist、construct边界、四组件消融、严格OOD和拒稿预演；不改变G1—G3或Task20核心
 - [2026-07-27] 总纲 v1.20 / 第17节规格 v1.4 — 将收益感知路由落实为任务40/50的OOF效用标签、强路由对照、coverage匹配、五种子与负迁移统计合同；不恢复数值硬门或改变已通过G门
 - [2026-07-28] 总纲 v1.21 / 第17节规格 v1.5 — 增加Video2Reaction公开资产边界及A轨CSMV公平适配+B轨原生银标外部验证；新增数据准入、movie split审计、独立报告与不可比较边界；不改变G1—G3、任务20核心或v1.17回退
+- [2026-07-31] 论文SSOT v0.1.0 — 建立英文Markdown living manuscript、claim/argument蓝图与自动准入检查；冻结三项贡献上限、C1—C4内部claim、结果/引用/决策槽位和负结果降级路径；当前不含正式实验结果

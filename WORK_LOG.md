@@ -9841,3 +9841,57 @@ Epoch 109未刷新冻结best，不改变模型选择。实验永久为`AUTHOR_OR
 ### Git状态
 
 本条基于`main=origin/main=798cf7610b399c052f6e6a95381dd6e5040cc55a`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-006 — 建立T-AFFC英文论文Markdown SSOT与证据准入骨架
+
+- 时间：2026-07-31 11:49:00 +08:00
+- 类型：DOCUMENTATION | SSOT | DECISION | CLAIM_CONTROL | VALIDATION | HANDOFF
+- 任务/门：Task00论文预写作治理；不改变G1—G3，不启动Task60正式结果写作
+- 状态：`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.0与claim/argument蓝图已建立；状态固定为`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+
+用户明确要求立即按顶刊顶会标准搭建living paper，并要求论文随项目证据实时更新。为避免在正式结果冻结前虚构结果、放大claim或让Word/LaTeX形成第二事实源，本批建立英文Markdown论文SSOT、论证/反证映射和自动准入检查；按用户要求未向Task20发送消息。
+
+### 实际变更
+
+- 新建`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.0：495行、约4217词，覆盖完整IEEE期刊论文结构、严格T0问题定义、方法符号、数据角色、基线/消融/OOD/统计合同、结果与讨论证据槽、十项局限、数据/代码/伦理/CRediT/COI/资助/AI披露和补充材料计划。
+- 新建`paper/CLAIM_ARGUMENT_BLUEPRINT.md`：冻结P1—P5论证链、总纲三项贡献上限、内部C1—C4证据门、反证/降级路径、章节映射、六图六表计划、九类预演拒稿和结果准入schema。
+- 重写`paper/README.md`：冻结“总纲+claim矩阵+冻结证据→Markdown论文→Word/LaTeX/PDF”的单向权威关系。
+- 新建`scripts/validate_manuscript_ssot.py`：检查必需章节、Video2Reaction直接前作关系、构念边界、C1—C4=`TO_VERIFY`、citation slot注册、结果门、禁止性活动claim及Task20不合格探索证据。
+- 更新`.light/decision_log.md`、`.light/version_history.md`、`.light/project_card.md`和`.light/passport.yaml`，登记`SC-20260731-01`与论文v0.1.0；passport revision升为8并重算state hash=`sha256:8f28b24b71a8c243f6661b8835c5c300faf3d8c1df39b8e4878f2d4578a5b972`。
+- 新建`.light/handoff/S26-living-manuscript-ssot-v010.md`，继续传播无结果写作边界、证据准入合同和下一会话提示。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\validate_manuscript_ssot.py`首次红灯2项：正文的否定性“state-of-the-art”字样被保守正则命中、最终参考文献citation slot未登记；修改措辞并补登记后复跑`passed=true manuscript_bytes=34338 blueprint_bytes=13806 citation_slots=6 result_gates=18`，后续三贡献对齐修改后须在提交门复跑。
+- `git diff --check`：exit 0。
+- `light-consistency/scripts/consistency_audit.py --source .light/terminology.md --materials <总纲/claim矩阵/正文/蓝图>`：exit 0；0项术语变体、指标值、claim强度或贡献漂移，1项`AUTHORITY_COVERAGE` WARN和9项中英文材料`COVERAGE_GAP` INFO。由于`.light/consistency`四份YAML registry尚未建立，本次只记`PARTIAL`覆盖，不冒充数值与主张全门通过。
+- IEEE官方Author Center当前写作结构与abstract规范只作为骨架约束：单段、最多250词、无引用/脚注/未定义缩写；正式投稿时仍按总纲第17节重新核对最新T-AFFC作者指南。
+- 首轮`check_project_card.py --project-dir .light --handoff .light/handoff`：exit 1；发现本批`current_stage`非工具枚举、历史decision格式和S02缺失交接链问题。只修本批`current_stage`与新决策格式，不改写历史；后续复跑须如实保留历史发现。
+- 首轮`handoff_contract.py --card .light/handoff/S26-living-manuscript-ssot-v010.md`：exit 1；发现三个章节名、完成证据分隔、下一步数量和禁止刷新语句不符合合同。已按模板修正，等待提交门复跑。
+- `check_project_card.py --project-dir .light`复跑：本批`current_stage`和新决策格式问题归零、handoff chain为0项发现，但仍因2026-07-18至07-28的13条历史decision仅有一个`—`分隔而exit 1；为遵守历史不可改写规则，本批不追溯美化旧记录，记为既有治理债务。
+- `handoff_contract.py`第二/三次复跑仍exit 1：依次暴露`待用户回答`的none说明不是机器格式、无bullet的解释仍被判格式错误；按脚本明确合同改为唯一bullet `- none — <具体原因>`。最终复跑`handoff contract PASS`、exit 0，失败过程未删除。
+
+### 影响与边界
+
+- 本批不修改总纲v1.21、experiment-protocol-v2、G1—G3、Task20评测核心或Task30创建状态；C1—C4全部保持`TO_VERIFY`。
+- 论文现有内容是可审计写作骨架，不是完成稿、结果稿或投稿稿；18个`RESULT-GAP`必须由任务50冻结的五种子、原生内容单位统计证据替换。
+- Task20单seed、smoke、NON_T0或泄漏接受探索结果永久不得进入正式论文证据；本批未写入任何此类数值。
+- Video2Reaction继续是closest/direct prior，V2R-A/V2R-B分轨、HUMAN_GOLD/银标和跨数据不可横比边界不变。
+
+### 风险、问题与阻塞
+
+- C1—C4、CARM名称、最终学生/teacher/memory/router实现和全部G4—G6结果尚未冻结，摘要、结果、讨论、结论必须保留证据门。
+- 当前citation registry只是槽位级控制，尚未完成逐句引用真实性与claim支持审计。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；论文必须披露accepted-risk且不得承诺再分发。
+- Task20探索和受限存储生命周期未闭环，仍阻止Task30按原门禁创建。
+
+### 下一步
+
+随Task30/40仅更新冻结方法、符号和预注册；补做citation slot逐句核验及Markdown到IEEE LaTeX的单向生成流程；等待`results-freeze-v1`后再按结果准入schema更新C1—C4、图表、摘要、结果、讨论和结论。
+
+### Git状态
+
+本条基于开工与提交前刷新时`main=origin/main=278bfbed1f296fad84097f7d82ae06b2b39383ad`追加；本批只提交Task00论文SSOT、验证器、`.light`治理文件、WORK_LOG和S26交接卡。用户已有未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`未读取、未修改、未暂存。

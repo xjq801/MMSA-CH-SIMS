@@ -25,3 +25,4 @@
 - [2026-07-24] 外部`论文修改总纲要（合体版）.docx`裁定为v1.14历史派生快照，不是SSOT；后续只能从已提交Markdown总纲单向生成带commit/hash的新Word副本，禁止双向漂移 — 来源 `WORD_MASTER_BACKFILL_PLAN_20260724.md`
 - [2026-07-27] `SC-20260727-01`发布总纲v1.20与第17节规格v1.4：把C2后半收紧为收益感知历史反应路由，要求train内部OOF效用标签、T0-only路由输入、固定融合/相似度/熵/SelectiveNet式强对照、coverage匹配、负迁移与OOD机制链；不恢复v1.17的3%/5%/8%硬门，不改变G1—G3、Task20接口或Task30未创建状态 — 来源 用户要求复核并完善第17节/00执行审查
 - [2026-07-28] `SC-20260728-01`发布总纲v1.21与第17节规格v1.5：Video2Reaction固定采用A轨CSMV同协议公平适配与B轨原生公开特征/银标外部验证；公开包不等于完整原始音视频文本，标签固定`SILVER_LLM_HUMAN_VERIFIED`，两轨分表且不得跨数据绝对指标横比；不追溯改变G1—G3或任务20 — 来源 用户明确“就这么完善总纲”/官方HF与arXiv复核
+- [2026-07-31] `SC-20260731-01`建立英文论文Markdown写作SSOT：总纲v1.21与claim/协议台账继续管研究事实，`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`只单向吸收已冻结定义和已验收证据，Word/LaTeX/PDF只能从Markdown单向生成 — 当前状态固定为`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`，任务20单seed、NON_T0或泄漏接受探索结果不得进入论文 — 来源 用户明确要求按顶刊标准启动living paper/00证据边界审查

@@ -10023,3 +10023,41 @@ Epoch 115成为新的冻结best，但仍为单seed探索性结果。实验永久
 ### Git状态
 
 本条基于`main=origin/main=ccf0e635af524c9856610a83e376411ca0a530a1`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。
+
+## WR-20260731-010 — Task20 VC-CSA Epoch 116–117闭环与冻结best更新
+
+- 时间：2026-07-31 19:08:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRIC | CHECKPOINT | STORAGE | MONITORING
+- 任务/门：Task20 VC-CSA author exploratory seed=3407 / Epoch 116–117完整闭环
+- 状态：两轮训练、dev评估、checkpoint及私有MatBox证据同步完成；Epoch 116严格超过Epoch 115并更新冻结best；Epoch 118已完成训练、正在dev评估
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+定时监控确认Epoch 116–117形成完整loss、dev performance与prediction三件套。本批按冻结组合micro-F1严格大于规则更新best，仅为真实best更新轮同步权重，并复核断点、错误模式、资源、SwanLab与MatBox状态。
+
+### 实际变更
+
+- Epoch 116总/opinion/emotion loss=0.6447449102623037/0.2524583862796993/0.39228652571843436，4693个batch均值=0.0001373844/0.0000537947/0.0000835897；训练/dev耗时约3627/196秒，LR `2.31e-06→1.85e-06`。dev opinion micro/macro=0.74074765/0.68150519，emotion micro/macro=0.63447376/0.55972481，组合=1.3752214039339985，严格超过Epoch 115旧best 0.002423790435，冻结best更新为Epoch 116。
+- Epoch 117总/opinion/emotion loss=0.47762441325946703/0.2427961560822855/0.2348282558200549，batch均值=0.0001017738/0.0000517358/0.0000500380；训练/dev耗时约3664/201秒，LR `1.85e-06→1.39e-06`。dev opinion micro/macro=0.73878997/0.67829953，emotion micro/macro=0.63382120/0.56109284，组合=1.3726111680805444，未刷新best。
+- 同步两轮主日志、log_run、loss/dev JSON、prediction和TensorBoard至私有MatBox；仅`epoch-116`额外同步`best3407_1.3752214039339985_116.pkl`。SwanLab sidecar存活，上传网络短暂重试后自动恢复。
+
+### 验证与证据
+- `epoch-116`含9个文件、实际文件字节1,818,834,061；`epoch-117`含8个文件、实际文件字节75,880,072。目录0700、文件0600，`SHA256SUMS`逐项通过。
+- 稳定checkpoint mode=0600、size=1,743,134,779、SHA-256=`d029af4858a00fc89032fc7dba0b21973421912fdf8ae689dd485e71aa878df7`；两次hash/size/mtime一致且无`.tmp`。
+- 唯一训练PID 1005存活；主日志未出现NaN、OOM、Killed、Traceback、No-space或I/O错误。采样时Epoch 118已到step 4692/4692并完成训练loss落盘，dev performance尚未落盘，因此不把Epoch 118计为闭环或结果。
+- GPU采样利用率40%、显存17,248/24,564 MiB、温度64°C；RAM约6.02/53.69 GB；MatBox使用52,466,548,736/59,055,800,320字节，剩余6,589,251,584字节。
+
+### 影响与边界
+Epoch 116成为新的冻结best，但仍为单seed探索性结果。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0、G3、统一baseline、任务50或论文claim。
+
+### 风险、问题与阻塞
+
+- MatBox剩余约6.59 GB，预计足够剩余nonbest证据；若后续再产生多个新best权重需继续关注容量。
+- SwanLab曾报告网络/服务上传失败并自动恢复；本地sidecar与训练不受影响，继续监控是否持续同步。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；固定8210覆盖/hash漂移或权利方否认触发`ASSET_INVALIDATED_DO_NOT_REPORT`。
+
+### 下一步
+等待Epoch 118 dev评估与checkpoint闭环，继续监控剩余Epoch 119–120、冻结best、SwanLab、MatBox容量及最终训练收尾。
+
+### Git状态
+本条基于开工时`main=origin/main=4fae301ef6d0c4d72015f799b6696c16468d859d`追加；仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git。远端唯一seed继续运行。

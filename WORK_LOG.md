@@ -10176,3 +10176,38 @@ Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LE
 
 ### Git状态
 本条基于`main=origin/main=49c54a5902532f9d6a6f12717cc8acb85305e861`追加；当前仅修改`WORK_LOG.md`，用户已有未跟踪目录不进入Git，远端存储操作已完成。
+
+## WR-20260731-014 — Task20 最终证据归档说明 Word 交付
+
+- 时间：2026-07-31 21:45:00 +08:00
+- 类型：DOC | PROGRESS | SECURITY
+- 任务/门：Task20 VC-CSA探索实验 / 用户请求的Word归档说明
+- 状态：完成；已生成结构核验通过的Word说明文档
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+用户要求将已保存的最终断点、冻结best、指标、预测、日志、TensorBoard、环境/配置/哈希和审计记录写成可查看的Word文档。
+
+### 实际变更
+
+- 创建`deliverables/TASK20_VCCSA_EXPLORATORY_ARCHIVE_SUMMARY_20260731.docx`，采用正式内部简报样式，说明归档清单、完整性状态、明确未复制的受限内容、Epoch 1–3缺口、论文使用边界及实例释放结论。
+- 文档只包含非敏感元数据和SHA-256摘要；不含I3D、评论/标签正文、凭据或端点。
+
+### 验证与证据
+
+- 使用bundled Python与`python-docx`重新读取文档：24段落、1张9行表、标题和作者属性均正确，关键身份边界文本存在。
+- 按documents技能调用`render_docx.py`尝试生成PNG/PDF，但本机缺少LibreOffice/soffice，渲染器启动时报`WinError 2`；因此本批完成结构性检查，未将其表述为通过PNG视觉渲染门。
+
+### 影响与边界
+文档是用户查看用的归档说明，不改变Task20探索实验的`NON_T0/INELIGIBLE`边界，亦不创建论文正式结果或主张。
+
+### 风险、问题与阻塞
+
+- Word视觉渲染检查受本机缺少LibreOffice阻塞；若后续安装可用渲染器，应重跑PNG视觉核验。
+
+### 下一步
+
+- 用户可查看并决定是否需要附加PDF或更精简的论文附录版。
+
+### Git状态
+当前新增交付文档和本条`WORK_LOG.md`尚未提交；用户已有未跟踪目录未读取、未修改、未暂存。

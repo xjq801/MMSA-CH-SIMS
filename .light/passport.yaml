@@ -2,12 +2,12 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-01T20:50:34+08:00"
+updated: "2026-08-01T21:33:33+08:00"
 current_stage: 20
-state_revision: 11
-state_hash: "sha256:25f1b5335c2e82321a9060e89b05e365dbfacb019d61cec7328a9d6b110ee838"
+state_revision: 12
+state_hash: "sha256:5193e45ce1ac11af00e1100c60c988defb95e5390d1a683ba5b16533325ace22"
 evidence_state: PLANNED
-next_action: independently review Task10 manuscript data-section commit 1d2018c; then create Task30 from latest main
+next_action: await Task20 manuscript-section commit; independently review Task10 and Task20 manuscript contributions; then create Task30
 delivery_status: IN_PROGRESS
 delivery_authorization_id: ~
 stages:
@@ -29,4 +29,4 @@ stages:
     input: 冻结dataset/split/label与I3D协议
     output: 统一评测器、强基线、G3证据及隔离VC-CSA探索的受控收尾
     artifacts: [HANDOFF_20.md, TASK00_G3_FINAL_REVIEW_20260718.md, BASELINE_TABLE_V1.md, experiments/EXPERIMENT_REGISTRY.md, HANDOFF_20_POST_SNAPSHOT_CLOSEOUT_20260801.md, TASK00_TASK20_FINAL_CLOSEOUT_REVIEW_20260801.md, paper/TAFFC_CARM_MANUSCRIPT_SSOT.md, paper/CLAIM_ARGUMENT_BLUEPRINT.md]
-    gaps: [Task10 manuscript data-section fill is submitted at 1d2018c but has no 00 acceptance; VC-CSA exploration remains permanently NON_T0 and ineligible for formal evidence; restricted storage is active until visible-layer deletion deadline 2026-08-31 23:59:59 +08:00 and platform control plane remains UNKNOWN; Video2Reaction dual-track execution is planned for stage 50 and its public revision/fixity are not frozen; Task30 is eligible for 00 creation but not yet created; manuscript is a no-results scaffold and C1-C4 remain TO_VERIFY]
+    gaps: [Task10 manuscript data-section fill is submitted at 1d2018c but has no 00 acceptance; Task20 baseline/evaluation manuscript sections are delegated but have no commit or 00 acceptance; VC-CSA exploration remains permanently NON_T0 and ineligible for formal evidence; restricted storage is active until visible-layer deletion deadline 2026-08-31 23:59:59 +08:00 and platform control plane remains UNKNOWN; Video2Reaction dual-track execution is planned for stage 50 and its public revision/fixity are not frozen; Task30 is eligible for 00 creation but not yet created; manuscript is a no-results scaffold and C1-C4 remain TO_VERIFY]

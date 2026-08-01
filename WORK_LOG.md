@@ -10587,3 +10587,49 @@ Task20以`main@b7855074acbf3aee6bca640a66c891cc4e21ebf9`提交唯一seed探索�
 ### Git状态
 
 本条与总纲当前态、project card、passport、version history和S29待同批提交；不触碰用户未跟踪目录。
+
+## WR-20260801-007 — 委派Task20填写论文基线与评测章节
+
+- 时间：2026-08-01 21:33:33 +08:00
+- 类型：PROGRESS | TASK_COORDINATION | DOCUMENTATION | HANDOFF
+- 任务/门：Task00论文SSOT治理 / Task20论文章节填写
+- 状态：委派已送达；Task20 inProgress，尚无commit或00验收
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+
+用户要求把Task10提交的论文新版交给Task20，根据已完成项目继续撰写。为避免把写作重开误作实验重开，本批冻结Task20只写其G3证据所有权章节，并保留所有未完成结果门。
+
+### 实际变更
+
+- 向Task20线程发送绑定`main@f8097c0`和论文v0.1.1的写作合同。
+- 授权Sec.5.4基线、5.6指标、5.8实现复现、受限Sec.6.1、Sec.8及相关supplement；禁止填Abstract最终结果、Sec.6.2—6.7、Sec.7实证解释和Sec.9结论。
+- 要求新增`TASK20_MANUSCRIPT_SECTION_COMPLETION_20260801.md`、同批WORK_LOG、门禁、提交推送及`REQUEST_00_TASK20_MANUSCRIPT_REVIEW`回交。
+- 更新任务登记、project card、passport并新建S30。
+
+### 验证与证据
+
+- `send_message_to_thread`返回目标threadId；`read_thread`确认新turn为`inProgress`且收到完整合同。
+- 委派前`main=origin/main=f8097c0473145903335d618d956758e3cac441e5`，tracked clean，仅三个用户未跟踪目录。
+- Task20尚未形成文件、commit或完成声明，因此本批不进行虚假验收。
+
+### 影响与边界
+
+- Task20实验核心仍关闭；G3、总纲科学合同、C1—C4和论文no-results状态不变。
+- Task10稿件是待00审核输入；Task20不得宣布其通过或静默改写Task10所有权段落。
+- 五种子、正式bootstrap和Video2Reaction仍归Task50；teacher/memory/router仍归Task30/40。
+
+### 风险、问题与阻塞
+
+- 共享论文与WORK_LOG存在并发冲突风险；00在Task20回交前不修改论文正文。
+- I3D许可/revision/权利方身份-fixity仍UNKNOWN；VC-CSA探索永久NON_T0/INELIGIBLE。
+
+### 下一步
+
+1. 等Task20提交精确commit和完成说明。
+2. 00分别审核Task10与Task20段落。
+3. 审核后从最新main创建Task30。
+
+### Git状态
+
+本条及00协调台账待提交；不暂存论文正文或用户未跟踪目录。

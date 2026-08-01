@@ -10733,3 +10733,42 @@ Task20以`main@5e1386d79ef00136c87491edbde6f77437d3715b`回交论文v0.1.2、完
 
 ### Git状态
 本条及总控裁定/SSOT/S31待门禁后仅按00所有权范围有意暂存、提交并推送；用户未跟踪目录保持排除。
+
+## WR-20260801-010 — Task30创建合同与启动交接包冻结
+
+- 时间：2026-08-01 22:06:32 +08:00
+- 类型：DECISION | TASK_COORDINATION | DOCUMENTATION | HANDOFF
+- 任务/门：Task00总控 / Task30创建门
+- 状态：创建合同完成，待Git提交推送和Codex任务创建
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+用户明确要求把当前工作提交GitHub、创建Task30并完成交接。总纲v1.21第5节与第17节确认Task30创建门已解除；本批需把H1范围、冻结输入、开发门、资产边界和禁止项写成可审计合同，避免新任务把Task30扩成Task40/50或重开Task20。
+
+### 实际变更
+- 新建`TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md`，批准从`main@9b5a44d`创建`30-M4 评论教师与内容学生`。
+- 新建`HANDOFF_30.md`启动版，冻结CSMV主开发角色、LAI-GAI字段适用边界、Video2Reaction H1 N/A、train-only评论teacher、dev开发选择和test禁用合同。
+- 明确Task30不得修改Task20评测核心、提前实现memory/router、使用未授权付费/远程资源或把单seed开发结果写成正式论文证据。
+
+### 验证与证据
+- 开工读取`AGENTS.md`、`WORK_RECORD_POLICY.md`、WORK_LOG末条并运行`git status --short --branch`；主线为`HEAD=origin/main=9b5a44dc5d6d186ed4e0d78905e40629f5262de6`，tracked clean，仅保留用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`。
+- 对照总纲v1.21第5.1—5.7节和第17节当前顺序逐项生成Task30合同；启动条件G3、evaluation-kit和content-only强基线均已有Task20/00证据。
+- Codex任务列表只存在Task10、Task20和总控01/02，未发现既有Task30，避免重复创建。
+
+### 影响与边界
+- 本批只创建任务合同和交接入口，不实现teacher/student、不运行实验、不读取test。
+- G1—G3、I3D风险、论文no-results状态及Task20关闭状态均不变。
+- Task10论文段落审核继续开放，但不改变冻结实验输入，故不阻塞Task30创建。
+
+### 风险、问题与阻塞
+- Task30实际线程ID尚待Codex任务创建后回填；在回填前不得把任务状态写成已启动。
+- 主`.venv`当前formal模型环境未就绪；Task30必须建立独立环境，不得继承虚假ready状态。
+- I3D外部权利/fixity与平台控制面删除状态仍UNKNOWN。
+
+### 下一步
+1. 运行项目门禁，提交并推送Task30创建包。
+2. 创建Task30独立Codex worktree任务，记录实际线程ID并回填SSOT。
+3. 创建总控03并完成总控02到03的最终记忆交接。
+
+### Git状态
+Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用户未跟踪目录不纳入。

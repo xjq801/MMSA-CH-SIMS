@@ -10384,3 +10384,54 @@ Task20正式核心与G3不变；本批只形成探索收尾和生命周期合同
 ### Git状态
 
 本条及三个Task20收尾文件尚未提交；用户既有未跟踪目录不读取、不修改、不暂存。
+
+## WR-20260801-003 — 00独立接受Task20最终收尾并解除Task30创建阻断
+
+- 时间：2026-08-01 20:08:11 +08:00
+- 类型：REVIEW | DECISION | VALIDATION | STORAGE | HANDOFF
+- 任务/门：Task00独立验收 / Task20 post-snapshot closeout / Task30创建门
+- 状态：`ACCEPTED_WITH_PERMANENT_LIMITATIONS`；Task20=`CLOSED_ACTIVE_TIME_BOUND_RETENTION`；Task30=`ELIGIBLE_NOT_CREATED`
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+
+Task20以`main@b7855074acbf3aee6bca640a66c891cc4e21ebf9`提交唯一seed探索完成、最小证据冻结和受限存储生命周期收尾，请求00独立接受、设置D0+30日截止、纠正过时运行态并判断Task30门。本批不沿用Task20自述结论，独立复算后裁定。
+
+### 实际变更
+
+- 新建`TASK00_TASK20_FINAL_CLOSEOUT_REVIEW_20260801.md`，绑定精确提交、五项本地证据哈希、永久claim边界、D0和Task30结论。
+- 将Task20状态更新为`FORMAL_CORE_COMPLETED_G3_PASS_WITH_LIMITATIONS_EXPLORATORY_CLOSED_ACTIVE_TIME_BOUND_RETENTION`；删除跨区断点和“探索运行中”的过时状态。
+- D0固定为2026-08-01，可见层删除截止为2026-08-31 23:59:59 +08:00；当前不声明已删除，平台控制面继续UNKNOWN。
+- Task30更新为`NOT_CREATED_ELIGIBLE_FOR_00_CREATION`；本批只解除创建门，不创建新任务。
+- 更新`TASK_REGISTRY.md` v1.5、`RISK_REGISTER.md`、`.light/project_card.md`、`.light/passport.yaml`、decision/version台账并新建S28交接卡；未改写历史`HANDOFF_20.md`或旧交接卡。
+
+### 验证与证据
+
+- `HEAD`与`origin/main`均为`b7855074acbf3aee6bca640a66c891cc4e21ebf9`；该提交只涉及Task20两份文档、manifest和WORK_LOG。
+- 四个历史证据提交均存在且为验收提交祖先；manifest JSON可解析。
+- 独立SHA-256复算：post-snapshot handoff=`c3c0cb9e...07366`，lifecycle=`3ba43927...f9c39`，manifest=`aaa46ae5...0fdb`，Word=`73b39428...7ef4`，PNG=`e7e33570...ced1`；bytes均与裁定表一致。
+- Word ZIP完整性无坏项，正文明确NON_T0/INELIGIBLE、Epoch 1—3缺口和I3D UNKNOWN；PNG为可解码`1854×917 RGBA`。
+- `WR-20260801-002`的“后续将运行门禁”属于提交前时点限制；00不追溯改写，改由本批独立门禁复跑闭合。
+- 首次S28 `handoff_contract.py`因缺标准frontmatter和必需章节返回FAIL；补为contract v2后的第二次运行仍因none格式、两条验证关键词和4条下一步超限返回FAIL；两次失败均保留。按脚本合同修正为`none — reason`、每项显式验证和3条动作后，第三次返回`handoff contract PASS`。
+
+### 影响与边界
+
+- G1、G2、ASSET_ADMISSIBILITY和G3均不改变；Task20训练完成不构成正式复现或论文性能证据。
+- VC-CSA永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0/G3主证据/统一baseline/Task50/论文claim。
+- Task30启动条件已满足；活动30日资产保留不修改实验核心，故不再阻塞创建，但必须另批生成Task30提示与交接。
+
+### 风险、问题与阻塞
+
+- Epoch 1—3原始三件套缺失不可恢复；I3D许可、官方revision、权利方包身份/fixity仍UNKNOWN。
+- 受限存储只进入定时保留，尚未完成可见层删除；若截止日无法访问控制面，必须记录失败并继续追踪。
+- Task10论文数据段落仍等待工具批准和commit，不因本次Task20收尾自动验收。
+
+### 下一步
+
+1. 在本批门禁、提交和推送完成后，以最新main创建Task30。
+2. 等Task10回交后独立审查论文数据与协议章节。
+3. 2026-08-31前验收Task20受限存储可见层删除。
+
+### Git状态
+
+计划仅暂存本批Task00裁定、任务/风险/.light台账、S28和WORK_LOG；用户既有未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`保持不动。

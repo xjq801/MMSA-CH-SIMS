@@ -10633,3 +10633,59 @@ Task20以`main@b7855074acbf3aee6bca640a66c891cc4e21ebf9`提交唯一seed探索�
 ### Git状态
 
 本条及00协调台账待提交；不暂存论文正文或用户未跟踪目录。
+
+## WR-20260801-008 — Task20完成论文基线、指标与复现章节受控填写
+
+- 时间：2026-08-01 22:20:00 +08:00
+- 类型：DOCUMENTATION | MANUSCRIPT | VALIDATION | HANDOFF
+- 任务/门：Task20论文证据所有权章节 / 00独立复审请求
+- 状态：Task20写作交付完成，待00独立验收
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+用户授权Task20接收Task10提交的论文v0.1.1并继续撰写；00以`main@9a1612fa81e2a3be0173c91fde8e5ce237e7083d`冻结本批范围。目标是仅把Task20已有G3和基线证据写入Sec.5.4、5.6、5.8、受限Sec.6.1、Sec.8与Supplement，不把尚未冻结的性能结果或NON_T0探索结果写成论文证据。
+
+### 实际变更
+
+- 将`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`从v0.1.1更新为v0.1.2；`manuscript_status=MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`、`result_freeze=NOT_AVAILABLE`和C1—C4待核验状态不变。
+- Sec.5.4明确区分official attempt、strong reimplementation、legacy native compatibility和reference model；传播VC-CSA post-snapshot erratum优先级，明确120轮探索永久NON_T0/INELIGIBLE并禁止进入论文性能结果。
+- Sec.5.6写入JS、NLL、EMD、Macro-F1、Balanced Accuracy、Brier、ECE、ACE、AURC-JS九项指标的方向和操作语义，特别说明AURC-JS不是AUROC。
+- Sec.5.8写入独立环境、统一schema/loader/evaluator、train-only拟合、dev选择、test一次、12-trial预算、同环境同seed确定性replay和hash-bound证据边界。
+- Sec.6.1仅写G3协议可信性与单seed工程证据边界；保留正式结果占位，不写性能数字或优越性结论。
+- Sec.8与Supplement S3/S4/S9补入Task20限制、调参合同和可复现清单；Task10拥有的Sec.1.1、Sec.3、Sec.5.2/5.3/5.7、Data Availability、Ethics/Privacy、S1/S2未改写。
+- 新增`TASK20_MANUSCRIPT_SECTION_COMPLETION_20260801.md`，逐节绑定文字、证据SHA-256及剩余RESULT/CITATION/DECISION GAP。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\validate_manuscript_ssot.py`：首次FAIL，原因是论文正文出现被专用门禁止的完整探索身份令牌；本批随后将正文改为等义的“leakage-accepted NON_T0 exploratory”排除性措辞，精确内部身份仅保留于Task20完成说明。修复后复跑PASS，稿件继续允许受控RESULT/CITATION/DECISION GAP。
+- `python C:\Users\86183\.codex\skills\light-paper-writing\scripts\mechanical_check.py --file paper\TAFFC_CARM_MANUSCRIPT_SSOT.md`：exit 0；最终报告78项全稿风格/被动语态/措辞提示，未形成阻断。本批根据提示移除新增段落中的`superior`、`prove`、`guarantees`触发词；剩余`novel`、`Best`等提示位于非本批所有权既有正文，交00/相应所有者复核。
+- `python C:\Users\86183\.codex\skills\light-paper-writing\scripts\draft_lint.py paper\TAFFC_CARM_MANUSCRIPT_SSOT.md --claims`：PASS，18条候选事实句留待后续claim passport与引用核验。
+- `python C:\Users\86183\.codex\skills\light-paper-writing\scripts\claim_evidence_gate.py --draft paper\TAFFC_CARM_MANUSCRIPT_SSOT.md --project T-AFFC`：exit 0，但因当前无`evidence_strength.json`且skill `_shared`不可达，工具诚实降级为`findings=None`；不得把该结果写成完整claim-evidence绑定通过。项目专用`validate_manuscript_ssot.py`仍作为本批no-results/overclaim硬门。
+- 一次`rg`只读审计因本机`rg.exe`访问被拒绝而失败；随后使用PowerShell `Select-String`完成同等边界复核。首次大补丁因Unicode原文匹配失败而整体未写入，之后按UTF-8章节边界重新应用成功；两次失败均未改动受保护文件。
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`：PASS，`errors=[]`，最新记录为`WR-20260801-008`。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：命令exit 0、`blocking_checks=[]`；同时如实报告`formal_model_work_ready=false`，原因为当前formal CARM环境`faiss_available=false/BLOCKED_M1`，不影响本批纯文稿交付且不得写成模型环境已就绪。
+- `git diff --check`：PASS。
+
+### 影响与边界
+
+- 本批只改变论文SSOT、Task20完成说明和本条WORK_LOG；不修改总纲、G门、实验核心、历史hash-bound证据、Task10完成说明或Task30/40/50接口。
+- temporal-attention保持`REIMPLEMENTATION_STRONG_BASELINE`且仅单seed；五种子与正式bootstrap/paired comparison仍归Task50。
+- CLIP/SigLIP/VideoMAE保持`NOT_AVAILABLE_IN_FROZEN_T0_PROTOCOL`；late fusion/cross-attention/E1保持`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY`。
+- I3D许可、官方revision与权利方包身份/fixity继续UNKNOWN，禁止再分发；用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`未触碰。
+
+### 风险、问题与阻塞
+
+- 当前无正式结果冻结，所有最终性能表、五种子不确定性和方法效果结论仍为RESULT GAP。
+- claim-evidence通用skill门缺少本项目结果强度映射且发生`_shared`降级，必须由00复核文字并由Task50冻结证据后再完成最终绑定。
+- 正式baseline引用仍有CITATION GAP；本批未新增或编造引用。
+
+### 下一步
+
+1. 提交并推送本批三个授权文件。
+2. 以`REQUEST_00_TASK20_MANUSCRIPT_REVIEW`回交精确commit与文件hash。
+3. 00独立审核Task10与Task20内容；Task20不自行宣布论文段落通过。
+
+### Git状态
+
+待门禁通过后有意暂存并提交`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`、`TASK20_MANUSCRIPT_SECTION_COMPLETION_20260801.md`和`WORK_LOG.md`；不纳入任何用户未跟踪目录。

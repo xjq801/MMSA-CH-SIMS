@@ -10289,3 +10289,52 @@ Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LE
 ### Git状态
 
 仅计划暂存`WORK_LOG.md`、更新后的Word和独立loss PNG；所有用户既有未跟踪目录继续排除在提交之外。
+
+## WR-20260801-001 — 委派Task10受控填写论文数据与协议章节
+
+- 时间：2026-08-01 19:46:57 +08:00
+- 类型：PROGRESS | TASK_COORDINATION | DOCUMENTATION | HANDOFF
+- 任务/门：Task00论文SSOT治理 / Task10数据与协议章节填写
+- 状态：委派已送达；Task10处于`waitingOnApproval`，尚无commit，00尚未审核
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+
+用户要求把已建立的英文论文框架交给任务10填写其职责内部分，再交由00总控审核。本批只建立受控范围、回交合同和审查顺序，避免Task10越权填写方法/结果或自行升级claim。
+
+### 实际变更
+
+- 通过Codex任务工具定位任务10真实线程`019f5cf3-1810-7cd2-95bb-ff603551571b`，读取其历史职责后发送新委派。
+- 委派只授权构念、T0信息边界、数据集角色、split/泄漏、数据相关局限、Data Availability、Ethics/Privacy及Supplement S1/S2；明确禁止修改方法、Results、Discussion、Conclusion、G门、claim状态和实验核心。
+- 要求Task10新建`TASK10_MANUSCRIPT_SECTION_COMPLETION_20260801.md`、追加WORK_LOG、运行论文/日志/准备/Git门、提交推送并以`REQUEST_00_MANUSCRIPT_REVIEW`回交完整hash。
+- 更新`TASK_REGISTRY.md` v1.4、`.light/project_card.md`和`.light/passport.yaml`；新建`.light/handoff/S27-task10-manuscript-delegated.md`。
+
+### 验证与证据
+
+- `send_message_to_thread`返回目标threadId；随后`read_thread`确认新turn为`inProgress`，任务10已声明按`light-data-engineering`、`light-paper-writing`和`light-citation`执行。
+- 两次等待后实时状态变为`waitingOnApproval`；未发现Task10提交、完成声明或`REQUEST_00_MANUSCRIPT_REVIEW`，因此本批不进行虚假验收。
+- 共享主线委派前为`main=origin/main=b1217a0`、tracked clean；用户未跟踪目录保持不动。
+- 首轮强制门中`validate_work_log.py`为230条PASS、`run_preparation_checks.py`为`blocking_checks=[]`、passport为既有stage10元数据WARN、`git diff --check`通过；`handoff_contract.py`因“已完成”首条缺少脚本识别的验证关键词而exit 1。失败保留，补入“人工验证”后复跑。
+- 最终复跑：`validate_work_log.py`仍为230条/0错误；`run_preparation_checks.py` exit 0、`blocking_checks=[]`、secret scan PASS且默认旧环境`formal_model_work_ready=false`保持诚实；S27 `handoff contract PASS`；`git diff --check` exit 0。
+
+### 影响与边界
+
+- G1、G2、资产风险、G3、C1—C4和论文`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`状态均不变。
+- 委派成功只表示任务已接收，不表示章节已填写、证据已接受或论文可投稿。
+- 按用户此前要求，本批未联系任务20。
+
+### 风险、问题与阻塞
+
+- Task10当前等待用户批准其工具请求，未获批准前不能形成可审核commit。
+- 共享main存在并发推进可能；Task10恢复后必须先刷新，00审核时必须锁定精确commit和diff。
+- I3D外部权利/fixity未知及Task20 NON_T0/INELIGIBLE边界继续有效。
+
+### 下一步
+
+1. 用户在任务10界面批准当前工具请求。
+2. 等Task10提交`REQUEST_00_MANUSCRIPT_REVIEW`与完整commit hash。
+3. 00逐段独立审核并形成接受、补证或拒绝裁定。
+
+### Git状态
+
+本条与Task00任务登记、project card、passport及S27交接卡待同批提交；不得声称已推送。用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`不进入提交。

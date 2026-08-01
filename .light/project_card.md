@@ -12,11 +12,11 @@ confirmed_idea: 无目标响应与分布偏移下的可靠内容到受众公开�
 data_status: G1 PASS；CSMV 8210视频与LAI-GAI 847图两个HUMAN_GOLD主集冻结；G2协议/数据通过；I3D资产外部证明为DEFERRED_ACCEPTED_RISK
 method_status: 任务20统一评测与强基线已获G3 PASS_WITH_LIMITATIONS；Video2Reaction为closest/direct prior且标签固定SILVER_LLM_HUMAN_VERIFIED；v1.21保留收益感知router的OOF效用/强对照/coverage合同，并增加V2R-A CSMV公平适配与V2R-B原生银标外部验证；完整CARM仍PLANNED/TO_VERIFY
 experiment_status: 任务20基线/G3主体完成；当前强视觉数值仅单seed；VC-CSA探索仍在运行且永久NON_T0/INELIGIBLE；任务30/40/50未启动，Video2Reaction尚未冻结revision或下载
-paper_status: 已建立`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.0与claim/argument蓝图，状态MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS；活动总纲仍为v1.21，三项贡献上限不变，C1—C4均TO_VERIFY，尚无G4—G6正式主结果；Word/LaTeX/PDF只能从Markdown单向生成
+paper_status: 已建立`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.0与claim/argument蓝图，状态MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS；Task10已受控接收数据/协议/构念/许可/隐私/泄漏段落填写任务，当前等待其工具批准门与commit回交；00尚未验收；活动总纲仍为v1.21，三项贡献上限不变，C1—C4均TO_VERIFY
 ppt_status: 不在当前关键路径
 code_status: GitHub xjq801/MMSA-CH-SIMS；v1.17历史提交为main@47e9338，当前回退批次提交状态以Git刷新为准
 risk_list: I3D许可/revision/权利方fixity未知且禁止再分发；Video2Reaction使任务首创失效且其公开包是派生多模态特征+LLM人工核验银标、不是完整原始音视频文本或HUMAN_GOLD；评论分布不得外推所有观众；收益感知router若不优于强路由对照或不能减少负迁移则必须降级；Task20探索与受限存储生命周期未闭环；H3/E5当前无合格多T0模态协议
-next_actions: 1) 完成Task20唯一seed探索与存储生命周期收尾；2) 任务30/40推进时只向论文骨架写入冻结方法和预注册，不写结果性结论；3) 任务50开工前冻结Video2Reaction HF revision/fixity并预注册V2R-A/V2R-B；4) results-freeze后才解析C1—C4状态并完成摘要、结果、讨论和结论
+next_actions: 1) 用户批准Task10当前工具请求后等待其受控填写commit；2) 00按来源逐段独立审核Task10回交并接受/补证/拒绝；3) 继续完成Task20生命周期收尾，未满足门前不创建Task30；4) results-freeze后才解析C1—C4并完成摘要、结果、讨论和结论
 decision_log: 见 decision_log.md
 version_history: 见 version_history.md
 ```

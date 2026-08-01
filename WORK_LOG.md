@@ -10689,3 +10689,47 @@ Task20以`main@b7855074acbf3aee6bca640a66c891cc4e21ebf9`提交唯一seed探索�
 ### Git状态
 
 待门禁通过后有意暂存并提交`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`、`TASK20_MANUSCRIPT_SECTION_COMPLETION_20260801.md`和`WORK_LOG.md`；不纳入任何用户未跟踪目录。
+
+## WR-20260801-009 — Task20论文基线与评测段落独立验收
+
+- 时间：2026-08-01 21:55:29 +08:00（本机系统时钟；晚于WR-008写入但时间字段存在主机时钟差）
+- 类型：REVIEW | DECISION | VALIDATION | DOCUMENTATION | HANDOFF
+- 任务/门：Task00论文SSOT治理 / Task20论文所有权段落
+- 状态：`ACCEPTED_WITH_LIMITATIONS`
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+Task20以`main@5e1386d79ef00136c87491edbde6f77437d3715b`回交论文v0.1.2、完成说明和WR-008，请求00独立验收。00需验证提交范围、文件hash、环境/指标/调参/replay事实及claim边界，不能由Task20自批，也不能把论文骨架冒充正式结果稿。
+
+### 实际变更
+- 新建`TASK00_TASK20_MANUSCRIPT_SECTION_REVIEW_20260801.md`，裁定Task20所有权段落`ACCEPTED_WITH_LIMITATIONS`。
+- 更新`TASK_REGISTRY.md`至v1.7、`.light/project_card.md`、`.light/passport.yaml`、`.light/version_history.md`和`DECISION_LOG.md`，关闭Task20论文填写状态并保留Task10审核、Task50结果、引用与claim绑定缺口。
+- 新建`.light/handoff/S31-task20-manuscript-sections-accepted.md`，传播下一步为独立审核Task10段落；不重开Task20实验。
+
+### 验证与证据
+- 刷新`origin/main`并核验`HEAD=origin/main=5e1386d79ef00136c87491edbde6f77437d3715b`；提交仅含论文SSOT、Task20完成说明和WORK_LOG三项文件。
+- `Get-FileHash -Algorithm SHA256`确认论文为`37cd9dda4f0c3158b957d9ad99508c3d117be2b8896f4fbc723b5ee3a2758b95`，完成说明为`779dd19f42f05b007805f16032769d395092cfa9e4d86f7158a7d94a85a6eff0`。
+- 对照`TASK20_ENVIRONMENT_LOCK.md`、`configs/task20/tuning-plan-v1.json`、`scripts/task20_metrics.py`、`scripts/task20_evaluation.py`与论文diff，环境、12-trial网格、九项指标、train/dev/test和回放措辞一致。
+- `validate_manuscript_ssot.py` exit 0：`citation_slots=6`、`result_gates=20`；`validate_work_log.py`在写入本条前为237条、0错误；`run_preparation_checks.py` exit 0、`blocking_checks=[]`，并如实保留`formal_model_work_ready=false/faiss_available=false`。
+- `.venv-task20`运行`python -m unittest discover -s tests -v`，74/74通过；主`.venv`和`.venv-task20`均无pytest，pytest尝试失败后改用项目实际unittest入口并保留失败事实。
+- `git diff --check 9a1612f..5e1386d`通过；未触碰`NEmoP/`、`__MACOSX/`或`tmp/`。
+
+### 影响与边界
+- 论文仍为`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`，`result_freeze=NOT_AVAILABLE`，C1—C4=`TO_VERIFY`。
+- temporal-attention仍只具单seed强重实现工程证据；VC-CSA探索永久NON_T0/正式证据不合格；五种子和正式统计仍归Task50。
+- G1、G2、资产风险、G3和Task30创建资格不变；Task10论文段落仍待00独立审查。
+- I3D许可/revision/权利方包身份/fixity仍UNKNOWN且禁止再分发；受限存储删除截止不变。
+
+### 风险、问题与阻塞
+- Task10论文段落尚未独立验收，当前不能宣布整篇论文内容一致或Stage-8通过。
+- 正式五种子结果、paired统计、引用核验与claim-evidence绑定仍未完成；论文必须保持no-results scaffold。
+- 通用claim-evidence skill因缺少项目结果强度映射和`_shared`依赖而降级，不能替代Task50结果冻结与00人工审查。
+- I3D外部许可/fixity和平台控制面删除状态继续UNKNOWN；2026-08-31可见层删除验收仍是活动义务。
+
+### 下一步
+1. 独立审核Task10在`main@1d2018c`引入的数据/协议段落及其与论文v0.1.2的一致性。
+2. 若Task10验收通过且主线干净，以最新main创建Task30。
+3. 2026-08-31前后验收Task20受限存储可见层删除。
+
+### Git状态
+本条及总控裁定/SSOT/S31待门禁后仅按00所有权范围有意暂存、提交并推送；用户未跟踪目录保持排除。

@@ -1,15 +1,15 @@
 # T-AFFC任务登记表
 
-> 版本：v1.6  
+> 版本：v1.7  
 > 更新：2026-08-01  
 > 上位SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.21（第17节Video2Reaction双轨强基线合同；v1.17数值门未恢复）  
 > 规则：本表登记任务状态与退出门；科学事实以各任务HANDOFF、G门审查和专用台账为准。
 
 | 任务 | 状态 | 任务/线程 | 权威输入 | 退出门与当前结论 | 交接 |
 |---|---|---|---|---|---|
-| 00 总控 | ACTIVE | `019f6e64-0635-7ac0-a70a-65445b0fc1d1` | 总纲v1.21、G门、决策/风险/claim台账 | 持续维护SSOT；Task20收尾已独立接受；下一步可创建Task30并继续审核Task10论文数据段落 | `.light/handoff/S28-task20-final-closeout-accepted.md`及后续链 |
+| 00 总控 | ACTIVE | `019f6e64-0635-7ac0-a70a-65445b0fc1d1` | 总纲v1.21、G门、决策/风险/claim台账 | 持续维护SSOT；Task20实验收尾与论文所有权段落均已独立接受；下一步先审核Task10论文数据段落，再创建Task30 | `.light/handoff/S31-task20-manuscript-sections-accepted.md`及后续链 |
 | 10 数据与协议 | REOPENED_MANUSCRIPT_DATA_SECTIONS_WAITING_TOOL_APPROVAL | `019f5cf3-1810-7cd2-95bb-ff603551571b` | 总纲v1.21、论文SSOT v0.1.0、T0政策、公开数据与lineage | 原G1/G2结论不变；仅填写数据/协议/构念/许可/隐私/泄漏段落，提交`TASK10_MANUSCRIPT_SECTION_COMPLETION_20260801.md`与commit后交00审核 | `HANDOFF_10.md`；待Task10新回交 |
-| 20 基线与统一评测 | FORMAL_CORE_CLOSED_REOPENED_MANUSCRIPT_SECTIONS_IN_PROGRESS | `019f6e2e-f781-7270-bb45-af8272ff5a5c` | `paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.1、Task10回交、Task20冻结G3证据 | 实验核心仍关闭且G3限制不变；仅授权填写Sec.5.4/5.6/5.8、受限Sec.6.1、Sec.8和Task20 supplement，禁止填写未完成结果；受限存储删除截止仍为2026-08-31 | `HANDOFF_20.md`、`TASK00_TASK20_FINAL_CLOSEOUT_REVIEW_20260801.md`；待`TASK20_MANUSCRIPT_SECTION_COMPLETION_20260801.md` |
+| 20 基线与统一评测 | FORMAL_CORE_CLOSED_MANUSCRIPT_SECTIONS_ACCEPTED_WITH_LIMITATIONS | `019f6e2e-f781-7270-bb45-af8272ff5a5c` | `paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.2、Task20冻结G3证据 | `main@5e1386d`的Sec.5.4/5.6/5.8、受限Sec.6.1、Sec.8和Task20 supplement已由00验收；无正式结果、五种子或claim升级；受限存储删除截止仍为2026-08-31 | `HANDOFF_20.md`、`TASK00_TASK20_FINAL_CLOSEOUT_REVIEW_20260801.md`、`TASK00_TASK20_MANUSCRIPT_SECTION_REVIEW_20260801.md` |
 | 30 评论teacher/student | NOT_CREATED_ELIGIBLE_FOR_00_CREATION | 未创建 | G3、evaluation-kit、H1预注册 | Task20运行态阻断已解除；v1.21门保持普通KD、错配评论、teacher-only上界与content-only公平比较，接口不硬编码CSMV标签；Video2Reaction原生分支H1=`NOT_APPLICABLE_DATA_NOT_RELEASED` | 未来`HANDOFF_30.md` |
 | 40 反应记忆与路由 | NOT_CREATED | 未创建 | HANDOFF_30、冻结student与H1决策 | v1.21门：train内部OOF效用标签；learned retrieval强对照；收益感知router与固定融合/相似度/熵/SelectiveNet式拒绝公平比较；接口支持V2R-B的train-only分布记忆 | 未来`HANDOFF_40.md` |
 | 50 正式实验 | NOT_CREATED | 未创建 | 冻结CARM/降级方法、正式预注册 | G4—G6；两个HUMAN_GOLD主集；Video2Reaction A轨CSMV公平适配+B轨原生银标外部验证；五种子、严格OOD、E0—E9、统计冻结 | 未来`HANDOFF_50.md` |

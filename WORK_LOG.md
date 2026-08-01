@@ -10868,3 +10868,238 @@ Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用�
 ### Git状态
 
 本条写入时`TASK_REGISTRY.md` v1.9、S33和WR-012待门禁与提交；不得声称已推送。
+## WR-20260801-013 — Task30开工delta审计与TDD合同冻结
+
+- 时间：2026-08-01 22:16:53 +08:00
+- 类型：REVIEW | DECISION | TEST_PLAN | DOCUMENTATION
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门
+- 状态：完成只读delta审计与首批TDD冻结；真实开发训练输入尚未绑定
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+按总纲v1.21第5节和第17节任务30、Task00创建授权及`HANDOFF_30.md`，在任何生产实现前核对Task20冻结证据、环境现实、可用字段、泄漏边界和H1适用数据集，并冻结先红后绿的最小测试合同。总控随后给出最终锚点`origin/main@7c4b20c`，本任务只读核对其为旧锚点的快进提交并继承Task30实际任务ID和`CREATED_STARTUP_AUDIT_IN_PROGRESS`状态。
+
+### 实际变更
+
+- 新建`TASK30_DELTA_AUDIT_AND_TDD_PLAN_20260801.md`，记录SSOT/G门、输入hash、Task20到Task30的接口delta、fail-closed数据流、首批负测和最小实现边界。
+- 明确Task20评测核心保持只读；Task30另建v1.21配置/数据合同，模型head不得硬编码CSMV类别。
+- 明确当前worktree只有manifest/文档，没有受限I3D数组、处理后HUMAN_GOLD记录或train评论材料；合成fixture只允许作为测试证据，不得冒充H1开发结果。
+- 在`.gitignore`登记独立`.venv-task30/`，防止本地环境进入Git；不改变主`.venv`或Task20环境边界。
+
+### 验证与证据
+
+- 首轮`git fetch origin`成功；审计开始时`HEAD=origin/main=32e8967`，detached且tracked clean。收到最终锚点后再次fetch，确认`32e8967`是`7c4b20c`祖先，并从`origin/main@7c4b20c`创建`codex/task30-h1`。
+- `python scripts/validate_task20_handoff.py`：exit 0，`passed=true`，`tracked_evidence_checked=22`，`restricted_assets_required=false`。
+- `python --version`为3.13.1；`py -0p`确认本机另有Python 3.8；审计开始时`.venv`、`.venv-task20`和`.venv-task30`均不存在。
+- 逐项读取总纲v1.21第5节与完整第17节、Task30授权/交接、Task20 handoff/manifest/G3/closeout、T0政策、实验协议、泄漏模型、环境锁、调参计划和三份Task20 schema；关键hash已写入delta审计。
+- `python scripts/validate_work_log.py`在本条最初写入前返回240条、0错误；远端先后占用`WR-20260801-011/012`，本地审计记录在合并前后按追加纪律顺延为当前`WR-20260801-013`，未改写远端历史。
+
+### 影响与边界
+
+- 本批没有读取评论正文、I3D数组或正式test，没有训练模型，也没有修改Task20冻结评测实现。
+- H1主开发范围保持CSMV；LAI-GAI仅保留真实字段支持的分布/校准边界；Video2Reaction原生H1固定`NOT_APPLICABLE_DATA_NOT_RELEASED`。
+- G1/G2/资产/G3和VC-CSA永久NON_T0/INELIGIBLE状态不变；本批不创建Task40。
+
+### 风险、问题与阻塞
+
+- 真实H1开发训练尚缺当前worktree内可审计的本地输入绑定；在绑定前只能完成环境、接口、负测和合成smoke，不能生成或宣称开发效果。
+- I3D许可、官方revision、权利方包身份/fixity继续为UNKNOWN；禁止再分发受限资产、评论正文、权重、预测隐私数据、凭据或本机路径。
+
+### 下一步
+
+1. 锁定独立`.venv-task30`，不继承Task20或主环境ready状态。
+2. 按冻结清单先写Task30负测并保存预期红灯结果，再实现最小合同/模型使其转绿。
+3. 只在合法本地输入成功绑定且通过split/hash门后运行CSMV development protocol；否则以输入阻塞回交00。
+
+### Git状态
+
+`TASK30_DELTA_AUDIT_AND_TDD_PLAN_20260801.md`、`.gitignore`与本条日志待提交；未推送，不触碰受限资产或冻结Task20核心。
+
+## WR-20260801-014 — Task30独立环境与最小teacher/student合同TDD转绿
+
+- 时间：2026-08-01 22:31:10 +08:00
+- 类型：FEATURE | TEST | ENVIRONMENT | SECURITY
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门
+- 状态：环境与最小接口完成；真实H1开发训练仍待受控输入绑定
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+落实当前`WR-20260801-013`冻结的第一批TDD：建立独立Task30环境，先观察负测红灯，再以最少代码实现train-only teacher、T0 content-only student、动态数据集head、概率/数值边界、错配teacher负对照及公平开发矩阵。
+
+### 实际变更
+
+- 建立忽略于Git的`.venv-task30`，新增`requirements-task30-lock.txt`和`TASK30_ENVIRONMENT_LOCK.md`；不继承主`.venv`或Task20环境ready声明。
+- 新增`scripts/task30_contracts.py`：dev/test teacher记录立即`LeakageBlockedError`、student禁评论/response/future/engagement/teacher/privileged字段、缺字段和非法分布fail-closed、动态class order、确定性train-only错配teacher及数据集适用性状态。
+- 新增`scripts/task30_models.py`：只接内容张量的最小student、内容+独立privileged summary的teacher，以及hard-label、soft-distribution和KD数值稳定损失；head只接`class_count`，不硬编码八类。
+- 新增`configs/task30/development-matrix-v1.json`和schema，冻结hard/soft/普通KD/comment-privileged KD/错配teacher/teacher-only六行身份、相同student预算、dev选择和Task30 test不可达政策。
+- 新增`tests/test_task30_contracts.py`与`tests/test_task30_models.py`共17项专项测试；合成输入只作`TEST_EVIDENCE_ONLY`。
+
+### 验证与证据
+
+- TDD红灯：首次运行`.\.venv-task30\Scripts\python.exe -m unittest tests.test_task30_contracts tests.test_task30_models -v`为exit 1；两个模块分别因`task30_contracts`和`task30_models`尚不存在产生`ModuleNotFoundError`，失败发生在生产实现之前，未删除或改写。
+- 最小实现后同命令exit 0，17/17通过；覆盖dev/test评论不可达、student禁字段、缺字段、分布归一化/负值/NaN/Inf、动态head、错配teacher、LAI-GAI/V2R边界、content-only forward、teacher动态head和三类loss gold test。
+- `.venv-task30`为CPython 3.8.9、PyTorch 2.4.1+cu121、CUDA 12.1、cuDNN 90100、NumPy 1.24.4；`pip check`返回`No broken requirements found.`，CUDA可用且识别本地RTX 3070 Ti Laptop GPU。
+- 使用`jsonschema.validate`核`development-matrix-v1.json`与其schema，输出`task30 development matrix schema: PASS`。
+- `git diff --check` exit 0；仅报告Git对`.gitignore`未来换行转换的非阻断warning。
+
+### 影响与边界
+
+- Task20评测、metrics、split、class order、test规则和已冻结基线文件均未修改；Task30开发矩阵通过独立v1.21身份引用其合同。
+- 当前实现没有memory、retrieval、router、GNN、生成模块、闭源LLM、远程GPU、对象存储或外部数据传输。
+- 没有读取评论正文、I3D数组、正式test或预测隐私数据；没有生成权重或真实实验结果。
+
+### 风险、问题与阻塞
+
+- 当前worktree没有真实CSMV train/dev I3D与train-only response teacher输入；因此尚无hard/soft/KD/privileged-KD开发数值，H1状态仍为`NOT_EVALUATED_INPUT_BINDING_UNAVAILABLE`。
+- 接口负测和合成smoke是必要但非充分证据；它们不证明真实数据无所有语义泄漏，也不证明跨硬件复现。
+- I3D外部权利/fixity继续UNKNOWN，`DEFERRED_ACCEPTED_RISK`与禁止再分发不变。
+
+### 下一步
+
+1. 运行Task30与全仓回归测试、静态编译和环境/工作日志门，补可重跑验证证据。
+2. 只读寻找00已授权且hash-bound的本地train/dev输入绑定；若不存在，不搜索或复制未登记资产，而是形成明确阻塞报告。
+3. 更新`HANDOFF_30.md`，如实区分代码就绪、输入未绑定与H1未评估，不自批H1门或创建Task40。
+
+### Git状态
+
+本批代码、配置、环境锁、测试、审计文档、`.gitignore`与工作日志待提交；未推送，`.venv-task30`本体已忽略且不会进入Git。
+
+## WR-20260801-015 — Task30 teacher聚合审计、全仓回归与H1未评估回交
+
+- 时间：2026-08-01 22:38:30 +08:00
+- 类型：FEATURE | TEST | REVIEW | HANDOFF | DECISION
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门
+- 状态：代码与契约就绪；H1因受控输入未绑定保持`INCONCLUSIVE_NOT_EVALUATED`
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在最小teacher/student合同转绿后，补齐不读取评论正文的train-only反应标签聚合、teacher置信度/评论数/类别稀疏审计接口、全仓兼容回归、技能静态门和H1开发结果身份回交。任何合成结果不得冒充真实开发证据。
+
+### 实际变更
+
+- 新增`scripts/task30_teacher.py`，只接受五字段规范化reaction记录，拒绝额外字段与dev/test记录；按内容单元聚合经验分布和平均标签置信度，并输出不含sample ID/正文的统计审计。
+- 新增`tests/test_task30_teacher.py`四项测试；补充seed helper测试与`PYTHONHASHSEED`/Python/NumPy/PyTorch/CUDA/cuDNN确定性机制。
+- 新增`TASK30_H1_DEVELOPMENT_REPORT_20260801.md`，将六行比较全部登记为`NOT_RUN_INPUT_BINDING_UNAVAILABLE`，H1分支冻结为`INCONCLUSIVE_NOT_EVALUATED`。
+- 将`HANDOFF_30.md`从启动卡更新为部分实现回交，列出完成文件、无结果身份、数据集适用性、剩余限制和00可裁定选项；不自批H1门。
+
+### 验证与证据
+
+- teacher第二轮TDD红灯：首次`.\.venv-task30\Scripts\python.exe -m unittest tests.test_task30_teacher -v` exit 1，因`task30_teacher`不存在；实现后4/4通过。
+- seed helper首轮导入测试因函数不存在exit 1；实现后新增`PYTHONHASHSEED`断言先触发KeyError红灯，再补进程合同登记后通过。
+- 全仓首次回归：`.\.venv-task30\Scripts\python.exe -m unittest discover -s tests -v` exit 1，85项已执行测试通过，唯一错误是独立环境缺`sklearn`导致`test_task20_legacy48`收集失败；根因确认后加入冻结兼容版本`scikit-learn==1.3.2`及精确依赖并复跑95/95通过。
+- 当前Task30专项为22/22通过；全仓为95/95通过。
+- Light `review_gate.py`扫描三个Task30实现文件：exit 0，`verdict=pass`、0问题；工具标记`_degraded=true`，未夸大为完整语义泄漏证明。
+- Light `seed_audit.py`在Python 3.8因其AST slice兼容边界未识别已存在的`PYTHONHASHSEED`并exit 1；同一代码用当前workspace Python复跑exit 0，六项机制齐全、`missing=[]`、`ok=true`。失败与环境差异均保留。
+- 输入binding只读审计：`data/processed`和`data/raw`各仅1个README、非README文件均0，Task30 input/binding配置0；未搜索、复制或推断未登记外部路径。
+
+### 影响与边界
+
+- 未运行任何真实训练、dev预测或正式test；未产生指标、温度、lambda、阈值、权重、评论审计真实数值或隐私预测。
+- Task20冻结评测核心没有代码变更；G1/G2/资产/G3、VC-CSA永久NON_T0/INELIGIBLE和论文no-results边界不变。
+- LAI-GAI只保留无评论teacher的内容分布/校准边界，Video2Reaction原生H1固定N/A；本批不含Task40/50工作。
+
+### 风险、问题与阻塞
+
+- 真实H1的唯一阻塞是缺少经00批准且hash-bound的本地CSMV train/dev I3D与train-only response binding；没有该输入不能诚实完成六行开发比较。
+- 静态与单元测试只验证实现合同；真实数据字段映射、评论数偏差、teacher类别稀疏和校准趋势仍未评估。
+- I3D许可/revision/权利方身份/fixity继续UNKNOWN，禁止再分发边界不变。
+
+### 下一步
+
+1. 运行compileall、Task30专项、全仓回归、schema、工作日志、准备检查及Git差异门。
+2. 有意提交实现批次，取得精确commit后回填`HANDOFF_30.md`并提交闭环日志。
+3. 向00回交`ACCEPT_PARTIAL.../REQUEST_CODE_REMEDIATION/CLOSE...`三分支请求；没有新binding授权前不继续真实训练。
+
+### Git状态
+
+本批所有Task30受控文件待门禁与有意提交；未推送，`.venv-task30`和任何受限资产不纳入Git。
+
+## WR-20260801-016 — Task30提交前门禁与先前测试计数更正
+
+- 时间：2026-08-01 22:44:00 +08:00
+- 类型：TEST | VALIDATION | CORRECTION | BLOCKER
+- 任务/门：30-M4 评论教师与内容学生 / 提交前门禁
+- 状态：专项/回归/静态门通过；准备检查因冻结输入缺失失败
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在回交前按AGENTS、工作记录政策和`light-experiment-coding`执行全部可运行门禁，保留主环境入口缺失和准备检查失败，不把部分实现写成完整H1就绪。本条同时更正当前`WR-20260801-015`在seed测试加入后的全仓计数：最终为96/96，不是该条提前写入的95/95。总控03并发提交占用`WR-20260801-012`后，本地四条未提交记录整体顺延为`WR-013`—`WR-016`。
+
+### 实际变更
+
+- `TASK30_H1_DEVELOPMENT_REPORT_20260801.md`和`HANDOFF_30.md`更新最终回归计数、主`.venv`不可用和准备检查输入阻塞。
+- 不修改任何Task20冻结代码、不补造HUMAN_GOLD输入、不绕过准备检查。
+
+### 验证与证据
+
+- AGENTS指定`.\.venv\Scripts\python.exe scripts\validate_work_log.py`与`run_preparation_checks.py`：主`.venv`不存在，两个入口均记为exit 127/unavailable。
+- `.\.venv-task30\Scripts\python.exe scripts\validate_work_log.py`：合并前本地编号下为243条、0错误、latest=`WR-20260801-014`；远端总控记录合入并顺延编号后需在提交前复跑。
+- `.\.venv-task30\Scripts\python.exe scripts\run_preparation_checks.py`：失败；首个根因是冻结相对输入`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`不存在。该失败与input-binding审计一致，不是Task30实现异常。
+- Task30专项：22/22通过；全仓`unittest discover`：96/96通过；`compileall` exit 0；Task30开发矩阵schema PASS。
+- Light review gate：exit 0、0问题；Light seed audit用当前workspace Python运行exit 0、六机制齐全、`missing=[]`。
+- `git diff --check` exit 0，仅有`.gitignore`未来LF/CRLF转换warning。
+
+### 影响与边界
+
+- 可提交身份仅为`PARTIAL_IMPLEMENTATION_CHECKPOINT`，不等于H1开发门完成、L2通过或Task40可创建。
+- 准备检查不能通过进一步证明当前worktree无真实H1输入；禁止以合成数据或外部未登记路径绕过。
+
+### 风险、问题与阻塞
+
+- 主`.venv`缺失与HUMAN_GOLD输入未绑定均保持开放；只有00提供/批准受控binding后才能恢复真实dev运行。
+- 当前`WR-20260801-015`的95/95计数由本条正式更正为最终96/96；历史正文不改写。
+
+### 下一步
+
+1. 刷新远端现实并核对是否有并发SSOT提交，保持最终启动锚点和00所有权文件不被覆盖。
+2. 有意提交Task30部分实现，回填精确实现commit并再次运行工作日志/Git门。
+3. 回交00独立裁定，不进入Task40/50。
+
+### Git状态
+
+本条及Task30实现批次待提交；未推送，准备检查失败已显式保留。
+
+## WR-20260801-017 — Task30 logits接口与蒸馏选择边界TDD补齐
+
+- 时间：2026-08-01 22:46:20 +08:00
+- 类型：FIX | TEST | CONFIG
+- 任务/门：30-M4 评论教师与内容学生 / 最小实现可用性复核
+- 状态：完成
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+提交前代码复核发现模型`forward`输出概率而KD损失消费logits，且开发矩阵尚未显式登记温度、蒸馏权重与选择范围。需在不扩大H1范围的前提下通过TDD闭合接口和配置合同。
+
+### 实际变更
+
+- `ContentOnlyStudent`与`ResponsePrivilegedTeacher`新增受同一输入校验保护的`logits(...)`接口；`forward(...)`严格等于对该logits做softmax，训练损失可直接消费logits而推理继续输出合法分布。
+- `development-matrix-v1.json`及schema新增蒸馏合同：loss为soft-distribution交叉熵与temperature-scaled KL，温度候选`1/2/4`、权重候选`0.25/0.5/0.75`、teacher target限train、dev选择、test选择期不可见。
+- 对应测试新增logits/forward一致性和蒸馏范围断言。
+
+### 验证与证据
+
+- 红灯：三个目标测试首次运行exit 1；分别因矩阵缺`distillation`和两个模型缺`logits`产生预期错误。
+- 最小修复后同三个测试3/3通过；开发矩阵`jsonschema.validate`输出`schema PASS`。
+
+### 影响与边界
+
+- 不新增训练runner、搜索trial或结果；候选范围只是查看test前冻结的development合同。
+- 不改变Task20评测核心、数据、split、主指标或test规则，不进入memory/router/Task40。
+
+### 风险、问题与阻塞
+
+- 温度和权重尚未选择；只有真实受控input binding可用后才能按dev选择，禁止test选择。
+
+### 下一步
+
+1. 复跑最终专项/全仓/静态门和工作日志校验。
+2. 提交部分实现并回填精确commit。
+
+### Git状态
+
+本修复随Task30部分实现批次待提交；未推送。

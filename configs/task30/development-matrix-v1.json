@@ -1,0 +1,95 @@
+{
+  "schema_version": "task30-development-matrix-v1",
+  "master_plan_version": "v1.21",
+  "task": "30-M4",
+  "hypothesis": "H1",
+  "evidence_identity": "DEVELOPMENT_EVIDENCE_ONLY",
+  "dataset_id": "csmv",
+  "split_scheme": "group_by_video_v1",
+  "task_timepoint": "T0",
+  "selection_split": "dev",
+  "test_policy": "UNREACHABLE_TASK30_DEVELOPMENT",
+  "primary_metric": "jensen_shannon_divergence",
+  "asset_admissibility": "DEFERRED_ACCEPTED_RISK",
+  "distillation": {
+    "loss_terms": ["soft_distribution_cross_entropy", "temperature_scaled_kl"],
+    "temperature_candidates": [1.0, 2.0, 4.0],
+    "weight_candidates": [0.25, 0.5, 0.75],
+    "teacher_target_scope": "train_only",
+    "selection_split": "dev",
+    "test_visible_during_selection": false
+  },
+  "rows": [
+    {
+      "id": "hard_label_student",
+      "deployable_student": true,
+      "student_architecture": "content_only_student_v1",
+      "supervision": "hard_label",
+      "teacher_source": "none",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    },
+    {
+      "id": "soft_distribution_student",
+      "deployable_student": true,
+      "student_architecture": "content_only_student_v1",
+      "supervision": "soft_distribution",
+      "teacher_source": "none",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    },
+    {
+      "id": "ordinary_kd_student",
+      "deployable_student": true,
+      "student_architecture": "content_only_student_v1",
+      "supervision": "knowledge_distillation",
+      "teacher_source": "content_only_teacher",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    },
+    {
+      "id": "comment_privileged_kd_student",
+      "deployable_student": true,
+      "student_architecture": "content_only_student_v1",
+      "supervision": "knowledge_distillation",
+      "teacher_source": "train_comment_privileged_teacher",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    },
+    {
+      "id": "mismatched_comment_teacher_control",
+      "deployable_student": true,
+      "student_architecture": "content_only_student_v1",
+      "supervision": "knowledge_distillation",
+      "teacher_source": "train_comment_privileged_teacher_deranged",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    },
+    {
+      "id": "teacher_only_upper_bound",
+      "deployable_student": false,
+      "student_architecture": "none",
+      "supervision": "train_comment_privileged_teacher",
+      "teacher_source": "train_comment_privileged_teacher",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    }
+  ],
+  "dataset_applicability": {
+    "csmv": "APPLICABLE_TRAIN_RESPONSES_ONLY",
+    "lai-gai": "NOT_APPLICABLE_COMMENT_FIELD_UNAVAILABLE",
+    "video2reaction-native": "NOT_APPLICABLE_DATA_NOT_RELEASED"
+  }
+}

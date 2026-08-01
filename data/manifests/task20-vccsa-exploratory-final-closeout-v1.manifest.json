@@ -1,0 +1,70 @@
+{
+  "schema": "task20-vccsa-exploratory-final-closeout-v1",
+  "generated_at": "2026-08-01T19:56:42+08:00",
+  "source_tree_head_before_submission": "d213c2568904b4efbfd5264b19ac841d90360dae",
+  "request_status": "REQUEST_00_TASK20_FINAL_CLOSEOUT_REVIEW",
+  "experiment_identity": "AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY",
+  "formal_evidence_eligibility": "INELIGIBLE",
+  "g3_status": "PASS_WITH_LIMITATIONS_UNCHANGED",
+  "completion": {
+    "seed": 3407,
+    "epochs_planned": 120,
+    "epochs_completed": 120,
+    "training_process_exit": "NORMAL",
+    "final_checkpoint_sha256": "cd16e7412eec8d3a255e5fa5bc46c8bc53b604c2fe5e22ae0600b8c064428978",
+    "final_checkpoint_bytes": 1743138427,
+    "frozen_best_epoch": 116,
+    "frozen_best_weight_sha256": "e5033f5dd35dcf02ae660a3af4139c4385d08fbdb1bc3958c7af50d4c6189771"
+  },
+  "evidence_commits": [
+    "49c54a5902532f9d6a6f12717cc8acb85305e861",
+    "787da347366b9e52401585f25501ced0c86ef8aa",
+    "a7cf77cbaa03ab922e3281b1f4d58a03ee890e4b",
+    "b1217a017a5c563f8a8591ef49b930edde5291bf"
+  ],
+  "private_evidence_bundle": {
+    "payload_files": 362,
+    "total_files_including_checksum_list": 363,
+    "payload_bytes": 401916659,
+    "directory_mode": "0700",
+    "file_mode": "0600",
+    "non_0600_files": 0,
+    "per_file_sha256_verified": true,
+    "epoch_artifact_coverage": "4-120",
+    "known_gap": "EPOCH_1_3_RAW_LOSS_DEV_METRICS_AND_PREDICTIONS_NOT_RECOVERABLE_FROM_AVAILABLE_SOURCES"
+  },
+  "tracked_view_artifacts": [
+    {
+      "path": "deliverables/TASK20_VCCSA_EXPLORATORY_ARCHIVE_SUMMARY_20260731.docx",
+      "bytes": 131186,
+      "sha256": "73b39428d8c9ff4a50623bdcb9061e847de4668669a19374487c14f6f1417ef4"
+    },
+    {
+      "path": "deliverables/TASK20_VCCSA_EPOCH_4_120_LOSS_CURVE_20260731.png",
+      "bytes": 95180,
+      "sha256": "e7e335701794e686fa26d9a69df8740db3947fa6b8c8c9736be94c143678ced1"
+    }
+  ],
+  "restricted_storage": {
+    "storage_target_digest": "2c9b6bedc811c90ecfd230d1fd03d7b236e29d9a9b49f38be7c8415f50ca9e58",
+    "i3d_count": 8210,
+    "i3d_bytes": 2283804928,
+    "i3d_content_tree_sha256": "592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925",
+    "missing": [],
+    "extra": [],
+    "size_mismatch": [],
+    "sha256_mismatch": [],
+    "retention_start": "PENDING_00_MINIMUM_EVIDENCE_ACCEPTANCE",
+    "retention_deadline": "D0_PLUS_30_CALENDAR_DAYS",
+    "platform_control_plane": "UNKNOWN_PLATFORM_CONTROL_PLANE"
+  },
+  "forbidden_claims": [
+    "T0_RESULT",
+    "G3_MAIN_EVIDENCE",
+    "UNIFIED_BASELINE_RESULT",
+    "TASK50_RESULT",
+    "PAPER_PERFORMANCE_CLAIM",
+    "NO_LEAKAGE_REPRODUCTION",
+    "ASSET_LICENSE_RESOLVED"
+  ]
+}

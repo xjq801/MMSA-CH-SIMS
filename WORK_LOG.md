@@ -10338,3 +10338,49 @@ Epoch 118未改变冻结best。实验永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LE
 ### Git状态
 
 本条与Task00任务登记、project card、passport及S27交接卡待同批提交；不得声称已推送。用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`不进入提交。
+
+## WR-20260801-002 — Task20最终探索收尾与受限存储生命周期提交
+
+- 时间：2026-08-01 19:56:42 +08:00
+- 类型：PROGRESS | HANDOFF | STORAGE | SECURITY | VALIDATION
+- 任务/门：Task20 VC-CSA探索最终收尾 / 00独立验收前提交
+- 状态：Task20收尾包已形成；等待门禁、提交推送与00独立裁定
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+用户要求完成Task20的120轮探索验收提交、过时状态纠正、post-snapshot交接、私有存储生命周期闭环及Task30解阻准备。Task20只能提交可核证事实与验收请求，不能自批00裁定、直接改写历史hash-bound交接或替00创建Task30。
+
+### 实际变更
+
+- 新建`HANDOFF_20_POST_SNAPSHOT_CLOSEOUT_20260801.md`，绑定训练完成、最终证据、Word/曲线及四个历史提交，明确其仅在00验收后优先于过时运行状态，不改写`HANDOFF_20.md`历史字节。
+- 新建`TASK20_RESTRICTED_STORAGE_LIFECYCLE_CLOSEOUT_20260801.md`，按S13冻结私有MatBox I3D、final-run-bundle、checkpoint/best、个人环境工件和配置镜像的保留/删除分类；30日时钟严格从00接受最小证据日`D0`开始，当前不提前删除用户要求保存的最终证据。
+- 新建`data/manifests/task20-vccsa-exploratory-final-closeout-v1.manifest.json`，机读绑定唯一seed=3407、120轮完成、checkpoint/best hash、私有证据包统计、Git交付物SHA-256、存储目标摘要与永久禁入claim边界。
+- 未修改`TASK_REGISTRY.md`、`.light`或00裁定文件；这些由00在独立验收时更新，避免Task20自批或与当前Task10总控批次冲突。
+
+### 验证与证据
+
+- 开工前读取`WORK_RECORD_POLICY.md`、最新`WORK_LOG.md`并运行`git status --short --branch`；当时`main=origin/main=d213c2568904b4efbfd5264b19ac841d90360dae`，tracked clean，仅用户既有未跟踪目录。
+- `light-memory-pm`的`pm.py resume`首次因缺`passport`失败；加入`light-orchestrator/scripts`后又因技能安装缺`_shared.findings_schema`失败。两次失败均保留，未据此虚报台账审计通过；本批仍按项目原生门禁执行。
+- 重新计算Word与PNG：SHA-256分别为`73b39428d8c9ff4a50623bdcb9061e847de4668669a19374487c14f6f1417ef4`和`e7e335701794e686fa26d9a69df8740db3947fa6b8c8c9736be94c143678ced1`，与manifest一致。
+- 后续将运行JSON解析、commit存在性、文件hash、`validate_work_log.py`、`run_preparation_checks.py`和`git diff --check`。
+
+### 影响与边界
+
+Task20正式核心与G3不变；本批只形成探索收尾和生命周期合同。VC-CSA永久为`NON_T0/INELIGIBLE`，I3D权利与官方revision仍为UNKNOWN，Epoch 1–3原始证据缺口不补造。Task30是否创建仍由00独立决定。
+
+### 风险、问题与阻塞
+
+- 30日保留期尚无`D0`，因为00尚未接受2026-07-31形成的最小证据；当前只能申请`ACTIVE_TIME_BOUND_RETENTION`，不能声称已删除或已到期。
+- GPU实例已由用户释放，无法再从实例侧执行删除/进程探针；MatBox可见层到期删除必须在届期且重新获得可访问控制面时单独核验。
+- 平台控制面备份与物理擦除保持`UNKNOWN_PLATFORM_CONTROL_PLANE`。
+
+### 下一步
+
+1. 通过门禁后提交并推送Task20收尾包，回传精确commit与文件hash给00。
+2. 请求00独立验收、设置`D0`/截止日并更新`TASK_REGISTRY.md`和`.light`过时状态。
+3. 由00在Task20闭环后独立判断Task30创建门；届期另做可见层删除验收。
+
+### Git状态
+
+本条及三个Task20收尾文件尚未提交；用户既有未跟踪目录不读取、不修改、不暂存。

@@ -10435,3 +10435,61 @@ Task20以`main@b7855074acbf3aee6bca640a66c891cc4e21ebf9`提交唯一seed探索�
 ### Git状态
 
 计划仅暂存本批Task00裁定、任务/风险/.light台账、S28和WORK_LOG；用户既有未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`保持不动。
+
+## WR-20260801-004 — Task10完成论文数据与协议受控填写并请求00复审
+
+- 时间：2026-08-01 20:43:37 +08:00
+- 类型：DOC | PROGRESS | VALIDATION | HANDOFF
+- 任务/门：Task10 M1--M2数据与协议 / 论文SSOT受控填写
+- 状态：内容完成；等待提交推送与00独立审核
+- 负责人：10-M1--M2 数据与协议 Codex
+
+### 背景与目标
+
+依据总纲v1.21第17节任务10和00委派，在不填写正式结果、不升级claim、不改变方法与实验核心的前提下，把已有数据、协议、构念、许可、隐私、泄漏及可复现证据写入英文论文SSOT，并形成逐项回交单供00独立审核。
+
+### 实际变更
+
+- 更新`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`至v0.1.1，只修改Task10授权范围：Sec. 1.1、Sec. 3、Sec. 5.2/5.3/5.7、Sec. 8、Data Availability、Ethics/Privacy与Supplement S1/S2。
+- 明确CSMV离散评论聚合与LAI-GAI 12维连续评分映射不同；固定视频/图像为原生统计单位；禁止把评论、参与者、fold或seed当独立样本。
+- 写入CSMV 8,210视频/107,267人工评论、8,008 source families与两个正式split；写入LAI-GAI 847图/63,682合规响应、379组与594/127/126 split，并保留无时间/native topic/publisher协议的诚实边界。
+- 写入HUMAN_GOLD/SILVER/UNLABELED物理隔离、test标签侧隔离、先split后index、train-only索引及`LEAKAGE_BLOCKED`合同。
+- 写入I3D仅限冻结视觉表征、音频结构性不可用、accepted-risk不等于许可/官方身份/再分发权；Video2Reaction原生标签保持`SILVER_LLM_HUMAN_VERIFIED`且禁止跨数据绝对指标横比。
+- 将Data Availability和Ethics/Privacy的稳定内容从通用占位说明改为证据约束文本，同时保留最终archive locator和机构伦理裁定的`DECISION-GAP`。
+- 新建`TASK10_MANUSCRIPT_SECTION_COMPLETION_20260801.md`，记录章节--来源映射、可支持claim、未填槽位、开放风险、未触碰范围和证据SHA-256。
+- 未修改`paper/CLAIM_ARGUMENT_BLUEPRINT.md`：其现有C1数据映射已覆盖本批范围，本批没有新增方法claim或改变claim状态。
+
+### 验证与证据
+
+- 开工执行`git fetch origin`成功；初始`main=origin/main=d213c25`。共享main随后由Task20/00无关提交推进到`8b57b2a`，Task10刷新后确认`main=origin/main`且保留他人变更。
+- 项目规定的三条`.\.venv\Scripts\python.exe`验证入口均因虚拟环境指向缺失的Python 3.8基解释器而exit 101；失败原样保留，未修环境、未删除门。
+- 工作区自带Python运行同一`scripts/validate_manuscript_ssot.py`：exit 0，`passed=true`、`manuscript_bytes=43849`、`citation_slots=6`、`result_gates=18`。
+- 工作区自带Python运行`scripts/validate_work_log.py`（追加本条前）：exit 0，232条、0错误、latest=`WR-20260801-003`。
+- 备用Python首次运行`run_preparation_checks.py`因缺PyYAML exit 1；注入旧venv site-packages后又因Python 3.12与NumPy cp38二进制不兼容 exit 1。两次失败均保留，未安装或改写依赖。
+- 现有Anaconda Python运行`scripts/run_preparation_checks.py`：exit 1，唯一`blocking_checks=[historical_environment]`；Task10相关的M2 release、I3D序列、数据工程、LAI-GAI、secret scan和template检查均通过，失败来自该解释器缺旧MMSA/CatBoost/Torch/Transformers及formal environment仍不就绪。
+- `git diff --check`：exit 0。正文SHA-256=`9d95dc0a7ee01ecdc1232bdd45b2c8b818dd7ebea868f3b8c33a52953b15a941`。
+
+### 影响与边界
+
+- G1=`PASS`、G2协议/数据=`PASS_WITH_LIMITATIONS`、资产准入=`DEFERRED_ACCEPTED_RISK`、G3=`PASS_WITH_LIMITATIONS`及C1--C4=`TO_VERIFY`均未改变。
+- Abstract、Sec. 4、Sec. 6、Sec. 7和Sec. 9未填入任何结果或结论；所有`RESULT-GAP`和六类`CITATION-GAP`保持。
+- 未使用Task20单seed、smoke、NON_T0、泄漏接受探索数值；未训练模型、未建索引、未下载数据、未联系Task20。
+- `light-data-engineering`使split、标签tier、许可/fixity与泄漏边界逐项保留；`light-paper-writing`使措辞限制在协议描述而不升级经验claim；`light-citation`使无locator句级证据的引用槽保持未决。
+- 未读取、修改或暂存用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`。
+
+### 风险、问题与阻塞
+
+- 项目`.venv`入口失效，导致规定验证命令无法启动；本批未获环境修复范围，故以真实失败和替代解释器结果回交。
+- 综合准备门在替代解释器下仍因`historical_environment`返回exit 1；这不是本批论文正文回归，但不得写成全门PASS。
+- I3D许可/revision/权利方包身份/fixity仍未知；Video2Reaction原生intake与机构伦理裁定尚未闭合。
+- 自动泄漏门只覆盖已定义签名，不能证明所有语义近重复、同源事件或未来泄漏已穷尽。
+
+### 下一步
+
+1. 只暂存本批两份论文工件与本条WORK_LOG，提交并推送main。
+2. 以`REQUEST_00_MANUSCRIPT_REVIEW`和完整提交hash交回00逐段复审。
+3. 由独立环境维护工作另行修复项目Python入口；不得把本批替代解释器结果冒充原`.venv`门通过。
+
+### Git状态
+
+本条写入时Task10受控文件待暂存、提交与推送；当前main基线为`8b57b2a`且与origin一致。用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`保持原状，不进入Task10提交。

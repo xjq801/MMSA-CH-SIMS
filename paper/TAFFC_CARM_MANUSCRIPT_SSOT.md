@@ -1,6 +1,6 @@
 ---
 artifact: T-AFFC manuscript single source of truth
-artifact_version: 0.1.0
+artifact_version: 0.1.1
 manuscript_status: MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS
 target_venue: IEEE Transactions on Affective Computing
 article_type: Original Research Article
@@ -51,6 +51,8 @@ Audience reaction forecasting; affect distribution learning; privileged informat
 Digital content can elicit heterogeneous publicly expressed reactions even when the content itself conveys a seemingly unambiguous affective tone. Predicting only a dominant class therefore suppresses disagreement that may be consequential for content analysis, recommendation, and human–AI interaction. We study the prediction of a probability distribution over affective reactions for a previously unseen content item at publication time.
 
 The estimand is deliberately narrow. It is the **publicly expressed induced-reaction distribution among the sampled responders or commenters**, not the latent emotional state of every viewer and not the emotion expressed by the content creator. This distinction is essential because responding is selective, platform-mediated, and only imperfectly related to private affect. `[LOCKED:CONSTRUCT_BOUNDARY]`
+
+Operationally, each target is a dataset-native content unit paired with a finite set of eligible human responses. CSMV aggregates human-labeled comments within a video, whereas LAI-GAI aggregates consenting participants' induced-affect ratings within an image. The resulting distribution therefore describes the observed response sample under the dataset's collection and eligibility rules. It is neither a population-prevalence estimate nor evidence that non-responding viewers experienced the same affect. Response counts and within-item uncertainty are retained so that unequal support is visible rather than absorbed into a single hard label.
 
 ### 1.2 What is already known
 
@@ -116,14 +118,21 @@ This table describes research emphases and must be updated after the final citat
 
 ### 3.1 Native content units and reaction distributions
 
-Let \(i\) index a dataset-native content unit: a video, image, or post. Its publication-time content representation is \(x_i\), its admissible static metadata and quality indicators are \(m_i\), and its eligible human responses are \(\{r_{ij}\}_{j=1}^{n_i}\). The empirical target distribution over \(K\) affect categories is
+Let \(i\) index a dataset-native content unit: a video, image, or post. Its publication-time content representation is \(x_i\), its admissible static metadata and quality indicators are \(m_i\), and its eligible human responses are \(\{r_{ij}\}_{j=1}^{n_i}\). For a dataset with categorical response labels, the empirical target distribution over \(K\) affect categories is
 
 \[
 y_{ik}=\frac{1}{n_i}\sum_{j=1}^{n_i}\mathbb{1}(r_{ij}=k), \qquad
 \mathbf{y}_i\in\Delta^{K-1}.
 \]
 
-The response count \(n_i\) and provenance are retained because empirical distributions with different response counts have different sampling uncertainty. The native content unit, not the individual response or random seed, is the split, resampling, and inferential unit.
+For an induced-rating dataset, the canonical map is defined by that dataset rather than forced through the categorical estimator. In LAI-GAI, the eligible 1--7 ratings are averaged separately for each of 12 induced-affect dimensions, the scale floor is removed, and the resulting nonnegative vector is normalized:
+
+\[
+\bar{a}_{ik}=\frac{1}{n_{ik}}\sum_j a_{ijk},\qquad
+y_{ik}=\frac{\max(\bar{a}_{ik}-1,0)}{\sum_{k'=1}^{K}\max(\bar{a}_{ik'}-1,0)}.
+\]
+
+The per-item response count, per-dimension support, sample standard deviation, standard error, response histogram, and provenance are retained because empirical distributions with different response support have different uncertainty. Dataset-specific label spaces are not pooled. The native content unit, not the individual response, rater, fold, or random seed, is the split, resampling, and inferential unit.
 
 ### 3.2 Strict T0 prediction
 
@@ -134,6 +143,8 @@ At T0, the model predicts
 \]
 
 before target responses, final engagement, recommendation outcomes, or other post-publication signals are available. Target responses may construct isolated dev/test labels but may never enter model input, retrieval candidates, feature fitting, calibration fitting beyond the designated development protocol, or model selection after test access.
+
+The optional \(T+\Delta\) early-response task is disabled unless publication times, response timestamps, and a reproducible observation window are independently recovered and frozen. It requires separate fields, splits, configurations, and result tables; it cannot be inferred from file order or mixed with T0 evidence. The current CSMV release has no publication-time protocol, so no chronological-safety claim is made.
 
 ### 3.3 Admissible information
 
@@ -148,9 +159,11 @@ before target responses, final engagement, recommendation outcomes, or other pos
 
 Any violation is a blocking protocol failure rather than a performance caveat.
 
+The information boundary is also physical. `HUMAN_GOLD`, `SILVER`, and `UNLABELED` records have separate manifests and loading entry points. Test responses remain label-side artifacts and are unavailable to the student, feature fitting, model selection, and retrieval index. Indices are created only after splitting and may contain training items only; if a future protocol uses time, every candidate must additionally predate its query. A failed ID, source-family, target-response, future-field, fit-scope, or index-membership check marks the run `LEAKAGE_BLOCKED` and makes it ineligible for the manuscript.
+
 ### 3.4 Scope across datasets
 
-CSMV is the primary video mechanism dataset and uses frozen I3D visual sequences; it does not support claims of raw-video end-to-end learning or audio–visual fusion. LAI-GAI is the second HUMAN_GOLD cross-domain image dataset and supports independent distribution, calibration, and OOD evidence but not response-teacher experiments when isomorphic comments are absent. Video2Reaction is evaluated through a fair CSMV adaptation track and a separately reported native silver-label external track. Dataset-specific estimands and label spaces are not pooled merely to increase sample size.
+CSMV is the primary video mechanism dataset: 107,267 human-labeled comments are aggregated over 8,210 video IDs, and the admissible model input is the fixed `float32[T,1024]` I3D visual sequence. It does not support claims of raw-video end-to-end learning, original-frame training, audio--visual fusion, audio gains, or target-comment input. LAI-GAI is the second HUMAN_GOLD cross-domain image dataset: 63,682 eligible human response rows are aggregated over 847 images into a 12-dimensional induced-affect distribution. Its prompt and target generation category are provenance, not truth, and are excluded from the default input. LAI-GAI supports independent distribution, calibration, and OOD evidence but not response-teacher or reaction-memory claims when isomorphic response-history fields are absent. Video2Reaction is evaluated through a fair CSMV adaptation track and a separately reported native `SILVER_LLM_HUMAN_VERIFIED` external track. Dataset-specific estimands, input contracts, statistical units, and label spaces are not pooled merely to increase sample size or to compare absolute metric values across datasets.
 
 ## 4. Method
 
@@ -261,18 +274,20 @@ Provide pseudocode with two physically separated phases:
 
 | Dataset/track | Native unit | Label role | Input role | Eligible claims |
 |---|---|---|---|---|
-| CSMV/MSA-CRVI | Video | HUMAN_GOLD aggregated comments | Frozen I3D visual sequence; no audio claim | Primary H1/H2 mechanisms, strict T0, video-level OOD |
-| LAI-GAI | Image | HUMAN_GOLD individual reactions | Image; prompt/target category excluded by default | Cross-domain distribution, calibration, OOD |
+| CSMV/MSA-CRVI | 8,210 videos | HUMAN_GOLD distribution aggregated from 107,267 human-labeled comments; response support retained | Frozen `float32[T,1024]` I3D visual sequence; no audio or target-comment input | Primary H1/H2 mechanisms, strict T0, video-level OOD |
+| LAI-GAI | 847 images | HUMAN_GOLD 12-dimensional distribution aggregated from 63,682 eligible induced-rating rows; per-dimension uncertainty retained | Image; generation prompt and target category excluded by default | Cross-domain distribution, calibration, OOD; H1/H2 not applicable by design where fields are absent |
 | Video2Reaction A | CSMV video | Same CSMV HUMAN_GOLD label | Same T0 input and budget as CSMV baselines | Fair closest-prior comparison |
 | Video2Reaction B | Native movie/video unit | SILVER_LLM_HUMAN_VERIFIED | Publicly recoverable native features only | Limited external validation; separate table |
 | NEmo+ | News item/condition | HUMAN responses if access audit passes | Paired text/image/text+image | Optional H4 paired-modality mechanism |
 | CUC-IGPE-v2 | Post/video | SILVER or unlabeled stress evidence | Legally recoverable T0 inputs | Chinese/platform stress test only |
 
-Report provenance, licenses, revisions, response counts, exclusions, and fixity in the data statement. The restricted I3D package is internal accepted-risk material and is not redistributable unless rights are independently resolved.
+CSMV and LAI-GAI are the two principal HUMAN_GOLD evidence sources, but they play different roles and are not described as two video datasets. The CSMV annotation layer is documented separately from code, platform media, and feature assets; the annotation license cannot be extended to TikTok media or I3D features. LAI-GAI's image/metadata and rating components are documented as CC BY 4.0 in the frozen source ledger. Video2Reaction-native labels remain silver despite human quality checks, and CUC-IGPE-v2 remains silver or unlabeled stress evidence. Report provenance, license layer, revision, response counts, exclusions, and fixity separately for every source. The fixed I3D package is internal accepted-risk material and is not redistributable unless rights are independently resolved.
 
 ### 5.3 Splits and shift protocols
 
-The principal splits are grouped by native content unit and audited for duplicates, source families, publishers, and target-response overlap. Formal shift protocols include applicable group or movie, topic or hashtag, source or publisher, time, platform, and cross-dataset shifts. A random split may appear only as a diagnostic contrast, never as the primary generalization claim.
+The principal splits are created before fitting or indexing and are grouped by dataset-native content and known source families. For CSMV, 8,210 internal video IDs are collapsed to 8,008 source-video families before assignment. The formal `group_by_video_v1` split contains 5,698/837/1,675 train/development/test videos; the stricter source-family-plus-hashtag-component split contains 7,211/327/672. CSMV has no released publication timestamps or native topic field, so a chronological split and a native topic-held-out split are not claimed. Publisher grouping is likewise unavailable rather than presumed safe.
+
+For LAI-GAI, source item, cultural/age/sex variants, identical prompts, exact-image hashes, and perceptual near duplicates are merged into 379 groups before the frozen 594/127/126 image split. These grouping rules keep known exact and near-duplicate relations within a split. The automated M2 gate reports zero blocking findings for ID and source-group intersections, same-video comment grouping, prohibited target/future fields, fit scope, and the current train-only-index contract. The index and time checks are presently `PASS_NOT_BUILT` and `NOT_APPLICABLE_NO_TIME_SPLIT`, respectively; neither status proves a future index or temporal protocol safe. Formal shift protocols may include only applicable group or movie, hashtag, source or publisher, time, platform, and cross-dataset shifts after their own pre-registration and audit. A random split may appear only as a diagnostic contrast, never as the primary generalization claim.
 
 ### 5.4 Baselines
 
@@ -314,7 +329,7 @@ Metric direction, aggregation level, class support, binning choices, and undefin
 
 ### 5.7 Statistical analysis
 
-Formal comparisons use at least five random seeds and paired bootstrap 95% confidence intervals at the dataset-native content-unit level. Seeds and responses within one item are not independent sample units. Primary comparisons, multiplicity correction, model-selection rules, coverage targets, and equivalence/noninferiority margins—if used—must be pre-registered. Report effect sizes and uncertainty, not p-values alone.
+Formal comparisons use at least five random seeds and paired bootstrap 95% confidence intervals at the dataset-native content-unit level: video for CSMV, image for LAI-GAI, and video or movie only when justified by the frozen Video2Reaction-native protocol. Comments, raters, folds, and seeds are repeated observations or training variations, not independent inferential units. Cross-dataset absolute metric comparisons are not used because label spaces, domains, inputs, and target construction differ. Primary comparisons, multiplicity correction, model-selection rules, coverage targets, and equivalence/noninferiority margins—if used—must be pre-registered. Report effect sizes and uncertainty, not p-values alone.
 
 ### 5.8 Implementation and reproducibility
 
@@ -413,6 +428,8 @@ Report where privileged supervision, memory, routing, or rejection does not help
 8. **Asset admissibility.** The fixed I3D package has unresolved external license/revision/rightsholder fixity and is used only under an accepted internal-research risk; it is not redistributed or described as officially authorized.
 9. **Reproducibility boundary.** Restricted content or comments may require manifests, access instructions, and processing code rather than redistribution.
 10. **Generalization of evidence.** Findings support the exact datasets, constructs, label mappings, and protocols tested; they do not establish psychological ground truth for the general population.
+11. **Responder-selection boundary.** The observed distributions are conditional on who supplied a retained comment or rating. They do not identify the response distribution among silent viewers, and platform deletion, ranking, moderation, and participation incentives may change which reactions are observed.
+12. **Gold/silver asymmetry.** `HUMAN_GOLD` denotes independently collected human response labels with auditable provenance; it does not remove sampling or measurement error. `SILVER_LLM_HUMAN_VERIFIED` denotes automated label construction with human quality checks and cannot be promoted to HUMAN_GOLD or pooled into the principal human-label tables.
 
 ## 9. Conclusion
 
@@ -422,9 +439,9 @@ The conclusion must restate the reliability question, summarize only supported e
 
 ## Data Availability
 
-`[DECISION-GAP:FINAL_DATA_AVAILABILITY_STATEMENT]`
+The project will release, subject to anonymity review, the eligible schemas, content-unit split manifests, label-provenance manifests, hash ledgers, deterministic preprocessing and leakage-validation code, configuration contracts, and table/figure regeneration scripts. CSMV annotations are obtained through the dataset's official repository and are tracked at the frozen annotation revision recorded in the source ledger. CSMV platform media, raw comments, user identifiers, URL lists, and the fixed I3D feature package will not be redistributed by this project. The I3D files may be used internally only under the documented accepted-risk decision: their asset-level license, stable official revision, rightsholder package identity, and external fixity attestation remain unresolved, so the decision is neither a license grant nor evidence of official authorization.
 
-The statement must list each dataset’s access route, revision/fixity evidence, redistributable artifacts, restricted artifacts, and reasons for restrictions. It must distinguish public manifests and splits from raw media, comments, fixed I3D features, and private platform material.
+LAI-GAI images and metadata are available from the official dataset source under its documented CC BY 4.0 terms; this repository tracks the 847-image revision and hashes but does not republish the source images or participant-level rating files. Only de-identified image-level aggregate labels may enter a release after a separate publication-boundary review. Video2Reaction will be referenced through a frozen public revision only after Task 50 intake; its native annotations are silver, and underlying media rights remain source-specific. CUC-IGPE-v2 raw and derived records remain local because consent, platform permission, and redistribution rights are unresolved. `[DECISION-GAP:FINAL_ARCHIVE_LOCATORS_AND_RELEASE_VERSION]`
 
 ## Code Availability
 
@@ -434,9 +451,9 @@ At minimum, release eligible split manifests, schemas, evaluation code, configur
 
 ## Ethics, Privacy, and Responsible Use
 
-`[DECISION-GAP:FINAL_ETHICS_AND_PRIVACY_STATEMENT]`
+This project analyzes existing research datasets and does not recruit new participants. Data minimization is enforced at the repository boundary: tracked artifacts exclude response text, comment and user identifiers, publisher names, raw URLs, cookies or access tokens, media, participant keys, demographic attributes, and device or completion metadata. CSMV response text is confined to the local read-only layer for content-unit aggregation and membership checks; release candidates retain only aggregate distributions, response support, non-reversible work identifiers, and provenance hashes. For LAI-GAI, only rows satisfying the source consent and data-use filters enter aggregation, while participant and Prolific keys and demographic fields remain in the ignored raw layer; the tracked canonical form contains image-level aggregates only.
 
-Describe data origin, consent or public-data rationale where applicable, platform terms, de-identification, non-redistributable response text, potential harms of profiling, and safeguards against interpreting predictions as private mental states.
+Public accessibility is not treated as permission to redistribute third-party media or to profile individuals. The project prohibits re-identification, cross-table user linkage, recovery or publication of response text, individual affect diagnosis, political targeting, and automated decisions about people. Predictions are interpreted only as uncertain distributions of publicly expressed or elicited responses within the observed sampling frame, not as private mental states. Platform removal, license withdrawal, identity/fixity drift, or a rightsholder objection invalidates the corresponding manifest and triggers suspension of dependent evidence. The final submission will report the applicable institutional ethics determination and venue-required disclosure without presuming exemption from public availability alone. `[DECISION-GAP:INSTITUTIONAL_ETHICS_DETERMINATION]`
 
 ## Author Contributions
 
@@ -468,8 +485,8 @@ Every reference must pass identifier and claim-support verification. Author-repo
 
 ## Supplementary-Material Plan
 
-- S1. Dataset lineage, license, and fixity tables.
-- S2. Split construction and leakage audits.
+- S1. Dataset lineage, license, and fixity tables. For every dataset and evidence track, report the official locator, frozen revision, native unit, label provenance tier, response-support rule, file/manifest hash, license layer, redistribution boundary, and unresolved item. In particular, separate CSMV annotations, code, platform media, and I3D assets; identify LAI-GAI's 847-image and rating revisions; and keep Video2Reaction-native silver evidence distinct from both HUMAN_GOLD datasets.
+- S2. Split construction and leakage audits. Provide the deterministic grouping rules and counts for CSMV `group_by_video_v1`, the source-family-plus-hashtag split, and LAI-GAI's 379-group split; document exact/near-duplicate handling, target-response isolation, future-field rejection, fit scope, and index membership. Report unavailable dimensions as unavailable: the current CSMV time and native-topic protocols are not released, and `PASS_NOT_BUILT` for an index is not evidence that a later index is safe. Include executable positive checks and fail-closed negative tests, with any failure marked `LEAKAGE_BLOCKED`.
 - S3. Full hyperparameter spaces and model-selection rules.
 - S4. Complete five-seed results and native-unit bootstrap intervals.
 - S5. Calibration, risk–coverage, and operating-point details.

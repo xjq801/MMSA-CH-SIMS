@@ -11103,3 +11103,48 @@ Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用�
 ### Git状态
 
 本修复随Task30部分实现批次待提交；未推送。
+
+## WR-20260801-018 — Task30部分实现commit与00回交绑定
+
+- 时间：2026-08-01 22:48:29 +08:00
+- 类型：GIT | HANDOFF | DOCUMENTATION
+- 任务/门：30-M4 评论教师与内容学生 / 00独立裁定入口
+- 状态：实现checkpoint已提交；回交闭环待本条提交
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在Task30专项、全仓回归、静态门和工作日志门通过且准备检查输入阻塞已披露后，有意提交部分实现，并将精确commit、未推送状态和H1未评估身份写回`HANDOFF_30.md`供00独立裁定。
+
+### 实际变更
+
+- 创建实现commit `6438da218d2bd3d02b48a02cfd72e18947acf045`，提交说明为`feat(task30): add leak-safe teacher student checkpoint`。
+- `HANDOFF_30.md`绑定该实现commit和`codex/task30-h1`分支，明确尚未推送、H1=`INCONCLUSIVE_NOT_EVALUATED`、Task40未授权。
+- 本条只闭合Git/handoff事实，不修改实现代码、配置、数据或结果身份。
+
+### 验证与证据
+
+- 实现提交前Task30专项22/22、全仓96/96、compileall、schema、工作日志、Light review/seed和`git diff --cached --check`通过。
+- staged路径/扩展名扫描未发现绝对本机路径、I3D数组、权重或预测表；`.venv-task30`保持ignore。
+- `git commit`成功，15个受控文件、1524 insertions、13 deletions；提交后分支相对`origin/main@051faa1`为ahead 1、工作树clean。
+- 主`.venv`入口缺失和Task30准备检查因冻结HUMAN_GOLD输入不存在而失败的事实继续由`WR-016`与H1报告保留。
+
+### 影响与边界
+
+- 该commit是`PARTIAL_IMPLEMENTATION_CHECKPOINT`，不证明H1成功/失败、L2门通过或Task40可创建。
+- G1/G2/资产/G3、Task20冻结核心、VC-CSA NON_T0/INELIGIBLE和论文no-results状态均不变。
+
+### 风险、问题与阻塞
+
+- commit尚未推送；共享Git对象可供00本地审查，但不得写成远端已同步。
+- 唯一科学阻塞仍是缺少00批准的hash-bound本地train/dev I3D与train-only response binding。
+
+### 下一步
+
+1. 验证本条加入后的工作日志与Git差异。
+2. 提交`HANDOFF_30.md`和本闭环记录，向00回交两个精确commit。
+3. 等待00选择接受部分实现并补binding、要求修复或以输入不可用关闭；不进入Task40/50。
+
+### Git状态
+
+实现commit `6438da218d2bd3d02b48a02cfd72e18947acf045`仅在本地`codex/task30-h1`；本回交闭环记录待提交，均未推送。

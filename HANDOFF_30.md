@@ -7,6 +7,8 @@
 - 最终启动锚点：`main@7c4b20c83b15c14b4f189fc36b18d7478244dc82`
 - 实际任务ID：`019fbdaa-01aa-7f60-9828-920d4a397ba5`
 - 实现分支：`codex/task30-h1`
+- 实现证据commit：`6438da218d2bd3d02b48a02cfd72e18947acf045`
+- Git同步状态：本地commit已创建，尚未推送；不得写成已同步远端
 - 上游：Task20正式核心已由00接受收尾，G3=`PASS_WITH_LIMITATIONS`
 - 创建授权：`TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md`
 - H1裁定：`INCONCLUSIVE_NOT_EVALUATED`；不得创建Task40
@@ -68,4 +70,4 @@
 2. `REQUEST_CODE_REMEDIATION`；或
 3. `CLOSE_TASK30_INCONCLUSIVE_INPUT_UNAVAILABLE`。
 
-Task30不自批H1门，不请求或创建Task40。精确实现commit与最终门禁结果将在提交闭环后写入本卡并回交00。
+Task30不自批H1门，不请求或创建Task40。实现commit已精确绑定；最终回交闭环commit由本卡与对应WORK_LOG提交产生，并在消息中一并交给00。

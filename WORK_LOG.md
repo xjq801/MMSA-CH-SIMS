@@ -10493,3 +10493,97 @@ Task20以`main@b7855074acbf3aee6bca640a66c891cc4e21ebf9`提交唯一seed探索�
 ### Git状态
 
 本条写入时Task10受控文件待暂存、提交与推送；当前main基线为`8b57b2a`且与origin一致。用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`保持原状，不进入Task10提交。
+
+## WR-20260801-005 — Task10论文数据章节提交推送闭环
+
+- 时间：2026-08-01 20:47:23 +08:00
+- 类型：PROGRESS | VALIDATION | GIT | HANDOFF
+- 任务/门：Task10论文SSOT回交 / 00独立审核入口
+- 状态：内容提交与首次推送完成；闭环日志待同批提交
+- 负责人：10-M1--M2 数据与协议 Codex
+
+### 背景与目标
+
+闭合`WR-20260801-004`中“待暂存、提交与推送”的Git状态，记录真实提交、远端同步和最终文件态，不把计划写成完成。
+
+### 实际变更
+
+- 只暂存并提交`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`、`TASK10_MANUSCRIPT_SECTION_COMPLETION_20260801.md`和`WORK_LOG.md`。
+- 创建内容提交`1d2018ceb833376112174e7eb4d6e7528305d856`，提交说明为`docs(task10): fill manuscript data and protocol sections`。
+- 推送`main`到用户既有远端`origin`成功，远端从`8b57b2a`前进到`1d2018c`。
+
+### 验证与证据
+
+- 暂存前再次`git fetch origin`成功，`main...origin/main=0/0`。
+- `git diff --cached --name-status`仅列出三份Task10受控文件；`git diff --cached --check` exit 0。
+- 内容提交后`git rev-parse HEAD`与`git rev-parse origin/main`均为`1d2018ceb833376112174e7eb4d6e7528305d856`。
+- 最终内容态验证：`validate_manuscript_ssot.py` exit 0、18个结果门和6个引用槽保持；`validate_work_log.py`在`WR-20260801-004`后为233条/0错误；`git diff --check` exit 0。
+- `run_preparation_checks.py`仍真实返回exit 1、唯一`blocking_checks=[historical_environment]`；Task10数据/协议、泄漏、第二主集、I3D序列、秘密扫描和模板检查保持通过。项目`.venv`入口仍exit 101，未伪报修复。
+
+### 影响与边界
+
+- 本次Git同步不构成00验收、claim升级或投稿放行。
+- G1/G2/资产风险/G3/C1--C4状态、方法和实验结果均未改变。
+- 论文仍为`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`。
+- 未触碰或提交`NEmoP/`、`__MACOSX/`、`tmp/`。
+
+### 风险、问题与阻塞
+
+- 00尚未对`1d2018c`逐段独立审核。
+- 项目`.venv`与历史/formal环境问题仍开放；I3D外部权利/fixity风险仍开放。
+
+### 下一步
+
+1. 提交并推送本闭环日志记录。
+2. 向00发送`REQUEST_00_MANUSCRIPT_REVIEW`，绑定内容提交与最终日志提交。
+3. 等待00接受、补证或拒绝裁定；Task10不得自行宣布论文段落通过。
+
+### Git状态
+
+内容提交`1d2018ceb833376112174e7eb4d6e7528305d856`已推送且当时`HEAD=origin/main`；本闭环记录自身在写入时待提交。用户未跟踪目录继续保持排除。
+
+## WR-20260801-006 — Task20步骤1—18零缺口复核与总纲当前态勘误
+
+- 时间：2026-08-01 20:50:34 +08:00
+- 类型：REVIEW | DECISION | DOCUMENTATION | HANDOFF
+- 任务/门：Task00监督 / Task20步骤1—18 / Task30创建前状态
+- 状态：Task20 TRUE_GAP=0；不重开实验；总纲当前态已纠正
+- 负责人：00-T-AFFC总控 Codex
+
+### 背景与目标
+
+用户要求对照总纲检查Task20未完成项并让其继续。00先独立核对G3证据，再要求Task20以`origin/main@8b57b2a`执行只读逐项delta审计，防止把范围限制、N/A或Task50工作误当Task20漏跑。
+
+### 实际变更
+
+- Task20消息回交统计为12项`COMPLETED`、5项`COMPLETED_WITH_SCOPE_LIMIT`、1项`NOT_APPLICABLE`、`TRUE_GAP=0`；00接受其“不重开实验”结论。
+- 修正总纲第17节“当前应执行的顺序”两条过时当前态：Task20已接受收尾，Task30创建门已解除；不改总纲科学合同和历史hash-bound证据。
+- 更新project card/passport以反映Task10已在`1d2018c`回交待00审查；新建S29交接卡。
+
+### 验证与证据
+
+- 审计证据覆盖`TASK20_G3_EVIDENCE_PACKAGE_20260718.md`、`TASK00_G3_FINAL_REVIEW_20260718.md`、`TASK20_POST_SNAPSHOT_VCCSA_ERRATUM_20260718.md`和最终收尾裁定。
+- Task20报告light-consistency只读扫描exit 0、0术语替换、0指标冲突、0 claim强度漂移；因缺`.light/consistency`四份YAML仅为PARTIAL authority coverage，该限制保留。
+- 修改前`main=origin/main=1d2018ceb833376112174e7eb4d6e7528305d856`且tracked clean，只有三个用户未跟踪目录。
+- 首轮`validate_work_log.py`发现Task10已占用`WR-20260801-005`，返回重复编号及序号不连续错误；本条在提交前更正为`WR-20260801-006`后复跑，不改写已提交历史记录。
+
+### 影响与边界
+
+- G1、G2、G3、Task20正式证据与I3D风险均不变；CLIP/SigLIP/VideoMAE范围限制、单模态E1 N/A、五种子归Task50均不转为补跑。
+- Task20唯一后续是2026-08-31前后的受限存储可见层删除验收；当前不冒充已删除。
+- Task10 `1d2018c`仅为提交，尚未获00验收。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision和权利方身份/fixity继续UNKNOWN；平台控制面删除继续UNKNOWN。
+- Task30尚未创建；总纲状态修正不能表述为已启动Task30。
+
+### 下一步
+
+1. 独立审核Task10 `1d2018c`论文回交。
+2. 审核完成后从最新main创建Task30。
+3. 2026-08-31前后验收Task20受限存储删除。
+
+### Git状态
+
+本条与总纲当前态、project card、passport、version history和S29待同批提交；不触碰用户未跟踪目录。

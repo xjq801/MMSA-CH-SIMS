@@ -2,8 +2,10 @@
 
 ## 1. 交接状态
 
-- 状态：`AUTHORIZED_TO_CREATE`
-- 创建基线：`main@9b5a44dc5d6d186ed4e0d78905e40629f5262de6`
+- 状态：`CREATED_STARTUP_AUDIT_IN_PROGRESS`
+- 创建包提交：`main@32e8967`
+- 实际任务ID：`019fbdaa-01aa-7f60-9828-920d4a397ba5`
+- 隔离worktree：由Codex创建；任务开工必须自行刷新绝对路径与Git HEAD，不以本卡路径为事实
 - 上游：Task20正式核心已由00接受收尾，G3=`PASS_WITH_LIMITATIONS`
 - 创建授权：`TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md`
 - 唯一目标：验证H1评论特权监督，不实现memory/router或正式五种子实验
@@ -32,4 +34,3 @@
 ## 5. 回交要求
 
 每个实质批次追加`WORK_LOG.md`；提交前运行工作日志、准备检查和Task30专项测试。完成后向00提交精确commit、环境锁、H1开发报告、测试结果、剩余限制和更新后的`HANDOFF_30.md`，由00独立接受、补证或拒绝。
-

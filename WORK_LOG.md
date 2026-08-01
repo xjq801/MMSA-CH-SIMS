@@ -10772,3 +10772,49 @@ Task20以`main@5e1386d79ef00136c87491edbde6f77437d3715b`回交论文v0.1.2、完
 
 ### Git状态
 Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用户未跟踪目录不纳入。
+
+## WR-20260801-011 — Task30与总控03创建及总控迁移闭环
+
+- 时间：2026-08-01 22:13:27 +08:00
+- 类型：PROGRESS | TASK_COORDINATION | DECISION | DOCUMENTATION | HANDOFF | GIT
+- 任务/门：Task00总控迁移 / Task30创建
+- 状态：Task30与总控03已创建，SSOT与迁移卡待最终提交推送
+- 负责人：00-T-AFFC总控02 Codex
+
+### 背景与目标
+在Task30创建包`main@32e8967`推送后，用户要求实际创建Task30，并为避免上下文限制创建总控03完整接替总控02。需记录两个真实Codex任务ID、隔离方式、接管边界和最终主线锚点。
+
+### 实际变更
+- 创建Task30独立worktree任务`019fbdaa-01aa-7f60-9828-920d4a397ba5`并重命名为“30-M4 评论教师与内容学生”；初始提示绑定`main@32e8967`、H1开发合同和所有泄漏/资产/范围边界。
+- 创建总控03本地主工作区任务`019fbdab-9037-7320-9fda-9000c58a5c4b`，要求收到最终锚点前只读；其职责继承SSOT、G门、任务树、风险/决策/claim与handoff维护，不执行Task30实验核心。
+- 更新`HANDOFF_30.md`、`TASK_REGISTRY.md` v1.8、`.light/project_card.md`、`.light/passport.yaml`、`.light/version_history.md`和`DECISION_LOG.md`，登记Task30 active与总控03接管。
+- 新建`.light/handoff/S32-total-control-03-migration.md` contract v2，绑定总控01/02/03、Task10/20/30、当前G门、论文状态、最近行动、风险、工作区、必读文件、下一步、禁止项和自传播提示词。
+
+### 验证与证据
+- Codex任务读取确认Task30状态active、worktree为`C:\Users\86183\.codex\worktrees\2859\MMSA-CH-SIMS`；实际ID与初始H1合同一致。
+- `codex_app__read_thread`确认总控03线程存在、状态active、cwd=`D:\MMSA-CH-SIMS`且已收到完整接管提示；首次重命名调用因新线程尚未进入列表返回“No Codex thread found”，不影响线程存在性，失败事实保留。
+- Task30创建包提交`32e8967`已成功推送GitHub；主线在本批SSOT更新前为`HEAD=origin/main=32e8967`。
+- 首轮passport校验因stage30使用非法自然语言状态`active/PENDING`而exit 1；随后按schema改为`in_progress/WARN`，不把待审H1门写成PASS。
+- 首轮S32 handoff合同因frontmatter/章节名/none格式不符合v2模板而exit 1；随后按官方模板补齐`session_no/suggested_title/date`、规定章节、证据分隔和现实刷新禁令后复跑。
+- 总控03重命名在短暂失败后重试成功，标题已验证为“总控03”；S32 handoff合同修复后复跑PASS。
+
+### 影响与边界
+- Task30现为已创建但未完成；不得写成H1通过、Task40可创建或正式结果已产生。
+- 总控02完成迁移后停止承担活动总控写入；总控03不得与Task30并发修改实验核心。
+- G1—G3、I3D风险、Task20关闭/保留状态、论文no-results与C1—C4均不变。
+- 未触碰用户未跟踪`NEmoP/`、`__MACOSX/`和`tmp/`。
+
+### 风险、问题与阻塞
+- Task30尚在开工读取/审计阶段，任何实现或环境就绪状态必须由其后续证据证明。
+- 总控03必须在最终提交推送后刷新main，不能依赖创建时`32e8967`快照。
+- 总控03重命名API首次短暂失败；线程ID和内容已由读取工具确认，最终标题可由后续重试或用户界面设置。
+- passport与handoff合同首轮格式失败已保留并修复；最终是否通过以本批复跑结果为准。
+- I3D外部权利/fixity、Task20平台控制面删除、Task10论文段落审核和正式结果冻结继续开放。
+
+### 下一步
+1. 计算passport state hash，运行工作日志、准备检查、passport与handoff合同门。
+2. 仅提交推送总控SSOT/S32/WR-011，并向Task30与总控03发送最终main锚点。
+3. 总控02停止活动总控工作，由总控03继续监督。
+
+### Git状态
+本条写入时最终SSOT批次待门禁、提交与推送；已推送的Task30创建包为`main@32e8967`。

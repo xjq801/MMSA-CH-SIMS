@@ -2,12 +2,12 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-01T21:55:29+08:00"
-current_stage: 20
-state_revision: 13
-state_hash: "sha256:0a3e1d984df5e98cec16ce976283d725660110005dccb76d7ad854e4f1255236"
+updated: "2026-08-01T22:13:27+08:00"
+current_stage: 30
+state_revision: 14
+state_hash: "sha256:11cb2f69b67990260f875b57fcde0d5ece8ba2a71389bc368821a80ba189ee0f"
 evidence_state: PLANNED
-next_action: independently review Task10 manuscript data/protocol contribution against manuscript v0.1.2; then create Task30 if accepted
+next_action: total-control-03 supervises Task30 H1 startup audit and independently reviews Task10 manuscript data/protocol contribution
 delivery_status: IN_PROGRESS
 delivery_authorization_id: ~
 stages:
@@ -29,4 +29,15 @@ stages:
     input: 冻结dataset/split/label与I3D协议
     output: 统一评测器、强基线、G3证据及隔离VC-CSA探索的受控收尾
     artifacts: [HANDOFF_20.md, TASK00_G3_FINAL_REVIEW_20260718.md, BASELINE_TABLE_V1.md, experiments/EXPERIMENT_REGISTRY.md, HANDOFF_20_POST_SNAPSHOT_CLOSEOUT_20260801.md, TASK00_TASK20_FINAL_CLOSEOUT_REVIEW_20260801.md, paper/TAFFC_CARM_MANUSCRIPT_SSOT.md, paper/CLAIM_ARGUMENT_BLUEPRINT.md]
-    gaps: [Task10 manuscript data-section fill is submitted at 1d2018c but has no 00 acceptance; Task20 baseline/evaluation manuscript sections at 5e1386d are accepted with limitations by TASK00_TASK20_MANUSCRIPT_SECTION_REVIEW_20260801.md; VC-CSA exploration remains permanently NON_T0 and ineligible for formal evidence; restricted storage is active until visible-layer deletion deadline 2026-08-31 23:59:59 +08:00 and platform control plane remains UNKNOWN; Video2Reaction dual-track execution is planned for stage 50 and its public revision/fixity are not frozen; Task30 is eligible for 00 creation but not yet created; manuscript is a no-results scaffold and C1-C4 remain TO_VERIFY]
+    gaps: [Task10 manuscript data-section fill is submitted at 1d2018c but has no 00 acceptance; Task20 baseline/evaluation manuscript sections at 5e1386d are accepted with limitations by TASK00_TASK20_MANUSCRIPT_SECTION_REVIEW_20260801.md; VC-CSA exploration remains permanently NON_T0 and ineligible for formal evidence; restricted storage is active until visible-layer deletion deadline 2026-08-31 23:59:59 +08:00 and platform control plane remains UNKNOWN; Video2Reaction dual-track execution is planned for stage 50 and its public revision/fixity are not frozen; Task30 is created and its H1 development gate is pending; manuscript is a no-results scaffold and C1-C4 remain TO_VERIFY]
+  - stage: 30
+    depends_on: [20]
+    status: in_progress
+    node_kind: pipeline
+    evidence_state: PLANNED
+    skill: light-experiment-coding
+    input: frozen Task20 evaluation kit, content-only baseline, T0 policy and train-only comments
+    output: teacher-student-v1, H1 development evidence, E3 ablation and HANDOFF_30
+    artifacts: [TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md, HANDOFF_30.md]
+    gate: {type: confirm, result: WARN, notes: Task30 created but H1 development gate is pending independent 00 review, evidence_state: PLANNED, fresh: true}
+    gaps: [Task30 startup audit and implementation are not complete; formal test and five-seed inference remain Task50; LAI-GAI lacks native comment-teacher fields; Video2Reaction native H1 is NOT_APPLICABLE_DATA_NOT_RELEASED; I3D external license revision and rightsholder fixity remain UNKNOWN]

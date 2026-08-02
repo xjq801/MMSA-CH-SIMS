@@ -11106,3 +11106,57 @@ Epoch 1的4693行逐step账本、10727条唯一dev预测、作者指标、九指
 ### Git状态
 
 本条写入时本批仍未提交或推送；用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`未触碰，任何凭据、逐样本预测、checkpoint、I3D或endpoint原文均未进入Git。
+
+## WR-20260802-006 — 总控03独立审查Task20 Attempt2并要求最小补证
+
+- 时间：2026-08-02 14:27:49 +08:00
+- 类型：REVIEW | DECISION | VALIDATION | RESEARCH_INTEGRITY | HANDOFF
+- 任务/门：Task00 / Task20 VC-CSA Epoch 1–3 recovery Attempt2
+- 状态：SUPPLEMENT_REQUIRED_NO_ACCEPTANCE_YET
+- 负责人：00-T-AFFC总控03 Codex
+
+### 背景与目标
+
+独立审查Task20在`main@da9c52a3747035851eb03185285b580f8d7f0f47`回交的唯一Attempt2，核对授权边界、代码/配置/展示、非秘密hash、历史证据不变性、私有证据可审核性和科研诚信限制；Task00不作为Task20执行代理，也不重跑实验。
+
+### 实际变更
+
+- 新增`TASK00_TASK20_EPOCH1_3_RECOVERY_REVIEW_20260802.md` v1.0，裁定`SUPPLEMENT_REQUIRED_NO_ACCEPTANCE_YET`。确认运行与断开展示实质符合独立attempt边界，但要求最小追加式纠错/补证且明确不授权复跑。
+- 将`TASK_REGISTRY.md`升至v1.11，并同步`.light/project_card.md`、两套决策日志和`.light/version_history.md`；G1—G3、论文、Task30 H1、Task40未创建和删除截止均不变。
+- 刷新Task10/20/30实时任务：Task20空闲等待本裁定；Task10仍为论文数据/协议段落待00审查；Task30独立worktree分支位于`ad2b6a2`、相对`origin/main` ahead 5/behind 1并已提交H1开发回交，自报`NOT_PASSED_MECHANISM_NOT_STABLE`。仅将Task30登记为待00审查，未接受其自评、未合并、未创建Task40。
+- 记录四项补证要求：WR-005未来时间必须追加勘误；实验登记状态改用允许的`COMPLETED`；逐step时间戳未记录且不得事后补造；补充私有runtime/argv/environment/stdout/stderr/step/dev/checkpoint/failure证据的非秘密分类hash索引。
+- 新增`.light/handoff/S35-task20-recovery-review-supplement-required.md`，保持总控交接链自传播。
+
+### 验证与证据
+
+- 开工时`HEAD=origin/main=da9c52a3747035851eb03185285b580f8d7f0f47`、tracked clean；提交时间为`2026-08-02T14:05:13+08:00`，早于WR-005声称的`15:20:00`，形成确定的未来时间戳矛盾。
+- 独立复算完成说明、artifact ledger、run manifest、metrics summary和CSV/PNG/SVG的SHA-256均与Task20回交一致；artifact ledger 16项零差异，六文件代码bundle digest复算为`d189175655803bd2274731490b956fd5bfaf6fbca6321f26eea2f6e67f6c4c5b`。
+- 更正后的私有final-bundle根hash `ff070dd3f92b78cd1e5a4d7b85d9ed16fd3d273fb30e26f7a92694bba82f524b`在completion、run manifest和WORK_LOG中一致；首次聊天转录错误值未出现在仓库。
+- 代码审查确认fresh-init拒绝、120-epoch scheduler语义和Epoch 3完整eval/checkpoint后守卫；同时确认逐step JSONL实现没有合同要求的timestamp字段。
+- 边界图专项2/2、可用VC-CSA作者/指标测试12项通过；resume-runtime测试在bundled Python中因缺`torch`无法导入。项目`.venv`与`.venv-task20`入口均因其绑定的历史Python 3.8可执行文件不可用而在脚本启动前失败，故不能独立复现Task20声称的16/16和80/80；该限制已写入裁定。
+- bundled Python执行`validate_work_log.py`在写入本条后为247条、0错误、exit 0；以bundled Python并在其默认包之后追加旧环境纯Python包路径执行`run_preparation_checks.py`得到`blocking_checks=[]`、exit 0，同时`formal_model_work_ready=false`诚实保留；`git diff --check`通过。
+- AGENTS指定的`.venv`两个入口均在Python启动前exit 101；首次bundled准备门尝试因`yaml`不可用失败，第二次把旧环境包路径前置后因Python 3.8 NumPy二进制与bundled Python 3.12不兼容失败；第三次保持bundled包优先、只后置旧路径后通过。light-memory-pm handoff合同首次验证发现完成项证据分隔符和中文现实刷新措辞不足，保留失败后已修正文案并复跑。
+
+### 影响与边界
+
+- Attempt2仍永久`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`和`INELIGIBLE`；原Attempt1 Epoch 1—3缺口不变，不进入T0、G3、Task30/40/50、论文、排名或统计。
+- 不修改Task20实验核心、历史hash-bound文件、论文SSOT或Task30 worktree；不读取用户未跟踪目录，不接触私有预测、checkpoint、I3D正文或凭据。
+- Task30实时回交是独立待审对象，不属于本次Task20裁定；本批不读取其受限输入、不运行其训练、不把其自报门结论升级为00结论。
+- I3D许可、官方revision、权利方包身份/fixity仍`UNKNOWN`；2026-08-31 23:59:59 +08:00可见层删除截止不延长，平台控制面仍UNKNOWN。
+
+### 风险、问题与阻塞
+
+- WR-005的未来时间必须通过新记录勘误，历史不可改写；精确原时间若无可信既有证据应保持`UNKNOWN_WITHIN_BOUND`。
+- 逐step时间戳在运行时未采集，属于不可恢复的证据缺口；任何插值、文件mtime替代或事后补写均构成不可接受的来源伪造。
+- 当前提交仅有私有总账根hash和少量选定hash，仍不足以让00对全部合同类别进行独立hash级复核；须补充不含秘密/样本内容的分类索引。
+- 控制器本机虚拟环境入口失效使完整测试复跑受限；此限制不是Task20测试失败，也不得被写成已独立通过。
+
+### 下一步
+
+1. 推送总控裁定并通知Task20只做最小追加式纠错/补证，不重新训练或访问test。
+2. 收到Task20补充提交后复核hash分类索引、追加勘误和登记状态，再作接受/拒绝裁定。
+3. 并行监督Task30 H1状态，但总控不修改其实验核心；随后独立审核Task10论文数据/协议段落。
+
+### Git状态
+
+本条写入时总控审查文件、SSOT台账和S35交接卡待提交；基线父提交为`da9c52a3747035851eb03185285b580f8d7f0f47`。用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`保持未读取、未暂存、未删除；推送状态以本批最终Git输出为准。

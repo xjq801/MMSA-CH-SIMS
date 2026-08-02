@@ -11149,7 +11149,61 @@ Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用�
 
 实现commit `6438da218d2bd3d02b48a02cfd72e18947acf045`仅在本地`codex/task30-h1`；本回交闭环记录待提交，均未推送。
 
-## WR-20260802-001 — Task30受控本地binding恢复、TDD训练器与开发运行器
+## WR-20260802-001 — Task20 Epoch 1—3独立恢复复跑裁定
+
+- 时间：2026-08-02 10:19:26 +08:00
+- 类型：DECISION | TASK_COORDINATION | DOCUMENTATION | HANDOFF | RESEARCH_INTEGRITY
+- 任务/门：Task00总控 / Task20隔离恢复attempt
+- 状态：裁定与执行合同完成；合同/日志/handoff/diff门通过，准备检查诚实受环境阻断；待提交推送后通知Task20执行
+- 负责人：00-T-AFFC总控03 Codex
+
+### 背景与目标
+
+用户明确选择B，允许Task20重新运行Epoch 1—3并与既有数据“合并”。由于原运行Epoch 1—3三件套已在最终closeout中冻结为缺失，新运行必须是独立attempt，展示并列不能被误写为原1—120连续轨迹。
+
+### 实际变更
+
+- 新建`TASK00_TASK20_EPOCH1_3_RECOVERY_RERUN_DECISION_AND_EXECUTION_CONTRACT_20260802.md` v1.0，唯一授权`TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2`。
+- 冻结新初始化、原120-epoch scheduler语义、Epoch 3完整落盘后停止、dev-only/test禁用、实例三元绑定、资产/MatBox权限、config/code/env/input/run hashes、逐step loss/LR、dev metrics/predictions/checkpoint、stdout/stderr和失败证据合同。
+- 将“合并”限制为不同attempt的展示层断开并列；禁止跨Epoch 3/4连线、平滑、插值或连续轨迹表述。
+- 更新`TASK_REGISTRY.md` v1.10、`.light/project_card.md`、两套决策日志与`.light/version_history.md`；新建S34接续卡。
+
+### 验证与证据
+
+- `git fetch origin`后开工现实为`HEAD=origin/main=051faa160e65fb9f1a71b7c41c4e69eafeec87e0`，tracked clean，仅有用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`。
+- Codex实时读取Task20确认其idle，已拒绝静默拼接并等待00书面许可；Task30为active且在独立worktree执行H1，当前总控批次未修改其实验核心。
+- `Get-FileHash -Algorithm SHA256`复核基础配置、环境锁、8210 manifest、runtime生成器/断点脚本和既有Epoch 4—120 CSV/PNG，并把实际hash写入合同。
+- 读取Task20最终closeout、post-snapshot handoff、受限存储生命周期与final manifest，确认原Epoch 1—3缺口、NON_T0/INELIGIBLE、2026-08-31删除截止和`UNKNOWN_PLATFORM_CONTROL_PLANE`边界。
+- 只读辅助检查中，错误文件名`.light/handoff/S33-total-control-03-takeover.md`返回不存在；随后定位并读取实际`S33-total-control-03-takeover-audit.md`。主`.venv`运行handoff脚本帮助时因其Python38解释器路径不可用而失败；本批不重复`pm.py`已知导入失败，最终门禁将使用可用的项目/捆绑Python并如实记录。
+- `handoff_contract.py --card .light\handoff\S34-task20-epoch1-3-recovery-authorization.md --as-of 2026-08-02`使用捆绑Python运行，返回`handoff contract PASS`；`git diff --check` exit 0。
+- 按AGENTS指定的`.\.venv\Scripts\python.exe scripts\validate_work_log.py`与`run_preparation_checks.py`均在脚本启动前exit 1，原因是venv launcher仍指向不存在的`C:\Users\86183\AppData\Local\Programs\Python\Python38\python.exe`；失败未删除。
+- 捆绑Python复跑`validate_work_log.py`返回242条、0错误、PASS。直接复跑准备检查首次因缺`yaml`失败；只挂载Task30 venv全site-packages时又因Python3.8 NumPy与捆绑Python3.12 ABI不兼容失败；随后只预加载纯Python `yaml`包并使用捆绑Python自身NumPy成功执行完整检查，最终exit 1且`blocking_checks=["historical_environment"]`、`formal_model_work_ready=false`，其余数据/协议、secret scan、WORK_LOG等检查通过。该阻断反映当前验证解释器不含历史torch/sklearn/transformers环境，不被写成合同内容失败或模型环境ready。
+
+### 影响与边界
+
+- Task20正式核心仍关闭；G1—G3、论文no-results、C1—C4、Task30 H1门和Task40创建门均不变。
+- attempt2永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`。
+- 原Epoch 1—3证据缺口不变；新attempt只填充内部展示的独立分区，不进入T0/G3/Task50/论文正式claim。
+- 不修改历史hash-bound证据、不延长受限存储截止、不触碰用户未跟踪目录。
+
+### 风险、问题与阻塞
+
+- 同型号4090不证明同实例或轨迹连续，必须以实际host-key hash、GPU UUID和endpoint digest绑定。
+- 三epoch停止若错误改变scheduler总步数，会产生另一训练语义；合同要求保留120-epoch调度并使用受测停止守卫。
+- Task20实时任务上下文含用户私下提供的远端认证材料；本批未把任何凭据或endpoint原文写入仓库、日志或合同。
+- 主`.venv`解释器入口当前不可用；最终验证必须保留该失败，并用可审计可用Python运行同一脚本，不能虚构指定入口通过。
+
+### 下一步
+
+1. 只暂存本批版本化合同、SSOT台账、WR-001与S34，提交并推送main。
+2. 推送成功后向Task20发送精确授权commit与执行合同。
+3. 停止总控写入并等待Task20独立回交，后续由00执行接受、补证或拒绝审查。
+
+### Git状态
+
+本条写入时本批文件尚未提交或推送；用户未跟踪目录不纳入。
+
+## WR-20260802-002 — Task30受控本地binding恢复、TDD训练器与开发运行器
 
 - 时间：2026-08-02 11:20:00 +08:00
 - 类型：AUDIT | FEATURE | TEST | ENVIRONMENT
@@ -11199,7 +11253,7 @@ Task30部分实现曾因启动worktree没有真实输入binding而停在`INCONCL
 
 本批代码、配置、测试、环境锁与报告待有意提交；私有run目录保持Git ignore，未推送。
 
-## WR-20260802-002 — Task30 CSMV开发矩阵、稳定性复跑、LAI-GAI边界与H1门裁定
+## WR-20260802-003 — Task30 CSMV开发矩阵、稳定性复跑、LAI-GAI边界与H1门裁定
 
 - 时间：2026-08-02 11:25:00 +08:00
 - 类型：EXPERIMENT | ANALYSIS | DECISION | TEST

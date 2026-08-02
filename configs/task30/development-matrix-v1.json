@@ -43,6 +43,17 @@
       "selection_split": "dev"
     },
     {
+      "id": "soft_distribution_student_dirichlet",
+      "deployable_student": true,
+      "student_architecture": "content_only_student_dirichlet_v1",
+      "supervision": "soft_distribution",
+      "teacher_source": "none",
+      "max_trials": 12,
+      "max_epochs": 200,
+      "early_stopping_patience": 20,
+      "selection_split": "dev"
+    },
+    {
       "id": "ordinary_kd_student",
       "deployable_student": true,
       "student_architecture": "content_only_student_v1",
@@ -84,7 +95,8 @@
       "max_trials": 12,
       "max_epochs": 200,
       "early_stopping_patience": 20,
-      "selection_split": "dev"
+      "selection_split": "dev",
+      "evaluation_scope": "train_diagnostic_only"
     }
   ],
   "dataset_applicability": {

@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from task30_models import (
     ContentOnlyStudent,
+    DirichletContentStudent,
     ResponsePrivilegedTeacher,
+    dirichlet_distribution_loss,
     hard_label_loss,
     kd_loss,
     seed_everything,
@@ -65,6 +67,16 @@ class Task30ModelTests(unittest.TestCase):
         self.assertEqual(tuple(output.shape), (2, 5))
         torch.testing.assert_close(output.sum(dim=1), torch.ones(2))
 
+    def test_dirichlet_head_returns_positive_concentration_and_normalized_mean(self):
+        model = DirichletContentStudent(input_dim=4, hidden_dim=6, class_count=3, dropout=0.0)
+        features = torch.zeros((2, 4), dtype=torch.float32)
+        concentration = model.concentration(features)
+        probabilities = model(features)
+        self.assertTrue(bool((concentration > 0.0).all()))
+        self.assertTrue(bool(torch.isfinite(concentration).all()))
+        torch.testing.assert_close(probabilities.sum(dim=1), torch.ones(2))
+        self.assertEqual(tuple(probabilities.shape), (2, 3))
+
 
 class Task30LossGoldTests(unittest.TestCase):
     def test_hard_label_loss_matches_hand_calculation(self):
@@ -96,6 +108,16 @@ class Task30LossGoldTests(unittest.TestCase):
                 torch.tensor([[0.0, float("inf")]]),
                 temperature=1.0,
             )
+
+    def test_dirichlet_loss_is_finite_and_rejects_invalid_targets(self):
+        concentration = torch.tensor([[2.0, 3.0, 4.0]], dtype=torch.float64, requires_grad=True)
+        targets = torch.tensor([[0.2, 0.3, 0.5]], dtype=torch.float64)
+        loss = dirichlet_distribution_loss(concentration, targets)
+        self.assertTrue(math.isfinite(float(loss)))
+        loss.backward()
+        self.assertTrue(bool(torch.isfinite(concentration.grad).all()))
+        with self.assertRaises(ValueError):
+            dirichlet_distribution_loss(concentration.detach(), torch.tensor([[0.2, 0.3, 0.4]], dtype=torch.float64))
 
 
 if __name__ == "__main__":

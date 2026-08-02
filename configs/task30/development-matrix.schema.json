@@ -57,7 +57,7 @@
     },
     "rows": {
       "type": "array",
-      "minItems": 6,
+      "minItems": 7,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -82,6 +82,8 @@
           "max_epochs": {"const": 200},
           "early_stopping_patience": {"const": 20},
           "selection_split": {"const": "dev"}
+          ,
+          "evaluation_scope": {"const": "train_diagnostic_only"}
         }
       }
     },

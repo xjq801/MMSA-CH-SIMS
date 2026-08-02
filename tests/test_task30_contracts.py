@@ -130,7 +130,6 @@ class Task30MismatchAndApplicabilityTests(unittest.TestCase):
         student_rows = [row for row in matrix["rows"] if row["deployable_student"]]
         projected = {
             (
-                row["student_architecture"],
                 row["max_trials"],
                 row["max_epochs"],
                 row["early_stopping_patience"],
@@ -139,6 +138,11 @@ class Task30MismatchAndApplicabilityTests(unittest.TestCase):
             for row in student_rows
         }
         self.assertEqual(len(projected), 1)
+        softmax_rows = [
+            row for row in student_rows
+            if row["id"] != "soft_distribution_student_dirichlet"
+        ]
+        self.assertEqual({row["student_architecture"] for row in softmax_rows}, {"content_only_student_v1"})
         teacher_upper = [row for row in matrix["rows"] if row["id"] == "teacher_only_upper_bound"]
         self.assertEqual(len(teacher_upper), 1)
         self.assertFalse(teacher_upper[0]["deployable_student"])
@@ -148,6 +152,10 @@ class Task30MismatchAndApplicabilityTests(unittest.TestCase):
         self.assertFalse(matrix["distillation"]["test_visible_during_selection"])
         self.assertEqual(matrix["distillation"]["temperature_candidates"], [1.0, 2.0, 4.0])
         self.assertEqual(matrix["distillation"]["weight_candidates"], [0.25, 0.5, 0.75])
+        dirichlet = [row for row in matrix["rows"] if row["id"] == "soft_distribution_student_dirichlet"]
+        self.assertEqual(len(dirichlet), 1)
+        self.assertEqual(dirichlet[0]["student_architecture"], "content_only_student_dirichlet_v1")
+        self.assertEqual(teacher_upper[0]["evaluation_scope"], "train_diagnostic_only")
 
 
 if __name__ == "__main__":

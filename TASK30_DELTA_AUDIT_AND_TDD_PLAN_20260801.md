@@ -1,6 +1,6 @@
 # Task30 H1 delta audit and TDD plan
 
-> Status: `READY_FOR_TDD_WITH_LOCAL_INPUT_BINDING_LIMITATION`  
+> Status: `COMPLETED_LOCAL_BINDING_AUDITED_TDD_EXECUTED`  
 > Audit time: 2026-08-01 22:16:53 +08:00  
 > Audit-start Git anchor: `32e8967f` (`origin/main`, detached clean worktree)  
 > Final Task30 anchor: `7c4b20c83b15c14b4f189fc36b18d7478244dc82` (`CREATED_STARTUP_AUDIT_IN_PROGRESS`)  
@@ -87,3 +87,11 @@ test labels    --X--> selection, calibration, temperature, threshold or stopping
 - Reuse Task20 metrics/evaluation by import after compatibility tests; do not edit their implementation.
 - Use synthetic fixtures solely for deterministic unit/smoke tests. Such outputs are `TEST_EVIDENCE_ONLY`, never H1 development evidence.
 - A real CSMV development run starts only after an authorized local input binding supplies frozen train/dev I3D plus train-only response-derived teacher records and passes hash/split checks. Formal test remains unreachable.
+
+## 8. Delta resolution on 2026-08-02
+
+- The startup worktree limitation in sections 4 and 7 was resolved when the approved local main-workspace root became available. Read-only audit found the frozen 8,210-item CSMV label binding, fixed raw annotation revision, I3D quarantine asset, and LAI-GAI 847-image boundary set.
+- Task30 derived only the 5,698 formal-train videos' aggregate reaction features (74,727 reactions). Dev/test response text was never emitted or supplied to a teacher; one missing emotion label and five missing opinion labels were handled by field-specific valid-label normalization and retained in the audit.
+- All planned negative tests were observed failing before implementation. The final Task30 suite covers data isolation, missing fields, mismatch derangement, dynamic heads, softmax/Dirichlet, gradient finiteness, dev-only policy, run bundles, frozen-selection replay, LAI-GAI fixity, and aggregate-only analysis.
+- A 72-trial CSMV dev search, same-seed replay, two frozen-config development seeds, and the LAI-GAI content/calibration boundary completed locally. Formal test rows were never materialized or used; no Task20 evaluation-core file was modified.
+- The resulting H1 development gate is `NOT_PASSED_MECHANISM_NOT_STABLE`; this is not a formal test rejection of H1 and does not authorize Task40.

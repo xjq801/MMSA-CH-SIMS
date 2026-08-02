@@ -66,6 +66,15 @@ class ContentOnlyStudent(nn.Module):
         return torch.softmax(self.logits(content_features), dim=-1)
 
 
+class DirichletContentStudent(ContentOnlyStudent):
+    def concentration(self, content_features: torch.Tensor) -> torch.Tensor:
+        return F.softplus(self.logits(content_features)) + 1e-6
+
+    def forward(self, content_features: torch.Tensor) -> torch.Tensor:
+        concentration = self.concentration(content_features)
+        return concentration / concentration.sum(dim=1, keepdim=True)
+
+
 class ResponsePrivilegedTeacher(nn.Module):
     def __init__(
         self,
@@ -151,3 +160,21 @@ def kd_loss(student_logits: torch.Tensor, teacher_logits: torch.Tensor, temperat
         teacher_probabilities,
         reduction="batchmean",
     ) * (temperature ** 2)
+
+
+def dirichlet_distribution_loss(concentration: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
+    if concentration.ndim != 2 or concentration.shape[0] == 0 or concentration.shape[1] < 2:
+        raise ValueError("concentration must be a non-empty matrix")
+    if concentration.shape != targets.shape:
+        raise ValueError("Dirichlet target shape mismatch")
+    if not bool(torch.isfinite(concentration).all()) or not bool(torch.isfinite(targets).all()):
+        raise ValueError("Dirichlet loss inputs must be finite")
+    if bool((concentration <= 0.0).any()) or bool((targets < 0.0).any()):
+        raise ValueError("Dirichlet concentration must be positive and targets non-negative")
+    expected = torch.ones(targets.shape[0], dtype=targets.dtype, device=targets.device)
+    if not bool(torch.allclose(targets.sum(dim=1), expected, rtol=0.0, atol=1e-6)):
+        raise ValueError("Dirichlet targets must sum to one")
+    expected_log_probabilities = torch.digamma(concentration) - torch.digamma(
+        concentration.sum(dim=1, keepdim=True)
+    )
+    return -(targets * expected_log_probabilities).sum(dim=1).mean()

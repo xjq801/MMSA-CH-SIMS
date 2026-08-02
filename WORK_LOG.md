@@ -11148,3 +11148,103 @@ Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用�
 ### Git状态
 
 实现commit `6438da218d2bd3d02b48a02cfd72e18947acf045`仅在本地`codex/task30-h1`；本回交闭环记录待提交，均未推送。
+
+## WR-20260802-001 — Task30受控本地binding恢复、TDD训练器与开发运行器
+
+- 时间：2026-08-02 11:20:00 +08:00
+- 类型：AUDIT | FEATURE | TEST | ENVIRONMENT
+- 任务/门：30-M4 评论教师与内容学生 / H1开发执行恢复
+- 状态：完成
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+Task30部分实现曾因启动worktree没有真实输入binding而停在`INCONCLUSIVE_NOT_EVALUATED`。本批在用户将主工作区纳入授权workspace后，只读复核其Git锚点、Task20环境/manifest和受控资产，确认可在既有accepted-risk内部研究边界内恢复真实H1开发；不改变G1—G3、Task20冻结评测核心或Task40状态。
+
+### 实际变更
+
+- 新增`task30_data.py`：按`group_by_video_v1`只派生formal-train视频评论聚合，校验原始映射、标签、response count、I3D shape/dtype/finite与源文件hash；不返回评论正文或用户标识。
+- 新增`task30_training.py`与`run_task30_h1_development.py`：train-only标准化、hard/soft/KD、softmax/Dirichlet、有限梯度审计、dev早停、12-trial公平矩阵、错配privileged derangement、teacher train诊断、test不可达策略和隔离run bundle。
+- 新增`task30_lai_gai.py`与`task30_analysis.py`：LAI-GAI SHA核验的T0图像内容/校准边界，以及不含sample ID/评论正文的评论数、熵和标签噪声聚合分析。
+- `task30_models.py`新增Dirichlet head与期望log-probability损失；开发矩阵登记Dirichlet补充行和teacher-only train诊断范围。
+- 独立环境增加Task20同版本免费`Pillow==10.4.0`并写入`requirements-task30-lock.txt`；未使用付费、远程或闭源资源。
+
+### 验证与证据
+
+- 数据/Dirichlet/dev-only入口红测首次因`task30_data`、Dirichlet class和runner缺失而exit 1；最小实现后14/14通过。
+- 训练器红测因`task30_training`和12-trial grid缺失而exit 1；实现后7/7通过。
+- teacher/mismatch红测因两个API缺失而exit 1；实现后10/10通过。
+- 真实smoke首次进入适配器时因发布包含1个emotion与5个opinion空值而fail-closed；根因统计确认是canonical已登记缺失。新增空值回归红测后按字段有效标签归一化，并保留缺失审计；未知标签和全缺失仍拒绝。
+- LAI-GAI三个红测因模块缺失而exit 1；实现后3/3通过。聚合分析红测因模块缺失而exit 1；实现后1/1通过。
+- 两次PowerShell启动器多行参数语法错误均发生在Python启动前；失败保留且未伪装成实验失败，修正仅为命令行分隔。
+
+### 影响与边界
+
+- CSMV teacher实际覆盖5,698个train视频、74,727条反应；dev/test评论不进入teacher或输出。正式test行不materialize、不用于任何选择。
+- LAI-GAI只做真实图像内容边界，H1固定`NOT_APPLICABLE_COMMENT_FIELD_UNAVAILABLE`；Video2Reaction原生H1仍为`NOT_APPLICABLE_DATA_NOT_RELEASED`。
+- 没有保存或提交模型权重、受限数组、评论正文、预测行、凭据或本机绝对路径。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision、权利方包身份/fixity仍为`UNKNOWN/DEFERRED_ACCEPTED_RISK`；本批只做既有内部研究使用。
+- 当前worktree继续不承载受限数据；准备检查可能仍报告相对数据路径缺失，不能把该失败改写为通过。
+
+### 下一步
+
+1. 执行完整CSMV开发矩阵、固定seed replay和冻结配置随机性估计。
+2. 运行LAI-GAI真实内容/校准边界和聚合错误分析。
+3. 更新报告、handoff与全套门禁，不进入Task40。
+
+### Git状态
+
+本批代码、配置、测试、环境锁与报告待有意提交；私有run目录保持Git ignore，未推送。
+
+## WR-20260802-002 — Task30 CSMV开发矩阵、稳定性复跑、LAI-GAI边界与H1门裁定
+
+- 时间：2026-08-02 11:25:00 +08:00
+- 类型：EXPERIMENT | ANALYSIS | DECISION | TEST
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门
+- 状态：执行完成；H1开发门不通过，待00独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在真实受控binding与全部TDD合同可用后，按总纲v1.21第5节完成CSMV hard/soft/ordinary-KD/privileged-KD/mismatch/teacher诊断与Dirichlet开发比较，并补LAI-GAI真实内容边界、稳定性和机制分析；正式test与Task50范围保持不可达。
+
+### 实际变更
+
+- 真实CSMV smoke在本地RTX 3070 Ti完成；完整seed-20260802 dev搜索完成72/72 student trials、837条私有dev预测，manifest artifacts全部hash复核通过，stderr=0，test adaptation=false。
+- 主seed中privileged-KD JSD=`0.1696667746`，优于soft=`0.1728426971`、ordinary-KD=`0.1717930305`、mismatch=`0.1717662842`；ECE/ACE改善，但NLL/Brier较soft变差。
+- 同seed冻结配置replay的私有预测SHA-256与原run逐字节一致：`195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a`。
+- 冻结配置seed 20260803/20260804完成。privileged相对soft的JSD收益3/3为正，平均`0.0030668057`；相对ordinary/mismatch仅2/3为正，seed 20260804分别为`-0.0000034679`与`-0.0003037675`。NLL相对soft 3/3变差，平均`+0.0179914761`。
+- 高目标熵与高标签噪声代理组中privileged相对soft 3/3变差；低熵、mixed及各评论数分组总体改善。讽刺因dev评论正文不可达固定不可评估。
+- LAI-GAI 594 train/127 dev内容边界完成：softmax JSD=`0.0541395718`、Dirichlet=`0.0544562892`、overall mean=`0.0745073250`；ECE较高，身份仅`DEVELOPMENT_BOUNDARY_ONLY`，H1仍N/A。
+
+### 验证与证据
+
+- full manifest SHA-256：`330c9de88918a9cea5293ebf7c721d9f3c6738a9e7142c3a8fdff18cb86e3fa7`；aggregate：`17f23df0b6d883fc01b7c6e35b2dd06930adad1d761064f13ac750c8f21a3e4d`。
+- replay/seed03/seed04 manifest：`7c37a51234051bb02bcb51fb18d3bf6b17b098e1bf5e1021870c8fe6e0c141b1` / `8d241df7dc1a04e04111de140f077d9c934a0a3434ecd80fc35c8f9c7a57e56d` / `c0c97dfe760e2a089c8235591e9af123f60d31031268a24336e62176ebed1e8b`。
+- LAI-GAI aggregate：`a972278f1b2101bc1a776d4cf9ae5049c25326a556290e487532c46fc8ed97a6`。
+- observed GPU memory低于2.2 GiB；完整搜索约18.5分钟，冻结配置复跑约数分钟，无租赁或远程大算力需求。
+
+### 影响与边界
+
+- Task30裁定分支：`NOT_PASSED_MECHANISM_NOT_STABLE`。这不是正式test上的H1拒绝，但评论privileged特异性收益未稳定隔离，且高分歧/高噪声组恶化，故不能标为H1成功。
+- Task40保持`NOT_CREATED/BLOCKED_NOT_AUTHORIZED`；不得以总体胜soft替代ordinary/mismatch机制门。
+- G1、G2、ASSET_ADMISSIBILITY、G3和VC-CSA永久NON_T0/INELIGIBLE身份全部不变。
+
+### 风险、问题与阻塞
+
+- 只有一个公开评论-bearing H1开发集；LAI-GAI无评论字段，Video2Reaction未发布原始评论，不能提供第二个H1复核集。
+- 三个开发seed不是Task50正式五种子或统计样本量；未运行formal test、paired bootstrap或论文级显著性检验。
+- 评论privileged特异性机制未稳定隔离，且高分歧/高噪声组恶化，因此Task40创建门保持阻断。
+
+### 下一步
+
+1. 完成全量专项/全仓/compile/schema/工作日志/准备门复核。
+2. 有意提交实现与开发报告，更新`HANDOFF_30.md`绑定精确commit。
+3. 回交00独立裁定；不创建Task40，不运行formal test或Task50五种子。
+
+### Git状态
+
+开发结果仅在Git-ignored本地run中；tracked实现与聚合报告待提交，未推送。

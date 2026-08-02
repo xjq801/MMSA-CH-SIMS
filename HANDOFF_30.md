@@ -1,73 +1,94 @@
-# HANDOFF_30 — M4 评论教师与内容学生回交
+# HANDOFF_30 — M4 评论教师与内容学生最终回交
 
-## 1. 回交状态
+## 1. 回交身份
 
-- 状态：`PARTIAL_IMPLEMENTATION_H1_NOT_EVALUATED_AWAITING_00_REVIEW`
-- 创建包提交：`main@32e8967`
-- 最终启动锚点：`main@7c4b20c83b15c14b4f189fc36b18d7478244dc82`
-- 实际任务ID：`019fbdaa-01aa-7f60-9828-920d4a397ba5`
-- 实现分支：`codex/task30-h1`
-- 实现证据commit：`6438da218d2bd3d02b48a02cfd72e18947acf045`
-- Git同步状态：本地commit已创建，尚未推送；不得写成已同步远端
-- 上游：Task20正式核心已由00接受收尾，G3=`PASS_WITH_LIMITATIONS`
-- 创建授权：`TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md`
-- H1裁定：`INCONCLUSIVE_NOT_EVALUATED`；不得创建Task40
+- 状态：`SUBMITTED_H1_DEVELOPMENT_GATE_NOT_PASSED_AWAITING_00_REVIEW`
+- 实际任务 ID：`019fbdaa-01aa-7f60-9828-920d4a397ba5`
+- 分支：`codex/task30-h1`
+- 当前上游锚点：`origin/main@349be41c34db5082cb238350956799acb478faef`
+- Task30 完整实现与开发证据提交：`923dc1553f11f7b35a0e64d1caa2814215296042`
+- 上游合并提交：`459ebe9fba57d3c65cdf4e40410f38e326030b64`
+- Git 状态：提交仅在本地分支，尚未推送。
+- 开发门裁定：`NOT_PASSED_MECHANISM_NOT_STABLE`
+- Task40：`NOT_CREATED/BLOCKED_NOT_AUTHORIZED`
 
-## 2. 冻结输入与现实差异
+本回交只请求 00 独立复核 Task30 H1 开发门，不改写 G1—G3，不进入 Task40/50。
 
-- 数据、split、标签、T0和评测合同：`HANDOFF_20.md`、其22项hash-bound证据及Task20 schemas；
-- 主集角色：CSMV为H1主要开发集；LAI-GAI仅执行字段真实支持的内容分布/校准边界；Video2Reaction原生分支H1=`NOT_APPLICABLE_DATA_NOT_RELEASED`；
-- 唯一合法T0内容模态：冻结I3D序列；目标评论、未来互动、test标签和跨split信息全部禁止；
-- 资产状态：`DEFERRED_ACCEPTED_RISK`，不得声称许可/revision/权利方fixity已确认或再分发特征。
-- 当前worktree的`data/raw`和`data/processed`均只有README，Task30配置也没有受控输入binding；因此没有运行真实H1开发比较。
+## 2. 执行范围与泄漏控制
 
-## 3. 已完成
+- CSMV 保持 Task20 冻结 split：5,698 train / 837 dev / 1,675 test。
+- teacher 只聚合 5,698 个 train 视频的 74,727 条合法反应；dev/test 评论正文从未提供给 teacher 或写入产物。
+- student 在训练和推理均只读取 T0 冻结内容特征；正式 test 行未 materialize，未参与模型、温度、权重、早停、校准或超参选择。
+- Task20 冻结评测核心未修改；没有 memory、retrieval、router、GNN、生成模块、闭源 LLM、远程 GPU、对象存储或数据外传。
+- 没有保存或提交 I3D 数组、评论正文、模型权重、逐样本隐私预测、凭据或本机绝对路径。
+- I3D 许可、官方 revision、权利方包身份/fixity 仍为 `UNKNOWN`；仅按既有 `DEFERRED_ACCEPTED_RISK` 做内部开发研究。
 
-1. 完成`TASK30_DELTA_AUDIT_AND_TDD_PLAN_20260801.md`，核验Task20 handoff的22项tracked evidence并冻结H1边界。
-2. 建立独立`.venv-task30`、`requirements-task30-lock.txt`与`TASK30_ENVIRONMENT_LOCK.md`；环境代码/GPU smoke ready，但输入binding not ready。
-3. 以先红后绿方式实现Task30 contracts、train-only reaction aggregation/audit、content-only student、response-privileged teacher、hard/soft/KD loss与确定性seed helper。
-4. 冻结六行公平开发矩阵：hard、soft、普通KD、comment-privileged KD、错配teacher、teacher-only；Task30 test固定不可达。
-5. Task30专项22/22、全仓回归96/96、配置schema、Light review gate和seed audit通过；准备检查因冻结HUMAN_GOLD输入未绑定而失败并保留。
+## 3. 已实现与验证的比较
 
-## 4. 开发结果身份
+以 TDD 先红后绿实现并测试：dev/test 评论不可达、错配 teacher、缺字段 fail-closed、非法/非有限/未归一化分布拒绝、动态数据集 head、train-only 聚合和确定性复跑。
 
-- 报告：`TASK30_H1_DEVELOPMENT_REPORT_20260801.md`
-- 结果身份：`DEVELOPMENT_CODE_READY_H1_NOT_EVALUATED_INPUT_BINDING_UNAVAILABLE`
-- hard/soft/普通KD/privileged-KD/错配teacher/teacher-only：全部`NOT_RUN_INPUT_BINDING_UNAVAILABLE`
-- 预测、指标、温度、lambda、阈值、权重与正式test访问：均无
-- LAI-GAI：`NOT_APPLICABLE_COMMENT_FIELD_UNAVAILABLE`；本批无内容/校准结果，因为输入未绑定
-- Video2Reaction原生H1：`NOT_APPLICABLE_DATA_NOT_RELEASED`
+公平开发矩阵包括 hard label、soft distribution、ordinary KD、comment-privileged KD、mismatched-comment control、soft Dirichlet，以及不可部署的 teacher-only train diagnostic。每个可部署 CSMV 行使用相同的 12-trial student 预算；温度和 KD 权重只在 train/dev 开发合同内选择。
 
-## 5. 交付文件
+实现文件与完整数值见 `TASK30_H1_DEVELOPMENT_REPORT_20260801.md`。主要代码入口为：
 
-- 审计/计划：`TASK30_DELTA_AUDIT_AND_TDD_PLAN_20260801.md`
-- 环境：`TASK30_ENVIRONMENT_LOCK.md`、`requirements-task30-lock.txt`
-- 配置：`configs/task30/development-matrix-v1.json`及schema
-- 实现：`scripts/task30_contracts.py`、`scripts/task30_models.py`、`scripts/task30_teacher.py`
-- 测试：`tests/test_task30_contracts.py`、`tests/test_task30_models.py`、`tests/test_task30_teacher.py`
-- 结果边界：`TASK30_H1_DEVELOPMENT_REPORT_20260801.md`
+- `scripts/task30_data.py`
+- `scripts/task30_models.py`
+- `scripts/task30_teacher.py`
+- `scripts/task30_training.py`
+- `scripts/run_task30_h1_development.py`
+- `scripts/task30_analysis.py`
+- `scripts/task30_lai_gai.py`
 
-## 6. 禁止事项继续有效
+## 4. CSMV 开发结果
 
-- 不读取正式test做模型、温度、阈值或超参数选择；不把单seed开发结果写成论文主结果。
-- 不并发修改Task20冻结评测核心；不提前开发Task40 memory/router。
-- 不硬编码CSMV标签；不为LAI-GAI或Video2Reaction伪造评论teacher。
-- 不提交受限资产、评论正文、模型权重、预测隐私数据、凭据或本机绝对路径。
-- 不使用未获授权的闭源LLM、付费算力、远程存储或资产传输。
+seed 20260802 完成 72 个 student trials；837 条 dev 私有预测未纳入 Git。选中指标如下：
 
-## 7. 剩余限制与恢复条件
+| 方法 | JSD ↓ | NLL ↓ | Brier ↓ | ECE ↓ | ACE ↓ |
+|---|---:|---:|---:|---:|---:|
+| hard | 0.180825 | 1.790076 | 0.239266 | 0.041093 | 0.045672 |
+| soft | 0.172843 | **1.703714** | 0.218402 | 0.048944 | 0.061966 |
+| ordinary KD | 0.171793 | 1.712183 | 0.219297 | 0.041235 | 0.060414 |
+| privileged KD | **0.169667** | 1.723492 | 0.220087 | **0.028594** | **0.052400** |
+| mismatch | 0.171766 | 1.714517 | 0.218371 | 0.044501 | 0.064686 |
+| Dirichlet | 0.172688 | 1.706831 | **0.213503** | 0.072300 | 0.067911 |
 
-- 缺少hash-bound本地train/dev I3D与train-only response输入binding，故H1不能判success或failure。
-- I3D许可、官方revision、权利方包身份/fixity仍UNKNOWN；权利否认或8210覆盖/hash漂移时必须`ASSET_INVALIDATED_DO_NOT_REPORT`。
-- unit/static gate只证明已编码边界，不证明真实数据无全部语义泄漏，也不证明跨硬件bitwise复现。
-- 恢复真实开发前，00须提供或批准不含本机路径/正文/受限数组的binding manifest与hash；Task30随后才能运行dev-only比较。
+冻结选中配置后，privileged KD 相对 soft 的 JSD 收益在 3/3 development seeds 为正，均值 `0.0030668`；但相对 ordinary KD 和 mismatch 均仅 2/3 为正。NLL 相对 soft 在 3/3 seeds 变差，均值 `+0.0179915`。高目标熵和高标签噪声代理组中 privileged KD 也在 3/3 seeds 变差。因此无法稳定隔离“正确 train 评论”带来的特异机制收益。
 
-## 8. 向00请求的裁定
+teacher-only 仅为 train diagnostic（JSD 0.014677，ECE 0.347062），不是可部署或可比的 dev 上界。
 
-请00将本批裁定为以下之一：
+## 5. 其他数据集边界
 
-1. `ACCEPT_PARTIAL_IMPLEMENTATION_AND_PROVIDE_INPUT_BINDING`；或
-2. `REQUEST_CODE_REMEDIATION`；或
-3. `CLOSE_TASK30_INCONCLUSIVE_INPUT_UNAVAILABLE`。
+- LAI-GAI：无评论字段，H1=`NOT_APPLICABLE_COMMENT_FIELD_UNAVAILABLE`。仅运行真实支持的图像内容/校准开发边界：594 train / 127 dev，softmax JSD 0.054140，Dirichlet 0.054456，ECE 分别约 0.233/0.254；不能用作 H1 复刻。
+- Video2Reaction 原生分支：H1=`NOT_APPLICABLE_DATA_NOT_RELEASED`；未从派生分布反推或伪造评论 teacher。
+- 只有一个 comment-bearing H1 开发集；正式五种子、正式 test、paired bootstrap 与论文级推断均未运行。
 
-Task30不自批H1门，不请求或创建Task40。实现commit已精确绑定；最终回交闭环commit由本卡与对应WORK_LOG提交产生，并在消息中一并交给00。
+## 6. 可复现身份
+
+- CSMV full manifest：`330c9de88918a9cea5293ebf7c721d9f3c6738a9e7142c3a8fdff18cb86e3fa7`
+- CSMV aggregate：`17f23df0b6d883fc01b7c6e35b2dd06930adad1d761064f13ac750c8f21a3e4d`
+- same-seed 私有预测 SHA-256：`195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a`
+- replay / seed03 / seed04 manifests：`7c37a51234051bb02bcb51fb18d3bf6b17b098e1bf5e1021870c8fe6e0c141b1` / `8d241df7dc1a04e04111de140f077d9c934a0a3434ecd80fc35c8f9c7a57e56d` / `c0c97dfe760e2a089c8235591e9af123f60d31031268a24336e62176ebed1e8b`
+- LAI-GAI aggregate：`a972278f1b2101bc1a776d4cf9ae5049c25326a556290e487532c46fc8ed97a6`
+
+同 seed replay 的预测逐字节一致；所有声明的 manifest artifact hash 均复核通过。运行使用本地 RTX 3070 Ti，观察显存低于 2.2 GiB，完整搜索约 18.5 分钟；不需要租赁或远程大算力。
+
+## 7. 最终门禁
+
+- Task30 专项：46/46 通过。
+- 全仓回归：120/120 通过。
+- `compileall`、Task30 matrix schema、Task20 handoff 22 项证据、`pip check`、`git diff --check`：通过。
+- Light review gate：通过，0 findings。
+- 同 seed replay：逐字节一致；workspace Python seed audit 六项机制齐全。
+- `.venv-task30` 的 `validate_work_log.py`：通过。
+- `.venv-task30` 的 `run_preparation_checks.py`：诚实失败，原因是本 worktree 不承载冻结相对路径 `data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`；真实开发只读绑定来自授权主工作区，未复制入 Git worktree。
+- AGENTS 指定的主 `.venv` 两个入口：主 `.venv` 不存在，均在脚本启动前失败；未冒充主环境 ready。
+- Python 3.8 下 Light seed 工具因 AST 兼容边界误报缺少 `PYTHONHASHSEED`；同一代码由 workspace Python 复核通过，且固定 seed replay 提供实际确定性证据。失败与通过均保留。
+
+## 8. 向 00 请求的独立裁定
+
+请 00 在以下开发证据身份下独立复核：
+
+1. 接受 `NOT_PASSED_MECHANISM_NOT_STABLE`，关闭 Task30 H1 开发门且不创建 Task40；或
+2. 在不接触 formal test 的前提下，书面授权一个预声明的 H1 范围内机制修复批次。
+
+本结果不是 `H1_SUCCESS`，也不是正式 test 上的 `H1_REJECTED`。在 00 新授权前，Task30 不继续调参、不查看 test、不创建 Task40。

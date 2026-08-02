@@ -11302,3 +11302,52 @@ Task30部分实现曾因启动worktree没有真实输入binding而停在`INCONCL
 ### Git状态
 
 开发结果仅在Git-ignored本地run中；tracked实现与聚合报告待提交，未推送。
+
+## WR-20260802-004 — Task30 最终回交、上游同步与开发门冻结
+
+- 时间：2026-08-02 11:33:49 +08:00
+- 类型：VALIDATION | GIT | HANDOFF | DECISION
+- 任务/门：30-M4 评论教师与内容学生 / H1 开发门最终回交
+- 状态：Task30 执行完成；H1 开发门不通过，等待 00 独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在真实 CSMV development-only 比较、固定配置多 seed 复核、LAI-GAI 字段边界和全部 TDD 实现完成后，刷新并合入最新 `origin/main`，将 Task30 的精确提交、结果身份、泄漏边界、门禁和剩余限制写回最终 handoff。不得改写 G1—G3、进入 Task40/50 或把开发结果写成正式 test 结论。
+
+### 实际变更
+
+- 保留 Task20 新增 `WR-20260802-001` 授权记录，并将 Task30 同日两条记录顺延为 `WR-20260802-002` 与 `WR-20260802-003`；未改写任何历史记录正文。
+- 创建非快进合并提交 `459ebe9fba57d3c65cdf4e40410f38e326030b64`，同步 `origin/main@349be41c34db5082cb238350956799acb478faef` 的 Task20 Epoch 1—3 恢复授权；Task30 实现/开发证据提交保持为 `923dc1553f11f7b35a0e64d1caa2814215296042`。
+- 将 `HANDOFF_30.md` 更新为最终回交，冻结 `NOT_PASSED_MECHANISM_NOT_STABLE`、Task40 未授权、精确指标与 run hash、正式 test 不可达、资产 accepted-risk 和环境门失败身份。
+- 不修改 `TASK_REGISTRY.md` 或 `.light/passport.yaml` 的 Task30 总控状态；其最终状态变更留给 00。
+
+### 验证与证据
+
+- 合并冲突仅为 `WORK_LOG.md` 并行追加；冲突标记扫描为空，`git diff --check` 与 staged diff check 均通过。
+- `.venv-task30` 运行 `scripts/validate_work_log.py`：最终 251 条、0 errors、PASS，latest=`WR-20260802-004`。
+- 最终复跑：Task30 46/46、全仓 120/120、`compileall`、Task30 schema、Task20 handoff 22 项证据、`pip check`、Light review gate 0 findings、workspace Python seed audit 0 missing，均通过；`git diff --check` 通过。
+- 首次并行门命令因本条元数据误写为`任务/问题`而使日志校验失败，改为规范键`任务/门`后通过。一次文件枚举调用本机 `rg.exe` 返回 access denied，但测试进程正常启动并通过；随后改用只读 PowerShell 枚举。一次 schema 命令误写文件名 `development-matrix-v1.schema.json` 而失败，定位实际冻结文件 `development-matrix.schema.json` 后复跑通过。以上命令层失败均未删除或冒充成功。
+- 准备门仍诚实失败：Task30 独立环境找不到本 worktree 未承载的冻结相对路径 `data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`；主 `.venv` 不存在，AGENTS 指定两个入口在脚本启动前失败。最终退出身份为 `log=0, prep=1, main_log=127, main_prep=127`，不得改写为环境 ready。
+
+### 影响与边界
+
+- 开发证据仅支持“评论特异机制未稳定隔离，因此 H1 开发门不通过”；不构成正式 H1 拒绝或论文 performance claim。
+- CSMV 正式 test 未 materialize 或参与选择；LAI-GAI 无评论字段，Video2Reaction 原始评论未发布，均未伪造 teacher。
+- G1、G2、资产许可/fixity、G3 与 VC-CSA NON_T0/INELIGIBLE 身份不变。Task40 保持 `NOT_CREATED/BLOCKED_NOT_AUTHORIZED`。
+- 全部运行使用本地 RTX 3070 Ti，观察显存低于 2.2 GiB；未使用或申请租赁算力、远程 GPU、闭源服务或数据外传。
+
+### 风险、问题与阻塞
+
+- 只有一个 comment-bearing H1 开发集；三 development seeds 不是 Task50 正式五种子统计证据。
+- privileged KD 相对 soft 的 JSD 收益为 3/3，但相对 ordinary KD 与 mismatch 仅 2/3，且 NLL 与高熵/高噪声组均 3/3 变差；机制门不能放行。
+- I3D 许可、官方 revision、权利方包身份/fixity 仍 unknown，只能沿用 accepted-risk 内部研究边界，禁止再分发。
+
+### 下一步
+
+1. 提交 `HANDOFF_30.md` 与本闭环记录，向 00 回交最终 commit。
+2. 停止 Task30 调参与训练，等待 00 接受关闭或书面授权预声明的 H1 修复；不创建 Task40。
+
+### Git状态
+
+Task30 完整实现/开发证据提交与上游合并提交均仅存在本地分支；最终 handoff/日志闭环待提交，尚未推送。

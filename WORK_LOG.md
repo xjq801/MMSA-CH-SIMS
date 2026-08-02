@@ -10922,3 +10922,187 @@ Task30创建合同、HANDOFF_30与WR-010待有意暂存、提交和推送；用�
 ### Git状态
 
 本条写入时本批文件尚未提交或推送；用户未跟踪目录不纳入。
+
+## WR-20260802-002 — Task20 Epoch 1–3 独立恢复复跑完成绑定预检并启动
+
+- 时间：2026-08-02 11:26:51 +08:00
+- 类型：PROGRESS | EXPERIMENT | TDD | VALIDATION | FAILURE_EVIDENCE
+- 任务/门：Task20 VC-CSA Epoch 1–3 独立恢复 Attempt2
+- 状态：RUNNING；唯一 seed=3407 已从全新初始化启动，尚无完整 epoch 结果
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+依据 `TASK00_TASK20_EPOCH1_3_RECOVERY_RERUN_DECISION_AND_EXECUTION_CONTRACT_20260802.md`，本批只执行 `TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2`，补充独立 attempt 的 Epoch 1–3 私有诊断证据。该运行不是原 Epoch 4–120 的 resume 或 continuation，永久为 `AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY` 且正式证据不合格。
+
+### 实际变更
+
+- 新增恢复配置、run manifest 与 preflight manifest，冻结 seed=3407、batch size=16、`max_epoch=120`、120轮 scheduler 总步数语义、`num_workers=0`、test access=0、全新初始化和 Epoch 3 完整闭环后停止。
+- 对 `scripts/prepare_vccsa_author_reproduction.py` 测试先行增加完成 epoch 守卫、旧续训补丁升级时的全新初始化拒绝、逐 step total/opinion/emotion loss 与 learning-rate JSONL 账本，以及移除无头环境中未使用的 `turtle.forward` GUI 导入。
+- 新增 `scripts/collect_vccsa_recovery_metrics.py` 与负测：从私有作者 dev prediction 严格验证 10727 个唯一 ID、概率归一化、class-index 对齐，并分别为 opinion/emotion 生成 JS、NLL、EMD、Macro-F1、Balanced Accuracy、Brier、ECE、ACE、AURC-JS；不读取 test。
+- 建立独立私有 MatBox target，旧 Epoch 4–120、final bundle、HANDOFF/G3 和论文证据均未覆盖。
+
+### 验证与证据
+
+- Git 开工状态安全快进到授权父提交 `349be410f40b522a0f8121f0ed2b85335483b32d`；用户未跟踪 `NEmoP/`、`__MACOSX/`、`tmp/` 未触碰。
+- 非秘密实例绑定：host-key SHA-256=`SHA256:gmztR/PfVEDy6YzkP24iddGQhHqSJ5Ffa+74nfaB8F0`，GPU UUID=`GPU-87cf0a36-238d-7d5e-fe24-3330fbca7672`；MatBox target digest=`04e93339d56e94f043759a743ccb5fe59dae676f6b96a3a2b779f1715a67a0cf`，目录0700。
+- I3D fixity：8210/8210，2,283,804,928 bytes，content tree SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`，missing/extra/size/hash mismatch均空，文件权限错误0。
+- 旧完整运行 `pip_freeze.txt` SHA-256=`b772daf168657baeac55f577c59ede3f16e2dbf92947fde497dfb8dbcf86a8e6`；恢复后 byte hash一致，torch=`1.13.1+cu117`、CUDA build=11.7、CUDA可用。
+- 守卫测试先红后绿；当前 `python -m unittest discover -s tests -p "test_vccsa*.py" -v` 为15/15通过。九指标测试首轮因项目指标键使用长名称而失败，显式归一到合同短名称后通过。
+- 远端 `main.py --help`、`py_compile`、GPU UUID、8210 count、ACL与空目标预检通过后启动；运行开始时间为2026-08-02T03:26:51Z，训练进程存活，启动观测GPU利用率88%、显存14110/24564 MiB。中途 loss 仅为运行诊断，不作为结果。
+
+### 风险、问题与阻塞
+
+- 首个负测如预期证明旧补丁升级路径缺少 fresh-init 拒绝；最小修复后通过。一次使用错误测试方法名失败，未删除。
+- 本机 `rg.exe` 访问被拒后使用 `Select-String` 等价审计。
+- 首个远端 SFTP 目标目录假设错误；随后定位真实 attempt 根目录。脚本 CLI 因作者源码归档无 `.git` 而 `git rev-parse` 失败，改为直接调用同一受测补丁函数。一次 PowerShell here-string 解析失败未连接实例；一次 SFTP 大文件过慢后终止并删除仅位于新 attempt 的 partial archive，改用固定官方 RoBERTa revision逐文件hash恢复。
+- 环境恢复依次经历缺少 `python3.8-venv`、后台命令变量未展开、旧 pip 错选 Python≥3.9 依赖三次失败；安装 venv 支持并使用旧完整 `pip_freeze` 后精确恢复。零步入口还发现未声明 `tkinter`，以TDD移除作者未使用的 `turtle.forward` 死导入。
+- 首次训练启动在0 step因标签压缩包尚未解压而 exit=1；stdout/stderr/argv/start/end/exit code及SHA-256已保留到私有 MatBox `failures/preflight-launch-001`。安全解压唯一 `lable_data_dict.json` 成员后，同一 attempt 工程重试成功启动；不把该失败写成训练结果。
+
+### 影响与边界
+
+- 原 Epoch 1–3 缺失事实不被改写；新数据只能在独立 Attempt2 分区展示，并在 Epoch 3/4 标记 `INDEPENDENT ATTEMPT BOUNDARY`，不得跨界连线、平滑、插值或声称连续轨迹。
+- 不进入T0、G3、Task30/40/50、论文SSOT或正式 claim；test access保持0；I3D许可/revision/权利方身份-fixity与平台控制面继续UNKNOWN。
+- 2026-08-31 23:59:59 +08:00可见层删除截止不延长。
+
+### 下一步
+
+1. 每15分钟监控唯一进程、GPU/RAM/磁盘、逐step账本、checkpoint与异常。
+2. 每个完整 epoch 闭环后同步该轮小型私有证据并核验SHA-256/权限；Epoch 3正常退出后生成九指标和最终证据账本。
+3. 生成独立attempt边界展示和非秘密完成说明，运行项目门禁后提交并请求00独立验收。
+
+### Git状态
+
+本条写入时实验仍在运行；本批Task20代码、测试、配置、manifest与日志均未提交或推送，不得写成已同步。
+
+## WR-20260802-003 — Task20 Attempt2 Epoch 1完整闭环与私有证据同步
+
+- 时间：2026-08-02 12:33:35 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRICS | VALIDATION | FAILURE_EVIDENCE
+- 任务/门：Task20 VC-CSA Epoch 1–3 独立恢复 Attempt2
+- 状态：Epoch 1 CLOSED；Epoch 2运行中
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+在不改写原Epoch 1–3缺失事实的前提下，记录独立Attempt2首个完整epoch闭环及其私有证据同步状态。
+
+### 实际变更
+
+- Epoch 1完成4693个step、dev评估、10727条私有预测、作者指标文件、best更新及epoch边界checkpoint写入；逐step账本为4693行、global_step 1–4693连续唯一，loss/LR均有限值。
+- 作者dev汇总：opinion accuracy/micro-F1=`0.6309312948634287`、macro-F1=`0.573248828519041`；emotion accuracy/micro-F1=`0.552158105714552`、macro-F1=`0.39828094856024826`。这些仅为NON_T0/INELIGIBLE探索诊断，不是正式论文结果。
+- 私有MatBox `epoch-001` 目录为0700、文件为0600；逐step账本、loss、作者dev指标、prediction、九指标、TensorBoard增量、日志快照、argv和best权重引用均已同步。`SHA256SUMS` SHA-256=`b2aade33154043cb297098eacc3d6ad8823764d6b089315abe220ae01561656d`，逐项校验通过。
+- 九指标侧车发现10727条opinion原始标签向量中1条和为3；未静默归一化。新增TDD合同，以作者保存的`label_classindex`构造one-hot目标并披露异常计数；emotion异常0。相关VC-CSA专项测试更新后16/16通过。
+
+### 验证与证据
+
+Epoch 1的4693行逐step账本、10727条唯一dev预测、作者指标、九指标和私有SHA-256账本均已按合同核验。
+
+### 风险、问题与阻塞
+
+- 九指标首次生成按预期fail-closed，报`opinions_label rows are not normalized`；查明仅1条异常后采用显式硬标签来源合同，未改训练或作者评测器。
+- 首次SHA账本生成误把既有`SHA256SUMS`自身纳入，校验失败；删除坏账本后以排除自身的确定性文件列表重建并全项通过。随后仅用于打印摘要的脚本因作者键名为`f1_score`而非`f1`退出1，不影响已完成同步和哈希；修正只读解析后得到上述汇总。
+
+### 影响与边界
+
+- 不读取或报告test；不复制逐样本内容到Git/消息；不把Epoch 1中途loss或该单seed探索指标写入T0、G3、Task30/50或论文claim。
+- Epoch 3/旧Epoch 4之间仍须显示独立attempt边界且禁止连线。
+
+### 下一步
+
+继续同一Attempt2的Epoch 2/3；仅在完整epoch闭环后同步证据，并在Epoch 3闭环后由执行守卫停止。
+
+### Git状态
+
+本条与代码/配置仍未提交；训练继续运行，等待Epoch 2/3真实闭环。
+
+## WR-20260802-004 — Task20 Attempt2 Epoch 2完整闭环与私有证据同步
+
+- 时间：2026-08-02 13:03:00 +08:00
+- 类型：PROGRESS | EXPERIMENT | METRICS | VALIDATION
+- 任务/门：Task20 VC-CSA Epoch 1–3 独立恢复 Attempt2
+- 状态：Epoch 2 CLOSED；Epoch 3运行中
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+继续记录同一独立Attempt2的Epoch 2闭环，不新建attempt、不改变scheduler、split或评测语义。
+
+### 实际变更
+
+- Epoch 2完成4693个step、dev评估、10727条私有预测、作者指标、best更新与epoch边界checkpoint；累计逐step账本global_step 1–9386连续唯一，全部loss/LR为有限值。
+- 作者dev汇总：opinion accuracy/micro-F1=`0.6466859326932041`、macro-F1=`0.5870461029303483`；emotion accuracy/micro-F1=`0.5866505080637643`、macro-F1=`0.47579047024762633`。仍只作为NON_T0/INELIGIBLE探索诊断。
+- 九指标继续使用明确的`author_label_classindex_one_hot`目标合同，披露opinion原始非归一化标签1条、emotion 0条；未读取test。
+- 私有MatBox `epoch-002` 目录和文件权限分别为0700/0600；小型证据逐项SHA-256通过，`SHA256SUMS` SHA-256=`e4f1a70668399e340c9fcb10a3be1fb382863a92145c5c9eb1736ee1cdfb7d9b`。
+
+### 验证与证据
+
+- Epoch 3监控时GPU利用率87%、显存17128/24564 MiB、RAM可用约47.5 GiB；根盘与MatBox容量稳定。
+- 未发现NaN/Inf、OOM、Killed、Traceback、读取错误或`.tmp`残留；滚动checkpoint持续更新且权限0600。
+
+### 影响与边界
+
+- Epoch 2数据仍仅为NON_T0/INELIGIBLE内部诊断；原Epoch 1–3证据缺口、G门和论文边界均不变。
+- 旧Epoch 4–120证据未覆盖，展示层仍须在Epoch 3/4物理断开。
+
+### 风险、问题与阻塞
+
+- 写入本条时Epoch 3尚未闭环，故不得把运行状态写成完成；私有受限资产仍受2026-08-31可见层删除截止约束。
+
+### 下一步
+
+等待Epoch 3训练、dev预测、指标和checkpoint全部闭环，由执行守卫正常退出后再生成最终证据包。
+
+### Git状态
+
+本条与Task20本批文件仍未提交；等待Epoch 3完整闭环与执行守卫正常退出。
+
+## WR-20260802-005 — Task20 Attempt2 Epoch 1–3完成、边界展示与验收回交准备
+
+- 时间：2026-08-02 15:20:00 +08:00
+- 类型：COMPLETION | EXPERIMENT | METRICS | TDD | VALIDATION | FAILURE_EVIDENCE | HANDOFF
+- 任务/门：Task20 VC-CSA Epoch 1–3独立恢复Attempt2 / REQUEST_00_TASK20_EPOCH1_3_RECOVERY_REVIEW
+- 状态：COMPLETED_AWAITING_00_REVIEW；永久NON_T0/INELIGIBLE
+- 负责人：20-M3 基线与统一评测 Codex
+
+### 背景与目标
+
+依照2026-08-02版本化合同，只完成唯一`TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2`，补充一个独立attempt的Epoch 1–3内部诊断证据。该运行不是原Epoch 4–120的resume或continuation，不恢复原Epoch 1–3缺口，也不改变Task20正式核心关闭状态。
+
+### 实际变更
+
+- 完成Epoch 3训练、dev评估、10727条唯一dev预测、九指标侧车和epoch/final checkpoint闭环；受测执行守卫在完整Epoch 3后正常停止，exit code=0。
+- 最终逐step账本共14079行，global_step 1–14079连续唯一；每轮4693步，loss/LR全部有限，`test_access=0`。
+- 新增并冻结恢复配置、run/preflight manifest、聚合指标摘要、完成说明、实验登记、执行守卫/逐step账本/九指标代码及测试。
+- 生成新的断开式展示CSV/PNG/SVG：Attempt2 Epoch 1–3与原Attempt1 Epoch 4–120使用不同线型、独立绘制，在Epoch 3/4标注`INDEPENDENT ATTEMPT BOUNDARY`；每行均为`cross_attempt_comparable=false`，未覆盖历史CSV/PNG/Word。
+
+### 验证与证据
+
+- 私有Epoch 3账本SHA-256=`ccd623aee519450e9f804dacf063abd0989b784faf66b7dcdeb5e6cc713931c4`；最终私有bundle账本SHA-256=`ff070dd3f92b78cd1e5a4d7b85d9ed16fd3d273fb30e26f7a92694bba82f524b`，逐项`sha256sum -c`通过，目录/文件权限0700/0600且无`.tmp`。
+- 最终rolling checkpoint SHA-256=`dcf8952e418d73267ea8dccb79bd5fd13b0d88a7223d2542aa8da88ab3e916e2`，游标`epoch_index=3,next_batch_index=0,global_step=14079`；Epoch 3 best SHA-256=`49da29417ea2b6e522c14947a16d2e2d000f603f8062923f36fff0abdbfcd7c7`。
+- 训练后I3D精确复核为8210/8210、2,283,804,928 bytes、content-tree SHA-256=`592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925`，missing/extra/size/hash/mode差异全空；fixity记录SHA-256=`05492891ee63bbd0f7fffef62908191223c31c944b95e185dcc50be91b7c14d4`。
+- `\.venv-task20\Scripts\python.exe -m unittest discover -s tests -p 'test_vccsa*.py' -v`为16/16通过；边界图专项为2/2通过；全量`unittest discover`为80/80通过；边界图重绘exit 0；`git diff --check` exit 0。
+- 首轮按AGENTS入口运行`validate_work_log.py`与`run_preparation_checks.py`均exit 1：本批WR-002/003/004结构尚不符合机读合同，准备检查的唯一blocking为`work_log`。这些未提交记录已在同批补齐元数据及必需章节，失败未删除；最终门禁结果在提交前复跑并如实记录。
+- 结构补齐后按AGENTS指定入口复跑：`validate_work_log.py`为246条、0错误、exit 0；`run_preparation_checks.py`为`blocking_checks=[]`、exit 0，且继续诚实保留`formal_model_work_ready=false`与`faiss_available=false`；最终`git diff --check` exit 0。
+
+### 影响与边界
+
+- 新指标和曲线永久为`AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`且`FORMAL_EVIDENCE_ELIGIBILITY=INELIGIBLE`，不得进入T0、G3、统一baseline、Task30/40/50或论文正式claim。
+- 原运行Epoch 1–3 raw loss/dev metrics/predictions仍为缺失；Attempt2与原Attempt1跨初始化、跨实例，不可比较、不可连线、不可平滑或插值。
+- I3D许可、官方revision及权利方包身份/fixity仍为UNKNOWN；历史hash-bound证据和论文SSOT未修改。
+
+### 风险、问题与阻塞
+
+- 九指标首次对一个非归一化opinion原始标签行fail-closed；最终采用显式`author_label_classindex_one_hot`目标合同并披露每轮opinion异常1条、emotion 0条，未静默归一化。
+- 私有证据生成过程中保留了零步标签归档失败、checksum自包含失败、本地大文件监控timeout、post-run fixity首轮字段名错误，以及最终checksum临时文件自包含失败；均在完成说明中逐项列出，最终成功不覆盖失败事实。
+- 受限可见层删除截止仍为`2026-08-31 23:59:59 +08:00`，平台控制面继续UNKNOWN；当前不冒充已删除或物理擦除。
+
+### 下一步
+
+1. 修复本批未提交WORK_LOG结构后复跑全部项目门禁。
+2. 只提交合同允许的Task20代码、测试、配置、manifest、登记、非秘密展示、完成说明和同批WORK_LOG，推送main。
+3. 以`REQUEST_00_TASK20_EPOCH1_3_RECOVERY_REVIEW`回交精确commit与hash；Task20不自行验收或升级证据等级。
+
+### Git状态
+
+本条写入时本批仍未提交或推送；用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`未触碰，任何凭据、逐样本预测、checkpoint、I3D或endpoint原文均未进入Git。

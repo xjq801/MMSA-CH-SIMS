@@ -1,0 +1,66 @@
+{
+  "schema_version": "task20-vccsa-recovery-epoch-metrics-summary-v1",
+  "attempt_id": "TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2",
+  "formal_evidence_eligibility": "INELIGIBLE",
+  "test_access": 0,
+  "steps_per_epoch": 4693,
+  "dev_samples_per_epoch": 10727,
+  "metric_directions": {
+    "js": "lower",
+    "nll": "lower",
+    "emd": "lower",
+    "macro_f1": "higher",
+    "balanced_accuracy": "higher",
+    "brier": "lower",
+    "ece": "lower",
+    "ace": "lower",
+    "aurc_js": "lower"
+  },
+  "target_contract": "author_label_classindex_one_hot",
+  "raw_label_anomaly_disclosure": {
+    "opinion_non_normalized_rows_per_epoch": 1,
+    "emotion_non_normalized_rows_per_epoch": 0,
+    "silent_normalization_performed": false
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_mean": {"total": 0.23960825182368906, "opinion": 0.11448143936190401, "emotion": 0.12512681240939444},
+      "author_dev": {
+        "opinion": {"accuracy": 0.6309312948634287, "micro_f1": 0.6309312948634287, "macro_f1": 0.573248828519041},
+        "emotion": {"accuracy": 0.552158105714552, "micro_f1": 0.552158105714552, "macro_f1": 0.39828094856024826}
+      },
+      "dev_nine_metrics": {
+        "opinion": {"js": 0.2425449106671485, "nll": 0.8209413365366207, "emd": 0.3076742298102891, "macro_f1": 0.573248828519041, "balanced_accuracy": 0.5715011985663754, "brier": 0.4958154389126521, "ece": 0.1016251562724634, "ace": 0.10162515627246341, "aurc_js": 0.19575233328864167},
+        "emotion": {"js": 0.32638897696469005, "nll": 1.248016663471028, "emd": 0.32381367114743076, "macro_f1": 0.39828094856024826, "balanced_accuracy": 0.4203773648745062, "brier": 0.6017212745723931, "ece": 0.1154437869084559, "ace": 0.11539601978250189, "aurc_js": 0.25672084246533866}
+      },
+      "private_epoch_ledger_sha256": "b2aade33154043cb297098eacc3d6ad8823764d6b089315abe220ae01561656d"
+    },
+    {
+      "epoch": 2,
+      "train_mean": {"total": 0.1878921358859821, "opinion": 0.09971926883998175, "emotion": 0.0881728670321089},
+      "author_dev": {
+        "opinion": {"accuracy": 0.6466859326932041, "micro_f1": 0.6466859326932041, "macro_f1": 0.5870461029303483},
+        "emotion": {"accuracy": 0.5866505080637643, "micro_f1": 0.5866505080637643, "macro_f1": 0.47579047024762633}
+      },
+      "dev_nine_metrics": {
+        "opinion": {"js": 0.23368709653122097, "nll": 0.7917528348998522, "emd": 0.2936261289897321, "macro_f1": 0.5870461029303483, "balanced_accuracy": 0.5788296642422109, "brier": 0.47861210369271634, "ece": 0.09997255493003905, "ace": 0.09936743781121193, "aurc_js": 0.1832512888871543},
+        "emotion": {"js": 0.2917034966085954, "nll": 1.1267277777070581, "emd": 0.29574444012386536, "macro_f1": 0.47579047024762633, "balanced_accuracy": 0.4738632473556438, "brier": 0.5552714310696749, "ece": 0.07692715169449846, "ace": 0.07680869720466868, "aurc_js": 0.213836624587335}
+      },
+      "private_epoch_ledger_sha256": "e4f1a70668399e340c9fcb10a3be1fb382863a92145c5c9eb1736ee1cdfb7d9b"
+    },
+    {
+      "epoch": 3,
+      "train_mean": {"total": 0.17230410999468643, "opinion": 0.09355574347048635, "emotion": 0.07874836649721095},
+      "author_dev": {
+        "opinion": {"accuracy": 0.6502283956371773, "micro_f1": 0.6502283956371773, "macro_f1": 0.5682228751686575},
+        "emotion": {"accuracy": 0.5942947702060222, "micro_f1": 0.5942947702060222, "macro_f1": 0.49888753170715117}
+      },
+      "dev_nine_metrics": {
+        "opinion": {"js": 0.2263984953785876, "nll": 0.7729708304942703, "emd": 0.2824111086596451, "macro_f1": 0.5682228751686575, "balanced_accuracy": 0.5519941865743124, "brier": 0.4675936930712593, "ece": 0.08240887004337295, "ace": 0.08240887004337294, "aurc_js": 0.1697648515368422},
+        "emotion": {"js": 0.28377938759257215, "nll": 1.1029825225585472, "emd": 0.29551090234240374, "macro_f1": 0.49888753170715117, "balanced_accuracy": 0.48727133075401496, "brier": 0.5472944985006618, "ece": 0.07753097911179693, "ace": 0.07662395910913984, "aurc_js": 0.21001512116911053}
+      },
+      "private_epoch_ledger_sha256": "ccd623aee519450e9f804dacf063abd0989b784faf66b7dcdeb5e6cc713931c4"
+    }
+  ]
+}

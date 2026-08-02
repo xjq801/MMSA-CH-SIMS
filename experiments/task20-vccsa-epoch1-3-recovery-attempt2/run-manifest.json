@@ -1,0 +1,55 @@
+{
+  "schema_version": "task20-vccsa-recovery-run-manifest-v1",
+  "attempt_id": "TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2",
+  "status": "COMPLETED_INDEPENDENT_ATTEMPT_AWAITING_00_REVIEW",
+  "termination": "EXECUTION_GUARD_AFTER_COMPLETED_EPOCH_3",
+  "completion": true,
+  "formal_evidence_eligibility": "INELIGIBLE",
+  "experiment_identity": "AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY",
+  "relation_to_original_run": "INDEPENDENT_RERUN_NOT_A_RESUME_NOT_A_CONTINUATION",
+  "authorization_contract": {
+    "path": "TASK00_TASK20_EPOCH1_3_RECOVERY_RERUN_DECISION_AND_EXECUTION_CONTRACT_20260802.md",
+    "sha256": "f94198fba4329808544be060087af8b6e45a7dfeae42527e81531caed097922c",
+    "authorization_commit": "349be410f40b522a0f8121f0ed2b85335483b32d"
+  },
+  "code": {
+    "base_commit": "349be410f40b522a0f8121f0ed2b85335483b32d",
+    "tracked_dirty_during_run": true,
+    "final_code_bundle_sha256": "d189175655803bd2274731490b956fd5bfaf6fbca6321f26eea2f6e67f6c4c5b",
+    "hash_scheme": "sha256 of newline-delimited relative-path NUL file-sha256 records for three Task20 scripts and three test modules",
+    "dirty_reason": "TDD execution guard preserves max_epoch=120 and stops only after the completed Epoch 3 boundary"
+  },
+  "config_path": "configs/task20/vccsa-epoch1-3-recovery-attempt2.json",
+  "config_sha256": "5a5acd400b6bed34926774de42e28c19813f8ed406b3a89ddfc8ea654289343e",
+  "seed": 3407,
+  "max_epoch_scheduler_semantics": 120,
+  "epochs_completed": 3,
+  "steps_per_epoch": 4693,
+  "global_steps": 14079,
+  "test_access": 0,
+  "started_at": "2026-08-02T11:26:51+08:00",
+  "ended_at": "2026-08-02T13:12:53+08:00",
+  "exit_code": 0,
+  "remote_artifacts_private": true,
+  "restricted_payloads_in_git": false,
+  "private_final_bundle": {
+    "sha256_ledger": "ff070dd3f92b78cd1e5a4d7b85d9ed16fd3d273fb30e26f7a92694bba82f524b",
+    "directory_mode": "0700",
+    "file_mode": "0600",
+    "tmp_files": 0,
+    "checkpoint_cursor": {
+      "epoch_index": 3,
+      "next_batch_index": 0,
+      "global_step": 14079
+    },
+    "last_resume_checkpoint_sha256": "dcf8952e418d73267ea8dccb79bd5fd13b0d88a7223d2542aa8da88ab3e916e2",
+    "best_epoch_3_weight_sha256": "49da29417ea2b6e522c14947a16d2e2d000f603f8062923f36fff0abdbfcd7c7",
+    "postrun_fixity_sha256": "05492891ee63bbd0f7fffef62908191223c31c944b95e185dcc50be91b7c14d4"
+  },
+  "display_contract": {
+    "cross_attempt_comparable": false,
+    "boundary_label": "INDEPENDENT ATTEMPT BOUNDARY",
+    "connect_across_epoch_3_4": false,
+    "original_attempt1_epoch_1_3_gap_remains": true
+  }
+}

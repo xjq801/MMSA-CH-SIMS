@@ -1,0 +1,74 @@
+{
+  "schema_version": "task20-vccsa-recovery-preflight-v1",
+  "recorded_at": "2026-08-02T10:42:38+08:00",
+  "attempt_id": "TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2",
+  "authorization_contract_sha256": "f94198fba4329808544be060087af8b6e45a7dfeae42527e81531caed097922c",
+  "derived_config_sha256": "5a5acd400b6bed34926774de42e28c19813f8ed406b3a89ddfc8ea654289343e",
+  "run_manifest_sha256": "62eca43769ad1e116dbb3338eb41497880fd09fb9f0680d4ddc1768db6f0a991",
+  "instance_binding": {
+    "host_key_type": "ssh-ed25519",
+    "host_key_sha256": "SHA256:gmztR/PfVEDy6YzkP24iddGQhHqSJ5Ffa+74nfaB8F0",
+    "gpu_model": "NVIDIA GeForce RTX 4090",
+    "gpu_uuid": "GPU-87cf0a36-238d-7d5e-fe24-3330fbca7672",
+    "endpoint_digest": "7508716933dc9f5f002ecf4a386393d7d82d419f2a9bdd79d3e219ccfd9de664"
+  },
+  "storage_binding": {
+    "storage_target_digest": "04e93339d56e94f043759a743ccb5fe59dae676f6b96a3a2b779f1715a67a0cf",
+    "region_category": "matbox-private-apac2",
+    "filesystem": "fuse.fx",
+    "acl_summary": "directory 0700, owner-only",
+    "encryption_status": "UNKNOWN_PLATFORM_CONTROL_PLANE",
+    "initial_entries": 0,
+    "available_bytes_at_binding": 5955911680
+  },
+  "input_fixity": {
+    "manifest_sha256": "425829cf3271ce3c695a011e75b9efa94c4efab76458fda9f902e6eeb9c99c1e",
+    "files_expected": 8210,
+    "files_observed": 8210,
+    "bytes_expected": 2283804928,
+    "bytes_observed": 2283804928,
+    "content_tree_expected": "592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925",
+    "content_tree_observed": "592eb698694388f3ab169c924f88e470daa64d5b496ff007cec390f7d1ada925",
+    "missing": [],
+    "extra": [],
+    "size_mismatch": [],
+    "sha256_mismatch": [],
+    "file_mode_errors": 0,
+    "exact_match": true
+  },
+  "environment_observation": {
+    "os": "ubuntu 20.04",
+    "kernel": "6.1.0-0.deb11.21-amd64",
+    "driver": "565.77",
+    "gpu_memory_mib": 24564,
+    "cpu_count": 10,
+    "memory_kib": 52428800,
+    "base_python": "3.8.10",
+    "frozen_training_environment_status": "RESTORED_EXACT_OBSERVED_PIP_FREEZE",
+    "observed_pip_freeze_sha256": "b772daf168657baeac55f577c59ede3f16e2dbf92947fde497dfb8dbcf86a8e6",
+    "torch_cuda_runtime": "torch 1.13.1+cu117; CUDA build 11.7; CUDA available",
+    "environment_restore_failures_before_success": 3
+  },
+  "local_runtime_archives": {
+    "task20-author-runtime.tar": "f0fd66accb16db4292ede192c516a8daeae1d1e1d94d2326e4259aa64a813af3",
+    "task20-author-source.tar": "12c000d289668628ced1335bbe9cbb35c9fc3093a3e06e48c06531ae4689819e",
+    "task20-comments-author-full.tar": "496b922e58d86f02fa7a6b3195b70cf899d9e521229045311177aaf1e8a9e948",
+    "task20-roberta-author.tar": "a32207a761222570e7e1003fd3f826828f4b1198bdb55e707b57ead868cefd86"
+  },
+  "code_binding": {
+    "base_commit": "349be410f40b522a0f8121f0ed2b85335483b32d",
+    "authorized_diff_sha256": "fe62e33081e2ad30b292c726fd250d7f1c726f99fcbfa165b324ca112ea3f869",
+    "prepare_script_sha256_after_guard": "c259ab0f7c9d393e37374c6aa7e354ce8ff39627dc833d0e58484121d7307b35",
+    "recovery_metrics_script_sha256": "ee6b29b63d1efaadb5307a180aad442f9317ff14ee1a0a614c9bbd09977c2b90",
+    "resume_runtime_sha256": "0726a788a11639348c58691809120b503bf64c2e36131843e63852fbfb583b95"
+  },
+  "execution_semantics": {
+    "fresh_initialization": true,
+    "load_checkpoint": false,
+    "max_epoch": 120,
+    "stop_after_completed_epoch": 3,
+    "scheduler_total_epoch_semantics": 120,
+    "test_access": 0
+  },
+  "decision": "ASSET_TRANSFER_ALLOWED_AFTER_CONFIG_AND_MANIFEST_HASH_BINDING"
+}

@@ -357,6 +357,21 @@ def _patch_vccsa_main_for_resume(text: str) -> str:
         if anchor not in text:
             raise ValueError("cannot add VC-CSA resume arguments")
         text = text.replace(anchor, addition, 1)
+    if "--stop_after_completed_epoch" not in text:
+        anchor = "    parser.add_argument('--checkpoint_every_steps', type=int, default=500)\n"
+        addition = (
+            anchor
+            + "    parser.add_argument('--stop_after_completed_epoch', type=int, default=None)\n"
+        )
+        if anchor not in text:
+            raise ValueError("cannot add VC-CSA completed-epoch execution guard")
+        text = text.replace(anchor, addition, 1)
+    if "--step_metrics_out" not in text:
+        anchor = "    parser.add_argument('--stop_after_completed_epoch', type=int, default=None)\n"
+        addition = anchor + "    parser.add_argument('--step_metrics_out', type=str, default=None)\n"
+        if anchor not in text:
+            raise ValueError("cannot add VC-CSA per-step metrics output")
+        text = text.replace(anchor, addition, 1)
 
     seed_block = (
         "    torch.manual_seed(args.seed)\n"
@@ -408,7 +423,14 @@ def _patch_vccsa_main_for_resume(text: str) -> str:
         + "    }\n"
         + "    if args.resume_checkpoint_out is None:\n"
         + "        args.resume_checkpoint_out = os.path.join(args.output, args.name, 'last-resume.ckpt')\n"
+        + "    if args.step_metrics_out is None:\n"
+        + "        args.step_metrics_out = os.path.join(args.output, args.name, 'step_metrics.jsonl')\n"
         + "    resume_state = None\n"
+        + "    if args.stop_after_completed_epoch is not None:\n"
+        + "        if args.resume_checkpoint or args.fine_ck_path:\n"
+        + "            raise ValueError('--stop_after_completed_epoch requires fresh initialization')\n"
+        + "        if not 1 <= args.stop_after_completed_epoch < args.max_epoch:\n"
+        + "            raise ValueError('--stop_after_completed_epoch must be within max_epoch')\n"
         + "    if args.resume_checkpoint:\n"
         + "        if args.fine_ck_path:\n"
         + "            raise ValueError('--resume_checkpoint and --fine_ck_path are mutually exclusive')\n"
@@ -419,6 +441,43 @@ def _patch_vccsa_main_for_resume(text: str) -> str:
     )
     if scheduler_anchor in text and "args.resume_identity" not in text:
         text = text.replace(scheduler_anchor, resume_setup, 1)
+    if "args.step_metrics_out = os.path.join" not in text and "args.resume_identity" in text:
+        anchor = (
+            "    if args.resume_checkpoint_out is None:\n"
+            "        args.resume_checkpoint_out = os.path.join(args.output, args.name, 'last-resume.ckpt')\n"
+        )
+        replacement = (
+            anchor
+            + "    if args.step_metrics_out is None:\n"
+            + "        args.step_metrics_out = os.path.join(args.output, args.name, 'step_metrics.jsonl')\n"
+        )
+        if anchor in text:
+            text = text.replace(anchor, replacement, 1)
+        else:
+            fallback = "    resume_state = None\n"
+            if fallback not in text:
+                raise ValueError("cannot set VC-CSA per-step metrics output")
+            text = text.replace(
+                fallback,
+                "    if args.step_metrics_out is None:\n"
+                "        args.step_metrics_out = os.path.join(args.output, args.name, 'step_metrics.jsonl')\n"
+                + fallback,
+                1,
+            )
+    if "args.resume_identity" in text and "requires fresh initialization" not in text:
+        anchor = "    resume_state = None\n    if args.resume_checkpoint:\n"
+        replacement = (
+            "    resume_state = None\n"
+            "    if args.stop_after_completed_epoch is not None:\n"
+            "        if args.resume_checkpoint or args.fine_ck_path:\n"
+            "            raise ValueError('--stop_after_completed_epoch requires fresh initialization')\n"
+            "        if not 1 <= args.stop_after_completed_epoch < args.max_epoch:\n"
+            "            raise ValueError('--stop_after_completed_epoch must be within max_epoch')\n"
+            "    if args.resume_checkpoint:\n"
+        )
+        if anchor not in text:
+            raise ValueError("cannot add VC-CSA completed-epoch fresh-initialization guard")
+        text = text.replace(anchor, replacement, 1)
 
     call_anchor = (
         "    eval_accuracies = train(net, train_loader, eval_loader, optim, args,\n"
@@ -435,6 +494,8 @@ def _patch_vccsa_main_for_resume(text: str) -> str:
 
 
 def _patch_vccsa_trainer_for_resume(text: str) -> str:
+    if "import json\n" not in text:
+        text = "import json\n" + text
     if "from resume_utils import (" not in text:
         anchor = "from tqdm import tqdm\n"
         imports = (
@@ -642,6 +703,10 @@ def _patch_vccsa_trainer_for_resume(text: str) -> str:
         + "                            'eval_accuracies': eval_accuracies})\n"
         + "        if _STOP_REQUESTED:\n"
         + "            raise SystemExit(143)\n"
+        + "        if (args.stop_after_completed_epoch is not None and\n"
+        + "                epoch + 1 >= args.stop_after_completed_epoch):\n"
+        + "            print('execution guard stopped after completed epoch {}'.format(epoch + 1), flush=True)\n"
+        + "            break\n"
         + "        resume_state = None\n"
         + "        next_batch_index = 0\n"
     )
@@ -657,6 +722,39 @@ def _patch_vccsa_trainer_for_resume(text: str) -> str:
             "        resume_state = None\n",
             1,
         )
+    if "execution guard stopped after completed epoch" not in text:
+        anchor = (
+            "        if _STOP_REQUESTED:\n"
+            "            raise SystemExit(143)\n"
+            "        resume_state = None\n"
+        )
+        replacement = (
+            "        if _STOP_REQUESTED:\n"
+            "            raise SystemExit(143)\n"
+            "        if (args.stop_after_completed_epoch is not None and\n"
+            "                epoch + 1 >= args.stop_after_completed_epoch):\n"
+            "            print('execution guard stopped after completed epoch {}'.format(epoch + 1), flush=True)\n"
+            "            break\n"
+            "        resume_state = None\n"
+        )
+        if anchor not in text:
+            raise ValueError("cannot add VC-CSA completed-epoch trainer guard")
+        text = text.replace(anchor, replacement, 1)
+    if "'learning_rate': optim.param_groups[0]['lr']" not in text:
+        anchor = "            global_step += 1\n"
+        replacement = (
+            anchor
+            + "            with open(args.step_metrics_out, 'a', encoding='utf-8') as step_log:\n"
+            + "                step_log.write(json.dumps({\n"
+            + "                    'epoch': epoch + 1, 'step': step + 1,\n"
+            + "                    'global_step': global_step, 'total_loss': loss.item(),\n"
+            + "                    'opinion_loss': op_loss.item(), 'emotion_loss': emo_loss.item(),\n"
+            + "                    'learning_rate': optim.param_groups[0]['lr'],\n"
+            + "                }, sort_keys=True) + '\\n')\n"
+        )
+        if anchor not in text:
+            raise ValueError("cannot add VC-CSA per-step metrics ledger")
+        text = text.replace(anchor, replacement, 1)
     return text
 
 
@@ -811,8 +909,10 @@ def apply_compatibility_patch(source_root: Path) -> Dict:
             changed.append(str(entrypoint.relative_to(source_root)).replace("\\", "/"))
 
     model = model_path.read_text(encoding="utf-8")
-    without_imports = model.replace("from layers.fc import MLP\n", "").replace(
-        "from layers.layer_norm import LayerNorm\n", ""
+    without_imports = (
+        model.replace("from turtle import forward\n", "")
+        .replace("from layers.fc import MLP\n", "")
+        .replace("from layers.layer_norm import LayerNorm\n", "")
     )
     if "MLP" in without_imports or "LayerNorm" in without_imports:
         raise ValueError("missing layers package is referenced beyond dead imports")

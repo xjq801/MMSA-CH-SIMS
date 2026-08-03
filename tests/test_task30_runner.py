@@ -17,6 +17,7 @@ from run_task30_h1_development import (
     validate_development_policy,
     write_run_bundle,
 )
+from task30_contracts import DatasetRuntimeSpec
 
 
 class Task30RunnerPolicyTests(unittest.TestCase):
@@ -32,7 +33,17 @@ class Task30RunnerPolicyTests(unittest.TestCase):
                     "response_count": count,
                 })
             path.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
-            loaded = load_canonical_train_dev(path, ("a", "b"))
+            loaded = load_canonical_train_dev(
+                path,
+                DatasetRuntimeSpec(
+                    dataset_id="toy",
+                    class_order=("a", "b"),
+                    split_scheme="group_by_video_v1",
+                    item_id_field="item_id",
+                    target_distribution_field="emotion_distribution",
+                    response_count_field="response_count",
+                ),
+            )
             self.assertEqual(loaded["train_ids"], ["train"])
             self.assertEqual(loaded["dev_ids"], ["dev"])
             self.assertEqual(loaded["dev_response_counts"].tolist(), [3])
@@ -125,10 +136,16 @@ class Task30RunnerPolicyTests(unittest.TestCase):
             expected = {
                 "manifest.json", "config.json", "environment.json", "stdout.log",
                 "stderr.log", "raw_metrics.jsonl", "predictions.csv",
+                "training_history.jsonl", "model_state_hashes.json", "models",
                 "test_evidence.json", "guardrails.json", "aggregate_summary.json",
             }
             self.assertEqual({path.name for path in output.iterdir()}, expected)
             self.assertEqual(manifest["status"], "COMPLETED")
+            self.assertEqual(manifest["schema_version"], "task30-run-manifest-v2")
+            self.assertEqual(manifest["exit_code"], 0)
+            self.assertTrue(manifest["started_at"])
+            self.assertEqual(set(manifest["matrix_row_ids"]), set(result["rows"]))
+            self.assertEqual(len(list((output / "models").glob("*.pt"))), len(result["rows"]))
             aggregate = (output / "aggregate_summary.json").read_text(encoding="utf-8")
             self.assertNotIn("private-", aggregate)
             self.assertNotIn(str(output.resolve()), aggregate)

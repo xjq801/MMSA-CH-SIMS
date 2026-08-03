@@ -11351,3 +11351,53 @@ Task30 完整实现/开发证据提交与上游合并提交均仅存在本地分
 ### Git状态
 
 `origin/main@540c8d3`已合入本地分支；本日志修复待提交，尚未推送。
+
+## WR-20260803-002 — Task30补缺TDD、真实teacher审计与可复跑bundle v2
+
+- 时间：2026-08-03 22:08:38 +08:00
+- 类型：FEATURE | TEST | REPRODUCIBILITY | DATA
+- 任务/门：30-M4 评论教师与内容学生 / 总纲v1.21缺口补证
+- 状态：代码完成，待干净提交复跑
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+用户要求补齐Task30审计发现的全部缺口。本批只处理Task30权限内可执行项：真实CSMV teacher标签/置信度审计、teacher置信度机制诊断、配置驱动数据集接口、完整训练历史、私有权重身份、干净代码/输入/argv/时间轴manifest和可跟踪非秘密冻结构建器。00独立审核、未发布第二评论集、dev评论上界和讽刺正文分析不能由代码越权伪造。
+
+### 实际变更
+
+- 新增`DatasetRuntimeSpec`与`dataset-contract-csmv-v1.json`，canonical loader改由配置提供dataset ID、class order、split、item、target和response-count字段；移除运行入口的八类标签硬编码。
+- `derive_train_only_privileged_inputs`新增真实train视频teacher置信度，定义为`ONE_MINUS_NORMALIZED_EMPIRICAL_ENTROPY`，并输出类别质量、稀疏类别、评论数分布、置信度分布与缺失标签聚合审计；不输出评论正文或sample ID。
+- 新增train-only teacher置信度机制诊断：按置信度三分位报告privileged teacher相对ordinary teacher的逐train视频JSD拟合收益和相关性；明确不是dev student subgroup，未打开dev评论。
+- 将评论数、目标熵和标签噪声分析直接接入runner，避免只在报告中保留无法重算的派生数字。
+- run bundle升级为v2：记录started/ended、argv、exit code、matrix row IDs、seed role、clean/dirty、diff hash、逐代码文件hash、student/teacher完整epoch历史；本地私有保存选中student state并登记canonical tensor/file hash，禁止提交权重。
+- 新增`task30_freeze.py`，从干净run生成只含selected configs、聚合指标、teacher审计、置信度诊断和run身份的非秘密冻结对象；遇sample ID、prediction rows、argv或本机路径字段fail-closed。
+
+### 验证与证据
+
+- 新增测试首次运行exit 1：`analyze_teacher_confidence_effect`导入失败，真实派生结果缺`teacher_confidences`；这是生产实现前的预期红灯。
+- 最小实现后聚焦16/16通过；Task30专项49/49、全仓129/129通过，`compileall`、`pip check`和`git diff --check`通过。
+- Light seed audit覆盖Python/NumPy/PyTorch/CUDA/cuDNN/DataLoader七项、0 missing、PASS。
+- Light review首次因`std == 0.0`静态浮点比较报告2个重复warn；根因是零方差分支，已改为带绝对容差的`math.isclose`，待提交前复跑。失败未删除。
+
+### 影响与边界
+
+- 实际CSMV teacher审计和置信度诊断现在可以随真实run冻结；dev/test评论、test标签和Task20评测核心仍不可达。
+- 私有模型state仅写入Git忽略run目录，用于固定v1身份与本地复跑；不得提交、发布或再分发。非秘密冻结构建器不会输出文件路径、预测行或权重。
+- 不增加新模型家族、正式test、Task50五种子、memory/router/GNN/生成模块或付费资源。
+
+### 风险、问题与阻塞
+
+- teacher置信度诊断是train拟合机制诊断，不能冒充dev未来预测分组收益；dev teacher置信度需要dev评论，按冻结政策禁止。
+- CSMV原始人工标签不发布逐评论标注者置信分数，故使用明确命名的经验分布集中度代理，不能表述为标注者主观确信度。
+- 00独立审核和第二comment-bearing公开集仍是外部阻塞；代码只能登记为`EXTERNAL_REVIEW_REQUIRED`/`NOT_EVALUABLE_DATA_NOT_RELEASED`。
+
+### 下一步
+
+1. 提交本批代码和测试，取得clean code commit。
+2. 仅在本地GPU用该clean commit执行真实CSMV full/replay/固定多seed，并生成非秘密冻结包。
+3. 更新报告与handoff，向00回交补证commit；不创建Task40。
+
+### Git状态
+
+本批代码、配置、测试和日志待提交；真实复跑尚未开始，未使用远程或租赁算力。

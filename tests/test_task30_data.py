@@ -58,6 +58,16 @@ class Task30DataBoundaryTests(unittest.TestCase):
             self.assertEqual(result["sample_ids"], [train_id])
             self.assertEqual(result["response_counts"].tolist(), [2])
             self.assertEqual(result["privileged_features"].shape, (1, 12))
+            self.assertEqual(result["teacher_confidences"].shape, (1,))
+            self.assertGreaterEqual(float(result["teacher_confidences"][0]), 0.0)
+            self.assertLessEqual(float(result["teacher_confidences"][0]), 1.0)
+            self.assertEqual(
+                result["audit"]["teacher_confidence_definition"],
+                "ONE_MINUS_NORMALIZED_EMPIRICAL_ENTROPY",
+            )
+            self.assertEqual(result["audit"]["response_count"]["total"], 2)
+            self.assertEqual(set(result["audit"]["class_mass"]), set(CLASS_ORDER))
+            self.assertIn("teacher_confidence", result["audit"])
             self.assertTrue(np.isfinite(result["privileged_features"]).all())
             self.assertNotIn("comment", str(result).lower())
             self.assertNotIn("private", str(result).lower())

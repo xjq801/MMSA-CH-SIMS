@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
+from pathlib import Path
 import random
 from typing import Dict, List, Mapping, Sequence, Tuple
 
@@ -29,6 +31,59 @@ class DatasetSpec:
             "NOT_APPLICABLE_DATA_NOT_RELEASED",
         }:
             raise ValueError("unknown privileged supervision status")
+
+
+@dataclass(frozen=True)
+class DatasetRuntimeSpec:
+    """Config-driven canonical-label adapter; model heads use class_order only."""
+
+    dataset_id: str
+    class_order: Tuple[str, ...]
+    split_scheme: str
+    item_id_field: str
+    target_distribution_field: str
+    response_count_field: str
+
+    def __post_init__(self) -> None:
+        values = (
+            self.dataset_id,
+            self.split_scheme,
+            self.item_id_field,
+            self.target_distribution_field,
+            self.response_count_field,
+        )
+        if any(not isinstance(value, str) or not value.strip() for value in values):
+            raise ValueError("dataset runtime fields must be non-empty strings")
+        if len(self.class_order) < 2 or len(set(self.class_order)) != len(self.class_order):
+            raise ValueError("runtime class order must contain at least two unique labels")
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, object]) -> "DatasetRuntimeSpec":
+        required = {
+            "dataset_id",
+            "class_order",
+            "split_scheme",
+            "item_id_field",
+            "target_distribution_field",
+            "response_count_field",
+        }
+        if set(value) != required:
+            raise ValueError("dataset runtime contract fields mismatch")
+        return cls(
+            dataset_id=str(value["dataset_id"]),
+            class_order=tuple(str(label) for label in value["class_order"]),
+            split_scheme=str(value["split_scheme"]),
+            item_id_field=str(value["item_id_field"]),
+            target_distribution_field=str(value["target_distribution_field"]),
+            response_count_field=str(value["response_count_field"]),
+        )
+
+
+def load_dataset_runtime_spec(path: Path) -> DatasetRuntimeSpec:
+    value = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError("dataset runtime contract must be an object")
+    return DatasetRuntimeSpec.from_mapping(value)
 
 
 def dataset_applicability(dataset_id: str) -> str:

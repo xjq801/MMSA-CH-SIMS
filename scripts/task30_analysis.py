@@ -1,6 +1,7 @@
 """Aggregate-only Task30 error and mechanism analysis."""
 from __future__ import annotations
 
+import math
 from typing import Dict
 
 import numpy as np
@@ -80,5 +81,61 @@ def analyze_error_groups(
         },
         "sarcasm": "NOT_EVALUABLE_DEV_RESPONSE_TEXT_UNREACHABLE",
         "cross_domain": "LAI_GAI_REPORTED_SEPARATELY_H1_NOT_APPLICABLE",
+        "privacy_boundary": "AGGREGATES_ONLY_NO_SAMPLE_IDS_OR_RESPONSE_TEXT",
+    }
+
+
+def analyze_teacher_confidence_effect(
+    train_targets: np.ndarray,
+    ordinary_teacher_predictions: np.ndarray,
+    privileged_teacher_predictions: np.ndarray,
+    teacher_confidences: np.ndarray,
+) -> Dict[str, object]:
+    """Relate train-only empirical confidence to the privileged teacher fit gain.
+
+    Dev/test responses remain unreachable, so this is deliberately not presented
+    as a dev-student subgroup effect.
+    """
+    targets = np.asarray(train_targets, dtype=np.float64)
+    ordinary = np.asarray(ordinary_teacher_predictions, dtype=np.float64)
+    privileged = np.asarray(privileged_teacher_predictions, dtype=np.float64)
+    confidence = np.asarray(teacher_confidences, dtype=np.float64)
+    if (
+        targets.ndim != 2
+        or ordinary.shape != targets.shape
+        or privileged.shape != targets.shape
+        or confidence.shape != (targets.shape[0],)
+        or not np.isfinite(confidence).all()
+        or (confidence < 0.0).any()
+        or (confidence > 1.0).any()
+    ):
+        raise ValueError("teacher-confidence analysis inputs are invalid or misaligned")
+    ordinary_js = per_sample_jensen_shannon(targets, ordinary)
+    privileged_js = per_sample_jensen_shannon(targets, privileged)
+    gain = ordinary_js - privileged_js
+    low, high = np.quantile(confidence, [1 / 3, 2 / 3])
+    masks = {
+        "lower": confidence <= low,
+        "middle": (confidence > low) & (confidence < high),
+        "upper": confidence >= high,
+    }
+    if math.isclose(float(np.std(confidence)), 0.0, rel_tol=0.0, abs_tol=1e-15) or math.isclose(
+        float(np.std(gain)), 0.0, rel_tol=0.0, abs_tol=1e-15
+    ):
+        correlation = 0.0
+    else:
+        correlation = float(np.corrcoef(confidence, gain)[0, 1])
+    return {
+        "scope": "TRAIN_TEACHER_FIT_DIAGNOSTIC_NOT_DEV_STUDENT_SUBGROUP",
+        "confidence_definition": "ONE_MINUS_NORMALIZED_EMPIRICAL_ENTROPY",
+        "pearson_confidence_vs_teacher_js_gain": correlation,
+        "confidence_thirds": {
+            name: {
+                "n": int(mask.sum()),
+                "mean_teacher_js_gain": float(gain[mask].mean()) if mask.any() else None,
+                "mean_confidence": float(confidence[mask].mean()) if mask.any() else None,
+            }
+            for name, mask in masks.items()
+        },
         "privacy_boundary": "AGGREGATES_ONLY_NO_SAMPLE_IDS_OR_RESPONSE_TEXT",
     }

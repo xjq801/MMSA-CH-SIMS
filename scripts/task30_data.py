@@ -151,15 +151,47 @@ def derive_train_only_privileged_inputs(
     features = np.vstack([row[2] for row in rows])
     if not np.isfinite(features).all():
         raise ValueError("privileged features must be finite")
+    emotion_distributions = features[:, : len(classes)].astype(np.float64)
+    positive = emotion_distributions > 0.0
+    entropy = -np.sum(
+        np.where(positive, emotion_distributions * np.log(np.where(positive, emotion_distributions, 1.0)), 0.0),
+        axis=1,
+    ) / np.log(float(len(classes)))
+    teacher_confidences = np.clip(1.0 - entropy, 0.0, 1.0).astype(np.float64)
+    response_counts = np.asarray([row[1] for row in rows], dtype=np.int64)
+    valid_emotion_count = int(sum(label_counts.values()))
+    class_mass = {
+        label: (float(label_counts[label]) / valid_emotion_count if valid_emotion_count else 0.0)
+        for label in classes
+    }
     return {
         "schema_version": "task30-train-privileged-input-v1",
         "sample_ids": [row[0] for row in rows],
         "privileged_features": features,
-        "response_counts": np.asarray([row[1] for row in rows], dtype=np.int64),
+        "response_counts": response_counts,
+        "teacher_confidences": teacher_confidences,
         "audit": {
             "train_video_count": len(rows),
             "train_response_count": total_responses,
             "class_counts": {label: int(label_counts[label]) for label in classes},
+            "class_mass": class_mass,
+            "sparse_mass_threshold": 0.01,
+            "sparse_classes": [label for label in classes if class_mass[label] < 0.01],
+            "response_count": {
+                "total": int(response_counts.sum()),
+                "minimum": int(response_counts.min()),
+                "median": float(np.median(response_counts)),
+                "mean": float(response_counts.mean()),
+                "maximum": int(response_counts.max()),
+                "low_1_2_video_count": int(np.sum(response_counts <= 2)),
+            },
+            "teacher_confidence_definition": "ONE_MINUS_NORMALIZED_EMPIRICAL_ENTROPY",
+            "teacher_confidence": {
+                "minimum": float(teacher_confidences.min()),
+                "median": float(np.median(teacher_confidences)),
+                "mean": float(teacher_confidences.mean()),
+                "maximum": float(teacher_confidences.max()),
+            },
             "missing_emotion_label_count": missing_emotion_label_count,
             "missing_opinion_label_count": missing_opinion_label_count,
             "privacy_boundary": "AGGREGATES_ONLY_NO_RESPONSE_TEXT_OR_USER_IDS",

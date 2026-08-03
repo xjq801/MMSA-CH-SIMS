@@ -1,0 +1,17 @@
+{
+  "dataset_id": "csmv",
+  "class_order": [
+    "anger",
+    "anticipation",
+    "disgust",
+    "fear",
+    "joy",
+    "sadness",
+    "surprise",
+    "trust"
+  ],
+  "split_scheme": "group_by_video_v1",
+  "item_id_field": "item_id",
+  "target_distribution_field": "emotion_distribution",
+  "response_count_field": "response_count"
+}

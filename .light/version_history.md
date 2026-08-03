@@ -16,3 +16,4 @@
 - [2026-08-01] Task30创建包 v1 / 总控交接S32 — `main@32e8967`冻结H1评论特权监督开发合同，创建Task30 `019fbdaa-01aa-7f60-9828-920d4a397ba5`，并由总控03 `019fbdab-9037-7320-9fda-9000c58a5c4b`接替总控02
 - [2026-08-02] Task20 Epoch 1—3恢复复跑合同 v1.0 — 用户选择B后批准唯一attempt2；冻结新实例/资产/运行hash与逐step证据合同，只允许在展示层把新Epoch 1—3和原Epoch 4—120断开并列，永久排除正式证据链
 - [2026-08-02] Task20 Epoch 1—3恢复复跑审查 v1.0 — 00绑定`main@da9c52a`确认运行/断开展示实质一致但裁定`SUPPLEMENT_REQUIRED_NO_ACCEPTANCE_YET`；要求追加时间勘误、登记状态修正、逐step时间戳缺口披露和私有证据非秘密hash索引，不授权复跑或提升证据等级
+- [2026-08-04] Task30 H1最终独立审核 v1.0 / Task Registry v1.12 — 00只导入冻结ref `9086bd537b36cad5635eaa9db81aaeb6756b4088`，接受可审计开发负结果并以`CLOSED_NOT_PASSED`关闭Task30；H1机制稳定性门未通过，正式H1未裁定，不授权修复且Task40保持未创建

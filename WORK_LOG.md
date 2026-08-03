@@ -11648,3 +11648,61 @@ Task30代码、非敏感冻结、报告与handoff均已在本地分支有意提�
 ### Git状态
 
 一致性修正待提交；当前分支与本地ref尚未推送。
+
+## WR-20260804-002 — 00独立裁定Task30 H1开发门为CLOSED_NOT_PASSED
+
+- 时间：2026-08-04 00:20:00 +08:00
+- 类型：INDEPENDENT_REVIEW | DECISION | VALIDATION | SSOT | GIT
+- 任务/门：00总控 / 总纲v1.21第5节Task30 H1开发门
+- 状态：Task30 `CLOSED_NOT_PASSED`；H1开发门`NOT_PASSED_MECHANISM_NOT_STABLE`；正式H1未在formal test裁定
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+用户要求00不采信Task30自报，独立核对冻结ref、提交范围、fixity、数据流、测试与H1反证，并在“关闭”或“事前预注册修复”之间作出书面裁定。总控不修改Task30实验核心，H1未通过不得创建Task40。
+
+### 实际变更
+
+- 独立`git fetch origin`后确认冻结ref `task30-h1-final-20260803`指向`9086bd537b36cad5635eaa9db81aaeb6756b4088`，基线为`origin/main@540c8d3a883d61e51b59d7d1a9937f06ec0f99db`，冻结范围ahead 13、33文件、4815新增/25删除。
+- 实时Task30分支已经前进到`9c606a5149a783bb408e6bc20f62955a28111f3f`（ahead 14）；该额外commit只追加审核请求日志，但不属于冻结ref，未审核、未合并。
+- 只以冻结ref执行`git merge --no-ff task30-h1-final-20260803`，产生`26df7c6fc305d5d57dbff3bfc107dadcc3f33185`；没有合入冻结后commit，也没有暂存或触碰用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`。
+- 新建`TASK00_TASK30_H1_FINAL_INDEPENDENT_REVIEW_20260804.md` v1.0；更新`TASK_REGISTRY.md` v1.12、总纲v1.21当前态、`.light/passport.yaml` revision 15、project card、decision log与version history。论文SSOT保持v0.1.2和`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`，未写入Task30开发数值。
+
+### Fixity与范围证据
+
+- 独立复算匹配：`HANDOFF_30.md`=`4b755d16e6773854a4efdd1fd8bec2b1e3dc8b30f27be8a9b91b45173c23113c`；`TASK30_DATA_FLOW.md`=`c51360cec948b162620fbbaf8eceaac63f7d566cfa6dab377c93c99d93e30c86`。
+- completion freeze=`a286ac7ecda26b368cd0284e0b187957f28aef02225164011e3a77b24b08078f`；nonsecret freeze=`53064d09f8f728a6b4cff31aa45efc35583d31e65f50054d1b1cd5d80df8debf`；report=`e5c4c21f972c7a812411d642fc7b90b1b8e13f654c4287fae83c299d7ac73f2c`；matrix=`cd8b42add73c5984e396ae6eb597cf89439b8f420799ad0dd9fe253bf84acc02`；dataset contract=`3df6b0e148ed4317c68ed3c6cd1ac3222ee783da1d1968c943b347493b169abd`。
+- 冻结差异未包含评论正文、逐样本私有预测、模型字节、I3D、凭据、秘密链接或实际私有绝对路径。首次敏感扫描因PowerShell正则转义错误失败；纠正为literal/regex模式后唯一盘符命中是刻意禁止`D:\\`的负向测试断言。`rg`在控制器返回Access denied，后续用`Select-String`完成。
+
+### 验证与证据
+
+- Task30 worktree专用Python 3.8.9：Task30专项53/53、全仓133/133、completion validator PASS、`git diff --check` PASS；worktree日志validator为258条0错误，其中第258条是冻结ref之后且本次未合并的审核请求日志。
+- 通用`run_preparation_checks.py`在Task30 data-free worktree因缺少`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`返回exit 1；主`.venv`不存在。未复制受限数据、建立junction或修改冻结validator来伪造通过。
+- passport底层引擎已将stage 30设为`gate_failed`并重算state hash；validator对stage 30证据hash/freshness通过，仅保留历史stage 10 PASS门缺hash/timestamp的WARN。
+- 主工作区`.venv`的`validate_work_log.py`首次发现本条使用了三个非标准章节名并返回3错误；修正为规定章节后重跑为258条、0错误、exit 0。
+- 主工作区`.venv`的`run_preparation_checks.py`首次短窗口调用超时并遗留进程，已停止该进程；独立长窗口重跑最终exit 0、`blocking_checks=[]`，同时诚实保留`formal_model_work_ready=false`、`faiss_available=false`和I3D资产不可正式准入状态。
+- 主工作区`.venv`运行Task30专项53/53和completion validator均通过；同一环境运行全仓133项时130通过、3项Task20 contract测试因缺少`jsonschema`报错。改用Task30冻结专用`.venv-task30`在主工作区重跑全仓133/133通过；没有安装包或修改环境来隐藏主`.venv`缺口。
+- 首次显式暂存命令把总纲文件名误写为`TAFCC...`并因pathspec不存在失败，Git确认0文件暂存；随后改用正确的`TAFFC...`路径重试，不扩大提交范围。
+
+### 影响与边界
+
+- privileged KD相对soft distribution为3/3种子改善，但相对ordinary KD与错配teacher均仅2/3；seed 20260804分别为`-0.000003467921386557382`和`-0.00030376752502317417`。NLL/Brier并非一致改善，高分歧/高噪声组仍有弱点；ECE均值不恶化不能抵消机制稳定性反证。
+- Task30以`CLOSED_NOT_PASSED`关闭，开发门为`NOT_PASSED_MECHANISM_NOT_STABLE`。关闭表示工程与负结果证据收口，不表示H1成功；formal test未materialize，故正式H1状态为`NOT_ADJUDICATED_ON_FORMAL_TEST`。
+- 本轮不授权H1修复批次，不创建Task40/50。任何未来重开须用户另行决定，并由00事前冻结question、唯一机制改动、预算/seeds、dev-only选择、停止规则和formal-test禁止项。
+- G1=`PASS`、G2=`PASS_WITH_ACCEPTED_ASSET_RISK`、G3=`PASS_WITH_LIMITATIONS`不变；I3D许可/revision/权利方身份/fixity继续UNKNOWN；Task20 VC-CSA永久NON_T0/INELIGIBLE且删除截止不延长。
+
+### 风险、问题与阻塞
+
+- H1评论特权机制没有获得稳定开发证据，不能继续支撑C2正式claim或Task40依赖链。
+- formal test和正式五种子未运行，禁止把开发门失败升级为正式假设拒绝，也禁止选择性报告相对soft baseline的3/3结果。
+- Task10论文数据/协议段落与Task20最小补证仍待00独立审核；Task20受限存储可见层删除仍须在2026-08-31截止前后验收。
+
+### 下一步
+
+1. 审核Task10论文数据/协议段落。
+2. 审核Task20最小追加式补证，不授权复跑或补造时间。
+3. 维持Task40未创建；如用户未来要求战略重路由，先建立新的版本化决策与预注册合同。
+
+### Git状态
+
+Task30冻结ref已通过合并commit `26df7c6fc305d5d57dbff3bfc107dadcc3f33185`导入main；本条总控审查与SSOT更新在记录时尚未提交或推送。

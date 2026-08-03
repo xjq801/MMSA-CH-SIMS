@@ -1373,7 +1373,7 @@ task_timepoint：T0 或独立的 T+Δ
 3. 任务10先完成许可与可用性审计；未获用户授权前不下载大数据。
 4. 任务10已通过G1与`G2_PROTOCOL_DATA`；任务20正式核心已获G3=`PASS_WITH_LIMITATIONS`，其VC-CSA运行永久为`NON_T0/INELIGIBLE`探索，不能支持后续论文主张。
 5. 任务20正式核心和既有探索已由00接受收尾，状态为`CLOSED_ACTIVE_TIME_BOUND_RETENTION`；唯一后续是2026-08-31 23:59:59 +08:00前后的受限存储可见层删除验收，当前不得写成已删除。
-6. 任务30尚未创建但创建门已解除；00应从最新main生成任务与`HANDOFF_30.md`，传播G3限制、I3D风险、Video2Reaction双轨及Task20探索永久NON_T0/INELIGIBLE边界。任务40/50继续严格按本规格逐个创建。
+6. 任务30已创建并由00完成最终独立审核，状态为`CLOSED_NOT_PASSED`：H1开发机制跨种子不稳定，正式test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`。本轮不授权修复，任务40状态为`NOT_CREATED_BLOCKED_H1_NOT_PASSED`，任务50未创建；任何未来方法重路由须由用户另行决定并由00事前预注册。本条是v1.21当前态勘误，不改变G1—G3、Task20边界或版本化科学合同。
 
 ### 11. 每个任务的完成定义
 

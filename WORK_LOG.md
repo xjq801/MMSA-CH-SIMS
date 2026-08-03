@@ -11160,3 +11160,491 @@ Epoch 1的4693行逐step账本、10727条唯一dev预测、作者指标、九指
 ### Git状态
 
 本条写入时总控审查文件、SSOT台账和S35交接卡待提交；基线父提交为`da9c52a3747035851eb03185285b580f8d7f0f47`。用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`保持未读取、未暂存、未删除；推送状态以本批最终Git输出为准。
+
+## WR-20260802-007 — Task30受控本地binding恢复、TDD训练器与开发运行器
+
+- 时间：2026-08-02 11:20:00 +08:00
+- 类型：AUDIT | FEATURE | TEST | ENVIRONMENT
+- 任务/门：30-M4 评论教师与内容学生 / H1开发执行恢复
+- 状态：完成
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+Task30部分实现曾因启动worktree没有真实输入binding而停在`INCONCLUSIVE_NOT_EVALUATED`。本批在用户将主工作区纳入授权workspace后，只读复核其Git锚点、Task20环境/manifest和受控资产，确认可在既有accepted-risk内部研究边界内恢复真实H1开发；不改变G1—G3、Task20冻结评测核心或Task40状态。
+
+### 实际变更
+
+- 新增`task30_data.py`：按`group_by_video_v1`只派生formal-train视频评论聚合，校验原始映射、标签、response count、I3D shape/dtype/finite与源文件hash；不返回评论正文或用户标识。
+- 新增`task30_training.py`与`run_task30_h1_development.py`：train-only标准化、hard/soft/KD、softmax/Dirichlet、有限梯度审计、dev早停、12-trial公平矩阵、错配privileged derangement、teacher train诊断、test不可达策略和隔离run bundle。
+- 新增`task30_lai_gai.py`与`task30_analysis.py`：LAI-GAI SHA核验的T0图像内容/校准边界，以及不含sample ID/评论正文的评论数、熵和标签噪声聚合分析。
+- `task30_models.py`新增Dirichlet head与期望log-probability损失；开发矩阵登记Dirichlet补充行和teacher-only train诊断范围。
+- 独立环境增加Task20同版本免费`Pillow==10.4.0`并写入`requirements-task30-lock.txt`；未使用付费、远程或闭源资源。
+
+### 验证与证据
+
+- 数据/Dirichlet/dev-only入口红测首次因`task30_data`、Dirichlet class和runner缺失而exit 1；最小实现后14/14通过。
+- 训练器红测因`task30_training`和12-trial grid缺失而exit 1；实现后7/7通过。
+- teacher/mismatch红测因两个API缺失而exit 1；实现后10/10通过。
+- 真实smoke首次进入适配器时因发布包含1个emotion与5个opinion空值而fail-closed；根因统计确认是canonical已登记缺失。新增空值回归红测后按字段有效标签归一化，并保留缺失审计；未知标签和全缺失仍拒绝。
+- LAI-GAI三个红测因模块缺失而exit 1；实现后3/3通过。聚合分析红测因模块缺失而exit 1；实现后1/1通过。
+- 两次PowerShell启动器多行参数语法错误均发生在Python启动前；失败保留且未伪装成实验失败，修正仅为命令行分隔。
+
+### 影响与边界
+
+- CSMV teacher实际覆盖5,698个train视频、74,727条反应；dev/test评论不进入teacher或输出。正式test行不materialize、不用于任何选择。
+- LAI-GAI只做真实图像内容边界，H1固定`NOT_APPLICABLE_COMMENT_FIELD_UNAVAILABLE`；Video2Reaction原生H1仍为`NOT_APPLICABLE_DATA_NOT_RELEASED`。
+- 没有保存或提交模型权重、受限数组、评论正文、预测行、凭据或本机绝对路径。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision、权利方包身份/fixity仍为`UNKNOWN/DEFERRED_ACCEPTED_RISK`；本批只做既有内部研究使用。
+- 当前worktree继续不承载受限数据；准备检查可能仍报告相对数据路径缺失，不能把该失败改写为通过。
+
+### 下一步
+
+1. 执行完整CSMV开发矩阵、固定seed replay和冻结配置随机性估计。
+2. 运行LAI-GAI真实内容/校准边界和聚合错误分析。
+3. 更新报告、handoff与全套门禁，不进入Task40。
+
+### Git状态
+
+本批代码、配置、测试、环境锁与报告待有意提交；私有run目录保持Git ignore，未推送。
+
+## WR-20260802-008 — Task30 CSMV开发矩阵、稳定性复跑、LAI-GAI边界与H1门裁定
+
+- 时间：2026-08-02 11:25:00 +08:00
+- 类型：EXPERIMENT | ANALYSIS | DECISION | TEST
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门
+- 状态：执行完成；H1开发门不通过，待00独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在真实受控binding与全部TDD合同可用后，按总纲v1.21第5节完成CSMV hard/soft/ordinary-KD/privileged-KD/mismatch/teacher诊断与Dirichlet开发比较，并补LAI-GAI真实内容边界、稳定性和机制分析；正式test与Task50范围保持不可达。
+
+### 实际变更
+
+- 真实CSMV smoke在本地RTX 3070 Ti完成；完整seed-20260802 dev搜索完成72/72 student trials、837条私有dev预测，manifest artifacts全部hash复核通过，stderr=0，test adaptation=false。
+- 主seed中privileged-KD JSD=`0.1696667746`，优于soft=`0.1728426971`、ordinary-KD=`0.1717930305`、mismatch=`0.1717662842`；ECE/ACE改善，但NLL/Brier较soft变差。
+- 同seed冻结配置replay的私有预测SHA-256与原run逐字节一致：`195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a`。
+- 冻结配置seed 20260803/20260804完成。privileged相对soft的JSD收益3/3为正，平均`0.0030668057`；相对ordinary/mismatch仅2/3为正，seed 20260804分别为`-0.0000034679`与`-0.0003037675`。NLL相对soft 3/3变差，平均`+0.0179914761`。
+- 高目标熵与高标签噪声代理组中privileged相对soft 3/3变差；低熵、mixed及各评论数分组总体改善。讽刺因dev评论正文不可达固定不可评估。
+- LAI-GAI 594 train/127 dev内容边界完成：softmax JSD=`0.0541395718`、Dirichlet=`0.0544562892`、overall mean=`0.0745073250`；ECE较高，身份仅`DEVELOPMENT_BOUNDARY_ONLY`，H1仍N/A。
+
+### 验证与证据
+
+- full manifest SHA-256：`330c9de88918a9cea5293ebf7c721d9f3c6738a9e7142c3a8fdff18cb86e3fa7`；aggregate：`17f23df0b6d883fc01b7c6e35b2dd06930adad1d761064f13ac750c8f21a3e4d`。
+- replay/seed03/seed04 manifest：`7c37a51234051bb02bcb51fb18d3bf6b17b098e1bf5e1021870c8fe6e0c141b1` / `8d241df7dc1a04e04111de140f077d9c934a0a3434ecd80fc35c8f9c7a57e56d` / `c0c97dfe760e2a089c8235591e9af123f60d31031268a24336e62176ebed1e8b`。
+- LAI-GAI aggregate：`a972278f1b2101bc1a776d4cf9ae5049c25326a556290e487532c46fc8ed97a6`。
+- observed GPU memory低于2.2 GiB；完整搜索约18.5分钟，冻结配置复跑约数分钟，无租赁或远程大算力需求。
+
+### 影响与边界
+
+- Task30裁定分支：`NOT_PASSED_MECHANISM_NOT_STABLE`。这不是正式test上的H1拒绝，但评论privileged特异性收益未稳定隔离，且高分歧/高噪声组恶化，故不能标为H1成功。
+- Task40保持`NOT_CREATED/BLOCKED_NOT_AUTHORIZED`；不得以总体胜soft替代ordinary/mismatch机制门。
+- G1、G2、ASSET_ADMISSIBILITY、G3和VC-CSA永久NON_T0/INELIGIBLE身份全部不变。
+
+### 风险、问题与阻塞
+
+- 只有一个公开评论-bearing H1开发集；LAI-GAI无评论字段，Video2Reaction未发布原始评论，不能提供第二个H1复核集。
+- 三个开发seed不是Task50正式五种子或统计样本量；未运行formal test、paired bootstrap或论文级显著性检验。
+- 评论privileged特异性机制未稳定隔离，且高分歧/高噪声组恶化，因此Task40创建门保持阻断。
+
+### 下一步
+
+1. 完成全量专项/全仓/compile/schema/工作日志/准备门复核。
+2. 有意提交实现与开发报告，更新`HANDOFF_30.md`绑定精确commit。
+3. 回交00独立裁定；不创建Task40，不运行formal test或Task50五种子。
+
+### Git状态
+
+开发结果仅在Git-ignored本地run中；tracked实现与聚合报告待提交，未推送。
+
+## WR-20260802-009 — Task30 最终回交、上游同步与开发门冻结
+
+- 时间：2026-08-02 11:33:49 +08:00
+- 类型：VALIDATION | GIT | HANDOFF | DECISION
+- 任务/门：30-M4 评论教师与内容学生 / H1 开发门最终回交
+- 状态：Task30 执行完成；H1 开发门不通过，等待 00 独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在真实 CSMV development-only 比较、固定配置多 seed 复核、LAI-GAI 字段边界和全部 TDD 实现完成后，刷新并合入最新 `origin/main`，将 Task30 的精确提交、结果身份、泄漏边界、门禁和剩余限制写回最终 handoff。不得改写 G1—G3、进入 Task40/50 或把开发结果写成正式 test 结论。
+
+### 实际变更
+
+- 保留 Task20 新增 `WR-20260802-001` 授权记录，并将 Task30 同日两条记录顺延为 `WR-20260802-002` 与 `WR-20260802-003`；未改写任何历史记录正文。
+- 创建非快进合并提交 `459ebe9fba57d3c65cdf4e40410f38e326030b64`，同步 `origin/main@349be41c34db5082cb238350956799acb478faef` 的 Task20 Epoch 1—3 恢复授权；Task30 实现/开发证据提交保持为 `923dc1553f11f7b35a0e64d1caa2814215296042`。
+- 将 `HANDOFF_30.md` 更新为最终回交，冻结 `NOT_PASSED_MECHANISM_NOT_STABLE`、Task40 未授权、精确指标与 run hash、正式 test 不可达、资产 accepted-risk 和环境门失败身份。
+- 不修改 `TASK_REGISTRY.md` 或 `.light/passport.yaml` 的 Task30 总控状态；其最终状态变更留给 00。
+
+### 验证与证据
+
+- 合并冲突仅为 `WORK_LOG.md` 并行追加；冲突标记扫描为空，`git diff --check` 与 staged diff check 均通过。
+- `.venv-task30` 运行 `scripts/validate_work_log.py`：最终 251 条、0 errors、PASS，latest=`WR-20260802-004`。
+- 最终复跑：Task30 46/46、全仓 120/120、`compileall`、Task30 schema、Task20 handoff 22 项证据、`pip check`、Light review gate 0 findings、workspace Python seed audit 0 missing，均通过；`git diff --check` 通过。
+- 首次并行门命令因本条元数据误写为`任务/问题`而使日志校验失败，改为规范键`任务/门`后通过。一次文件枚举调用本机 `rg.exe` 返回 access denied，但测试进程正常启动并通过；随后改用只读 PowerShell 枚举。一次 schema 命令误写文件名 `development-matrix-v1.schema.json` 而失败，定位实际冻结文件 `development-matrix.schema.json` 后复跑通过。以上命令层失败均未删除或冒充成功。
+- 准备门仍诚实失败：Task30 独立环境找不到本 worktree 未承载的冻结相对路径 `data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`；主 `.venv` 不存在，AGENTS 指定两个入口在脚本启动前失败。最终退出身份为 `log=0, prep=1, main_log=127, main_prep=127`，不得改写为环境 ready。
+
+### 影响与边界
+
+- 开发证据仅支持“评论特异机制未稳定隔离，因此 H1 开发门不通过”；不构成正式 H1 拒绝或论文 performance claim。
+- CSMV 正式 test 未 materialize 或参与选择；LAI-GAI 无评论字段，Video2Reaction 原始评论未发布，均未伪造 teacher。
+- G1、G2、资产许可/fixity、G3 与 VC-CSA NON_T0/INELIGIBLE 身份不变。Task40 保持 `NOT_CREATED/BLOCKED_NOT_AUTHORIZED`。
+- 全部运行使用本地 RTX 3070 Ti，观察显存低于 2.2 GiB；未使用或申请租赁算力、远程 GPU、闭源服务或数据外传。
+
+### 风险、问题与阻塞
+
+- 只有一个 comment-bearing H1 开发集；三 development seeds 不是 Task50 正式五种子统计证据。
+- privileged KD 相对 soft 的 JSD 收益为 3/3，但相对 ordinary KD 与 mismatch 仅 2/3，且 NLL 与高熵/高噪声组均 3/3 变差；机制门不能放行。
+- I3D 许可、官方 revision、权利方包身份/fixity 仍 unknown，只能沿用 accepted-risk 内部研究边界，禁止再分发。
+
+### 下一步
+
+1. 提交 `HANDOFF_30.md` 与本闭环记录，向 00 回交最终 commit。
+2. 停止 Task30 调参与训练，等待 00 接受关闭或书面授权预声明的 H1 修复；不创建 Task40。
+
+### Git状态
+
+Task30 完整实现/开发证据提交与上游合并提交均仅存在本地分支；最终 handoff/日志闭环待提交，尚未推送。
+
+## WR-20260803-001 — 修复Task30分支同步时的WORK_LOG截断
+
+- 时间：2026-08-03 22:01:27 +08:00
+- 类型：FIX | GIT | VALIDATION
+- 任务/门：30-M4 评论教师与内容学生 / 最新主线同步
+- 状态：完成
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在合入`origin/main@540c8d3`时，`WORK_LOG.md`发生追加式冲突。首次用工具输出动态重建时没有正确处理工具的输出截断，合并提交`0ff5cd9`中的日志错误缩短为14条，`validate_work_log.py`随即失败。本批必须先从Git对象恢复完整历史，不能在损坏日志上继续Task30补证。
+
+### 实际变更
+
+- 从`origin/main:WORK_LOG.md`分块读取完整11,162行，并从`ad2b6a2:WORK_LOG.md`提取Task30三条本地记录；使用`apply_patch`重建完整文件。
+- 保留主线`WR-20260802-001`—`006`原文，将Task30三条并行记录顺延为`WR-20260802-007`—`009`；没有删除或覆盖任一历史记录正文。
+- 未修改Task20实验、Task30模型、数据、结果、G门或Task40状态。
+
+### 验证与证据
+
+- 失败证据：首次重建后的`validate_work_log.py`返回14条，并报告`WR-20260714-007`缺章节及20260802编号不连续；失败未删除。
+- 修复后`.venv-task30\Scripts\python.exe scripts\validate_work_log.py`返回250条、0 errors、latest=`WR-20260802-009`、PASS。
+- `git diff --check`通过；冲突标记扫描为空。
+
+### 影响与边界
+
+只恢复追加式工作日志的完整性与编号顺序；不改变任何科学结论、运行证据或总控裁定。
+
+### 风险、问题与阻塞
+
+- 合并提交`0ff5cd9`本身保留错误快照，后续修复提交形成可审计纠错链；不得将前者单独作为工作日志有效版本。
+- Task30仍待00独立审核，Task40仍未授权。
+
+### 下一步
+
+1. 提交本次日志恢复，确保后续TDD建立在通过的工作记录上。
+2. 开始Task30补缺红测与最小实现。
+
+### Git状态
+
+`origin/main@540c8d3`已合入本地分支；本日志修复待提交，尚未推送。
+
+## WR-20260803-002 — Task30补缺TDD、真实teacher审计与可复跑bundle v2
+
+- 时间：2026-08-03 22:08:38 +08:00
+- 类型：FEATURE | TEST | REPRODUCIBILITY | DATA
+- 任务/门：30-M4 评论教师与内容学生 / 总纲v1.21缺口补证
+- 状态：代码完成，待干净提交复跑
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+用户要求补齐Task30审计发现的全部缺口。本批只处理Task30权限内可执行项：真实CSMV teacher标签/置信度审计、teacher置信度机制诊断、配置驱动数据集接口、完整训练历史、私有权重身份、干净代码/输入/argv/时间轴manifest和可跟踪非秘密冻结构建器。00独立审核、未发布第二评论集、dev评论上界和讽刺正文分析不能由代码越权伪造。
+
+### 实际变更
+
+- 新增`DatasetRuntimeSpec`与`dataset-contract-csmv-v1.json`，canonical loader改由配置提供dataset ID、class order、split、item、target和response-count字段；移除运行入口的八类标签硬编码。
+- `derive_train_only_privileged_inputs`新增真实train视频teacher置信度，定义为`ONE_MINUS_NORMALIZED_EMPIRICAL_ENTROPY`，并输出类别质量、稀疏类别、评论数分布、置信度分布与缺失标签聚合审计；不输出评论正文或sample ID。
+- 新增train-only teacher置信度机制诊断：按置信度三分位报告privileged teacher相对ordinary teacher的逐train视频JSD拟合收益和相关性；明确不是dev student subgroup，未打开dev评论。
+- 将评论数、目标熵和标签噪声分析直接接入runner，避免只在报告中保留无法重算的派生数字。
+- run bundle升级为v2：记录started/ended、argv、exit code、matrix row IDs、seed role、clean/dirty、diff hash、逐代码文件hash、student/teacher完整epoch历史；本地私有保存选中student state并登记canonical tensor/file hash，禁止提交权重。
+- 新增`task30_freeze.py`，从干净run生成只含selected configs、聚合指标、teacher审计、置信度诊断和run身份的非秘密冻结对象；遇sample ID、prediction rows、argv或本机路径字段fail-closed。
+
+### 验证与证据
+
+- 新增测试首次运行exit 1：`analyze_teacher_confidence_effect`导入失败，真实派生结果缺`teacher_confidences`；这是生产实现前的预期红灯。
+- 最小实现后聚焦16/16通过；Task30专项49/49、全仓129/129通过，`compileall`、`pip check`和`git diff --check`通过。
+- Light seed audit覆盖Python/NumPy/PyTorch/CUDA/cuDNN/DataLoader七项、0 missing、PASS。
+- Light review首次因`std == 0.0`静态浮点比较报告2个重复warn；根因是零方差分支，已改为带绝对容差的`math.isclose`，待提交前复跑。失败未删除。
+
+### 影响与边界
+
+- 实际CSMV teacher审计和置信度诊断现在可以随真实run冻结；dev/test评论、test标签和Task20评测核心仍不可达。
+- 私有模型state仅写入Git忽略run目录，用于固定v1身份与本地复跑；不得提交、发布或再分发。非秘密冻结构建器不会输出文件路径、预测行或权重。
+- 不增加新模型家族、正式test、Task50五种子、memory/router/GNN/生成模块或付费资源。
+
+### 风险、问题与阻塞
+
+- teacher置信度诊断是train拟合机制诊断，不能冒充dev未来预测分组收益；dev teacher置信度需要dev评论，按冻结政策禁止。
+- CSMV原始人工标签不发布逐评论标注者置信分数，故使用明确命名的经验分布集中度代理，不能表述为标注者主观确信度。
+- 00独立审核和第二comment-bearing公开集仍是外部阻塞；代码只能登记为`EXTERNAL_REVIEW_REQUIRED`/`NOT_EVALUABLE_DATA_NOT_RELEASED`。
+
+### 下一步
+
+1. 提交本批代码和测试，取得clean code commit。
+2. 仅在本地GPU用该clean commit执行真实CSMV full/replay/固定多seed，并生成非秘密冻结包。
+3. 更新报告与handoff，向00回交补证commit；不创建Task40。
+
+### Git状态
+
+本批代码、配置、测试和日志待提交；真实复跑尚未开始，未使用远程或租赁算力。
+
+## WR-20260803-003 — Task30干净复跑、耐久冻结与完成门补证
+
+- 时间：2026-08-03 23:18:00 +08:00
+- 类型：EXPERIMENT | TDD | REPRODUCIBILITY | ANALYSIS | DOCUMENTATION
+- 任务/门：30-M4 评论教师与内容学生 / 总纲v1.21第5节缺口闭合
+- 状态：Task30权限内可执行项完成；H1开发门仍不通过，待00独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在代码提交`9adcc0a59d31d16c86e50891ff53fad916130f95`上执行真实CSMV clean-commit完整搜索、同种子冻结配置重放和两个额外冻结development seeds，并把入选配置、teacher审计、训练历史/私有权重身份、运行哈希与不可伪造边界冻结为tracked非敏感证据。正式test、Task50五种子、00独立审核和未发布第二评论数据集均不得由Task30越权补做。
+
+### 实际变更
+
+- 在本地RTX 3070 Ti完成`h1-v2-full-clean-20260803-a`：72个student trials、837条dev私有预测、2473条student/teacher epoch历史、6个本地私有model states；manifest记录`dirty=false`、精确commit、输入/代码hash、完整argv、开始/结束、exit 0、matrix rows和`test_adaptation=false`。
+- 完成`h1-v2-replay-clean-20260803-b`同种子冻结配置重放，以及seed 20260803/20260804两个冻结配置development runs；四个run均为`DEVELOPMENT_EVIDENCE_ONLY`、exit 0且没有test adaptation。
+- 新增`scripts/validate_task30_completion.py`与负测，fail-closed校验四个clean run、同种子预测/模型一致、test不可达、00审核与第二数据集/teacher-only/sarcasm/cross-domain/Video2Reaction精确边界，并拒绝sample ID、argv、本机路径、权重或预测行字段。
+- 新增`experiments/task30-h1-development-v1/completion-freeze.json`、`nonsecret-freeze.json`和`README.md`；tracked层只含聚合指标、配置、teacher审计、输入/run/hash身份及限制，不含受限数组、评论正文、预测行、权重字节或本机路径。
+- 重写`TASK30_H1_DEVELOPMENT_REPORT_20260801.md`，补入真实类别质量、评论数、teacher置信度、三种子机制/校准、动态数据集head、完整训练历史/私有state身份与总纲1—16项闭合表。
+
+### 验证与证据
+
+- TDD红灯：首次运行`python -m unittest tests.test_task30_completion.Task30CompletionGateTests -v`因`validate_task30_completion`模块不存在而exit 1；最小实现后1/1通过。
+- full manifest/aggregate SHA-256分别为`97d50c320eda6eec6c6bf8fa44d36b17b0fe3d64dd444fee43fed0ee930b6ce0`与`70c6275693ced69f9955e370e2af9a3b87497358ec781487998628a659e5d1f8`；replay/seed03/seed04 manifest分别为`145b7a222d4158a402ddc7499a9137fa7785225b1221f03b9ab95843d81f20bc`、`41295136f5e890a4adce2353e5e4dbd763f53c6e42104b4853ea311378a3ff6b`、`53ad21a9c2fb3173f70520e210632a0b1aaa4207719ae7aaecca16c5eb115a4b`。
+- full与replay的私有预测逐字节一致，SHA-256均为`195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a`；六个model文件与canonical tensor hash全部一致；六行dev metrics全部一致。完整搜索日志hash为`cdb09668b0587a9069e81963cd07f3e289b305dc79f34e111735ef4d28db0ade`。
+- privileged KD三种子平均JSD=`0.1695934945`，相对soft收益3/3为正；相对ordinary KD与mismatch只在2/3为正，seed 20260804分别为`-0.0000034679`和`-0.0003037675`。平均ECE=`0.0368718321`未恶化，但不改变机制不稳定结论。
+- teacher审计：5,698 train videos、74,727 responses；置信度均值`0.4958326826`；低/中/高置信度train teacher拟合收益为`0.0425275/0.0479713/0.0541451`，相关`0.1651624`，身份明确为train diagnostic。
+- `scripts/validate_task30_completion.py`通过；两个tracked JSON均通过Python解析。
+- 失败保留：首次bundle核验误读`run_manifest.json`而exit 1，定位真实文件名为`manifest.json`后通过；一次`rg --files`因本机`rg.exe`access denied失败，改用只读PowerShell枚举。两次失败均未改动run或受限数据。
+
+### 影响与边界
+
+- 总纲第1—15项在可评估范围内已形成代码、真实开发运行与耐久冻结；第16项Task30自审完成但00独立裁定固定为`EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE`。
+- 第二comment-bearing数据集固定`NOT_EVALUABLE_DATA_NOT_RELEASED`；teacher-only dev上界固定`NOT_COMPARABLE_DEV_RESPONSES_PROHIBITED`；讽刺固定`NOT_EVALUABLE_DEV_RESPONSE_TEXT_UNREACHABLE`；跨域H1固定`NOT_APPLICABLE_NO_SECOND_COMMENT_BEARING_DATASET`；Video2Reaction H1固定`NOT_APPLICABLE_DATA_NOT_RELEASED`。
+- H1自报仍为`NOT_PASSED_MECHANISM_NOT_STABLE`；没有创建Task40，没有查看formal test，没有改写G1—G3或Task20评测核心。
+- 全部训练使用本地GPU；完整搜索约32分40秒，冻结配置运行约5—7分钟，无需租用或远程大算力。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision、权利方包身份与fixity仍为`UNKNOWN/DEFERRED_ACCEPTED_RISK`；本地模型states和预测受同一禁止再分发边界约束。
+- 通用准备门仍可能因本worktree不承载冻结相对HUMAN_GOLD输入而失败；Task30专用非敏感完成门不能也不会把该通用环境失败改写为通过。
+- 三development seeds不是Task50正式五种子或论文级推断，不能触碰test追加分析。
+
+### 下一步
+
+1. 运行Task30专项、全仓、compile、schema、日志、准备与Light门禁并保留真实结果。
+2. 有意提交冻结/报告/validator后更新`HANDOFF_30.md`，回交00精确commit。
+3. 停止Task30调参；不创建Task40，等待00独立裁定。
+
+### Git状态
+
+本批tracked冻结、validator、测试、报告与日志待有意提交；私有run目录保持Git ignore，未推送。
+
+## WR-20260803-004 — Task30最终门禁、handoff与00回交闭环
+
+- 时间：2026-08-03 23:31:00 +08:00
+- 类型：VALIDATION | HANDOFF | GIT | DECISION
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门最终回交
+- 状态：Task30完成并自报不通过；等待00独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在完整干净复跑、同种子复现、三development seeds、真实teacher审计和tracked非敏感冻结完成后，执行总纲与AGENTS要求的最终门禁，更新`HANDOFF_30.md`并向00提供精确commit。不得将环境失败改写为通过，不得创建Task40或把development evidence升级为formal evidence。
+
+### 实际变更
+
+- 提交非敏感冻结、validator、TDD与报告：`0665682281ae435c2e021d2c8722a6ec9b75a97b`。
+- 更新并提交`HANDOFF_30.md`：`05ad853970572c78e05841a7ff34752eba9ed92b`，绑定上游`origin/main@540c8d3a883d61e51b59d7d1a9937f06ec0f99db`、代码提交`9adcc0a59d31d16c86e50891ff53fad916130f95`、冻结提交、运行hash、开发结果与不可伪造边界。
+- `.gitignore`只为`experiments/task30-h1-development-v1/`的三个非敏感冻结文件增加窄例外；`results/`、私有预测、epoch日志和model states仍被忽略。
+- 未修改`TASK_REGISTRY.md`或`.light/passport.yaml`的最终总控状态；Task30状态变更与是否接受关闭保留给00独立裁定。
+
+### 验证与证据
+
+- Task30专项：50/50通过；全仓：130/130通过。
+- `compileall`、Task30 development matrix schema、Task20 handoff 22项、`pip check`、`git diff --check`和tracked JSON解析全部通过。
+- `scripts/validate_task30_completion.py`通过；`scripts/validate_work_log.py`在修正本条前一条元数据键后返回253条、0 errors、PASS。
+- Light review使用Python 3.13返回0 findings；seed audit覆盖PYTHONHASHSEED、Python random、NumPy、PyTorch、CUDA、cuDNN和DataLoader七项，0 missing、PASS。
+- 失败保留：首次并行最终门因`WR-20260803-003`误写元数据键`任务/问题`而日志校验失败，修正为`任务/门`后通过；Python 3.8静态seed工具误报缺`PYTHONHASHSEED`，同一代码在Python 3.13正确识别且固定seed实际重放逐字节一致；首次全历史敏感扫描命中旧WORK_LOG路径而失败，收窄为本批diff与新冻结文件后0命中。
+- `.venv-task30`的通用`run_preparation_checks.py`诚实exit 1：本worktree不承载相对路径的冻结HUMAN_GOLD输入；没有复制受限数据来伪造通过。
+- AGENTS指定主`.venv`的`validate_work_log.py`与`run_preparation_checks.py`入口均因主`.venv`不存在而在脚本启动前exit 127；未冒充主环境ready。
+
+### 影响与边界
+
+- Task30权限内可执行的总纲第1—15项已形成真实代码、运行、分析和耐久冻结；第16项Task30自审为`NOT_PASSED_MECHANISM_NOT_STABLE`，00审核为`EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE`。
+- 正式test未materialize或使用；三development seeds不是Task50五种子统计。Task40保持`NOT_CREATED/BLOCKED_NOT_AUTHORIZED`。
+- 第二评论数据集、teacher-only dev上界、讽刺、跨域H1和Video2Reaction原生H1均以精确N/A/不可评估状态回交，未伪造数据或teacher。
+- 全部实验使用本地RTX 3070 Ti，无租赁、远程或付费算力需求。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision、权利方包身份与fixity继续为`UNKNOWN/DEFERRED_ACCEPTED_RISK`；私有run与model states禁止提交、发布或再分发。
+- H1具体评论机制仅2/3 seeds优于ordinary与mismatch，且高分歧组恶化；00不得把平均JSD最好直接等同于机制门通过。
+- 通用准备门和主环境缺失仍是环境级限制；Task30专用完成门通过不替代它们。
+
+### 下一步
+
+1. 向00回交最终日志提交、handoff提交、测试计数、development evidence身份和剩余限制。
+2. 停止Task30调参，等待00接受关闭或书面授权预声明H1修复。
+3. 不创建Task40，不进入Task50，不查看formal test。
+
+### Git状态
+
+Task30代码、非敏感冻结、报告与handoff均已在本地分支有意提交；本条最终日志待提交，分支未推送。
+
+## WR-20260803-005 — Task30数据流图、环境边界与交接一致性补齐
+
+- 时间：2026-08-03 23:55:09 +08:00
+- 类型：TDD | SECURITY | DOC | VALIDATION | HANDOFF
+- 任务/门：30-M4 评论教师与内容学生 / 总纲v1.21第17节5.5交付缺口
+- 状态：Task30权限内文档与可执行证据缺口完成；科学L2门及00裁定仍阻塞
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+用户要求完成审计指出的数据流图、HANDOFF一致性和环境披露缺口。Task30只能补齐其权限内的实现与证据：不得把2/3 seeds的机制趋势改写为H1通过，不得代替00审核、更新总控Registry/passport或合入main，也不得复制受限HUMAN_GOLD、建立路径捷径或修改Task20/数据工程核心来伪造通用准备门通过。
+
+### 实际变更
+
+- 新增`TASK30_DATA_FLOW.md`，用Mermaid和边合同冻结train response允许路径、dev content/target选择路径、T0 content-only推理路径，以及dev response无teacher边、test response不可达、formal-test rows不materialize三类阻断；逐边映射到现有可执行负测。
+- `experiments/task30-h1-development-v1/completion-freeze.json`新增数据流图身份、SHA-256 `c51360cec948b162620fbbaf8eceaac63f7d566cfa6dab377c93c99d93e30c86`和`UNREACHABLE/NOT_MATERIALIZED`状态；`scripts/validate_task30_completion.py`新增字段、状态、文件存在和hash漂移门。
+- `tests/test_task30_completion.py`新增数据流图结构/隐私、HANDOFF引用/旧计数和环境私有state边界测试；更新synthetic completion freeze契约。
+- 更新`TASK30_H1_DEVELOPMENT_REPORT_20260801.md`、冻结README和`HANDOFF_30.md`，引用数据流图/hash并把专项/全仓计数更新为53/53、133/133。
+- 修正`TASK30_ENVIRONMENT_LOCK.md`中过期的“No model weights were saved”描述：六个selected model states只存在Git-ignored本地run，状态为`LOCAL_PRIVATE_MODEL_STATES_FROZEN`，禁止提交/发布/再分发；环境目录和tracked证据不含权重字节。
+- 环境锁新增全仓准备边界：通用脚本没有合法外部data-root参数，要求本worktree相对路径的受限HUMAN_GOLD/SILVER；Task30不得复制数据、创建junction或修改冻结校验器来使其变绿。
+
+### 验证与证据
+
+- TDD首次聚焦运行真实红灯：完成门删除`data_flow`未抛错；`TASK30_DATA_FLOW.md`不存在；HANDOFF不引用图且仍含253条旧计数，共2 failures + 1 error。
+- 最小数据流实现后，图与结构门通过，HANDOFF测试保持唯一红灯；更新HANDOFF后3/3通过。
+- 环境一致性负测首次因缺`LOCAL_PRIVATE_MODEL_STATES_FROZEN`且仍含“No model weights were saved.”而失败；修正环境锁后Task30 completion gate 4/4通过。
+- Task30专项53/53通过；全仓133/133通过；`scripts/validate_task30_completion.py`在图hash绑定后通过。
+- `git fetch origin`完成，`origin/main`仍为`540c8d3a883d61e51b59d7d1a9937f06ec0f99db`；分支未推送，未合入main。
+
+### 影响与边界
+
+- 总纲5.5要求的“test评论不可达的数据流图和可执行负测”现已同时具备，且图进入tracked freeze与hash门。
+- Task30独立环境、私有model states和通用全仓准备环境三者身份不再混淆；Task30专用门通过不替代通用准备门失败。
+- H1仍为`NOT_PASSED_MECHANISM_NOT_STABLE`；00独立审核仍为`EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE`；Task40仍未创建。
+- `TASK_REGISTRY.md`、`.light/passport.yaml`和main合并保持总控权限，Task30未修改或自批。
+
+### 风险、问题与阻塞
+
+- 通用`run_preparation_checks.py`仍预期因本worktree不承载受限相对数据而exit 1；主`.venv`仍不存在。这个限制已精确披露，不能在Task30内安全消除。
+- H1相对ordinary KD与mismatch仅2/3 seeds为正；任何机制修复批次都需00先书面预声明，不能继续调参。
+- I3D许可、官方revision、权利方包身份与fixity继续为`UNKNOWN/DEFERRED_ACCEPTED_RISK`。
+
+### 下一步
+
+1. 运行日志、compile、schema、Light review、完成门、通用准备门和主`.venv`规定入口，保留真实结果。
+2. 有意提交本批补证并创建本地最终回交ref，向00交精确commit。
+3. 等待00接受关闭或书面授权H1修复；不创建Task40、不查看formal test。
+
+### Git状态
+
+本批数据流图、validator、测试、环境锁、报告、HANDOFF和日志待提交；分支未推送，未合入main。
+
+## WR-20260803-006 — Task30补证最终门禁与本地提交准备
+
+- 时间：2026-08-03 23:59:00 +08:00
+- 类型：VALIDATION | SECURITY | REPRODUCIBILITY | GIT
+- 任务/门：30-M4 评论教师与内容学生 / 总纲v1.21第5节补证最终门禁
+- 状态：Task30权限内补证通过；通用准备环境限制、H1科学门与00裁定如实保留
+- 负责人：30-M4 评论教师与内容学生Codex
+
+### 背景与目标
+
+对数据流图、完成冻结、环境锁、报告和HANDOFF执行提交前全量复核；严格区分Task30专项环境通过与全仓通用准备门失败，不复制受限数据、不伪造主`.venv`、不自批H1或进入Task40。
+
+### 实际变更
+
+- 将HANDOFF的最终日志计数同步为256条；除此之外不改变H1结论、G1—G3、Registry/passport或上游状态。
+- 对Task30交付文档执行本机绝对路径扫描，未发现`C:\\Users\\`、`D:\\`或`file://`。
+- 准备有意提交本批数据流图、validator、TDD、环境锁、报告、冻结、HANDOFF和追加式日志；不包含私有预测、模型字节、评论正文或受限数组。
+
+### 验证与证据
+
+- `python -m compileall -q scripts tests`通过；Task30专项53/53通过；全仓133/133通过。
+- `scripts/validate_task30_completion.py`通过；Task30 matrix schema通过；Task20 handoff校验22项通过；`pip check`和`git diff --check`通过。
+- Light review返回0 findings；seed audit覆盖Python hash、random、NumPy、PyTorch、CUDA、cuDNN和DataLoader，0 missing。
+- `.venv-task30`的`scripts/validate_work_log.py`在追加本条前返回255条、0 errors；追加后必须重跑并期望256条、0 errors。
+- 失败保留：`.venv-task30`的通用`run_preparation_checks.py`因本worktree缺少受限相对输入`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`而exit 1；AGENTS指定主`.venv`不存在，两个规定入口均在脚本启动前失败。未用复制、junction或改冻结validator的方式使其变绿。
+
+### 影响与边界
+
+- Task30权限内可立即补齐的交付缺口已关闭；`TASK30_DATA_FLOW.md`及SHA-256完成门成为可执行泄漏证据。
+- H1仍为`NOT_PASSED_MECHANISM_NOT_STABLE`，00独立审核仍为`EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE`；分支合入main、Registry/passport状态更新均属于00权限。
+- 所有实验继续是`DEVELOPMENT_EVIDENCE_ONLY`；没有materialize formal test，没有租用或远程算力，没有创建Task40。
+
+### 风险、问题与阻塞
+
+- privileged KD相对ordinary KD和错配teacher仅2/3 development seeds改善，不能通过H1机制稳定性门。
+- 通用准备门依赖本worktree不应承载的受限相对数据，主`.venv`也不存在；这是已披露环境限制，不是Task30专项通过。
+- 00独立裁定、main合入及总控状态更新均不可由Task30自批；I3D资产风险继续为`UNKNOWN/DEFERRED_ACCEPTED_RISK`。
+
+### 下一步
+
+1. 重跑日志与Task30完成门，检查暂存差异后有意提交并创建本地最终回交ref。
+2. 向00回交精确40位commit、测试结果、development evidence身份与剩余限制。
+3. 停止Task30调参，等待00独立裁定或书面预声明修复授权。
+
+### Git状态
+
+本批补证尚未提交；分支未推送、未合入main，最终本地ref将在提交后创建。
+
+## WR-20260804-001 — Task30主环境失败表述shell无关化
+
+- 时间：2026-08-04 00:04:00 +08:00
+- 类型：DOCUMENTATION | VALIDATION | GIT
+- 任务/门：30-M4 评论教师与内容学生 / 最终回交证据一致性
+- 状态：HANDOFF环境限制表述已精确化；H1与00边界不变
+- 负责人：30-M4 评论教师与内容学生Codex
+
+### 背景与目标
+
+最终提交后交叉检查发现，缺失主`.venv`在不同shell包装器下可产生不同进程退出码；稳定事实是命令未找到且规定脚本未启动。HANDOFF不应把包装器相关退出码写成跨环境证据合同。
+
+### 实际变更
+
+- 将`HANDOFF_30.md`中的主`.venv`失败描述改为“命令未找到、脚本启动前失败”，明确具体shell退出码不作为证据合同。
+- 将HANDOFF日志计数同步为257条；不修改G门、H1结论、Registry/passport、实验结果或任何冻结评测代码。
+
+### 验证与证据
+
+- 本轮PowerShell调用两个主`.venv`入口均在脚本启动前返回`CommandNotFoundException`；没有运行或绕过脚本。
+- 追加本条后必须重跑`validate_work_log.py`、Task30完成门、HANDOFF聚焦测试和`git diff --check`。
+
+### 影响与边界
+
+- 环境限制的稳定事实不变：主`.venv`不存在，Task30专用`.venv-task30`不能冒充它。
+- 通用准备门仍因本worktree不承载受限相对HUMAN_GOLD输入而失败；不复制数据或修改冻结validator。
+
+### 风险、问题与阻塞
+
+- H1仍为`NOT_PASSED_MECHANISM_NOT_STABLE`；00审核、main合入与总控状态更新仍不可由Task30执行。
+- I3D资产身份与fixity继续为`UNKNOWN/DEFERRED_ACCEPTED_RISK`。
+
+### 下一步
+
+1. 重跑最终轻量门禁并提交本条一致性修正。
+2. 将本地最终回交ref更新到新HEAD并向00回交精确40位commit。
+3. 不推送、不合入main、不创建Task40。
+
+### Git状态
+
+一致性修正待提交；当前分支与本地ref尚未推送。

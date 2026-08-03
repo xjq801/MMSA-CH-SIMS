@@ -1,6 +1,7 @@
 # Local Python environments and caches
 .venv/
 .venv-task20/
+.venv-task30/
 .venv-vccsa-author/
 venv/
 env/
@@ -68,6 +69,10 @@ tensorboard/
 # Legacy experiment run artifacts (keep only the human-maintained registry)
 experiments/**
 !experiments/EXPERIMENT_REGISTRY.md
+!experiments/task30-h1-development-v1/
+!experiments/task30-h1-development-v1/README.md
+!experiments/task30-h1-development-v1/completion-freeze.json
+!experiments/task30-h1-development-v1/nonsecret-freeze.json
 
 # Installers and archives
 installers/

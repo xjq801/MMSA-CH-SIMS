@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task30-development-matrix-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "master_plan_version",
+    "task",
+    "hypothesis",
+    "evidence_identity",
+    "dataset_id",
+    "split_scheme",
+    "task_timepoint",
+    "selection_split",
+    "test_policy",
+    "primary_metric",
+    "asset_admissibility",
+    "distillation",
+    "rows",
+    "dataset_applicability"
+  ],
+  "properties": {
+    "schema_version": {"const": "task30-development-matrix-v1"},
+    "master_plan_version": {"const": "v1.21"},
+    "task": {"const": "30-M4"},
+    "hypothesis": {"const": "H1"},
+    "evidence_identity": {"const": "DEVELOPMENT_EVIDENCE_ONLY"},
+    "dataset_id": {"const": "csmv"},
+    "split_scheme": {"const": "group_by_video_v1"},
+    "task_timepoint": {"const": "T0"},
+    "selection_split": {"const": "dev"},
+    "test_policy": {"const": "UNREACHABLE_TASK30_DEVELOPMENT"},
+    "primary_metric": {"const": "jensen_shannon_divergence"},
+    "asset_admissibility": {"const": "DEFERRED_ACCEPTED_RISK"},
+    "distillation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "loss_terms",
+        "temperature_candidates",
+        "weight_candidates",
+        "teacher_target_scope",
+        "selection_split",
+        "test_visible_during_selection"
+      ],
+      "properties": {
+        "loss_terms": {
+          "const": ["soft_distribution_cross_entropy", "temperature_scaled_kl"]
+        },
+        "temperature_candidates": {"const": [1.0, 2.0, 4.0]},
+        "weight_candidates": {"const": [0.25, 0.5, 0.75]},
+        "teacher_target_scope": {"const": "train_only"},
+        "selection_split": {"const": "dev"},
+        "test_visible_during_selection": {"const": false}
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "deployable_student",
+          "student_architecture",
+          "supervision",
+          "teacher_source",
+          "max_trials",
+          "max_epochs",
+          "early_stopping_patience",
+          "selection_split"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "deployable_student": {"type": "boolean"},
+          "student_architecture": {"type": "string", "minLength": 1},
+          "supervision": {"type": "string", "minLength": 1},
+          "teacher_source": {"type": "string", "minLength": 1},
+          "max_trials": {"const": 12},
+          "max_epochs": {"const": 200},
+          "early_stopping_patience": {"const": 20},
+          "selection_split": {"const": "dev"}
+          ,
+          "evaluation_scope": {"const": "train_diagnostic_only"}
+        }
+      }
+    },
+    "dataset_applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["csmv", "lai-gai", "video2reaction-native"],
+      "properties": {
+        "csmv": {"const": "APPLICABLE_TRAIN_RESPONSES_ONLY"},
+        "lai-gai": {"const": "NOT_APPLICABLE_COMMENT_FIELD_UNAVAILABLE"},
+        "video2reaction-native": {"const": "NOT_APPLICABLE_DATA_NOT_RELEASED"}
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+# Exact package snapshot for the independent Task30 environment.
+# Install torch from https://download.pytorch.org/whl/cu121 before the remaining packages.
+attrs==25.3.0
+filelock==3.16.1
+fsspec==2025.3.0
+importlib_resources==6.4.5
+Jinja2==3.1.6
+joblib==1.4.2
+jsonschema==4.23.0
+jsonschema-specifications==2023.12.1
+MarkupSafe==2.1.5
+mpmath==1.3.0
+networkx==3.1
+numpy==1.24.4
+Pillow==10.4.0
+pkgutil_resolve_name==1.3.10
+PyYAML==6.0.3
+referencing==0.35.1
+rpds-py==0.20.1
+scikit-learn==1.3.2
+scipy==1.10.1
+sympy==1.13.3
+threadpoolctl==3.5.0
+torch==2.4.1+cu121
+typing_extensions==4.12.2
+zipp==3.20.2

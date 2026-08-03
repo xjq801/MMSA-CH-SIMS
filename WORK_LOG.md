@@ -11706,3 +11706,47 @@ Task30代码、非敏感冻结、报告与handoff均已在本地分支有意提�
 ### Git状态
 
 Task30冻结ref已通过合并commit `26df7c6fc305d5d57dbff3bfc107dadcc3f33185`导入main；本条总控审查与SSOT更新在记录时尚未提交或推送。
+
+## WR-20260804-003 — 总控S36接续合同生成
+
+- 时间：2026-08-04 00:27:00 +08:00
+- 类型：HANDOFF | DOCUMENTATION | VALIDATION | GIT
+- 任务/门：00总控 / Task30 H1失败门收口交接
+- 状态：S36接续合同已生成，等待提交推送
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+依照总控每次会话收尾必须自传播交接的规则，在Task30独立裁定已由`main@60a56ba7fce36b6a97790cf4d5321fdafc9876b7`落盘后，新建下一张会话合同，防止后续会话误把H1开发失败当成成功、正式拒绝或隐式修复授权。
+
+### 实际变更
+
+- 新建`.light/handoff/S36-task30-h1-closed-not-passed.md`，父卡为S35，绑定Task30冻结ref、00裁定commit、验证差异、claim边界、下一步与禁止项。
+- 接续提示词要求开工先刷新Git和Task10/20/30实时状态，再读passport/Registry/总纲/论文SSOT；不允许从交接卡猜当前事实。
+- 未修改Task30实验核心、论文正式结果、G1—G3或资产/保留边界；未触碰用户未跟踪目录。
+
+### 验证与证据
+
+- `light-memory-pm`独立`handoff_contract.py`首次返回FAIL并报告7项结构错误：2条已完成项缺artifact/evidence分隔、3条缺验证证据、1条下一步非动作式、1条禁止项缺英文刷新合同；已逐项改写，失败输出保留于本记录。
+- 第二次校验因截断commit中的`...`被判为placeholder而返回4项错误；替换为完整40位commit、补足“验证”词与“当前事实/git status”合同后，只剩下一步动作词错误。随后两次动作词修正仍因validator大小写/词表约束各返回1项错误；最终改为“读取/验证”词表后，`handoff_contract.py --as-of 2026-08-04`返回PASS、exit 0。
+- 同批复核的WORK_LOG validator为259条0错误、passport validator仅保留历史stage 10缺hash/timestamp的WARN、`git diff --check`通过；S36修正后handoff contract通过。最终主`.venv`准备门耗时66.1秒，exit 0、`blocking_checks=[]`，继续诚实保留`formal_model_work_ready=false`、`faiss_available=false`和I3D资产风险状态。
+
+### 影响与边界
+
+- S36只传播已由`TASK00_TASK30_H1_FINAL_INDEPENDENT_REVIEW_20260804.md`裁定的状态，不新增科学结果、修复权限或Task40创建权。
+- 后续总控最小动作固定为Task10论文段落审核与Task20最小补证审核；方法重路由仍需用户另行决定。
+
+### 风险、问题与阻塞
+
+- 交接卡不是实时事实；接续会话仍必须刷新Git和任务状态。
+- H1仍未通过，formal test未运行；主`.venv`的`jsonschema`依赖缺口和I3D UNKNOWN风险继续保留。
+
+### 下一步
+
+1. 完成独立handoff与仓库门禁验证。
+2. 只暂存S36及本条追加日志，形成独立交接commit并推送main。
+3. 向Task30回传最终裁定、精确main commit、验证结果与停止动作。
+
+### Git状态
+
+S36与本条在记录时尚未提交或推送；决策SSOT已在`main@60a56ba7fce36b6a97790cf4d5321fdafc9876b7`提交。

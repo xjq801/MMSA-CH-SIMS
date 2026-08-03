@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Mapping
@@ -76,6 +77,15 @@ def validate_completion_freeze(freeze: Mapping[str, object]) -> None:
     if reproducibility.get("same_seed_model_hashes_identical") is not True:
         raise ValueError("same-seed model hashes are not identical")
 
+    data_flow = _require_mapping(freeze.get("data_flow"), "data flow")
+    if data_flow.get("artifact") != "TASK30_DATA_FLOW.md":
+        raise ValueError("data flow artifact identity is missing or altered")
+    _require_hex(data_flow.get("sha256"), 64, "data flow sha256")
+    if data_flow.get("test_comment_access") != "UNREACHABLE":
+        raise ValueError("data flow does not close test-comment access")
+    if data_flow.get("test_rows") != "NOT_MATERIALIZED":
+        raise ValueError("data flow does not close formal-test materialization")
+
     boundaries = _require_mapping(freeze.get("boundaries"), "boundaries")
     if dict(boundaries) != EXPECTED_BOUNDARIES:
         raise ValueError("completion boundary set is incomplete or altered")
@@ -98,6 +108,13 @@ def main() -> int:
     args = parser.parse_args()
     freeze = json.loads(args.path.read_text(encoding="utf-8"))
     validate_completion_freeze(freeze)
+    data_flow = _require_mapping(freeze.get("data_flow"), "data flow")
+    data_flow_path = Path(str(data_flow["artifact"]))
+    if not data_flow_path.is_file():
+        raise ValueError("data flow artifact does not exist")
+    observed_hash = hashlib.sha256(data_flow_path.read_bytes()).hexdigest()
+    if observed_hash != data_flow["sha256"]:
+        raise ValueError("data flow artifact hash mismatch")
     print("PASS Task30 completion freeze: {}".format(args.path.as_posix()))
     return 0
 

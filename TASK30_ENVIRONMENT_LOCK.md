@@ -45,4 +45,8 @@ Because the lock includes the CUDA-tagged torch package, the official PyTorch CU
 
 ## Asset and input boundary
 
-I3D licence, official revision, rightsholder package identity and fixity remain `UNKNOWN` under `DEFERRED_ACCEPTED_RISK`. The environment itself contains no I3D array, comment body, model weight, credential or private path. An approved local main-workspace binding was consumed read-only; generated predictions remain in Git-ignored local results and are prohibited from redistribution. No model weights were saved.
+I3D licence, official revision, rightsholder package identity and fixity remain `UNKNOWN` under `DEFERRED_ACCEPTED_RISK`. The environment directory itself contains no I3D array, comment body, model weight, credential or private path. An approved local main-workspace binding was consumed read-only. Generated predictions and six selected model states are frozen only in Git-ignored local run bundles under `LOCAL_PRIVATE_MODEL_STATES_FROZEN`; they are prohibited from commit, publication or redistribution. Their non-secret hashes are retained in the Task30 completion freeze.
+
+## Full-repository preparation boundary
+
+The independent Task30 environment passes the Task30-specific completion validator and its locked dependency checks. The repository-wide `scripts/run_preparation_checks.py` is not parameterized with an external approved data root and requires restricted `HUMAN_GOLD`/`SILVER` files at paths relative to this worktree. This restricted-data-free worktree intentionally does not contain those files, so the generic command remains a disclosed failure rather than a Task30 readiness claim. Task30 must not copy restricted data into the worktree, create a path junction, or modify the frozen Task20/data-engineering validator merely to turn that command green. The missing main `.venv` is likewise not represented as ready.

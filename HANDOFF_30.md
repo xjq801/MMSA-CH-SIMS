@@ -8,7 +8,9 @@
 - 最新上游锚点：`origin/main@540c8d3a883d61e51b59d7d1a9937f06ec0f99db`
 - Task30补缺实现提交：`9adcc0a59d31d16c86e50891ff53fad916130f95`
 - Task30非敏感冻结与报告提交：`0665682281ae435c2e021d2c8722a6ec9b75a97b`
-- Git同步：以上提交只在本地分支，尚未推送
+- 上一轮最终闭环HEAD：`f331c165d1317cee0103d2185be88da844ab8388`
+- 最终回交解析ref：`refs/tags/task30-h1-final-20260803`（由本批最终提交后创建；00以回交消息中的40位HEAD交叉核验）
+- Git同步：分支与最终ref均只在本地，尚未推送或合入main
 - Task30自报开发门：`NOT_PASSED_MECHANISM_NOT_STABLE`
 - Task40：`NOT_CREATED/BLOCKED_NOT_AUTHORIZED`
 
@@ -32,6 +34,7 @@
 - 完整数值/归一化/梯度fail-closed检查，2473行student/teacher epoch历史，6个本地私有入选model states及规范张量hash。
 - 评论数、目标熵、标签噪声代理和train teacher置信度机制诊断；不打开dev评论制造讽刺案例。
 - run bundle v2记录时间、argv、exit code、矩阵行、seed角色、输入/代码hash、clean/dirty与diff hash。
+- `TASK30_DATA_FLOW.md`冻结train允许边、dev选择边、T0推理边和dev/test response阻断边，并映射到可执行负测。
 - tracked非敏感冻结：`experiments/task30-h1-development-v1/`；专用门：`scripts/validate_task30_completion.py`。
 
 ## 4. 真实CSMV开发结果
@@ -76,17 +79,18 @@ teacher经验置信度均值0.49583；低/中/高三分位的train teacher拟合
 | same-seed私有预测 | `195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a` |
 | model hash index | `7bd83b2b4bfba03f3d8b42eaf85c3bf44aa631e1e84480e074cf9a8e184d5085` |
 | full训练历史 | `cdb09668b0587a9069e81963cd07f3e289b305dc79f34e111735ef4d28db0ade` |
+| test-comment不可达数据流图 | `c51360cec948b162620fbbaf8eceaac63f7d566cfa6dab377c93c99d93e30c86` |
 
 full/replay预测逐字节一致，六个模型文件与canonical tensor hash全部一致，六行dev指标一致。四个run均`dirty=false`、exit 0、`test_adaptation=false`。全部使用本地RTX 3070 Ti；完整搜索约32分40秒，不需要租赁或远程大算力。
 
 ## 7. 最终门禁
 
-- Task30专项：50/50通过。
-- 全仓回归：130/130通过。
+- Task30专项：53/53通过。
+- 全仓回归：133/133通过。
 - `compileall`、Task30 matrix schema、Task20 handoff 22项、`pip check`、`git diff --check`：通过。
 - Task30非敏感完成门：通过。
 - Light review：0 findings；Python 3.13 seed audit七项机制齐全、0 missing。Python 3.8静态工具曾误报缺`PYTHONHASHSEED`，实际代码有显式赋值；失败保留。
-- `.venv-task30`的`validate_work_log.py`：253条、0 errors、通过。
+- `.venv-task30`的`validate_work_log.py`：256条、0 errors、通过。
 - `.venv-task30`的通用`run_preparation_checks.py`：失败，因为本worktree不承载冻结相对HUMAN_GOLD输入；真实run使用hash绑定的授权主工作区只读输入，未复制受限数据。
 - AGENTS指定主`.venv`的两个入口：主`.venv`不存在，均在脚本启动前exit 127；未冒充主环境ready。
 

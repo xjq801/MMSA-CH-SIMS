@@ -130,6 +130,12 @@ class Task30CompletionGateTests(unittest.TestCase):
                 "same_seed_prediction_byte_identical": True,
                 "same_seed_model_hashes_identical": True,
             },
+            "data_flow": {
+                "artifact": "TASK30_DATA_FLOW.md",
+                "sha256": "f" * 64,
+                "test_comment_access": "UNREACHABLE",
+                "test_rows": "NOT_MATERIALIZED",
+            },
             "boundaries": {
                 "independent_00_review": "EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE",
                 "second_comment_bearing_dataset": "NOT_EVALUABLE_DATA_NOT_RELEASED",
@@ -150,6 +156,35 @@ class Task30CompletionGateTests(unittest.TestCase):
         del broken["boundaries"]["sarcasm"]
         with self.assertRaisesRegex(ValueError, "boundary"):
             validate_completion_freeze(broken)
+        broken = json.loads(json.dumps(freeze))
+        del broken["data_flow"]
+        with self.assertRaisesRegex(ValueError, "data flow"):
+            validate_completion_freeze(broken)
+
+    def test_data_flow_artifact_maps_allowed_and_blocked_edges(self):
+        path = ROOT / "TASK30_DATA_FLOW.md"
+        text = path.read_text(encoding="utf-8")
+        required = {
+            "flowchart LR",
+            "TRAIN_RESPONSES_ALLOWED",
+            "DEV_SELECTION_CONTENT_AND_TARGETS_ONLY",
+            "TEST_RESPONSES_UNREACHABLE",
+            "TEST_ROWS_NOT_MATERIALIZED",
+            "CONTENT_ONLY_STUDENT_INFERENCE",
+        }
+        self.assertFalse(required.difference(set(text.splitlines())))
+        self.assertNotIn("C:\\Users\\", text)
+        self.assertNotIn("D:\\", text)
+
+    def test_handoff_references_data_flow_and_avoids_stale_log_count(self):
+        text = (ROOT / "HANDOFF_30.md").read_text(encoding="utf-8")
+        self.assertIn("TASK30_DATA_FLOW.md", text)
+        self.assertNotIn("253条", text)
+
+    def test_environment_lock_matches_private_model_state_boundary(self):
+        text = (ROOT / "TASK30_ENVIRONMENT_LOCK.md").read_text(encoding="utf-8")
+        self.assertIn("LOCAL_PRIVATE_MODEL_STATES_FROZEN", text)
+        self.assertNotIn("No model weights were saved.", text)
 
 
 if __name__ == "__main__":

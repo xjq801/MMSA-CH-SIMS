@@ -24,6 +24,8 @@ G1保持`PASS`，G2 protocol/data保持`PASS_WITH_LIMITATIONS`，资产可采纳
 - teacher置信度定义为`ONE_MINUS_NORMALIZED_EMPIRICAL_ENTROPY`：最小0.0272、中位0.4754、均值0.4958、最大1.0。低/中/高三分位train teacher拟合JSD收益分别为0.04253、0.04797、0.05415，置信度与拟合收益Pearson相关为0.16516。该结果是`TRAIN_TEACHER_FIT_DIAGNOSTIC_NOT_DEV_STUDENT_SUBGROUP`，不能冒充dev student分层收益。
 - 未知标签、缺字段、video/count错配、非有限值、未归一化分布或全缺失字段均fail closed。Task20冻结评测核心未修改。
 
+完整允许/禁止边、dev选择路径、T0推理路径及对应可执行负测见`TASK30_DATA_FLOW.md`。该图明确将dev responses、test responses和formal-test rows分别固定为“无teacher边”“不可达”和“未materialize”，并由完成冻结中的SHA-256绑定。
+
 ## 3. 最小实现与公平比较
 
 student是最小pooled-I3D content MLP；接口由`DatasetRuntimeSpec`和`configs/task30/dataset-contract-csmv-v1.json`提供dataset ID、动态类别顺序、split、item、target与response-count字段，不再由运行入口硬编码CSMV八类或字段名。模型head按数据集类别数构建；Video2Reaction只保留未来数据集特定head能力，不伪造评论teacher。
@@ -91,6 +93,7 @@ tracked非敏感冻结位于`experiments/task30-h1-development-v1/`。私有预�
 | same-seed private predictions | `195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a` |
 | model hash index | `7bd83b2b4bfba03f3d8b42eaf85c3bf44aa631e1e84480e074cf9a8e184d5085` |
 | full training history（2473行） | `cdb09668b0587a9069e81963cd07f3e289b305dc79f34e111735ef4d28db0ade` |
+| test-comment不可达数据流图 | `c51360cec948b162620fbbaf8eceaac63f7d566cfa6dab377c93c99d93e30c86` |
 
 full与same-seed replay的预测逐字节一致，六个模型文件hash与canonical tensor hash全部一致，六行dev指标全部一致。full manifest记录`dirty=false`、精确commit、开始/结束时间、完整argv、exit code 0、72-trial矩阵身份、输入/代码hash和`test_adaptation=false`。所有运行为本地RTX 3070 Ti；未租用大算力，完整搜索约32分40秒。
 
@@ -99,7 +102,7 @@ full与same-seed replay的预测逐字节一致，六个模型文件hash与canon
 | 项 | 状态 | 证据/边界 |
 |---:|---|---|
 | 1 | COMPLETE | Task20 split、指标、预算冻结未改 |
-| 2 | COMPLETE | teacher仅train评论；dev/test评论不可达 |
+| 2 | COMPLETE | teacher仅train评论；`TASK30_DATA_FLOW.md`和负测证明dev/test评论没有实现路径 |
 | 3 | COMPLETE | 评论级标签编码、视频级聚合、评论数与经验置信度审计 |
 | 4 | COMPLETE | 类别质量/稀疏、评论数偏差、缺失异常、置信度统计已冻结 |
 | 5 | COMPLETE | content-only student训练/推理只读T0内容 |

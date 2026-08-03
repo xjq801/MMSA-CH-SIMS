@@ -76,6 +76,12 @@
     "local_private_model_count": 6,
     "redistribution": "PROHIBITED_LOCAL_PRIVATE_ARTIFACTS"
   },
+  "data_flow": {
+    "artifact": "TASK30_DATA_FLOW.md",
+    "sha256": "c51360cec948b162620fbbaf8eceaac63f7d566cfa6dab377c93c99d93e30c86",
+    "test_comment_access": "UNREACHABLE",
+    "test_rows": "NOT_MATERIALIZED"
+  },
   "boundaries": {
     "independent_00_review": "EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE",
     "second_comment_bearing_dataset": "NOT_EVALUABLE_DATA_NOT_RELEASED",

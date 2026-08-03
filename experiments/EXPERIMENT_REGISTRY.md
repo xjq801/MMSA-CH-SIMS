@@ -24,3 +24,9 @@
 允许状态：`PLANNED`、`RUNNING`、`COMPLETED`、`FAILED`、`LEAKAGE_BLOCKED`、`VALIDATION_ONLY`。失败和被阻断的运行不得删除记录。
 
 历史实验不因本表建立而被追认成正式运行。既有代码与结果的证据资格统一见`legacy-experiment-classification.md`；其中目标评论、未来互动、全量图或随机split不合格结果不得补登记为`COMPLETED`。
+
+## Task20 versioned recovery attempts
+
+| experiment_id | date | config | split/access | identity | seed | stop rule | status | evidence |
+|---|---|---|---|---|---:|---|---|---|
+| `TASK20_VCCSA_EPOCH1_3_RECOVERY_RERUN_SEED3407_ATTEMPT2` | 2026-08-02 | `configs/task20/vccsa-epoch1-3-recovery-attempt2.json` | author comment split; dev only; `test_access=0` | `AUTHOR_ORIGINAL_SETTING_NON_T0_LEAKAGE_ACCEPTED_EXPLORATORY`; `INELIGIBLE` | 3407 | retain `max_epoch=120` scheduler semantics; execution guard after complete Epoch 3 train/dev/prediction/checkpoint | `COMPLETED_AWAITING_00_REVIEW` | `experiments/task20-vccsa-epoch1-3-recovery-attempt2/run-manifest.json`; private payloads excluded from Git |

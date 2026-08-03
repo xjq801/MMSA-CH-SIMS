@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from prepare_vccsa_author_reproduction import (
     EXPECTED_AUTHOR_REVISION,
+    _patch_vccsa_main_for_resume,
     apply_compatibility_patch,
     audit_peer_isolation,
     build_smoke_inputs,
@@ -20,6 +21,28 @@ from prepare_vccsa_author_reproduction import (
 
 
 class VccsaAuthorReproductionTests(unittest.TestCase):
+    def test_completed_epoch_guard_upgrades_existing_resume_patch_fail_closed(self):
+        existing = (
+            "from train_vccsv import train\n"
+            "from resume_utils import load_training_checkpoint, require_exact_resume_loader\n"
+            "    parser.add_argument('--fine_ck_path', type=str, default=None)\n"
+            "    parser.add_argument('--resume_checkpoint', type=str, default=None)\n"
+            "    parser.add_argument('--resume_checkpoint_out', type=str, default=None)\n"
+            "    parser.add_argument('--checkpoint_every_steps', type=int, default=500)\n"
+            "    args.resume_identity = {}\n"
+            "    resume_state = None\n"
+            "    if args.resume_checkpoint:\n"
+        )
+
+        patched = _patch_vccsa_main_for_resume(existing)
+
+        self.assertIn("--stop_after_completed_epoch", patched)
+        self.assertIn("requires fresh initialization", patched)
+        self.assertLess(
+            patched.index("requires fresh initialization"),
+            patched.index("    if args.resume_checkpoint:\n"),
+        )
+
     def test_full_author_split_fails_closed_when_peer_requires_another_split(self):
         with tempfile.TemporaryDirectory() as td:
             source = Path(td) / "Comments_Anno"
@@ -274,6 +297,7 @@ class VccsaAuthorReproductionTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (source / "model_VCCSA.py").write_text(
+                "from turtle import forward\n"
                 "from layers.fc import MLP\n"
                 "from layers.layer_norm import LayerNorm\n"
                 "class UsedModel:\n    pass\n",
@@ -314,14 +338,24 @@ class VccsaAuthorReproductionTests(unittest.TestCase):
             self.assertIn("CSMV_Dataset", main)
             self.assertIn("--resume_checkpoint", main)
             self.assertIn("--checkpoint_every_steps", main)
+            self.assertIn("--stop_after_completed_epoch", main)
+            self.assertIn("--step_metrics_out", main)
             self.assertIn("load_training_checkpoint", main)
             self.assertIn("loss.item()", trainer)
             self.assertIn("save_training_checkpoint", trainer)
+            self.assertIn("args.step_metrics_out", trainer)
+            self.assertIn("'learning_rate'", trainer)
+            self.assertIn("range(start_epoch, args.max_epoch)", trainer)
+            self.assertIn(
+                "epoch + 1 >= args.stop_after_completed_epoch", trainer
+            )
+            self.assertIn("execution guard stopped after completed epoch", trainer)
             self.assertIn("signal.SIGTERM", trainer)
             self.assertIn("checkpoint requested by signal", trainer)
             self.assertEqual(trainer.count("raise SystemExit(143)"), 2)
             self.assertTrue((source / "resume_utils.py").is_file())
             self.assertNotIn("from layers.", model)
+            self.assertNotIn("from turtle import forward", model)
             self.assertIn("class UsedModel", model)
             self.assertIn("args.aux_task = False", compute_args)
             self.assertEqual(report["status"], "PATCHED_AND_VERIFIED")

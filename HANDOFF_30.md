@@ -90,9 +90,9 @@ full/replay预测逐字节一致，六个模型文件与canonical tensor hash全
 - `compileall`、Task30 matrix schema、Task20 handoff 22项、`pip check`、`git diff --check`：通过。
 - Task30非敏感完成门：通过。
 - Light review：0 findings；Python 3.13 seed audit七项机制齐全、0 missing。Python 3.8静态工具曾误报缺`PYTHONHASHSEED`，实际代码有显式赋值；失败保留。
-- `.venv-task30`的`validate_work_log.py`：256条、0 errors、通过。
+- `.venv-task30`的`validate_work_log.py`：257条、0 errors、通过。
 - `.venv-task30`的通用`run_preparation_checks.py`：失败，因为本worktree不承载冻结相对HUMAN_GOLD输入；真实run使用hash绑定的授权主工作区只读输入，未复制受限数据。
-- AGENTS指定主`.venv`的两个入口：主`.venv`不存在，均在脚本启动前exit 127；未冒充主环境ready。
+- AGENTS指定主`.venv`的两个入口：主`.venv`不存在，均以命令未找到在脚本启动前失败；具体shell退出码不作为证据合同，未冒充主环境ready。
 
 ## 8. 向00请求的独立裁定
 

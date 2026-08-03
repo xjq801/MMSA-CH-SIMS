@@ -11606,3 +11606,45 @@ Task30代码、非敏感冻结、报告与handoff均已在本地分支有意提�
 ### Git状态
 
 本批补证尚未提交；分支未推送、未合入main，最终本地ref将在提交后创建。
+
+## WR-20260804-001 — Task30主环境失败表述shell无关化
+
+- 时间：2026-08-04 00:04:00 +08:00
+- 类型：DOCUMENTATION | VALIDATION | GIT
+- 任务/门：30-M4 评论教师与内容学生 / 最终回交证据一致性
+- 状态：HANDOFF环境限制表述已精确化；H1与00边界不变
+- 负责人：30-M4 评论教师与内容学生Codex
+
+### 背景与目标
+
+最终提交后交叉检查发现，缺失主`.venv`在不同shell包装器下可产生不同进程退出码；稳定事实是命令未找到且规定脚本未启动。HANDOFF不应把包装器相关退出码写成跨环境证据合同。
+
+### 实际变更
+
+- 将`HANDOFF_30.md`中的主`.venv`失败描述改为“命令未找到、脚本启动前失败”，明确具体shell退出码不作为证据合同。
+- 将HANDOFF日志计数同步为257条；不修改G门、H1结论、Registry/passport、实验结果或任何冻结评测代码。
+
+### 验证与证据
+
+- 本轮PowerShell调用两个主`.venv`入口均在脚本启动前返回`CommandNotFoundException`；没有运行或绕过脚本。
+- 追加本条后必须重跑`validate_work_log.py`、Task30完成门、HANDOFF聚焦测试和`git diff --check`。
+
+### 影响与边界
+
+- 环境限制的稳定事实不变：主`.venv`不存在，Task30专用`.venv-task30`不能冒充它。
+- 通用准备门仍因本worktree不承载受限相对HUMAN_GOLD输入而失败；不复制数据或修改冻结validator。
+
+### 风险、问题与阻塞
+
+- H1仍为`NOT_PASSED_MECHANISM_NOT_STABLE`；00审核、main合入与总控状态更新仍不可由Task30执行。
+- I3D资产身份与fixity继续为`UNKNOWN/DEFERRED_ACCEPTED_RISK`。
+
+### 下一步
+
+1. 重跑最终轻量门禁并提交本条一致性修正。
+2. 将本地最终回交ref更新到新HEAD并向00回交精确40位commit。
+3. 不推送、不合入main、不创建Task40。
+
+### Git状态
+
+一致性修正待提交；当前分支与本地ref尚未推送。

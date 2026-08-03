@@ -11454,3 +11454,55 @@ Task30 完整实现/开发证据提交与上游合并提交均仅存在本地分
 ### Git状态
 
 本批tracked冻结、validator、测试、报告与日志待有意提交；私有run目录保持Git ignore，未推送。
+
+## WR-20260803-004 — Task30最终门禁、handoff与00回交闭环
+
+- 时间：2026-08-03 23:31:00 +08:00
+- 类型：VALIDATION | HANDOFF | GIT | DECISION
+- 任务/门：30-M4 评论教师与内容学生 / H1开发门最终回交
+- 状态：Task30完成并自报不通过；等待00独立复核
+- 负责人：30-M4 评论教师与内容学生 Codex
+
+### 背景与目标
+
+在完整干净复跑、同种子复现、三development seeds、真实teacher审计和tracked非敏感冻结完成后，执行总纲与AGENTS要求的最终门禁，更新`HANDOFF_30.md`并向00提供精确commit。不得将环境失败改写为通过，不得创建Task40或把development evidence升级为formal evidence。
+
+### 实际变更
+
+- 提交非敏感冻结、validator、TDD与报告：`0665682281ae435c2e021d2c8722a6ec9b75a97b`。
+- 更新并提交`HANDOFF_30.md`：`05ad853970572c78e05841a7ff34752eba9ed92b`，绑定上游`origin/main@540c8d3a883d61e51b59d7d1a9937f06ec0f99db`、代码提交`9adcc0a59d31d16c86e50891ff53fad916130f95`、冻结提交、运行hash、开发结果与不可伪造边界。
+- `.gitignore`只为`experiments/task30-h1-development-v1/`的三个非敏感冻结文件增加窄例外；`results/`、私有预测、epoch日志和model states仍被忽略。
+- 未修改`TASK_REGISTRY.md`或`.light/passport.yaml`的最终总控状态；Task30状态变更与是否接受关闭保留给00独立裁定。
+
+### 验证与证据
+
+- Task30专项：50/50通过；全仓：130/130通过。
+- `compileall`、Task30 development matrix schema、Task20 handoff 22项、`pip check`、`git diff --check`和tracked JSON解析全部通过。
+- `scripts/validate_task30_completion.py`通过；`scripts/validate_work_log.py`在修正本条前一条元数据键后返回253条、0 errors、PASS。
+- Light review使用Python 3.13返回0 findings；seed audit覆盖PYTHONHASHSEED、Python random、NumPy、PyTorch、CUDA、cuDNN和DataLoader七项，0 missing、PASS。
+- 失败保留：首次并行最终门因`WR-20260803-003`误写元数据键`任务/问题`而日志校验失败，修正为`任务/门`后通过；Python 3.8静态seed工具误报缺`PYTHONHASHSEED`，同一代码在Python 3.13正确识别且固定seed实际重放逐字节一致；首次全历史敏感扫描命中旧WORK_LOG路径而失败，收窄为本批diff与新冻结文件后0命中。
+- `.venv-task30`的通用`run_preparation_checks.py`诚实exit 1：本worktree不承载相对路径的冻结HUMAN_GOLD输入；没有复制受限数据来伪造通过。
+- AGENTS指定主`.venv`的`validate_work_log.py`与`run_preparation_checks.py`入口均因主`.venv`不存在而在脚本启动前exit 127；未冒充主环境ready。
+
+### 影响与边界
+
+- Task30权限内可执行的总纲第1—15项已形成真实代码、运行、分析和耐久冻结；第16项Task30自审为`NOT_PASSED_MECHANISM_NOT_STABLE`，00审核为`EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE`。
+- 正式test未materialize或使用；三development seeds不是Task50五种子统计。Task40保持`NOT_CREATED/BLOCKED_NOT_AUTHORIZED`。
+- 第二评论数据集、teacher-only dev上界、讽刺、跨域H1和Video2Reaction原生H1均以精确N/A/不可评估状态回交，未伪造数据或teacher。
+- 全部实验使用本地RTX 3070 Ti，无租赁、远程或付费算力需求。
+
+### 风险、问题与阻塞
+
+- I3D许可、官方revision、权利方包身份与fixity继续为`UNKNOWN/DEFERRED_ACCEPTED_RISK`；私有run与model states禁止提交、发布或再分发。
+- H1具体评论机制仅2/3 seeds优于ordinary与mismatch，且高分歧组恶化；00不得把平均JSD最好直接等同于机制门通过。
+- 通用准备门和主环境缺失仍是环境级限制；Task30专用完成门通过不替代它们。
+
+### 下一步
+
+1. 向00回交最终日志提交、handoff提交、测试计数、development evidence身份和剩余限制。
+2. 停止Task30调参，等待00接受关闭或书面授权预声明H1修复。
+3. 不创建Task40，不进入Task50，不查看formal test。
+
+### Git状态
+
+Task30代码、非敏感冻结、报告与handoff均已在本地分支有意提交；本条最终日志待提交，分支未推送。

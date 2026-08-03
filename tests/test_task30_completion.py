@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from task30_analysis import analyze_teacher_confidence_effect
 from task30_contracts import DatasetRuntimeSpec
 from task30_freeze import build_nonsecret_freeze
+from validate_task30_completion import validate_completion_freeze
 from run_task30_h1_development import load_canonical_train_dev
 
 
@@ -110,6 +111,45 @@ class Task30DurableFreezeTests(unittest.TestCase):
         self.assertNotIn("predictions.csv", json.dumps(frozen))
         with self.assertRaisesRegex(ValueError, "private"):
             build_nonsecret_freeze({**aggregate, "sample_id": "private-row"}, manifest)
+
+
+class Task30CompletionGateTests(unittest.TestCase):
+    def test_completion_gate_requires_clean_runs_and_explicit_unavailable_boundaries(self):
+        freeze = {
+            "schema_version": "task30-completion-freeze-v1",
+            "evidence_identity": "DEVELOPMENT_EVIDENCE_ONLY",
+            "decision": "NOT_PASSED_MECHANISM_NOT_STABLE",
+            "code_commit": "a" * 40,
+            "runs": {
+                "search": {"manifest_sha256": "b" * 64, "git_dirty": False, "exit_code": 0},
+                "replay": {"manifest_sha256": "c" * 64, "git_dirty": False, "exit_code": 0},
+                "seed_20260803": {"manifest_sha256": "d" * 64, "git_dirty": False, "exit_code": 0},
+                "seed_20260804": {"manifest_sha256": "e" * 64, "git_dirty": False, "exit_code": 0},
+            },
+            "reproducibility": {
+                "same_seed_prediction_byte_identical": True,
+                "same_seed_model_hashes_identical": True,
+            },
+            "boundaries": {
+                "independent_00_review": "EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE",
+                "second_comment_bearing_dataset": "NOT_EVALUABLE_DATA_NOT_RELEASED",
+                "teacher_only_dev_upper_bound": "NOT_COMPARABLE_DEV_RESPONSES_PROHIBITED",
+                "sarcasm": "NOT_EVALUABLE_DEV_RESPONSE_TEXT_UNREACHABLE",
+                "cross_domain_h1": "NOT_APPLICABLE_NO_SECOND_COMMENT_BEARING_DATASET",
+                "video2reaction_h1": "NOT_APPLICABLE_DATA_NOT_RELEASED",
+            },
+            "test_access": "TEST_ROWS_NOT_MATERIALIZED_OR_USED",
+            "privacy_boundary": "TRACKED_AGGREGATES_ONLY_NO_SAMPLE_IDS_PATHS_WEIGHTS_OR_PREDICTION_ROWS",
+        }
+        validate_completion_freeze(freeze)
+        broken = json.loads(json.dumps(freeze))
+        broken["runs"]["search"]["git_dirty"] = True
+        with self.assertRaisesRegex(ValueError, "clean"):
+            validate_completion_freeze(broken)
+        broken = json.loads(json.dumps(freeze))
+        del broken["boundaries"]["sarcasm"]
+        with self.assertRaisesRegex(ValueError, "boundary"):
+            validate_completion_freeze(broken)
 
 
 if __name__ == "__main__":

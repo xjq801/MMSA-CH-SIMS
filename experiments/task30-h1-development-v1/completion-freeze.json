@@ -1,0 +1,89 @@
+{
+  "schema_version": "task30-completion-freeze-v1",
+  "evidence_identity": "DEVELOPMENT_EVIDENCE_ONLY",
+  "decision": "NOT_PASSED_MECHANISM_NOT_STABLE",
+  "code_commit": "9adcc0a59d31d16c86e50891ff53fad916130f95",
+  "runs": {
+    "search": {
+      "manifest_sha256": "97d50c320eda6eec6c6bf8fa44d36b17b0fe3d64dd444fee43fed0ee930b6ce0",
+      "aggregate_sha256": "70c6275693ced69f9955e370e2af9a3b87497358ec781487998628a659e5d1f8",
+      "git_dirty": false,
+      "exit_code": 0,
+      "seed": 20260802,
+      "trial_count": 72
+    },
+    "replay": {
+      "manifest_sha256": "145b7a222d4158a402ddc7499a9137fa7785225b1221f03b9ab95843d81f20bc",
+      "aggregate_sha256": "bf26f459e1d12679cf38b56cea5ea0facc66be2c3748345070df2ede31ee5825",
+      "git_dirty": false,
+      "exit_code": 0,
+      "seed": 20260802,
+      "selection_identity": "FROZEN_FROM_PRIOR_DEV_SELECTION"
+    },
+    "seed_20260803": {
+      "manifest_sha256": "41295136f5e890a4adce2353e5e4dbd763f53c6e42104b4853ea311378a3ff6b",
+      "aggregate_sha256": "a387c7c6f97f3753796e7402e323c7276f0c919c390dd717fa68c8fbc7c66be0",
+      "git_dirty": false,
+      "exit_code": 0,
+      "seed": 20260803,
+      "selection_identity": "FROZEN_FROM_PRIOR_DEV_SELECTION"
+    },
+    "seed_20260804": {
+      "manifest_sha256": "53ad21a9c2fb3173f70520e210632a0b1aaa4207719ae7aaecca16c5eb115a4b",
+      "aggregate_sha256": "161a065d17c591eb377b6980ce406e35e0ee56482633ffd75bcc0cabb1eb8e5e",
+      "git_dirty": false,
+      "exit_code": 0,
+      "seed": 20260804,
+      "selection_identity": "FROZEN_FROM_PRIOR_DEV_SELECTION"
+    }
+  },
+  "input_hashes": {
+    "annotation_archive": "1533318195176588482593fc7671cc01a93c2be216702dc25d5f29c02ef6419f",
+    "canonical_labels": "434eb1f84153be2f71d8db79351acc78cb2cae28691b4d4189f5165f22178869",
+    "dataset_runtime_contract": "3df6b0e148ed4317c68ed3c6cd1ac3222ee783da1d1968c943b347493b169abd",
+    "i3d_quarantine_manifest": "425829cf3271ce3c695a011e75b9efa94c4efab76458fda9f902e6eeb9c99c1e",
+    "video_map": "6126b907d058760b2d1773f230274325b1bde597c96f79e9a87ed8ad1f8829d3"
+  },
+  "stability": {
+    "seeds": [20260802, 20260803, 20260804],
+    "mean_jsd": {
+      "hard_label_student": 0.18039553362551303,
+      "soft_distribution_student": 0.17266030023207954,
+      "soft_distribution_student_dirichlet": 0.17290793559775866,
+      "ordinary_kd_student": 0.170873064966347,
+      "comment_privileged_kd_student": 0.16959349451834238,
+      "mismatched_comment_teacher_control": 0.17077252268463888
+    },
+    "privileged_jsd": [0.1696667746299664, 0.1690302845140116, 0.17008342441104918],
+    "privileged_gain_vs_soft": [0.0031759224725347868, 0.0031413232598025143, 0.0028831714088741467],
+    "privileged_gain_vs_ordinary_kd": [0.002126255827015283, 0.0017159234383850863, -0.000003467921386557382],
+    "privileged_gain_vs_mismatch": [0.0020995095561186505, 0.0017413424677940048, -0.00030376752502317417],
+    "mean_ece": {
+      "ordinary_kd_student": 0.041226521206076595,
+      "comment_privileged_kd_student": 0.03687183208178114,
+      "mismatched_comment_teacher_control": 0.03723818632031328
+    },
+    "mechanism_direction": "CORRECT_COMMENT_ADVANTAGE_OVER_ORDINARY_AND_MISMATCH_POSITIVE_IN_2_OF_3_SEEDS",
+    "calibration_conclusion": "MEAN_ECE_NOT_WORSE_BUT_DOES_NOT_RESCUE_UNSTABLE_MECHANISM"
+  },
+  "reproducibility": {
+    "same_seed_prediction_byte_identical": true,
+    "same_seed_prediction_sha256": "195e60290d867ca2ce75be75830bffb4bd808228f0786b9f65deb019e5ade53a",
+    "same_seed_model_hashes_identical": true,
+    "model_hash_index_sha256": "7bd83b2b4bfba03f3d8b42eaf85c3bf44aa631e1e84480e074cf9a8e184d5085",
+    "full_training_history_sha256": "cdb09668b0587a9069e81963cd07f3e289b305dc79f34e111735ef4d28db0ade",
+    "full_training_history_lines": 2473,
+    "local_private_model_count": 6,
+    "redistribution": "PROHIBITED_LOCAL_PRIVATE_ARTIFACTS"
+  },
+  "boundaries": {
+    "independent_00_review": "EXTERNAL_REVIEW_REQUIRED_NOT_SELF_APPROVABLE",
+    "second_comment_bearing_dataset": "NOT_EVALUABLE_DATA_NOT_RELEASED",
+    "teacher_only_dev_upper_bound": "NOT_COMPARABLE_DEV_RESPONSES_PROHIBITED",
+    "sarcasm": "NOT_EVALUABLE_DEV_RESPONSE_TEXT_UNREACHABLE",
+    "cross_domain_h1": "NOT_APPLICABLE_NO_SECOND_COMMENT_BEARING_DATASET",
+    "video2reaction_h1": "NOT_APPLICABLE_DATA_NOT_RELEASED"
+  },
+  "test_access": "TEST_ROWS_NOT_MATERIALIZED_OR_USED",
+  "privacy_boundary": "TRACKED_AGGREGATES_ONLY_NO_SAMPLE_IDS_PATHS_WEIGHTS_OR_PREDICTION_ROWS"
+}

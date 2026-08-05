@@ -12119,3 +12119,53 @@ S38及本条追加在记录时未暂存、未提交、未推送；基线`main/or
 ### Git状态
 
 记录时`HEAD=origin/main=0b9bfdb72cb343001dd3e66e84cc377ae6ee3b0c`；v1.23、S40与本条仍为`dirty/uncommitted`。用户未跟踪目录保持未暂存。
+
+## WR-20260805-007 — v1.23、S40与Task40开发授权首次推送确认
+- 时间：2026-08-05 18:34:21 +08:00
+- 类型：GIT | DELIVERY | VALIDATION
+- 任务/门：00总控 / v1.23冻结包远端交付
+- 状态：内容commit已推送；本条待closure提交
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+记录v1.23科学/数据/统计合同、S40交接卡与Task40开发创建授权的真实commit和远端推送结果，并形成追加式Git回执。
+
+### 实际变更
+
+- 明确暂存26个受控文件，包含总纲、预注册、数据适配、closest-prior、Task40授权、四个机读合同、论文边界、Registry/passport、审计脚本、WORK_LOG与S40。
+- commit `9f99a1bd1252c30ed0e5e30e09624a8799b8be61`，消息`docs: freeze CARM v1.23 and authorize Task40 development`。
+- `git push origin main`成功，远端回显`0b9bfdb..9f99a1b main -> main`；随后`git rev-parse HEAD/origin/main`均为上述40位commit。
+
+### 验证与证据
+
+- 提交前`git diff --cached --check` exit 0；暂存清单26项，未包含用户目录。
+- commit命令exit 0，统计为26 files changed、1278 insertions、197 deletions；push命令exit 0。
+- 推送后`git status --short --branch`仅显示用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`，main与origin/main同步。
+- 本条追加后将重跑`validate_work_log.py`、`run_preparation_checks.py`和`git diff --check`；真实结果在同批验证后提交。
+
+### 影响与边界
+
+- origin/main现已包含“Task40获准由用户创建”的合同，但不代表Task40任务已创建、Oracle已通过或任何方法结果已产生。
+- Task30、Task20、G1—G3、I3D与formal-test边界均未改变；C1—C3仍`TO_VERIFY`。
+
+### 风险、问题与阻塞
+
+- Task40尚未由用户创建；00继续只做监督，不在主工作区执行实验核心。
+- 正式模型环境仍`BLOCKED_M1`，Video2Reaction原生B轨仍受许可/fixity/movie split条件门约束。
+- 本条自身尚未提交，须经最终门和closure commit推送后才能作为远端记录读取。
+
+### 下一步
+
+1. 验证本条WORK_LOG、综合准备门和diff。
+2. 提交并推送只含WR-20260805-007的closure commit。
+3. 向用户报告最终main锚点、新数据裁定、简单实验流程与Task40下一动作。
+
+### Git状态
+
+本条写入前`HEAD=origin/main=9f99a1bd1252c30ed0e5e30e09624a8799b8be61`且仅用户目录未跟踪；写入后仅`WORK_LOG.md`为本批受控dirty文件。
+
+### 最终门结果
+
+- `scripts/validate_work_log.py`返回267条、0错误、latest=`WR-20260805-007`、exit 0；`git diff --check` exit 0。
+- `scripts/run_preparation_checks.py`耗时27.0秒、exit 0、`blocking_checks=[]`；继续保留`formal_model_work_ready=false`、`faiss_available=false`和`g2_asset_ready=false`。

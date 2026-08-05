@@ -12328,3 +12328,47 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 - `git diff --check` exit 0。
 - `validate_manuscript_ssot.py` exit 1，报告两个既有稿件骨架缺口：blueprint citation registry缺`FINITE_RESPONSE_DISTRIBUTION_UNCERTAINTY`，main result shell未保留`C4=TO_VERIFY`。本批未修改论文SSOT/blueprint，也不把该门写成PASS；缺口留给后续路线可发表性审计。
 - `run_preparation_checks.py` exit 1，与Task40工作树相同，在`m2_data_engineering`读取本独立worktree相对`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`时触发`FileNotFoundError`；未绕过、未重试包装器、未把失败写成通过。
+
+## WR-20260805-011 — Task40关闭裁定推送回执
+- 时间：2026-08-05 21:20:20 +08:00
+- 类型：GIT | DELIVERY | FINAL_CONTROL_CLOSURE
+- 任务/门：00总控04 / Task40最终独立审核交付
+- 状态：审核、SSOT与S42已推送main；本条为行政closure
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+为WR-20260805-010补齐实际commit和push事实。本条不改变Task40科学裁定、claim边界或实验权限。
+
+### 实际变更
+
+- Task40审核与SSOT裁定commit=`ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`，消息`docs: close Task40 development gate`。
+- S42、passport revision 19和WR-20260805-010 commit=`beff95ffa5036c3e556580af84fca387e062fb1e`，消息`docs: hand off Task40 closure review`。
+- 推送前再次`git fetch origin`；确认`origin/main=6b4015e16aca6b6cd5a41540255e0f977413632e`未漂移后，`git push origin HEAD:main`成功，远端回显`6b4015e..beff95f HEAD -> main`。
+
+### 验证与证据
+
+- 决策文件SHA-256=`ae1f890fbbeb1625fdbaf4e95b3998d46bc715e8d3416daa21b36f3f0d27f42e`；S42 SHA-256=`d0ca363b31267c5985563d69787c4139f6ad023131c5d0aa49cb313aecfa42c4`。
+- 推送命令exit 0；Task40开发分支仍未push、未merge，main只接收总控审核与SSOT文件。
+- 本条追加后将重跑WORK_LOG validator与diff检查，形成并推送唯一行政closure commit；通用准备门既有data-free失败不重复运行。
+
+### 影响与边界
+
+- `origin/main@beff95ffa5036c3e556580af84fca387e062fb1e`已正式包含Task40关闭裁定、Task Registry v1.16、Claim矩阵v1.5、passport revision 19和S42。
+- Task40仍`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`；Task50仍未创建且不获授权；formal test仍未materialize。
+- 不改变G1—G3、Task10/20/30、I3D或论文无正式结果边界。
+
+### 风险、问题与阻塞
+
+- 最终行政closure commit尚未形成；在其推送前不得把本条自身写成已在远端。
+- 后续可发表性/降级审计只能只读分析，不构成新增实验授权。
+
+### 下一步
+
+1. 验证WR-20260805-011与Git差异。
+2. 提交并推送本条行政closure。
+3. 按S42接续；不创建Task50或新增实验。
+
+### Git状态
+
+本条写入前`HEAD=origin/main=beff95ffa5036c3e556580af84fca387e062fb1e`且工作树clean；写入后仅`WORK_LOG.md`为受控dirty文件。

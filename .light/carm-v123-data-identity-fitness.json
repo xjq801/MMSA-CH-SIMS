@@ -1,0 +1,120 @@
+{
+  "schema": "light.data_identity_fitness.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM",
+  "as_of": "2026-08-05T00:00:00+08:00",
+  "datasets": [
+    {
+      "dataset_id": "CSMV-HUMAN-GOLD-V1",
+      "title": "CSMV video-level aggregate audience reactions",
+      "version": "frozen local canonical v1",
+      "source_locator": "DATA_SOURCE_LEDGER.md DS-001/CSMV tracked lineage",
+      "source_type": "TRACKED_AGGREGATE_WITH_RESTRICTED_INPUT_ASSET",
+      "raw_sha256": "434eb1f84153be2f71d8db79351acc78cb2cae28691b4d4189f5165f22178869",
+      "rows": 8210,
+      "unit_of_observation": "video",
+      "permissions": {
+        "license": {"status": "PARTIAL_LAYERED_UNKNOWN_FOR_I3D", "allows_research": true, "allows_derivatives": false, "allows_redistribution": false},
+        "consent": {"status": "SECONDARY_DATASET_SOURCE_RULES"},
+        "dua": {"status": "NOT_APPLICABLE_OR_UNKNOWN"},
+        "ethics_review": {"status": "FINAL_INSTITUTIONAL_DETERMINATION_PENDING"}
+      },
+      "split_threat_model": {
+        "scheme": "group_by_video_v1 with source-family audit",
+        "unit": "video/source group",
+        "split_artifact_sha256": "see data/manifests/split-v1.manifest.json",
+        "threats": {
+          "TIME_CROSSOVER": "NOT_APPLICABLE_NO_TIME_PROTOCOL",
+          "GROUP_OVERLAP": "CONTROLLED_EXISTING_GATE",
+          "ENTITY_OVERLAP": "CONTROLLED_SOURCE_FAMILY_GATE",
+          "PREPROCESSING_BEFORE_SPLIT": "CONTROLLED_EXISTING_GATE",
+          "TARGET_LEAKAGE": "CONTROLLED_T0_FAIL_CLOSED",
+          "NEAR_DUPLICATE": "CONTROLLED_WITH_LIMITATIONS",
+          "AUGMENTATION_LEAK": "TO_BE_RETESTED_PER_TASK40_RUN"
+        }
+      },
+      "fitness": {
+        "research_question": "Credible OOF historical net-benefit routing under unavailable target responses",
+        "intended_use": "Core Task40 development and later Task50 formal evidence",
+        "target_population": "Observed public-expression response distributions in the frozen CSMV sampling frame",
+        "measurement_quality": {"status": "FIT_WITH_FINITE_RESPONSE_MODEL"},
+        "label_quality": {"status": "HUMAN_GOLD_AGGREGATE_WITH_ONE_MISSING_EMOTION_LABEL"},
+        "missingness": {"status": "107266_VALID_EMOTION_OF_107267_RESPONSES"},
+        "sample_power": {"status": "FIXED_N_PRECISION_MDE_PENDING_BEFORE_TASK50"},
+        "bias_representativeness": {"status": "LIMITED_COMMENTER_SELECTION_NOT_ALL_VIEWERS"},
+        "staleness": {"status": "FROZEN_LOCAL_CANONICAL"},
+        "limitations": ["I3D license/revision/rightsholder identity/external fixity unknown", "no native time/topic/publisher protocol", "no raw-video or audio claim", "no redistribution"]
+      },
+      "decision": "FIT_WITH_ACCEPTED_ASSET_RISK"
+    },
+    {
+      "dataset_id": "LAI-GAI-V05-HUMAN-GOLD",
+      "title": "LAI-GAI aggregate induced-affect ratings",
+      "version": "LAI-GAI@v05-2026-03-11",
+      "source_locator": "DATA_SOURCE_LEDGER.md and frozen LAI-GAI manifests",
+      "source_type": "TRACKED_AGGREGATE",
+      "raw_sha256": "ad58c268e34adf02bd8e639338069d34576e1d9602f819a2cc6fa89be6836818",
+      "rows": 847,
+      "unit_of_observation": "image",
+      "permissions": {"license": {"status": "CC_BY_4_0_FROZEN_SOURCE_CHAIN", "allows_research": true, "allows_derivatives": true, "allows_redistribution": true}, "consent": {"status": "SOURCE_FILTERED_ELIGIBLE_ROWS"}, "dua": {"status": "NOT_APPLICABLE"}, "ethics_review": {"status": "FINAL_INSTITUTIONAL_DETERMINATION_PENDING"}},
+      "fitness": {
+        "research_question": "Finite-response marginal uncertainty and empirical-distribution calibration",
+        "intended_use": "Independent HUMAN_GOLD measurement and calibration evidence",
+        "target_population": "Eligible elicited responders for the frozen images",
+        "measurement_quality": {"status": "FIT_FOR_MARGINAL_DIMENSION_ANALYSIS"},
+        "label_quality": {"status": "HUMAN_GOLD"},
+        "missingness": {"status": "MARGINAL_DIMENSION_COUNTS_AUDITED"},
+        "sample_power": {"status": "FIXED_N_PRECISION_MDE_PENDING_BEFORE_TASK50"},
+        "bias_representativeness": {"status": "IMAGE_DOMAIN_AND_ELICITED_SAMPLE_LIMITED"},
+        "staleness": {"status": "FROZEN"},
+        "limitations": ["no video history", "no native comment memory", "no joint 12-dimensional respondent vectors in canonical"]
+      },
+      "decision": "FIT_WITH_LIMITATIONS"
+    },
+    {
+      "dataset_id": "infofusionlab/Video2Reaction",
+      "title": "Video2Reaction",
+      "version": "HF revision 75278468c91c51ff54cf709d61ee881ca5c37c9b",
+      "source_locator": "https://huggingface.co/datasets/infofusionlab/Video2Reaction",
+      "source_type": "REMOTE_PUBLIC_DERIVED_FEATURES_AND_SILVER_LABELS",
+      "snapshot_at": "2026-08-05T00:00:00+08:00",
+      "rows": 10348,
+      "unit_of_observation": "movie clip/video",
+      "remote_identity": {
+        "hf_revision": "75278468c91c51ff54cf709d61ee881ca5c37c9b",
+        "hf_last_modified": "2026-07-10T19:04:19Z",
+        "hf_sibling_count": 92,
+        "download_size_bytes": 8946422642,
+        "dataset_size_bytes": 41118612515,
+        "splits": {"train": 7243, "validation": 1035, "test": 2070},
+        "github_repository": "Information-Fusion-Lab-Umass/video2reaction",
+        "github_revision": "0da6060445782128f503cd19d157f6a5922d107a"
+      },
+      "permissions": {
+        "license": {"status": "CONFLICTING_PUBLIC_DESCRIPTIONS", "locator": "HF card says annotation layer CC BY-NC-SA 4.0; GitHub README says dataset/code CC BY 4.0 while repository API reports NOASSERTION", "allows_research": true, "allows_derivatives": false, "allows_redistribution": false},
+        "consent": {"status": "UNKNOWN_FOR_ORIGINAL_COMMENTERS"},
+        "dua": {"status": "NOT_APPLICABLE_PUBLIC_METADATA_LAYER"},
+        "ethics_review": {"status": "SOURCE_REPORTED_HUMAN_VERIFICATION_NOT_PROJECT_ETHICS_CLEARANCE"}
+      },
+      "split_threat_model": {
+        "scheme": "official split pending movie-disjoint re-audit",
+        "unit": "movie identity",
+        "split_artifact_sha256": "NOT_DOWNLOADED_NOT_FROZEN",
+        "threats": {"GROUP_OVERLAP": "UNKNOWN_PENDING_MOVIE_AUDIT", "ENTITY_OVERLAP": "UNKNOWN", "TARGET_LEAKAGE": "MUST_BE_TESTED", "NEAR_DUPLICATE": "UNKNOWN", "TIME_CROSSOVER": "NOT_PRIMARY"}
+      },
+      "fitness": {
+        "research_question": "External silver video validation and closest-prior reproduction",
+        "intended_use": "Conditional external validation only",
+        "target_population": "Social-media-expressed reactions to selected movie clips",
+        "measurement_quality": {"status": "SILVER_LLM_HUMAN_VERIFIED"},
+        "label_quality": {"status": "SILVER_NOT_HUMAN_GOLD"},
+        "missingness": {"status": "RAW_VIDEO_AND_COMMENTS_NOT_GUARANTEED"},
+        "sample_power": {"status": "PENDING_INTAKE"},
+        "bias_representativeness": {"status": "MOVIECLIPS_YOUTUBE_LONG_TAIL_LIMITED"},
+        "staleness": {"status": "REMOTE_REVISION_PINNED_LOCAL_FIXITY_ABSENT"},
+        "limitations": ["license-description conflict", "underlying media source-specific", "no local file hash", "movie-disjoint not audited", "not HUMAN_GOLD"]
+      },
+      "decision": "CONDITIONAL_FIT_NOT_FORMALLY_ADMITTED"
+    }
+  ],
+  "new_dataset_decision": "NOT_REQUIRED_FOR_CORE_TASK40_DEVELOPMENT_RECOMMENDED_ONLY_FOR_STRONGER_EXTERNAL_VALIDITY"
+}

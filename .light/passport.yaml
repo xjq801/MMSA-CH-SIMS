@@ -3,13 +3,13 @@ project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
 updated: "2026-08-05T00:00"
-current_stage: 30
-state_revision: 16
-state_hash: "sha256:ce28fb8dba1675ae3ed037a9fa85d78b56be446a221d9375f58b25c4b1a3ea12"
-evidence_state: FAILED
-next_action: close v1.22 data and preregistration gates, then decide whether Task40 may be created; meanwhile review Task10 manuscript sections and Task20 supplement
-delivery_status: IN_PROGRESS
-delivery_authorization_id: ~
+current_stage: 40
+state_revision: 17
+state_hash: "sha256:9089a8302e09fbdbb6910cf4bbfe5a35dc964c8b61cd21160042709a10c2c14a"
+evidence_state: PLANNED
+next_action: user may create a separate Task40 development task bound to AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805; first execution gate is leakage audit then mismatch and Oracle headroom; formal test remains prohibited
+delivery_status: READY_FOR_USER_TASK_CREATION
+delivery_authorization_id: AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805
 stages:
   - stage: 10
     status: delivered
@@ -29,7 +29,7 @@ stages:
     input: 冻结dataset/split/label与I3D协议
     output: 统一评测器、强基线、G3证据及隔离VC-CSA探索的受控收尾
     artifacts: [HANDOFF_20.md, TASK00_G3_FINAL_REVIEW_20260718.md, BASELINE_TABLE_V1.md, experiments/EXPERIMENT_REGISTRY.md, HANDOFF_20_POST_SNAPSHOT_CLOSEOUT_20260801.md, TASK00_TASK20_FINAL_CLOSEOUT_REVIEW_20260801.md, paper/TAFFC_CARM_MANUSCRIPT_SSOT.md, paper/CLAIM_ARGUMENT_BLUEPRINT.md]
-    gaps: ["Task10 manuscript data-section fill is submitted at 1d2018c but has no 00 acceptance; Task20 baseline/evaluation manuscript sections at 5e1386d are accepted with limitations by TASK00_TASK20_MANUSCRIPT_SECTION_REVIEW_20260801.md; VC-CSA exploration remains permanently NON_T0 and ineligible for formal evidence; restricted storage is active until visible-layer deletion deadline 2026-08-31 23:59:59 +08:00 and platform control plane remains UNKNOWN; Video2Reaction dual-track execution is planned for stage 50 and its public revision/fixity are not frozen; Task30 closed not passed and does not authorize Task40; manuscript is a no-results scaffold and C1-C4 remain TO_VERIFY"]
+    gaps: ["Task10 manuscript data sections are accepted with limitations by TASK10_CARM_RESPONSE_SUPPORT_DATA_FITNESS_ADDENDUM_20260805.md; Task20 baseline/evaluation manuscript sections at 5e1386d are accepted with limitations; VC-CSA exploration remains permanently NON_T0 and ineligible for formal evidence; restricted storage is active until visible-layer deletion deadline 2026-08-31 23:59:59 +08:00 and platform control plane remains UNKNOWN; Video2Reaction native external execution is conditional on license reconciliation, local fixity and movie-disjoint intake; manuscript remains a no-results scaffold and active C1-C3 remain TO_VERIFY"]
   - stage: 30
     depends_on: [20]
     status: gate_failed
@@ -40,4 +40,15 @@ stages:
     output: auditable Task30 development package closed as CLOSED_NOT_PASSED; H1 mechanism stability not established
     artifacts: [TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md, HANDOFF_30.md, TASK30_H1_DEVELOPMENT_REPORT_20260801.md, TASK30_DATA_FLOW.md, experiments/task30-h1-development-v1/completion-freeze.json, TASK00_TASK30_H1_FINAL_INDEPENDENT_REVIEW_20260804.md]
     gate: {type: confirm, result: FAIL, evidence: "sha256:c92e62c44e338e59b50f37c4ec22fd4bf33cae81baea7e2b3e5701d94ad59dd5", timestamp: "2026-08-04T00:15:30+08:00", notes: Task30 closed not passed at the H1 development gate; formal test was not materialized and no repair batch is authorized, evidence_state: FAILED, fresh: true}
-    gaps: [formal H1 was not adjudicated on formal test; privileged supervision was positive versus soft distribution for 3 of 3 seeds but only 2 of 3 versus ordinary KD and mismatch teacher; LAI-GAI lacks native comment-teacher fields; Video2Reaction native H1 is NOT_APPLICABLE_DATA_NOT_RELEASED; I3D external license revision and rightsholder fixity remain UNKNOWN; master plan v1.22 freezes a no-teacher OOF net-benefit routing and tri-source uncertainty plan but Task40 remains not created until data and preregistration gates pass]
+    gaps: [formal H1 was not adjudicated on formal test; privileged supervision was positive versus soft distribution for 3 of 3 seeds but only 2 of 3 versus ordinary KD and mismatch teacher; LAI-GAI lacks native comment-teacher fields; Video2Reaction native H1 is NOT_APPLICABLE_DATA_NOT_RELEASED; I3D external license revision and rightsholder fixity remain UNKNOWN; master plan v1.23 keeps Task30 retired from the active claim set]
+  - stage: 40
+    depends_on: [30]
+    status: authorized_not_created
+    node_kind: pipeline
+    evidence_state: PLANNED
+    skill: light-experiment-coding
+    input: "v1.23 preregistration package, frozen Task20 content-only/evaluator interface, Task30 archived negative boundary"
+    output: "development-only credible net-benefit memory package; no formal test"
+    artifacts: [TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md, TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md, TASK10_CARM_RESPONSE_SUPPORT_DATA_FITNESS_ADDENDUM_20260805.md, TASK00_CARM_ROUTE_CLOSEST_PRIOR_SEARCH_20260805.md, experiments/CARM_UNIFIED_ROUTE_EXPERIMENT_MATRIX_20260805.md, .light/carm-v123-target-chain.json, .light/carm-v123-failure-tree.json, .light/carm-v123-data-identity-fitness.json]
+    gate: {type: confirm, result: PENDING, evidence: "sha256:9089a8302e09fbdbb6910cf4bbfe5a35dc964c8b61cd21160042709a10c2c14a", timestamp: "2026-08-05T00:00:00+08:00", notes: Task40 creation is authorized but the user-owned task does not yet exist; after creation the first model gate is mismatch then Oracle headroom, evidence_state: PLANNED, fresh: true}
+    gaps: [Task40 task/thread not yet created; no Oracle result; no router result; formal test not materialized; Video2Reaction native track conditional; second comment-bearing HUMAN_GOLD video set absent but not required]

@@ -1,10 +1,10 @@
 # CARM三idea统一路线研究与实验计划
 
-> 版本：v1.0  
+> 版本：v1.1  
 > 日期：2026-08-05（Asia/Shanghai）  
 > 决策编号：`SC-20260805-01`  
-> 上位SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.22  
-> 状态：`ROUTE_APPROVED_PLAN_FROZEN_EXECUTION_NOT_YET_AUTHORIZED`  
+> 上位SSOT：`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.23  
+> 状态：`PREREGISTRATION_GATES_CLOSED_AWAITING_EXACT_TASK40_CREATION_AUTHORIZATION`  
 > 证据等级：计划与预注册草案；不构成实验结果、Task40创建或论文claim支持  
 
 ## 1. 路线决策与边界
@@ -13,7 +13,7 @@
 
 Task30保持`CLOSED_NOT_PASSED`，H1开发门保持`NOT_PASSED_MECHANISM_NOT_STABLE`，正式H1仍`NOT_ADJUDICATED_ON_FORMAL_TEST`。本路线不恢复评论文本teacher/KD，不materialize Task30 formal test，不把Task30开发数值写入论文。评论在主路线中只用于构造训练样本的经验反应分布、反应支持量和历史记忆标签。
 
-Task40仍未创建。只有本计划要求的系统查新、数据identity/fitness、目标链、失败树、实验矩阵和公平基线门全部闭合，并由00形成单独创建授权后，才能创建“无teacher收益感知反应记忆”Task40。Task50仍只承担未来formal test与五种子正式推断。
+Task40仍未创建。本计划要求的系统查新、数据identity/fitness、目标链、失败树、实验矩阵和公平基线门已以v1.23文档包闭合；只有由00再形成精确创建授权后，才能创建“无teacher可信净收益反应记忆”Task40。Oracle headroom是Task40创建后的第一个开发止损门，不是创建Task40的前置条件。Task50仍只承担未来formal test与五种子正式推断。
 
 ## 2. 研究问题、对象、单位与estimand
 
@@ -36,7 +36,7 @@ Task40仍未创建。只有本计划要求的系统查新、数据identity/fitne
 Delta_i = JSD(y_i, f0(x_i)) - JSD(y_i, fH(x_i,H_i))
 ```
 
-`Delta_i>0`表示历史记忆相对纯内容有益。路由器`g(z_i)`只能读取T0内容、train-only邻居相似度/分歧/支持量、合法域距离和推理时可得的模型不确定性，预测`E[Delta_i|z_i]`或`P(Delta_i>0|z_i)`。
+`Delta_i>0`表示历史记忆相对纯内容有益。对有限反应计数`c_i`冻结`theta_i|c_i ~ Dirichlet(c_i+0.5)`（敏感性分析改为`+1`），计算`b_i=P(Delta_i(theta_i)>0|c_i)`与`l_i=Q_0.05(Delta_i(theta_i)|c_i)`。点收益路由只预测期望收益；可信净收益路由则使用`b_i/l_i`，只有当历史有益的后验证据足够时才选`USE_MEMORY`。路由器`g(z_i)`只能读取T0内容、train-only邻居相似度/分歧/支持量、合法域距离和推理时可得的模型不确定性。
 
 主estimand是：在预注册coverage相同的CSMV开发/正式评测中，收益感知路由相对最强固定融合或通用选择性gate的内容单元平均JSD差，以及负迁移率差。主要统计判据为视频级配对bootstrap 95%CI；不恢复已撤回v1.17的3%/5%/8%硬效应门。
 
@@ -96,14 +96,14 @@ C_i = {p in simplex(K): JSD(p, p_hat_i) <= q_i}
 1. 冻结本计划、实验矩阵、数据identity/fitness和系统查新范围。
 2. 记录CSMV/LAI-GAI精确数据与split hash；Video2Reaction完成intake后另升数据版本。
 3. 检查train/dev/test ID、source family、近重复、索引成员和目标响应不可达。
-4. 冻结开发种子、cross-fitting folds、最大trial数、主指标、threshold/coverage选择规则和预算。
-5. 通过research-plan公平/可证伪门前不得创建Task40。
+4. 冻结开发种子`[1364847620, 426925854, 1839464886, 1138176833, 484191872]`、5-fold group OOF、最大trial数、主指标、threshold/coverage选择规则和预算。
+5. 划分`DEV_SELECT`与`DEV_CALIBRATE`；本文档门闭合只能解除Task40创建阻断，Oracle、router和区域的结果门都必须在Task40内按顺序执行。
 
 ### P1：内容—反应错位现象门（Task40候选；train/cross-fit only）
 
 1. 用冻结内容表示计算train-fold内近邻相似度；禁止从dev/test建库。
 2. 计算邻居反应JSD、支持量差和重采样稳定性。
-3. 以连续回归/秩相关为主，评估内容相似度与反应距离；控制`n_i`、source family和抽样不稳定性。
+3. 以连续回归/秩相关为主，评估内容相似度与反应距离；控制`n_i`、source family和抽样不稳定性。CSMV按`k=2/4/8/all`做200次response thinning，跨`k`主比较限定在`n>=8`的共同样本。
 4. 高内容相似且高反应距离的hard pairs只作解释性审计；阈值只由train分位数冻结，不作为主统计证据。
 5. 人工审核固定子集的ID/内容关系与标签分布，不读取或公开敏感评论正文。
 
@@ -118,10 +118,10 @@ C_i = {p in simplex(K): JSD(p, p_hat_i) <= q_i}
 
 1. memory仅保存train ID、内容表示、经验分布、支持量和合法质量字段。
 2. 比较no-memory、random、BM25/TF-IDF、表示kNN、learned retrieval。
-3. 用train内部cross-fitting生成`Delta`；路由器预测连续净收益或正收益概率。
+3. 用train内部cross-fitting生成点`Delta`及`b_i/l_i`后验目标；公平比较通用gate、点收益路由和可信净收益路由。
 4. 动作空间固定为`USE_MEMORY`、`FALLBACK_CONTENT`、`ABSTAIN`；阈值只在dev按预注册coverage选择。
 5. 比较固定融合、相似度阈值、预测熵、OOD距离、generic MLP/MoE gate、SelectiveNet式拒绝以及Oracle上界。
-6. 在random/错域/低相似邻居、库缩小、top-k和自然source-family OOD下检查负迁移。
+6. 在random/错域/低相似邻居、库缩小、top-k和自然source-family OOD下检查负迁移；主可靠性终点冻结为匹配coverage下的可信路由负迁移率差。
 
 ### P4：三源不确定性与预测区域（Task40候选；dev only）
 
@@ -150,7 +150,8 @@ C_i = {p in simplex(K): JSD(p, p_hat_i) <= q_i}
 |---|---|---|---|---|---|
 | EXP-00 | H2a | CSMV train OOF | 连续内容相似度→反应距离 | shuffled reaction、source/support controls | 控制混杂后的关系与自然错位证据；不成立即止损 |
 | EXP-01 | H2a | CSMV train/dev | Oracle在`f0/fH`间选择 | content-only、memory-only、fixed fusion | Oracle JSD改善CI下界>0，否则停止router |
-| EXP-02 | H2b | CSMV train/dev | OOF收益路由 | similarity/entropy/OOD/generic gate/SelectiveNet | matched-coverage JSD差CI上界<0且可靠性不恶化 |
+| EXP-02 | H2b | CSMV train/dev | OOF点收益与可信净收益路由 | similarity/entropy/OOD/generic gate/SelectiveNet | matched-coverage JSD差CI上界<0；可信路由的负迁移率不劣且优于点路由 |
+| MEAS-01 | H2a/H2b/H2c | CSMV/LAI-GAI | response thinning与后验敏感性 | all-response、bootstrap、Dirichlet(0.5/1) | 收益符号/后验决策对有限反应稳定；LAI-GAI仅维度边际 |
 | EXP-03 | H2b | CSMV自然group/OOD | 邻居质量下降 | random/wrong-domain/low-sim neighbors | 负迁移率或AURC优于最强简单gate |
 | ABL-01 | H2b | CSMV | 只去benefit target，保留同架构 | generic gate | 判断收益来自净效用监督而非参数量 |
 | ABL-02/03/04 | H2c | CSMV/LAI-GAI | 每次只去一个不确定性源 | 完整三源模型 | 各源须改善其对应外部判据，不靠平均JSD归因 |
@@ -162,7 +163,7 @@ C_i = {p in simplex(K): JSD(p, p_hat_i) <= q_i}
 ## 8. 指标、统计与选择规则
 
 - **Primary**：matched-coverage下路由相对最强固定融合/generic gate的内容单元平均JSD差。
-- **Co-primary reliability**：负迁移率差或AURC差；预注册时二选一设主可靠性终点，另一项为secondary，避免结果后挑选。
+- **Primary reliability**：在90%回答coverage下，可信净收益路由相对最强点收益/generic router的负迁移率差；AURC固dbsecondary。
 - **Secondary**：NLL、EMD、Brier、ECE/ACE、routing regret、harmful-retrieval AUROC/AUPRC、被避免负迁移比例、coverage和区域效率。
 - **Exploratory**：hard-pair案例、不同支持量/情绪类别/邻居K的异质性。
 - 模型选择只看dev；formal test不用于选择阈值、coverage、K、损失、head或不确定性组合。
@@ -181,13 +182,13 @@ C_i = {p in simplex(K): JSD(p, p_hat_i) <= q_i}
 
 ### Task40创建前必须全部满足
 
-1. 本计划与总纲v1.22提交并推送；
+1. 本计划与总纲v1.23提交并推送；
 2. 系统查新范围和closest-prior矩阵冻结，但不得宣称穷尽或世界首创；
 3. CSMV与LAI-GAI数据identity/fitness合同闭合，Video2Reaction保持独立准入；
 4. question→estimand→endpoint→analysis→falsifier目标链通过；
 5. success/failure/inconclusive失败树通过；
 6. 公平基线、cross-fitting、正式test禁令、预算和阈值规则通过00独立审核；
-7. 另有明确`AUTH-00-TASK40-...`创建文件。用户本次授权只批准路线与总纲合并，不自动满足第7项。
+7. 另有明确`AUTH-00-TASK40-...`创建文件。Oracle headroom不在本列：它是Task40创建后、router训练前的第一开发止损门。
 
 ### 全路线kill criteria
 

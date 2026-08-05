@@ -1,6 +1,6 @@
 # 数据来源、许可与完整性台账
 
-> 版本：v1.6
+> 版本：v1.7
 > 建立日期：2026-07-14  
 > 原则：来源、许可、访问条件、下载时间和 SHA-256 未核验前一律记为 `PENDING` 或 `UNKNOWN`，不得把“能下载”视为“可用于研究或发布”。
 
@@ -19,7 +19,7 @@
 | DS-009 | Emotion6 | 第二人工主集元数据候选 | 每图15人、七类诱发情绪经验分布 | https://openaccess.thecvf.com/content_cvpr_2015/papers/Peng_A_Mixed_Bag_2015_CVPR_paper.pdf | NO_GO_MEDIA_LICENSE_ACCESS_AND_MODALITY | 数据许可、现行官方入口和Flickr逐图权利UNKNOWN | 未下载 | UNKNOWN | 1980单图；论文随机7:3；标签构念高度匹配但非视频/多模态且媒体准入未证实 |
 | DS-010 | Video Cognitive Empathy (VCE) | 第二视频主集修复候选 | `HUMAN_GOLD`；每视频约13人、27类自身诱发情绪 | https://proceedings.neurips.cc/paper_files/paper/2022/hash/75ff01252ab45ce278cb060effce4ca1-Abstract-Datasets_and_Benchmarks.html | NO_GO_MEDIA_LICENSE_AND_AUDIO | annotations CC BY-SA 4.0、代码MIT；Reddit/Instagram媒体无正式许可，作者依赖美国Fair Use | 未下载 | UNKNOWN | 构念匹配但媒体权利不满足严格合法门；标注时无音频，不冻结为第二多模态主集 |
 | DS-011 | LAI-GAI v05 | 第二人工跨域图像主集/缺失模态验证集 | `HUMAN_GOLD`；六项研究逐人诱发评分聚合 | https://www.affectdatabases.amu.edu.pl/ | FROZEN_00_APPROVED | 官方Data Card明确图像/元数据CC BY 4.0；评分OSF组件CC BY 4.0；旧K8XVH空节点与协议偏差只保留为历史观察，新授权从官网847图文件树独立闭合 | `data/raw/lai-gai/second-primary-resolution/20260714/`（Git忽略） | 847图逐图size/SHA-256/dHash见`lai-gai-second-primary-raw-v1.manifest.json`；标签与split见三个`lai-gai-*-v1.manifest.json` | 847/847图像—人工评分闭合；63682个有效逐图反应；379个source group；594/127/126正式split；专项validator全PASS；复审`REVIEW-00-LAI-GAI-FREEZE-20260715` |
-| DS-012 | Video2Reaction | closest/direct prior；CSMV公平适配来源；原生银标视频域外部验证 | `SILVER_LLM_HUMAN_VERIFIED`；评论经两阶段多代理LLM生成分布并经人工质量核验 | https://huggingface.co/datasets/infofusionlab/Video2Reaction；https://arxiv.org/abs/2607.06875 | APPROVED_PLANNED_DUAL_TRACK_INTAKE_NOT_FROZEN | annotations/派生分布CC BY-NC-SA 4.0；底层CondensedMovies/Movieclips/YouTube视频另受来源许可与平台条款约束，不能由annotation许可外推 | 未下载；未来只进入Git忽略隔离区 | UNKNOWN；须在任务50冻结HF revision、文件树、size与SHA-256 | 公开10,348条、7,243/1,035/2,070 split、21类、clip description与ViT/CLAP/HuBERT/BERT派生特征；原始视频/独立音频/完整转写/原始评论不随公开包保证提供。先做`VIDEO2REACTION_DATA_INTAKE.md`与source manifest，再执行CSMV公平适配和原生复现/movie-disjoint审计；不作第三HUMAN_GOLD主集 |
+| DS-012 | Video2Reaction | closest/direct prior；CSMV公平适配来源；原生银标视频域外部验证 | `SILVER_LLM_HUMAN_VERIFIED`；评论经两阶段多代理LLM生成分布并经人工质量核验 | https://huggingface.co/datasets/infofusionlab/Video2Reaction；https://github.com/Information-Fusion-Lab-Umass/video2reaction；https://arxiv.org/abs/2607.06875 | CONDITIONAL_EXTERNAL_VALIDATION_NOT_CORE_REQUIRED | HF卡的annotations/派生分布为CC BY-NC-SA 4.0，但GitHub README/API层级存在CC BY 4.0/NOASSERTION表述差异；底层CondensedMovies/Movieclips/YouTube媒体另受来源许可与平台条款约束 | 未下载；不阻断CSMV核心Task40 | HF revision=`75278468c91c51ff54cf709d61ee881ca5c37c9b`；GitHub commit=`0da6060445782128f503cd19d157f6a5922d107a`；逐文件hash未冻结 | 10,348条、7,243/1,035/2,070 split、21类；下载约8.95 GB、展开约41.12 GB。许可表述未解决前不运行B轨；A轨CSMV公平适配仍属Task50义务；不作第三HUMAN_GOLD主集 |
 
 ## 2. 本地文件快照
 

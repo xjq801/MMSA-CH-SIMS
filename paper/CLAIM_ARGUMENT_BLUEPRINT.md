@@ -1,17 +1,17 @@
 # T-AFFC Claim and Argument Blueprint
 
-> Version: 0.1.0  
+> Version: 0.1.1  
 > Status: ACTIVE_CONTROL_DOCUMENT / NO_FORMAL_RESULTS  
-> Research SSOT: `TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.21  
-> Manuscript: `paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.0
+> Research SSOT: `TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md` v1.23  
+> Manuscript: `paper/TAFFC_CARM_MANUSCRIPT_SSOT.md` v0.1.3
 
 ## 1. Paper thesis
 
 The paper does **not** argue that content-to-audience affect distribution forecasting is a new task. Its central thesis is conditional and falsifiable:
 
-> Under a strict publication-time information boundary, training-only response supervision and historical reaction evidence may improve content-to-audience affect distribution forecasting, but a publishable reliability claim requires the system to identify and avoid harmful retrieval under pre-registered distribution shifts and matched-coverage selective evaluation.
+> Under a strict publication-time information boundary, train-only historical reaction evidence may improve content-to-audience affect distribution forecasting, but a publishable reliability claim requires posterior evidence that the benefit is credible despite finite response samples and that harmful retrieval is avoided under matched-coverage evaluation.
 
-The strongest potential contribution is the evidence chain for benefit-aware reaction memory, not the presence of a teacher, memory, router, rejection head, or distribution output by itself.
+The strongest potential contribution is the evidence chain for credible net-benefit reaction memory, not the presence of memory, a router, rejection head, posterior, or distribution output by itself. Task 30 privileged-teacher development is an archived non-pass and is outside the active claim set.
 
 ## 2. Argument chain
 
@@ -19,9 +19,9 @@ The strongest potential contribution is the evidence chain for benefit-aware rea
 |---|---|---|---|
 | P1 | The estimand is observable and bounded | Construct definition, HUMAN_GOLD provenance, response counts, label uncertainty | Narrow the construct or stop |
 | P2 | Evaluation reflects deployment-time information | T0 policy, physical isolation, split/index audits, E0 rejection tests | Protocol claim fails |
-| P3 | Privileged responses add train-time value | H1/E3, strong content-only and KD controls, mismatch negative control | Remove privileged-effect claim |
-| P4 | Historical reactions help selectively rather than indiscriminately | H2/E2/E4/E7, OOF utility, strong router controls, negative-transfer statistics | Downgrade to ordinary retrieval or null result |
-| P5 | Supported effects survive meaningful shifts | H3/E5/E6, two HUMAN_GOLD roles, Video2Reaction dual track, calibration/selective risk | Limit claim to in-domain evidence |
+| P3 | Historical reactions have selectable headroom | H2a/E2, mismatch analysis, content/memory/fixed-fusion oracle | Stop before router if absent |
+| P4 | Posterior net benefit identifies harmful history beyond point estimates | H2b/E4/E7, OOF point/posterior utility, strong router controls, response thinning, negative-transfer statistics | Downgrade to point routing, ordinary retrieval, or null result |
+| P5 | Separately validated uncertainty supports bounded reliability | H2c/E5/E6, two HUMAN_GOLD roles, Video2Reaction conditional dual track, coverage and region size | Remove decomposition/region or limit to in-domain evidence |
 
 The introduction motivates P1–P5; the method operationalizes P2–P4; the experiments attempt to falsify P2–P5; the discussion may interpret only propositions that survive.
 
@@ -30,9 +30,9 @@ The introduction motivates P1–P5; the method operationalizes P2–P4; the expe
 | Claim | Current state | Minimum evidence for support | Falsifier/downgrade | Manuscript destinations |
 |---|---|---|---|---|
 | C1 strict-T0 protocol/evidence | TO_VERIFY | Two HUMAN_GOLD datasets; content-unit split; target/future isolation; train-only index; zero blocking leakage findings | Target response/future information enters input/index, or one main dataset is not reproducible | Abstract context, Intro contribution 1, Sec. 3, Sec. 5.2–5.3, Sec. 6.1 |
-| C2 privileged-response supervision | TO_VERIFY | Strong content-only, hard/soft, ordinary KD, privileged KD, teacher upper bound, mismatch control; five seeds; native-unit CI; calibration | No stable gain, calibration harm, random-split-only gain, or extra-budget confound | Intro contribution 2, Sec. 4.3, Sec. 5.4–5.5, Sec. 6.2 |
-| C3 benefit-aware reaction memory | TO_VERIFY | OOF utility; no/random/lexical/kNN/learned retrieval; fixed/similarity/entropy/SelectiveNet controls; matched coverage; pollution tests; negative-transfer reduction | Learned retrieval not above ordinary retrieval, utility leaks, router not above strong controls, or OOD harm not avoided | Title only if supported, Intro contribution 3, Sec. 4.4–4.6, Sec. 6.3/6.5 |
-| C4 reliability under shift | TO_VERIFY | Pre-registered group/topic/time/platform/cross-data shifts; calibration, AURC/risk–coverage; two HUMAN_GOLD roles; failures disclosed | Benefit disappears or reverses under shifts, external evidence is silver-only, or coverage is incomparable | Abstract result, Intro contribution 4, Sec. 5.3, Sec. 6.4–6.5, Discussion |
+| C2 credible net-benefit reaction memory | TO_VERIFY | Natural mismatch and oracle headroom; five-fold group OOF point/posterior utility; no/random/lexical/kNN/learned retrieval; fixed/similarity/entropy/OOD/generic/SelectiveNet/point-router controls; 90% matched coverage; response thinning; negative-transfer reduction | Oracle absent, utility leaks, posterior router not above point/generic controls, benefit unstable to thinning, or OOD harm not avoided | Title only if supported, Intro contribution 2, Sec. 4.4–4.5, Sec. 6.2/6.5 |
+| C3 three-source uncertainty and bounded reliability | TO_VERIFY | Separate response-disagreement, finite-sample and model/transfer observables; one-source ablations; 80/90/95% empirical coverage plus region size; applicable grouped/external shifts | Sources not distinguishable, region miscoverage, external evidence silver-only, or coverage incomparable | Abstract result, Intro contribution 3, Sec. 4.6, Sec. 5.3, Sec. 6.3–6.5, Discussion |
+| H1-R archived privileged-teacher development | RETIRED_FROM_ACTIVE_CLAIM_SET_DEVELOPMENT_NOT_PASSED | Frozen Task 30 development package only; formal test absent | Never promote to formal support or formal refutation | Historical boundary and limitations only |
 
 Only `SUPPORTED` and `SUPPORTED_LIMITED` states may produce affirmative result claims. `REFUTED` must remain visible as a negative result if the experiment was pre-registered and scientifically material.
 
@@ -40,12 +40,12 @@ Only `SUPPORTED` and `SUPPORTED_LIMITED` states may produce affirmative result c
 
 | Section | Main job | Claim inputs | Exit test |
 |---|---|---|---|
-| Title | Name the supported scientific problem, not modules | C3/C4 only if supported | No “first/novel/new”; no unsupported CARM name |
-| Abstract | One-paragraph problem–gap–method–evidence–boundary | Final C1–C4 states | Every result traceable; 150–250 words; no citations |
-| Introduction | Establish construct, direct prior, reliability gap, RQ, bounded contributions | C1–C4 plan and final states | Contributions match abstract/conclusion |
+| Title | Name the supported scientific problem, not modules | C2/C3 only if supported | No “first/novel/new”; no unsupported CARM name |
+| Abstract | One-paragraph problem–gap–method–evidence–boundary | Final C1–C3 states | Every result traceable; 150–250 words; no citations |
+| Introduction | Establish construct, direct prior, reliability gap, RQ, bounded contributions | C1–C3 plan and final states | Contributions match abstract/conclusion |
 | Related Work | Position against direct and adjacent work | Citation audit, prior-art matrix | Video2Reaction named closest/direct prior |
 | Problem | Freeze estimand and T0 boundary | Protocol v2, data lineage | No target/future ambiguity |
-| Method | Define mechanisms and provenance | Task30/40 frozen method | Every module has failure hypothesis/control |
+| Method | Define mechanisms and provenance | Task40 frozen method; Task30 only archived boundary | Every module has failure hypothesis/control |
 | Experiments | Make falsification credible | Task50 preregistration | Same split/input/budget; native-unit stats |
 | Results | Present evidence without interpretation inflation | Frozen metrics/predictions/statistics | No dev/single-seed/exploratory leakage |
 | Discussion | Explain what survived and where it fails | Supported/limited/refuted claims | No new result or causal overreach |
@@ -59,16 +59,16 @@ Every visual must support a claim or audit question.
 | ID | Artifact | Claim/question served | Source requirement |
 |---|---|---|---|
 | Fig. 1 | Problem and T0 information boundary | C1: what is prohibited and available | Protocol/source lineage, no result |
-| Fig. 2 | Method with training-only response and memory paths | C2/C3 mechanism | Frozen architecture/config |
-| Fig. 3 | Benefit-aware routing and OOF utility construction | C3 mechanism validity | Cross-fitting implementation/tests |
-| Fig. 4 | Risk–coverage and calibration under shift | C3/C4 reliability | Frozen predictions, five seeds/CI |
-| Fig. 5 | Retrieval utility and negative-transfer analysis | C3 harm avoidance | Neighbor audit and paired outcomes |
-| Fig. 6 | OOD and cross-dataset effect summary | C4 boundaries | Pre-registered shift results |
+| Fig. 2 | Method with training-only response aggregates, posterior and memory paths | C2/C3 mechanism | Frozen architecture/config |
+| Fig. 3 | Point versus credible routing and OOF posterior utility construction | C2 mechanism validity | Cross-fitting implementation/tests |
+| Fig. 4 | Risk–coverage and prediction-region calibration under shift | C3 reliability | Frozen predictions, five seeds/CI |
+| Fig. 5 | Retrieval utility, thinning and negative-transfer analysis | C2 harm avoidance | Neighbor audit and paired outcomes |
+| Fig. 6 | OOD and cross-dataset effect summary | C3 boundaries | Pre-registered shift results |
 | Table 1 | Dataset roles, constructs, labels, inputs, splits | C1 construct/evidence | Manifests and Data Cards |
 | Table 2 | Closest-prior and method-position comparison | Novelty boundary | Citation-verified prior-art matrix |
-| Table 3 | Main HUMAN_GOLD results | C2–C4 | Results freeze only |
-| Table 4 | Memory/router ablations and strong controls | C3 | Results freeze only |
-| Table 5 | OOD, missing-input, calibration, selective risk | C4 | Results freeze only |
+| Table 3 | Main HUMAN_GOLD results | C2–C3 | Results freeze only |
+| Table 4 | Memory/router/posterior ablations and strong controls | C2 | Results freeze only |
+| Table 5 | OOD, uncertainty, calibration, selective risk | C3 | Results freeze only |
 | Table 6 | Efficiency and reproducibility | Practicality | Run manifests/hardware logs |
 
 If a figure cannot be linked to a claim or audit requirement, it is supplementary or removed.
@@ -78,10 +78,10 @@ If a figure cannot be linked to a claim or audit requirement, it is supplementar
 | Likely rejection | Evidence-based answer required | Manuscript defense |
 |---|---|---|
 | “Video2Reaction already proposed the task.” | Direct acknowledgment and protocol-matched comparison | No task-first claim; reliability/OOD question in title and introduction |
-| “This is a teacher + retrieval + router module collage.” | Each component maps to a failure mechanism; strong controls; router reduces harmful retrieval | Mechanism-first ablations and negative controls |
+| “This is retrieval + uncertainty + router module collage.” | Each component maps to a failure mechanism; posterior router must beat point and generic routers; response thinning and negative-transfer controls | Mechanism-first ablations and negative controls |
 | “Comments are not audience emotion.” | Bounded construct, response counts, HUMAN_GOLD/silver separation, selection-bias limits | Construct paragraph and Limitations first-class, not buried |
 | “Random splits leak video/comment identity.” | Content-unit grouped splits, duplicate/source audits, physical target-response isolation | E0 and provenance figure |
-| “The router is just entropy thresholding.” | Matched-coverage comparison against entropy, similarity, fixed fusion, SelectiveNet | C3 support gate |
+| “The router is just entropy thresholding.” | Matched-coverage comparison against entropy, similarity, fixed fusion, generic gate, SelectiveNet and point-utility routing | C2 support gate |
 | “OOD claims are cherry-picked.” | Pre-registered shifts and all outcomes, including adverse ones | Complete shift matrix and frozen reporting |
 | “Five seeds are treated as sample size.” | Native-content-unit paired bootstrap; seeds summarize training variation | Statistical section |
 | “Results are not reproducible due to restricted assets.” | Exact manifests/fixity, access instructions, eligible code/splits, explicit non-redistribution | Data/Code Availability and risk disclosure |
@@ -95,7 +95,7 @@ The active manuscript must not assert or imply:
 - first audience-reaction distribution task or benchmark;
 - prior work never predicted induced audience affect;
 - distribution output itself is novel;
-- teacher, memory, router, rejection, or their combination is a module-level first;
+- posterior, memory, router, rejection, or their combination is a module-level first;
 - comments represent all viewers’ private emotions;
 - state-of-the-art, significant superiority, robust generalization, or reliability before the required statistics and shifts are complete.
 
@@ -147,11 +147,11 @@ Rules:
 
 ## 10. Negative-result downgrade paths
 
-- **H1 fails:** remove privileged-supervision superiority; retain strict protocol and report the teacher as a negative result or upper bound.
-- **H2 retrieval helps but router fails:** describe ordinary train-only retrieval; remove “benefit-aware” and negative-transfer-avoidance claims.
+- **Archived H1-R:** keep Task 30 as a development non-pass; do not treat it as a formal negative result or restore it to the active method.
+- **H2 retrieval helps but credible router fails:** describe point routing or ordinary train-only retrieval; remove “credible net benefit” and negative-transfer-avoidance claims.
 - **H2 retrieval fails:** center the evidence on why content similarity does not transfer audience reactions; do not add unplanned modules after test access.
 - **H3 has no eligible multimodal protocol:** report `NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL`; do not synthesize missing modalities.
-- **C4 fails under shift:** limit claims to in-domain prediction and make the shift failure a principal limitation.
+- **C3 fails under shift:** limit claims to in-domain prediction and make the shift failure a principal limitation.
 - **Video2Reaction cannot be fairly executed:** provide a complete input/label/split/license/resource/budget non-executability audit; do not omit the direct prior.
 
 ## 11. Living-paper update cadence

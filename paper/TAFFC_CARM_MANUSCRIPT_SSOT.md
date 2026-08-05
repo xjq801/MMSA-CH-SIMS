@@ -1,12 +1,12 @@
 ---
 artifact: T-AFFC manuscript single source of truth
-artifact_version: 0.1.2
+artifact_version: 0.1.3
 manuscript_status: MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS
 target_venue: IEEE Transactions on Affective Computing
 article_type: Original Research Article
 language: English
-research_ssot: T-AFFC master plan v1.21
-claim_source: CLAIM_EVIDENCE_MATRIX.md v1.3
+research_ssot: T-AFFC master plan v1.23
+claim_source: CLAIM_EVIDENCE_MATRIX.md v1.4
 protocol_source: experiment-protocol-v2.md FROZEN_v2
 created: 2026-07-31
 result_freeze: NOT_AVAILABLE
@@ -38,11 +38,11 @@ Affiliations, corresponding author, ORCID identifiers, and contribution roles mu
 
 `[RESULT-GAP:FINAL_ABSTRACT_150_TO_250_WORDS_SINGLE_PARAGRAPH]`
 
-The final abstract must contain, in this order: the construct and practical problem; the reliability gap left by the closest direct prior; the strict T0 setting; the privileged-response teacher, train-only reaction memory, and benefit-aware reliability mechanism at the level actually supported; the two HUMAN_GOLD evaluation roles and the Video2Reaction comparison role; the principal five-seed effect with uncertainty; calibration/selective-risk evidence; and a bounded conclusion. It must be self-contained, contain no citations or undefined abbreviations, and make no task-first, module-first, all-viewer, or unsupported superiority claim.
+The final abstract must contain, in this order: the construct and practical problem; the reliability gap left by the closest direct prior; the strict T0 setting; train-only reaction memory, finite-response posterior net benefit, and the benefit-aware reliability mechanism at the level actually supported; the two HUMAN_GOLD evaluation roles and the Video2Reaction comparison role; the principal five-seed effect with uncertainty; calibration/selective-risk evidence; and a bounded conclusion. It must be self-contained, contain no citations or undefined abbreviations, and make no task-first, module-first, all-viewer, causal, or unsupported superiority claim.
 
 ## Index Terms
 
-Audience reaction forecasting; affect distribution learning; privileged information; retrieval-augmented prediction; selective prediction.
+Audience reaction forecasting; affect distribution learning; retrieval-augmented prediction; uncertainty quantification; selective prediction.
 
 ## 1. Introduction
 
@@ -68,17 +68,17 @@ These failures cannot be resolved by reporting a higher score on a random split.
 
 This study asks:
 
-> Under a strict publication-time information boundary, can training-only response supervision and historical reaction evidence improve content-to-audience affect distribution forecasting without increasing negative transfer or selective risk under distribution shift?
+> Under a strict publication-time information boundary, can a model determine when train-only historical reaction evidence has credible net benefit, and otherwise fall back or abstain without increasing negative transfer under distribution shift?
 
-We investigate a response-privileged teacher that can use training comments, a content-only student that never reads target responses, a reaction memory restricted to training or strictly earlier cases, and a benefit-aware reliability mechanism that estimates whether retrieval is likely to improve over the content-only prediction. The mechanism may fuse, down-weight, or reject retrieved evidence using only publication-time query features, neighbor disagreement, domain or temporal distance, and modality-quality signals. Each component is tied to an observable failure mode and a falsification test rather than being treated as novel by composition.
+We investigate a content-only predictor that never reads target responses, a reaction memory restricted to training or strictly earlier cases, and a benefit-aware mechanism that estimates both point and posterior net benefit relative to content-only prediction. The mechanism uses publication-time query features, neighbor disagreement, response support, domain distance, and model diagnostics to choose among using memory, falling back to content-only prediction, and abstaining. Each component is tied to an observable failure mode and a falsification test rather than being treated as novel by composition.
 
 ### 1.5 Contributions
 
 The final contribution list must remain within the master plan’s three contribution families:
 
 1. **Protocol and evidence contribution (C1).** We establish a strict T0 evaluation in which target responses and future interactions are physically isolated, reaction labels are aggregated at the native content-unit level, and retrieval indices contain training or earlier cases only. `[DROP-IF-UNSUPPORTED:C1_REQUIRES_TWO_HUMAN_GOLD_DATASETS_AND_ZERO_BLOCKING_LEAKAGE_FINDINGS]`
-2. **Privileged-supervision and benefit-aware memory contribution (internal claims C2–C3).** We test whether training-time response information can improve a content-only student without creating target-response dependence at inference, and whether train-only historical reaction memory with a benefit-aware router reduces retrieval-induced negative transfer relative to ordinary retrieval, fixed fusion, and strong selective baselines. `[RESULT-GAP:C2_FIVE_SEED_EFFECT_AND_CALIBRATION]` `[RESULT-GAP:C3_NEGATIVE_TRANSFER_AND_COVERAGE_MATCHED_EVIDENCE]`
-3. **Reliability evidence under shift (internal claim C4).** We evaluate distribution error, calibration, selective risk, and failure modes under group, topic, temporal, platform, cross-dataset, and applicable missing-input shifts. `[RESULT-GAP:C4_OOD_AND_EXTERNAL_VALIDITY]`
+2. **Credible net-benefit memory contribution (C2).** We test whether train-only historical reaction memory with out-of-fold point and finite-response posterior benefit targets reduces retrieval-induced negative transfer relative to ordinary retrieval, fixed fusion, point-utility routing, and strong selective baselines. `[RESULT-GAP:C2_CREDIBLE_NET_BENEFIT_AND_COVERAGE_MATCHED_EVIDENCE]`
+3. **Uncertainty and reliability evidence under shift (C3).** We evaluate response disagreement, finite-sample target uncertainty, model or transfer uncertainty, calibrated empirical-distribution prediction regions, selective risk, and failure modes under the applicable pre-registered shifts. `[RESULT-GAP:C3_UNCERTAINTY_OOD_AND_EXTERNAL_VALIDITY]`
 
 At submission, retain only contributions whose claim status is `SUPPORTED` or `SUPPORTED_LIMITED`; a protocol description must not be phrased as empirical superiority.
 
@@ -90,9 +90,9 @@ Synthesize work on induced affect, viewer-response prediction, comment-derived r
 
 Video2Reaction must be presented as the closest direct prior, not as a tangential dataset. Both studies map content to audience-reaction distributions. The distinction is the scientific objective: the present study centers on unavailable target responses, strict information provenance, distribution shift, retrieval harm, calibration, and selective reliability. `[CITATION-GAP:VIDEO2REACTION]`
 
-### 2.2 Learning with privileged response information
+### 2.2 Learning from finite response distributions
 
-Position the response teacher within learning using privileged information, generalized distillation, and privileged multimodal distillation `[CITATION-GAP:LUPI_GD_M2PKD]`. Teacher–student learning and distillation are established techniques; the paper may claim only evidence about their behavior under the present strict T0 construct and datasets.
+Review label-distribution learning, ambiguous-label modeling, Dirichlet-multinomial uncertainty, and finite-annotator or finite-response estimation `[CITATION-GAP:FINITE_RESPONSE_DISTRIBUTION_UNCERTAINTY]`. A posterior over an empirical response target is a measurement model, not evidence that the latent affect of all viewers has been identified.
 
 ### 2.3 Historical reaction memory and retrieval-augmented prediction
 
@@ -104,7 +104,7 @@ Review probabilistic calibration, selective classification, risk–coverage eval
 
 ### 2.5 Positioning summary
 
-| Dimension | Direct audience-reaction forecasting | Privileged learning | Retrieval/selective prediction | This study |
+| Dimension | Direct audience-reaction forecasting | Finite-response modeling | Retrieval/selective prediction | This study |
 |---|---:|---:|---:|---:|
 | Predicts a reaction distribution | Established | Sometimes | Sometimes | Yes |
 | Target responses prohibited at inference | Varies | Compatible | Varies | Enforced and audited |
@@ -152,7 +152,7 @@ The optional \(T+\Delta\) early-response task is disabled unless publication tim
 |---|---:|---:|---:|
 | Publication-time content representation | Yes | Yes | Yes |
 | Frozen static metadata/quality indicators | If audited | If audited | If audited |
-| Responses of the same target item | Teacher/label construction only | Label construction only | No |
+| Responses of the same target item | Training target/posterior construction only | Label construction only | No |
 | Responses from training or strictly earlier cases | Memory construction | Retrieval if index remains train-only | Retrieval if index remains train-only |
 | Future engagement or future comments | No | No | No |
 | Test labels or test-derived selection signals | No | No | No |
@@ -163,7 +163,7 @@ The information boundary is also physical. `HUMAN_GOLD`, `SILVER`, and `UNLABELE
 
 ### 3.4 Scope across datasets
 
-CSMV is the primary video mechanism dataset: 107,267 human-labeled comments are aggregated over 8,210 video IDs, and the admissible model input is the fixed `float32[T,1024]` I3D visual sequence. It does not support claims of raw-video end-to-end learning, original-frame training, audio--visual fusion, audio gains, or target-comment input. LAI-GAI is the second HUMAN_GOLD cross-domain image dataset: 63,682 eligible human response rows are aggregated over 847 images into a 12-dimensional induced-affect distribution. Its prompt and target generation category are provenance, not truth, and are excluded from the default input. LAI-GAI supports independent distribution, calibration, and OOD evidence but not response-teacher or reaction-memory claims when isomorphic response-history fields are absent. Video2Reaction is evaluated through a fair CSMV adaptation track and a separately reported native `SILVER_LLM_HUMAN_VERIFIED` external track. Dataset-specific estimands, input contracts, statistical units, and label spaces are not pooled merely to increase sample size or to compare absolute metric values across datasets.
+CSMV is the primary video mechanism dataset: 107,267 human-labeled comments are aggregated over 8,210 video IDs, and the admissible model input is the fixed `float32[T,1024]` I3D visual sequence. It does not support claims of raw-video end-to-end learning, original-frame training, audio--visual fusion, audio gains, or target-comment input. LAI-GAI is the second HUMAN_GOLD cross-domain image dataset: 63,682 eligible human response rows are aggregated over 847 images into a 12-dimensional induced-affect distribution. Its prompt and target generation category are provenance, not truth, and are excluded from the default input. LAI-GAI supports independent distribution, marginal finite-response, calibration, and OOD evidence but not reaction-memory routing when isomorphic response-history fields are absent. Video2Reaction is evaluated through a fair CSMV adaptation track and a separately reported native `SILVER_LLM_HUMAN_VERIFIED` external track. Dataset-specific estimands, input contracts, statistical units, and label spaces are not pooled merely to increase sample size or to compare absolute metric values across datasets.
 
 ## 4. Method
 
@@ -172,15 +172,15 @@ CSMV is the primary video mechanism dataset: 107,267 human-labeled comments are 
 The method is organized around four evidence paths:
 
 1. a content-only predictor that defines the deployment baseline;
-2. a response-privileged teacher used only during training;
+2. a finite-response posterior that represents uncertainty in the observed target distribution;
 3. a train-only memory containing historical content and reaction summaries;
-4. a reliability mechanism that decides whether retrieved evidence should be fused, attenuated, or rejected.
+4. a reliability mechanism that decides whether retrieved evidence should be used, rejected in favor of content-only prediction, or abstained from.
 
-The final architecture figure must encode information provenance, not merely neural modules. Every arrow crossing from responses to the deployed predictor must be labeled “training only,” and every memory item must expose its split and time eligibility.
+The final architecture figure must encode information provenance, not merely neural modules. Every arrow crossing from response aggregates to training targets or memory must be labeled “training only,” and every memory item must expose its split and time eligibility. The deployed model never reads target responses.
 
-### 4.2 Content-only student
+### 4.2 Content-only expert
 
-The student maps admissible content features to a reaction distribution:
+The content-only expert maps admissible content features to a reaction distribution:
 
 \[
 \mathbf{p}^{S}_i = \operatorname{softmax}(h_\theta(e_\theta(x_i,m_i))).
@@ -188,23 +188,16 @@ The student maps admissible content features to a reaction distribution:
 
 Encoder choice, freezing or parameter-efficient adaptation, distribution head, and sequence pooling are frozen before formal test evaluation. `[DECISION-GAP:FINAL_STUDENT_ARCHITECTURE_AND_BUDGET]`
 
-### 4.3 Response-privileged teacher
+### 4.3 Finite-response posterior target
 
-For training items only, a teacher has access to admissible content and training responses:
-
-\[
-\mathbf{p}^{T}_i = g_\phi(x_i,\{r_{ij}\}_{j=1}^{n_i}).
-\]
-
-The student objective may combine empirical-distribution supervision and teacher distillation:
+For a categorical response-count vector \(\mathbf{c}_i\), the development contract uses a symmetric Jeffreys prior:
 
 \[
-\mathcal{L}_{student}
-= \mathcal{L}_{dist}(\mathbf{y}_i,\mathbf{p}^{S}_i)
-+ \lambda_{KD}\mathcal{L}_{KD}(\mathbf{p}^{T}_i,\mathbf{p}^{S}_i).
+\boldsymbol{\theta}_i\mid\mathbf{c}_i\sim
+\operatorname{Dirichlet}(\mathbf{c}_i+0.5).
 \]
 
-`[DECISION-GAP:LOSS_FAMILY_TEMPERATURE_AND_LAMBDA]` The teacher is an upper-bound and supervision mechanism, not a deployable system. A mismatched-response negative control tests whether any gain comes from relevant privileged information rather than extra optimization signal or parameter count.
+A uniform-prior sensitivity analysis replaces 0.5 with 1. The posterior represents uncertainty caused by the finite observed response sample; it is not a posterior for all viewers. CSMV supports exact reconstruction of integer category counts from its frozen aggregate distribution and response support. LAI-GAI preserves only per-dimension marginal histograms in the canonical artifact, so it supports marginal response thinning but not reconstruction of joint 12-dimensional respondent vectors.
 
 ### 4.4 Train-only audience-reaction memory
 
@@ -218,7 +211,7 @@ where \(\mathbf{z}_j\) is a content representation, \(\mathbf{q}_j\) records lab
 
 The retriever returns \(K\) neighbors and an aggregated reaction estimate \(\mathbf{p}^{M}_i\). Retrieval methods include random, lexical, representation nearest-neighbor, and learned variants under a matched candidate pool and budget. `[DECISION-GAP:MEMORY_REPRESENTATION_K_AND_AGGREGATION]`
 
-### 4.5 Benefit-aware reliability routing
+### 4.5 Point and credible net-benefit routing
 
 The key mechanism hypothesis is that similarity alone is insufficient: retrieval should be used only when it is likely to improve over the content-only prediction. On training data, out-of-fold predictions define a utility target such as
 
@@ -227,7 +220,16 @@ u_i = \ell(\mathbf{y}_i,\mathbf{p}^{S,OOF}_i)
       - \ell(\mathbf{y}_i,\mathbf{p}^{M,OOF}_i),
 \]
 
-or its fusion-specific analogue. Positive utility indicates that retrieval reduces loss. Utility targets must be generated by cross-fitting; in-sample or test-derived utility is prohibited.
+or its fusion-specific analogue. Positive utility indicates that retrieval reduces loss. Utility targets must be generated by five-fold group cross-fitting; in-sample or test-derived utility is prohibited.
+
+For posterior draws \(\boldsymbol{\theta}^{(s)}_i\), define \(u_i^{(s)}\) by replacing the empirical target with the draw, then compute
+
+\[
+b_i=\Pr(u_i>0\mid\mathbf{c}_i),\qquad
+\ell_i=Q_{0.05}(u_i\mid\mathbf{c}_i).
+\]
+
+The point router predicts expected utility. The credible router uses \(b_i\) or \(\ell_i\) and may choose memory only when improvement remains credible after finite-response uncertainty. Their architecture, inputs, candidate pool, optimization budget, and coverage are matched.
 
 The router receives only T0-admissible features:
 
@@ -238,7 +240,7 @@ The router receives only T0-admissible features:
 \operatorname{quality}_i,\operatorname{uncertainty}^{S}_i).
 \]
 
-Here \(\alpha_i\) controls fusion and \(s_i\) is a selective score. The predictive distribution is
+Here \(\alpha_i\) controls fusion and \(s_i\) is a selective score. The action set is frozen as `USE_MEMORY`, `FALLBACK_CONTENT`, and `ABSTAIN`. The predictive distribution when memory is used is
 
 \[
 \hat{\mathbf{y}}_i=(1-\alpha_i)\mathbf{p}^{S}_i+\alpha_i\mathbf{p}^{M}_i,
@@ -246,17 +248,17 @@ Here \(\alpha_i\) controls fusion and \(s_i\) is a selective score. The predicti
 
 with optional abstention under a pre-registered coverage or risk budget. `[DECISION-GAP:ROUTER_TARGET_FUSION_AND_ABSTENTION_RULE]`
 
-The router is compared at matched coverage against fixed fusion, similarity thresholds, predictive-entropy thresholds, and a SelectiveNet-style baseline. It supports a method claim only if it identifies harmful retrieval and reduces negative transfer beyond those controls.
+The router is compared at matched coverage against fixed fusion, similarity thresholds, predictive-entropy thresholds, out-of-domain diagnostics, generic learned gates, a SelectiveNet-style baseline, and the point-utility router. It supports a method claim only if it identifies harmful retrieval and reduces negative transfer beyond those controls.
 
 ### 4.6 Uncertainty and selective outputs
 
-The system outputs a reaction distribution, an uncertainty or disagreement summary whose meaning is explicitly defined, a selective score, and provenance for the retrieved evidence. Calibration and selection are evaluated separately: improved average divergence does not establish calibrated probabilities, and improved coverage–risk performance does not establish population-level psychological validity.
+The system outputs a reaction distribution, three separately validated diagnostics, a selective score, and provenance for the retrieved evidence. Group disagreement is checked against held-out or split-half responses; finite-sample uncertainty is checked by response thinning and posterior sensitivity; model or transfer uncertainty is checked against ensemble disagreement and natural group-held-out error. A development calibration subset defines empirical-distribution prediction regions at 80%, 90%, and 95% target coverage. Region coverage and size are reported together and do not establish population-level psychological validity.
 
 ### 4.7 Training and inference
 
 Provide pseudocode with two physically separated phases:
 
-- **Training:** fit content model and teacher; create out-of-fold utility labels; build train-only memory; fit router; freeze all selection and calibration rules.
+- **Training:** fit the content expert; create out-of-fold point and posterior utility targets; build train-only memory; fit point and credible routers; freeze all selection and calibration rules.
 - **Inference:** encode target content; retrieve only eligible historical cases; compute routing signals; predict or abstain; never read target responses.
 
 `[DECISION-GAP:FINAL_ALGORITHMS_AND_COMPLEXITY]`
@@ -266,16 +268,15 @@ Provide pseudocode with two physically separated phases:
 ### 5.1 Research questions
 
 - **RQ1 / C1:** Does the strict T0 protocol yield auditable, leakage-free evidence on two HUMAN_GOLD datasets?
-- **RQ2 / C2:** Does response-privileged supervision improve the content-only student’s distribution error or calibration?
-- **RQ3 / C3:** Can benefit-aware reaction memory reduce retrieval-induced negative transfer beyond ordinary retrieval and strong routing baselines?
-- **RQ4 / C4:** Are any gains maintained under pre-registered distribution shifts and selective-risk evaluation?
+- **RQ2 / C2:** Can posterior-aware net-benefit routing reduce retrieval-induced negative transfer beyond point-utility routing and strong generic selectors?
+- **RQ3 / C3:** Do separately validated response, finite-sample, and model/transfer uncertainty support calibrated empirical-distribution prediction regions and selective reliability under applicable shifts?
 
 ### 5.2 Datasets and evidence roles
 
 | Dataset/track | Native unit | Label role | Input role | Eligible claims |
 |---|---|---|---|---|
-| CSMV/MSA-CRVI | 8,210 videos | HUMAN_GOLD distribution aggregated from 107,267 human-labeled comments; response support retained | Frozen `float32[T,1024]` I3D visual sequence; no audio or target-comment input | Primary H1/H2 mechanisms, strict T0, video-level OOD |
-| LAI-GAI | 847 images | HUMAN_GOLD 12-dimensional distribution aggregated from 63,682 eligible induced-rating rows; per-dimension uncertainty retained | Image; generation prompt and target category excluded by default | Cross-domain distribution, calibration, OOD; H1/H2 not applicable by design where fields are absent |
+| CSMV/MSA-CRVI | 8,210 videos | HUMAN_GOLD distribution aggregated from 107,267 human-labeled comments; integer category counts are exactly reconstructable from aggregate labels and support | Frozen `float32[T,1024]` I3D visual sequence; no audio or target-comment input | Primary H2a/H2b mechanisms, finite-response posterior, strict T0, video-level OOD |
+| LAI-GAI | 847 images | HUMAN_GOLD 12-dimensional distribution aggregated from 63,682 eligible induced-rating rows; marginal response histograms retained | Image; generation prompt and target category excluded by default | Group/sample uncertainty, marginal response thinning, calibration and OOD; reaction-memory routing not applicable by design |
 | Video2Reaction A | CSMV video | Same CSMV HUMAN_GOLD label | Same T0 input and budget as CSMV baselines | Fair closest-prior comparison |
 | Video2Reaction B | Native movie/video unit | SILVER_LLM_HUMAN_VERIFIED | Publicly recoverable native features only | Limited external validation; separate table |
 | NEmo+ | News item/condition | HUMAN responses if access audit passes | Paired text/image/text+image | Optional H4 paired-modality mechanism |
@@ -298,15 +299,15 @@ The planned baseline suite includes:
 3. official CSMV baselines and the author-released VC-CSA path, with NON_T0 exploratory results excluded from formal evidence;
 4. Video2Reaction-style direct fine-tuning and label-distribution learning through the two-track contract;
 5. frozen modern content encoders with MLP, late-fusion, and minimal cross-attention heads where inputs are actually available;
-6. hard-label, soft-label, ordinary distillation, privileged distillation, and teacher upper-bound controls;
+6. content-only, memory-only, fixed-fusion, and oracle-selection development references;
 7. no retrieval, random retrieval, lexical retrieval, representation k-nearest neighbors, learned retrieval, and relevant retrieval-augmented affect baselines;
-8. fixed fusion, similarity threshold, predictive-entropy threshold, and SelectiveNet-style selective controls.
+8. similarity, predictive-entropy, OOD, generic learned, SelectiveNet-style, point-utility, and credible-net-benefit selectors.
 
 The current Task 20 evidence distinguishes four baseline identities rather than treating every executed program as a comparable result. `OFFICIAL_REPRODUCTION_ATTEMPT` denotes an attempt to execute an official or author-released path under its native contract; it does not imply a successful or T0-compatible reproduction. The historical VC-CSA attempt against the former official main branch was superseded by the post-snapshot erratum after an author implementation was located. That implementation consumes target comments and uses a comment-level split, so its author-setting path is `AUTHOR_ORIGINAL_SETTING_NON_T0`; the later 120-epoch run remains leakage-accepted NON_T0 exploratory evidence and is permanently ineligible for formal tables, model selection, G3 evidence, or paper claims. No VC-CSA performance value is reported here.
 
 `REIMPLEMENTATION_STRONG_BASELINE` denotes the frozen-I3D temporal-attention implementation evaluated through the common Task 20 contract. It is the only Task 20 strong content-only baseline with a formal single-seed engineering run, and that run is not five-seed inferential evidence. `LEGACY_NATIVE_COMPATIBILITY` denotes the re-executed 48-dimensional CatBoost, histogram-gradient-boosting, and LightGBM pipelines on their native silver binary task; these runs preserve backward compatibility but are not comparable to the T0 distribution-forecasting endpoint. `REFERENCE_MODEL` denotes an architecture named for contextual comparison but unavailable under the frozen input contract: CLIP, SigLIP, and VideoMAE features are `NOT_AVAILABLE_IN_FROZEN_T0_PROTOCOL`. Because only one T0 content modality was available, late fusion, minimal cross-attention, and E1 modality-increment tests are `NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY`, not failed or omitted experiments.
 
-All formally comparable trainable baselines must use the same split, admissible inputs, evaluator, model-selection rule, and 12-trial maximum tuning budget. Teacher, memory, retrieval, router, and rejection baselines remain downstream Tasks 30–50 work, while five-seed comparisons and paired native-unit uncertainty remain Task 50 work. `[RESULT-GAP:FORMAL_BASELINE_TABLE_WITH_FIVE_SEED_UNCERTAINTY]`
+All formally comparable trainable baselines must use the same split, admissible inputs, evaluator, model-selection rule, and 12-trial maximum tuning budget. Task 30 privileged-teacher development is an archived negative boundary and is not an active baseline family or formal result. Memory, retrieval, router, and rejection development belongs to Task 40; formal five-seed comparisons and paired native-unit uncertainty remain Task 50 work. `[RESULT-GAP:FORMAL_BASELINE_TABLE_WITH_FIVE_SEED_UNCERTAINTY]`
 
 ### 5.5 Ablations and negative controls
 
@@ -314,9 +315,9 @@ All formally comparable trainable baselines must use the same split, admissible 
 |---|---|---|
 | E0 | Leakage and alignment rejection tests | Invalid evidence entering evaluation |
 | E1 | Single admissible input vs all available inputs | Unsupported modality-gain claims |
-| E2 | Remove memory; vary retriever | Retrieval benefit vs ordinary similarity |
-| E3 | Remove teacher/distillation; mismatch responses | Relevant privileged supervision vs extra signal |
-| E4 | Remove router/rejection; compare strong selectors | Router mechanism vs thresholding |
+| E2 | Content–reaction mismatch, oracle headroom, then vary retriever | Whether selectable memory benefit exists before routing |
+| E3 | Archived Task 30 teacher boundary; no active formal experiment | Prevent retired privileged-supervision results from entering claims |
+| E4 | Point vs credible benefit targets; remove router/rejection; compare strong selectors | Posterior-aware harm avoidance vs point estimates or thresholding |
 | E5 | Applicable natural/random missing input | Graceful degradation |
 | E6 | Group/topic/source/time/platform/cross-data shift | Distribution-shift reliability |
 | E7 | Random, wrong-domain, low-quality, or reduced memory | Negative transfer and provenance controls |
@@ -336,6 +337,8 @@ AURC-JS is minimized. For each video, the selective risk is its JS divergence an
 ### 5.7 Statistical analysis
 
 Formal comparisons use at least five random seeds and paired bootstrap 95% confidence intervals at the dataset-native content-unit level: video for CSMV, image for LAI-GAI, and video or movie only when justified by the frozen Video2Reaction-native protocol. Comments, raters, folds, and seeds are repeated observations or training variations, not independent inferential units. Cross-dataset absolute metric comparisons are not used because label spaces, domains, inputs, and target construction differ. Primary comparisons, multiplicity correction, model-selection rules, coverage targets, and equivalence/noninferiority margins—if used—must be pre-registered. Report effect sizes and uncertainty, not p-values alone.
+
+Task 40 development uses the frozen seeds `1364847620`, `426925854`, `1839464886`, `1138176833`, and `484191872`, with separate development-selection and development-calibration partitions. CSMV response thinning uses 2, 4, 8, and all available responses with 200 resamples; cross-thinning comparisons use the common `n>=8` subset. LAI-GAI uses 8, 16, 32, and all responses per marginal dimension. The primary method comparison is content-unit JSD at 90% answer coverage; the primary reliability comparison is negative-transfer rate for credible routing versus the strongest eligible point-utility or generic router. Formal test remains unmaterialized until Task 50.
 
 ### 5.8 Implementation and reproducibility
 
@@ -357,27 +360,27 @@ The current protocol evidence supports infrastructure credibility but not a perf
 
 Baseline credibility is correspondingly scoped. The temporal-attention result is a single-seed strong reimplementation, the legacy models are native-task compatibility checks, unavailable modern encoders are reference models without results, and the VC-CSA author-setting run is protocol-mismatched NON_T0 exploratory evidence excluded from this paper's quantitative claims. Dataset-unit counts, exclusions, complete E0 outcomes, strongest fair baseline values, five-seed uncertainty, and paired native-unit comparisons remain gated on frozen Task 50 artifacts. No development, exploratory, or single-seed performance number is promoted into this section.
 
-### 6.2 Response-privileged supervision
+### 6.2 Credible net-benefit memory routing
 
-`[RESULT-GAP:C2_E3_FIVE_SEED_PAIRED_RESULTS]`
+`[RESULT-GAP:C2_E2_E4_E7_FIVE_SEED_PAIRED_RESULTS]`
 
-Required reporting: content-only, hard/soft label, ordinary distillation, privileged distillation, teacher upper bound, and mismatched-response control; distribution and calibration metrics; effect sizes with native-unit confidence intervals.
+Required reporting: content-only, memory-only, fixed fusion, no/random/lexical/nearest-neighbor/learned retrieval; oracle headroom; generic, point-utility and credible-net-benefit routers; matched-coverage selective controls; utility-prediction quality; negative-transfer rate; posterior and thinning sensitivity; harmful-retrieval avoidance; and failure cases.
 
-### 6.3 Reaction memory and benefit-aware routing
+### 6.3 Three-source uncertainty and prediction regions
 
-`[RESULT-GAP:C3_E2_E4_E7_FIVE_SEED_PAIRED_RESULTS]`
+`[RESULT-GAP:C3_THREE_SOURCE_AND_REGION_RESULTS]`
 
-Required reporting: no/random/lexical/nearest-neighbor/learned retrieval; fixed and adaptive fusion; matched-coverage selective controls; utility-prediction quality; negative-transfer rate; harmful-retrieval avoidance; and failure cases.
+Required reporting: separate observable checks for group disagreement, finite-response sampling, and model/transfer uncertainty; one-source-at-a-time ablations; empirical coverage and region size at every pre-registered target; and explicit deletion of the decomposition claim if the sources cannot be distinguished.
 
 ### 6.4 Distribution shift and external validity
 
-`[RESULT-GAP:C4_E5_E6_VIDEO2REACTION_DUAL_TRACK]`
+`[RESULT-GAP:C3_E5_E6_VIDEO2REACTION_DUAL_TRACK]`
 
 Report every pre-registered shift, including negative findings. CSMV, LAI-GAI, and Video2Reaction-native metrics must remain in dataset-specific tables. A result on silver labels cannot be used to upgrade a HUMAN_GOLD claim.
 
 ### 6.5 Calibration and selective prediction
 
-`[RESULT-GAP:C3_C4_CALIBRATION_AND_RISK_COVERAGE]`
+`[RESULT-GAP:C2_C3_CALIBRATION_AND_RISK_COVERAGE]`
 
 Required reporting: full-coverage calibration, coverage-matched risk, AURC, operating points chosen without test labels, and whether abstention concentrates on shifted, low-quality, or high-disagreement cases.
 
@@ -392,9 +395,8 @@ Report parameter count, peak memory, runtime, index size, retrieval latency, and
 | Claim | Primary comparison | Dataset/protocol | Effect and 95% CI | Claim status | Evidence artifact |
 |---|---|---|---|---|---|
 | C1 | Protocol/evaluator validity | Two HUMAN_GOLD datasets | `[RESULT-GAP]` | TO_VERIFY | `[RESULT-GAP]` |
-| C2 | Privileged student vs strongest content-only | CSMV strict T0 | `[RESULT-GAP]` | TO_VERIFY | `[RESULT-GAP]` |
-| C3 | Routed memory vs strongest retrieval/selective control | CSMV strict T0 + shifts | `[RESULT-GAP]` | TO_VERIFY | `[RESULT-GAP]` |
-| C4 | Best supported model vs strongest fair baseline | Pre-registered OOD/external tracks | `[RESULT-GAP]` | TO_VERIFY | `[RESULT-GAP]` |
+| C2 | Credible router vs strongest point/generic router at matched coverage | CSMV strict T0 + response thinning | `[RESULT-GAP]` | TO_VERIFY | `[RESULT-GAP]` |
+| C3 | Three-source/region system vs source-matched controls | Applicable HUMAN_GOLD shifts + external tracks | `[RESULT-GAP]` | TO_VERIFY | `[RESULT-GAP]` |
 
 ## 7. Discussion
 
@@ -402,7 +404,7 @@ Report parameter count, peak memory, runtime, index size, retrieval latency, and
 
 `[RESULT-GAP:DISCUSSION_BOUND_TO_SUPPORTED_CLAIMS]`
 
-The discussion must answer whether privileged responses, historical reaction evidence, and selective routing improve reliability under the tested information boundary. It must distinguish average predictive improvement, calibration improvement, negative-transfer reduction, and selective-risk improvement.
+The discussion must answer whether historical reaction evidence, finite-response posterior benefit, and selective routing improve reliability under the tested information boundary. It must distinguish average predictive improvement, calibration improvement, negative-transfer reduction, and selective-risk improvement.
 
 ### 7.2 Mechanistic interpretation
 
@@ -426,7 +428,7 @@ Any implication must be limited to publicly expressed reactions within the evalu
 
 `[RESULT-GAP:NULL_AND_ADVERSE_RESULTS]`
 
-Report where privileged supervision, memory, routing, or rejection does not help. A null H1, H2, or H3 result triggers the predefined claim downgrade and should be interpreted as evidence about protocol or failure mechanisms, not hidden through selective reporting.
+Report where memory, point or credible routing, uncertainty decomposition, prediction regions, or rejection do not help. Task 30 remains an archived development non-pass rather than a formal H1 result. A null H2 or H3 result triggers the predefined claim downgrade and should be interpreted as evidence about protocol or failure mechanisms, not hidden through selective reporting.
 
 ## 8. Limitations and Broader Considerations
 
@@ -450,7 +452,7 @@ Report where privileged supervision, memory, routing, or rejection does not help
 
 ## 9. Conclusion
 
-`[RESULT-GAP:CONCLUSION_CONTAINING_ONLY_SUPPORTED_C1_TO_C4]`
+`[RESULT-GAP:CONCLUSION_CONTAINING_ONLY_SUPPORTED_C1_TO_C3]`
 
 The conclusion must restate the reliability question, summarize only supported evidence, identify the conditions under which retrieval or abstention is beneficial, and preserve the construct and asset boundaries. It must introduce no new result, method, dataset, or claim.
 
@@ -458,7 +460,7 @@ The conclusion must restate the reliability question, summarize only supported e
 
 The project will release, subject to anonymity review, the eligible schemas, content-unit split manifests, label-provenance manifests, hash ledgers, deterministic preprocessing and leakage-validation code, configuration contracts, and table/figure regeneration scripts. CSMV annotations are obtained through the dataset's official repository and are tracked at the frozen annotation revision recorded in the source ledger. CSMV platform media, raw comments, user identifiers, URL lists, and the fixed I3D feature package will not be redistributed by this project. The I3D files may be used internally only under the documented accepted-risk decision: their asset-level license, stable official revision, rightsholder package identity, and external fixity attestation remain unresolved, so the decision is neither a license grant nor evidence of official authorization.
 
-LAI-GAI images and metadata are available from the official dataset source under its documented CC BY 4.0 terms; this repository tracks the 847-image revision and hashes but does not republish the source images or participant-level rating files. Only de-identified image-level aggregate labels may enter a release after a separate publication-boundary review. Video2Reaction will be referenced through a frozen public revision only after Task 50 intake; its native annotations are silver, and underlying media rights remain source-specific. CUC-IGPE-v2 raw and derived records remain local because consent, platform permission, and redistribution rights are unresolved. `[DECISION-GAP:FINAL_ARCHIVE_LOCATORS_AND_RELEASE_VERSION]`
+LAI-GAI images and metadata are available from the official dataset source under its documented CC BY 4.0 terms; this repository tracks the 847-image revision and hashes but does not republish the source images or participant-level rating files. Only de-identified image-level aggregate labels may enter a release after a separate publication-boundary review. Video2Reaction is currently identified at Hugging Face revision `75278468c91c51ff54cf709d61ee881ca5c37c9b`, but intake remains conditional because the dataset card's annotation license and the repository-level license statement are not yet reconciled; its native annotations are silver and underlying media rights remain source-specific. CUC-IGPE-v2 raw and derived records remain local because consent, platform permission, and redistribution rights are unresolved. `[DECISION-GAP:FINAL_ARCHIVE_LOCATORS_AND_RELEASE_VERSION]`
 
 ## Code Availability
 
@@ -517,7 +519,7 @@ Every reference must pass identifier and claim-support verification. Author-repo
 
 This manuscript cannot be marked `SUBMISSION_READY` until all of the following are true:
 
-- C1–C4 have final states with linked evidence; unsupported claims are removed or downgraded.
+- C1–C3 have final states with linked evidence; unsupported claims are removed or downgraded.
 - G6 and all T-AFFC Go standards have independently passed.
 - The two HUMAN_GOLD datasets remain the basis of the principal quantitative claims.
 - Video2Reaction has a fair comparison or an accepted, detailed non-executability audit.

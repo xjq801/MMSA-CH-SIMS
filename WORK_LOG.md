@@ -12019,3 +12019,103 @@ S38及本条追加在记录时未暂存、未提交、未推送；基线`main/or
 
 - `scripts/validate_work_log.py`返回264条、0错误、latest=`WR-20260805-004`、exit 0。
 - `scripts/run_preparation_checks.py`耗时85.7秒、exit 0、`blocking_checks=[]`；继续保留`formal_model_work_ready=false`、`faiss_available=false`与`g2_asset_ready=false`。
+
+## WR-20260805-005 — v1.23有限反应后验路线、Task10补充审核与Task40创建授权
+- 时间：2026-08-05 23:10:00 +08:00
+- 类型：RESEARCH | DATA_AUDIT | PREREGISTRATION | PAPER | AUTHORIZATION | CONTROL
+- 任务/门：00总控 / `SC-20260805-02` / `AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`
+- 状态：预注册与创建授权已形成；Task40未创建、未运行实验、formal test未materialize
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+用户要求执行Video2Reaction准入、内容—反应错位前置检查、Oracle/OOF泄漏合同、target chain、failure tree、五种子、主终点、多重比较、formal-test不可见、Task10段落独立审核与Task20持续监督，并要求明确是否需要新数据集。本批从`HEAD=origin/main=0b9bfdb72cb343001dd3e66e84cc377ae6ee3b0c`开始，只更新控制/方案/论文SSOT与聚合审计脚本，不修改实验核心或受限资产。
+
+### 实际变更
+
+- 新增`scripts/audit_carm_response_support.py`只读聚合审计脚本与`TASK10_CARM_RESPONSE_SUPPORT_DATA_FITNESS_ADDENDUM_20260805.md`：CSMV 8210视频、107266有效情绪响应、每视频2—20/中位14，分布×有效数可在`1e-8`容差内精确恢复整数计数；LAI-GAI 847图/63682响应行只有12维边际直方图，不得伪造联合受试者向量。
+- 新增`TASK00_CARM_ROUTE_CLOSEST_PRIOR_SEARCH_20260805.md`、`TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md`和四个`.light/carm-v123-*`机读合同，冻结Dirichlet(0.5/1)、CSMV 2/4/8/all×200 thinning、LAI-GAI 8/16/32/all边际thinning、5-fold group OOF、`DEV_SELECT/DEV_CALIBRATE`分离、五种子、90% coverage JSD/负迁移率固定顺序与Holm校正。
+- Video2Reaction绑定HF revision `75278468c91c51ff54cf709d61ee881ca5c37c9b`与GitHub commit `0da6060445782128f503cd19d157f6a5922d107a`；HF卡CC BY-NC-SA 4.0与GitHub README/API层CC BY 4.0/NOASSERTION差异未解决，故为`CONDITIONAL_EXTERNAL_VALIDATION_NOT_CORE_REQUIRED`，未下载。
+- 总纲升为v1.23/第17节v1.7；实验矩阵升为v1.1；claim矩阵升为v1.4，活动claim收紧为C1—C3；论文SSOT升为v0.1.3、蓝图v0.1.1，Task30 teacher只保留归档负边界。
+- Task10 `main@1d2018ceb833376112174e7eb4d6e7528305d856`数据/协议段落裁定`ACCEPTED_WITH_LIMITATIONS`，不升级C1—C3。
+- 新增`TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md`，授权ID=`AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`、文件SHA-256=`9089a8302e09fbdbb6910cf4bbfe5a35dc964c8b61cd21160042709a10c2c14a`；只授权用户创建独立Task40开发任务，当前仍未创建。
+- 更新`AGENTS.md`、`TASK_REGISTRY.md`、`.light/passport.yaml`、`.light/project_card.md`、`DATA_SOURCE_LEDGER.md`、`RISK_REGISTER.md`、`DECISION_LOG.md`与`.light`决策/版本台账。Task20仍为补证停止状态，Attempt2永久NON_T0/INELIGIBLE；2026-08-31 23:59:59 +08:00受限存储删除截止不变。
+
+### 验证与证据
+
+- `.\.venv\Scripts\python.exe scripts\audit_carm_response_support.py`最终exit 0；CSMV计数重建`noninteger_cells=0`、最大残差`8.999911926821369e-12`；LAI-GAI `histogram_sum_mismatches=0`。
+- `.light/carm-v123-*.json`全部通过Python JSON解析；`git diff --check`exit 0。
+- Task10/20/30实时状态已通过Codex任务读取工具刷新：Task10已完成并待审（本批已验收）；Task20因缺少可重连的私有subhash/资产访问而停止补证，不授权复跑；Task30仍`CLOSED_NOT_PASSED`。
+- 最终WORK_LOG validator、综合准备门、passport/handoff合同、提交与push结果将以后续追加记录忠实记录，未完成前不写成已通过。
+
+### 影响与边界
+
+- 核心Task40不需要新数据集；第二个comment-bearing HUMAN_GOLD视频集只是加强外部效度的建议项，不阻断核心开发。
+- Oracle headroom被修正为Task40创建后的第一开发止损门，不再是创建前置；因此没有用“Task40未创建”反向阻塞Oracle实验的循环。
+- Task40授权不是Task40创建或结果验收；formal test仍未materialize，Task50仍未创建，C1—C3仍`TO_VERIFY`，G1—G3不变。
+- 未读取、修改、暂存或提交用户未跟踪`NEmoP/`、`__MACOSX/`与`tmp/`；未与Task30并发修改实验核心。
+
+### 风险、问题与阻塞
+
+- CSMV I3D许可、稳定官方revision、权利方包身份与外部fixity仍UNKNOWN/accepted risk；禁止再分发。
+- Video2Reaction许可表述差异、本地逐文件fixity、movie-disjoint和底层媒体权利未闭合；原生B轨不得运行。
+- 后验净收益对Dirichlet先验或response thinning不稳定时，必须删除“可信净收益”强claim；三源不可辨识时只能报总不确定性。
+- 执行中诚实保留失败：`rg.exe`多次返回Access denied，改用PowerShell `Select-String`；项目页`Invoke-WebRequest`返回NullReference，改用curl；审计脚本前两次分别因split和`emotion_distribution`是dict解析失败后修复；一次PowerShell残留脚本缺少右括号；多次误用`TAF...`占位路径的`Select-String`命令失败；两次大块`apply_patch`因精确上下文不匹配失败后拆分为小补丁；一次递归Python搜索因扫到未跟踪大目录者超时终止。这些失败未被写成通过。
+
+### 下一步
+
+1. 新建S40交接卡，独立验证passport/交接/准备门与全部差异。
+2. 只暂存受控文件，提交并推送main，排除用户未跟踪目录。
+3. 向用户用简单步骤说明新实验，报告新数据裁定与“Task40已授权创建但未创建”，并提供Task40精确接续提示词。
+
+### Git状态
+
+本条记录时当前批次仍为`dirty/uncommitted`；起始HEAD=origin/main=`0b9bfdb72cb343001dd3e66e84cc377ae6ee3b0c`。最终commit/push只能在后续验证通过后另行忠实记录。
+
+## WR-20260805-006 — v1.23冻结包、S40交接与Task40授权提交前总控验收
+- 时间：2026-08-05 18:32:32 +08:00
+- 类型：VALIDATION | HANDOFF | CONTROL | CORRECTION
+- 任务/门：00总控 / v1.23与`AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`提交前验收
+- 状态：全部当前阻断门通过；内容仍待提交推送
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+对WR-20260805-005描述的v1.23冻结包做提交前独立验收，修复S40交接机读合同，并确认授权绑定hash、活动claim、Git范围和综合准备门。`Get-Date -Format 'yyyy-MM-dd HH:mm:ss zzz'`在本记录前返回`2026-08-05 18:32:32 +08:00`；WR-20260805-005所写`23:10:00`是先前记录的时钟转录错误，历史条目不改写，本条追加纠正，二者不代表实验发生时间。
+
+### 实际变更
+
+- 修订`.light/handoff/S40-carm-v123-task40-authorization.md`的完成项证据格式、resolved decision影响、三项动作、必读`.light/project_card.md`与强制Git刷新语句；不改变Task40科学合同。
+- 向`DECISION_LOG.md`和`.light/decision_log.md`追加精确授权ID、已授权未创建状态、Oracle止损门、test/Task50禁令与00不代跑边界。
+- 未改动9个授权绑定文件；逐项SHA-256与`TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md`完全一致。
+
+### 验证与证据
+
+- 直接运行`handoff_contract.py --card .light/handoff/S40-carm-v123-task40-authorization.md --as-of 2026-08-05`首次exit 1，指出至少一个已完成项缺少可识别验证词；把“人工审核/核对”规范为“人工确认”后第二次返回`handoff contract PASS`、exit 0。失败未删除。
+- 9个绑定文件的`Get-FileHash -Algorithm SHA256`逐项与授权表一致：`a1687803...`、`d6f02a2a...`、`3b27aab4...`、`f06af9e9...`、`5a68b043...`、`780d57a6...`、`93e7f7a9...`、`5431f674...`、`2fa7750a...`。
+- Python解析四个`.light/carm-v123-*.json`返回`JSON_PARSE_PASS 4`；passport YAML返回`PASSPORT_PARSE_PASS 40 17`；`git diff --check` exit 0。
+- 活动材料搜索无C4、无“具体值待预注册冻结”；teacher/KD命中均为历史边界、负对照或明确禁用；论文与claim矩阵的C1—C3继续为`TO_VERIFY`。
+- `scripts/validate_work_log.py`返回265条、0错误、latest=`WR-20260805-005`、exit 0。
+- `scripts/run_preparation_checks.py`耗时32.4秒、exit 0、`blocking_checks=[]`；`formal_model_work_ready=false`、`faiss_available=false`、`g2_asset_ready=false`继续诚实保留。
+
+### 影响与边界
+
+- 当前通过的是规划、数据适配、授权与交接的可审计性，不是Task40创建、模型结果或formal test验收。
+- 核心开发仍无需新增数据集；Video2Reaction与第二comment-bearing HUMAN_GOLD视频集都不是Task40创建阻断项。
+- Task30继续`CLOSED_NOT_PASSED`；Task20、G1—G3、I3D UNKNOWN与受限存储删除截止均不变。
+
+### 风险、问题与阻塞
+
+- 先前直接运行项目卡广义历史检查器返回exit 1、58项：主要来自S31以前的历史交接父链/decision格式和该工具对当前中文围栏项目卡布局的解析不兼容；本批不改写历史卡或旧决策。当前权威的S40直接合同、passport YAML和综合准备门均已分别通过。
+- `formal_model_work_ready=false`意味着正式模型环境仍不就绪；Task40新任务须在独立worktree内先完成其授权范围的环境和泄漏门，不能借用本次文档门通过来声称可跑formal test。
+- 用户未跟踪`NEmoP/`、`__MACOSX/`和`tmp/`继续排除；尚未提交推送前不得写成远端已同步。
+
+### 下一步
+
+1. 重跑WORK_LOG、综合准备门和差异检查，确认本条追加未引入阻断。
+2. 只暂存本批受控文件，审计暂存清单后提交并推送main。
+3. 追加真实commit/push回执，形成最终closure提交并再次推送。
+
+### Git状态
+
+记录时`HEAD=origin/main=0b9bfdb72cb343001dd3e66e84cc377ae6ee3b0c`；v1.23、S40与本条仍为`dirty/uncommitted`。用户未跟踪目录保持未暂存。

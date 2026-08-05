@@ -1,0 +1,58 @@
+{
+  "schema": "light.research_failure_tree.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM",
+  "plan_state": "FROZEN_DEVELOPMENT_NO_FORMAL_TEST",
+  "hypotheses": [
+    {
+      "id": "H2a",
+      "claim": "Natural content-reaction mismatch creates real selectable headroom between content and historical experts",
+      "primary_endpoint": {"metric": "Oracle paired JSD improvement", "unit": "video", "timepoint": "OOF train and frozen dev only"},
+      "branches": {
+        "success": {"condition": "Paired-bootstrap 95% CI lower bound for Oracle improvement is above zero after registered controls", "action_kind": "PROCEED_TO_ROUTER", "claim_impact": "Allows H2b development only"},
+        "failure": {"condition": "No stable controlled mismatch or no Oracle headroom", "action_kind": "STOP_ROUTER", "claim_impact": "Remove historical-routing claim; retain content-only reliability or negative result"},
+        "inconclusive": {"condition": "CI crosses zero or natural groups disagree", "action_kind": "REPORT_INCONCLUSIVE", "claim_impact": "No router claim and no test access"}
+      }
+    },
+    {
+      "id": "H2b",
+      "claim": "Credible posterior OOF net-benefit routing improves matched-coverage JSD and reduces credible negative transfer beyond point and generic gates",
+      "primary_endpoint": {"metric": "90%-coverage JSD difference then credible negative-transfer-rate difference", "unit": "video", "timepoint": "Frozen dev; formal test reserved for Task50"},
+      "branches": {
+        "success": {"condition": "Fixed-sequence paired-bootstrap CI upper bounds are below zero for JSD and credible negative transfer", "action_kind": "PROCEED_TO_UNCERTAINTY", "claim_impact": "Allows bounded credible-routing candidate claim"},
+        "failure": {"condition": "Not better than point/generic gate or no natural-OOD harm reduction", "action_kind": "DOWNGRADE", "claim_impact": "Use point routing, ordinary retrieval, or content-only; remove credible-net-benefit claim"},
+        "inconclusive": {"condition": "CI crosses zero, insufficient precision, or direction varies by natural group", "action_kind": "REPORT_INCONCLUSIVE", "claim_impact": "No affirmative mechanism claim"}
+      }
+    },
+    {
+      "id": "H2c",
+      "claim": "Group disagreement, finite-response sampling and model/OOD uncertainty have separately testable value",
+      "primary_endpoint": {"metric": "Source-specific external criteria and empirical-distribution region coverage/efficiency", "unit": "native content unit", "timepoint": "DEV_CALIBRATE and later Task50 only"},
+      "branches": {
+        "success": {"condition": "Each retained source passes its own Holm-adjusted external criterion and regions report target coverage with finite width", "action_kind": "RETAIN_SUPPORTED_SOURCES", "claim_impact": "Only passing sources may be named separately"},
+        "failure": {"condition": "Sources are not identifiable or regions systematically miscover", "action_kind": "COLLAPSE_OR_REMOVE", "claim_impact": "Report total uncertainty only or delete region claim"},
+        "inconclusive": {"condition": "Precision insufficient or exchangeability boundary unresolved", "action_kind": "REPORT_INCONCLUSIVE", "claim_impact": "No guaranteed or population-level wording"}
+      }
+    }
+  ],
+  "guardrails": [
+    {"id": "G-LEAK", "metric": "OOF/index/test leakage findings", "direction": "=", "threshold": "0 blocking findings", "monitored_during": "all Task40 stages", "kill_action": "LEAKAGE_BLOCKED and invalidate dependent runs", "claim_impact": "No C2/C3 evidence"},
+    {"id": "G-FAIR", "metric": "Budget/input/candidate-pool parity", "direction": "=", "threshold": "exact registered parity", "monitored_during": "router comparisons", "kill_action": "comparison ineligible", "claim_impact": "No superiority wording"},
+    {"id": "G-TEST", "metric": "Task40 formal-test access events", "direction": "=", "threshold": "0", "monitored_during": "Task40", "kill_action": "stop and audit", "claim_impact": "formal evidence invalid until independent review"}
+  ],
+  "stopping": {
+    "rule": "Stage-gated fixed-data development; no optional stopping on favorable metrics",
+    "limit": "Maximum 12 trials per trainable family; five frozen algorithm seeds; 200 thinning replicates per item/k",
+    "action_on_exhaustion": "Report failure or inconclusive; do not expand model or inspect formal test"
+  },
+  "amendment_policy": {
+    "post_data_changes": "EXPLORATORY_ONLY",
+    "authorization_required": true,
+    "deviation_log": "WORK_LOG.md and versioned preregistration amendment"
+  },
+  "authorization": {
+    "actor": "00-T-AFFC-total-control-03",
+    "authorization_id": "SC-20260805-02",
+    "authorized_at": "2026-08-05T00:00:00+08:00",
+    "plan_sha256": "BOUND_BY_GIT_COMMIT_AND_PLAN_PACKAGE_MANIFEST"
+  }
+}

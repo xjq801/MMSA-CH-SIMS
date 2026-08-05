@@ -1,0 +1,28 @@
+{
+  "schema": "light.research_plan_package.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM",
+  "plan_state": "FROZEN_TASK40_DEVELOPMENT_NO_FORMAL_TEST",
+  "artifacts": {
+    "research_plan": "TASK00_CARM_UNIFIED_ROUTE_RESEARCH_PLAN_20260805.md",
+    "preregistration": "TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md",
+    "experiment_matrix": "experiments/CARM_UNIFIED_ROUTE_EXPERIMENT_MATRIX_20260805.md",
+    "target_chain_report": ".light/carm-v123-target-chain.json",
+    "failure_tree_report": ".light/carm-v123-failure-tree.json",
+    "data_identity_fitness": ".light/carm-v123-data-identity-fitness.json",
+    "response_support_audit": "TASK10_CARM_RESPONSE_SUPPORT_DATA_FITNESS_ADDENDUM_20260805.md",
+    "closest_prior_search": "TASK00_CARM_ROUTE_CLOSEST_PRIOR_SEARCH_20260805.md"
+  },
+  "frozen_seeds": [1364847620, 426925854, 1839464886, 1138176833, 484191872],
+  "formal_test": "NOT_MATERIALIZED_TASK40_PROHIBITED",
+  "handoff": {
+    "next_stage": "Task40 development task creation after exact 00 authorization",
+    "user_authorized_route_and_prerequisites": true,
+    "authorized_at": "2026-08-05T00:00:00+08:00",
+    "claim_scope": "C1-C3 remain TO_VERIFY; development-only; no formal result or world-first claim"
+  },
+  "warning_decisions": [
+    {"source": "Video2Reaction intake", "decision": "Keep conditional external track; no download or formal admission", "claim_impact": "No third HUMAN_GOLD or native comparator claim", "authorized_by": "00 under user request"},
+    {"source": "LAI-GAI canonical", "decision": "Marginal dimension thinning only", "claim_impact": "No joint respondent-level 12D posterior claim", "authorized_by": "00 under user request"},
+    {"source": "Task30 negative result", "decision": "Keep closed; do not restore teacher/KD", "claim_impact": "Active method begins with Task40 no-teacher route", "authorized_by": "user and 00"}
+  ]
+}

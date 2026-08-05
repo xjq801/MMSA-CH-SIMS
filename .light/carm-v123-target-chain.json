@@ -1,0 +1,74 @@
+{
+  "schema": "light.research_target_chain.v1",
+  "plan_state": "FROZEN_DEVELOPMENT_NO_FORMAL_TEST",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM",
+  "nodes": [
+    {
+      "id": "Q1",
+      "type": "QUESTION",
+      "text": "At strict T0, can train-only historical reactions be used only when their credible net benefit over content-only prediction is positive?"
+    },
+    {
+      "id": "E1",
+      "type": "ESTIMAND",
+      "population": "Frozen CSMV content units under the registered split and evidence boundary",
+      "treatment_or_exposure": "Credible posterior OOF net-benefit routing versus the strongest eligible point/generic router",
+      "outcome": "Per-video Jensen-Shannon divergence at matched 90% answer coverage",
+      "summary_measure": "Mean paired per-video JSD difference",
+      "statistical_unit": "video",
+      "randomization_unit": "training run seed for algorithmic variation only",
+      "analysis_unit": "video",
+      "unit_mismatch_rationale_if_units_differ": "Seeds and folds are not inferential sample units"
+    },
+    {
+      "id": "P1",
+      "type": "PRIMARY_ENDPOINT",
+      "measurement_instrument": "Frozen Task20 JSD evaluator plus matched-coverage action ledger",
+      "operational_definition": "JSD(CNBR,y)-JSD(best_control,y) at 90% answered coverage",
+      "unit": "per-video paired difference",
+      "minimally_meaningful_effect": "Any reproducible reduction whose paired-bootstrap 95% CI upper bound is below zero; no restored 3/5/8 percent gate",
+      "missingness_policy": "Invalid or unavailable history falls back to content-only and is counted; no silent row deletion"
+    },
+    {
+      "id": "R1",
+      "type": "RELIABILITY_ENDPOINT",
+      "text": "Credible negative-transfer-rate difference, tested only after P1 passes"
+    },
+    {
+      "id": "A1",
+      "type": "ANALYSIS_FAMILY",
+      "method": "Video-level paired bootstrap confidence intervals with fixed-sequence claim gating; Holm for the three source-specific ablations",
+      "assumptions": "Registered content-unit pairing, no target-response leakage, eligible exchangeability claims limited to the empirical distribution protocol",
+      "multiplicity": "Fixed sequence H2a Oracle -> H2b JSD -> H2b negative transfer -> H2c; Holm alpha 0.05 within three-source ablations",
+      "independence_assumption": "Inference is over native content units; comments, folds, thinning replicates and seeds are not independent n"
+    },
+    {
+      "id": "F1",
+      "type": "FALSIFIER",
+      "text": "No Oracle headroom, no advantage over point/generic routing, no natural-OOD harm reduction, source non-identifiability, or any OOF/index/test leakage"
+    }
+  ],
+  "edges": [
+    {"from": "Q1", "to": "E1", "relation": "operationalized_by"},
+    {"from": "E1", "to": "P1", "relation": "measured_by"},
+    {"from": "P1", "to": "R1", "relation": "fixed_sequence_precedes"},
+    {"from": "P1", "to": "A1", "relation": "analyzed_by"},
+    {"from": "F1", "to": "Q1", "relation": "can_refute"}
+  ],
+  "comparative_study": true,
+  "baseline_fairness": {
+    "data": "Same CSMV revision, split, T0 input and train-only candidate pool",
+    "compute": "Same maximum trials, seeds, early stopping and backbone predictions",
+    "tuning": "DEV_SELECT only; calibration and coverage thresholds on disjoint DEV_CALIBRATE",
+    "evaluation_protocol": "Same evaluator, matched 90% coverage, video-level paired analysis"
+  },
+  "amendments": [],
+  "risk_register": ["R-NOVELTY-001", "R-MEASUREMENT-001", "R-MEASUREMENT-002", "R-ROUTE-001"],
+  "authorization": {
+    "actor": "00-T-AFFC-total-control-03",
+    "authorization_id": "SC-20260805-02",
+    "scope": "Task40 development preregistration only; no formal test",
+    "authorized_at": "2026-08-05T00:00:00+08:00",
+    "plan_sha256": "BOUND_BY_GIT_COMMIT_AND_PLAN_PACKAGE_MANIFEST"
+  }
+}

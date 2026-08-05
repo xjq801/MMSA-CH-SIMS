@@ -12218,3 +12218,50 @@ S38及本条追加在记录时未暂存、未提交、未推送；基线`main/or
 ### Git状态
 
 记录时主工作区相对`origin/main@51686ee5fe1f46b13745820840666ac3ccb3d853`为本批控制文件dirty、尚未提交推送；三个用户目录仍未跟踪且未暂存。
+
+## WR-20260805-009 — Task40与总控04最终锚点发送回执
+- 时间：2026-08-05 19:17:23 +08:00
+- 类型：GIT | DELIVERY | TASK_COORDINATION | FINAL_CONTROL_CLOSURE
+- 任务/门：00总控 / Task40创建与总控04迁移最终交付
+- 状态：迁移内容已推送、两个FINAL_ANCHOR已发送；本条为总控03唯一最终行政closure
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+为WR-20260805-008记录的创建/迁移动作补齐真实commit、push与Codex消息回执。本条只记录已经发生的交付事实，不修改科学合同、任务权限或总控决策；提交推送并发送closure anchor后，总控03停止后续SSOT写入。
+
+### 实际变更
+
+- 迁移内容commit=`89572f33bd8899cb424785c5fcf5db1af69e3c83`，消息`docs: create Task40 and migrate total control 04`；10个受控文件、194 insertions、16 deletions。
+- `git push origin main`成功，远端回显`51686ee..89572f3 main -> main`；随后HEAD与origin/main均为上述40位commit。
+- 向Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`成功发送`TASK40_CREATION_FINAL_ANCHOR`，要求fetch、复核创建记录/S41/9个hash后只从P0泄漏门开始。
+- 向总控04 `019fd19d-b8ef-71f2-82b3-433168211358`成功发送`TOTAL_CONTROL_04_FINAL_ANCHOR`，要求按S41只读接管并独立监督Task40；两次消息工具均返回目标threadId。
+
+### 验证与证据
+
+- 提交前：授权绑定hash=`BOUND_HASHES_PASS 9`；passport=`PASSPORT_PASS 40 18 created_readonly_pending_final_anchor`；S41=`handoff contract PASS`；WORK_LOG=268条0错误；`git diff --check` exit 0。
+- `scripts/run_preparation_checks.py`耗时26.8秒、exit 0、`blocking_checks=[]`；继续保留`formal_model_work_ready=false`、`faiss_available=false`、`g2_asset_ready=false`。
+- commit/push均exit 0；推送后主工作区只剩用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`。
+- 本条追加后将重跑WORK_LOG validator、综合准备门与diff；通过后形成唯一行政closure commit并推送，再把最终main更新发给总控04与Task40。
+
+### 影响与边界
+
+- Task40只读等待已经解除，但仅解除“等待迁移提交”的阻断；P0—P5、formal-test禁令、资源/数据/claim边界完全不变。
+- 总控04已经取得总控责任；本条closure之外，总控03不再更新SSOT或发出新实验授权。
+- C1—C3仍`TO_VERIFY`；G1—G3、Task20、Task30、I3D和受限存储截止不变。
+
+### 风险、问题与阻塞
+
+- 新任务必须fetch到至少`89572f3`再继续；若本条closure产生更新commit，应读取更新后的WORK_LOG但不改变其科学起点。
+- Task40环境、P0泄漏门和Oracle尚无结果，不能因任务创建或准备门通过声称模型工作已完成。
+- 用户未跟踪目录继续未读取、未修改、未暂存、未删除。
+
+### 下一步
+
+1. 验证本条WORK_LOG、综合准备门和diff。
+2. 提交并推送只含本条的行政closure commit。
+3. 发送最终main更新后由总控04接管；总控03停止写入。
+
+### Git状态
+
+本条写入前`HEAD=origin/main=89572f33bd8899cb424785c5fcf5db1af69e3c83`且仅用户目录未跟踪；写入后只允许`WORK_LOG.md`为受控dirty文件。

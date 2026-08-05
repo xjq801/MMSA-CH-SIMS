@@ -1409,7 +1409,7 @@ task_timepoint：T0 或独立的 T+Δ
 4. 任务10已通过G1与`G2_PROTOCOL_DATA`；任务20正式核心已获G3=`PASS_WITH_LIMITATIONS`，其VC-CSA运行永久为`NON_T0/INELIGIBLE`探索，不能支持后续论文主张。
 5. 任务20正式核心和既有探索已由00接受收尾，状态为`CLOSED_ACTIVE_TIME_BOUND_RETENTION`；唯一后续是2026-08-31 23:59:59 +08:00前后的受限存储可见层删除验收，当前不得写成已删除。
 6. 任务30已由00以`CLOSED_NOT_PASSED`关闭：H1开发机制跨种子不稳定，formal test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`，不授权修复。
-7. `SC-20260805-01/02`已批准v1.23无teacher可信净收益路线并闭合文档门；`AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`已授权创建Task40。当前精确状态为`AUTHORIZED_TO_CREATE_TASK40_DEVELOPMENT_ONLY_TASK_NOT_YET_CREATED`，须由用户新建Task40任务；Oracle是创建后首个开发止损门，formal test仍未materialize，Task50未创建。
+7. `SC-20260805-01/02`已批准v1.23无teacher可信净收益路线并闭合文档门；Task40已按`AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`创建为独立任务`019fd19c-abf3-7bf0-8530-759e38c3a6ab`，当前状态为`CREATED_DEVELOPMENT_ONLY_READONLY_PENDING_FINAL_ANCHOR`。Oracle是其收到最终锚点后的首个模型开发止损门；formal test仍未materialize，Task50未创建。总控04 `019fd19d-b8ef-71f2-82b3-433168211358`接替总控03负责独立监督，不代跑Task40。
 
 ### 11. 每个任务的完成定义
 

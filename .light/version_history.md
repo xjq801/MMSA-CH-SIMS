@@ -19,3 +19,4 @@
 - [2026-08-04] Task30 H1最终独立审核 v1.0 / Task Registry v1.12 — 00只导入冻结ref `9086bd537b36cad5635eaa9db81aaeb6756b4088`，接受可审计开发负结果并以`CLOSED_NOT_PASSED`关闭Task30；H1机制稳定性门未通过，正式H1未裁定，不授权修复且Task40保持未创建
 - [2026-08-05] 总纲 v1.22 / 第17节规格 v1.6 / 统一路线方案与实验矩阵 v1.0 — 移除评论特权teacher作为活动路线，以训练折内OOF历史净收益、三动作可靠性路由和aleatoric/epistemic/transfer-retrieval三源不确定性统一三个idea；加入数据角色、Oracle headroom、强通用门、coverage匹配、分布预测区域与停止规则；只冻结方案，不自动创建Task40或运行实验，不改变G1—G3及既有风险
 - [2026-08-05] 总纲 v1.23 / 第17节规格 v1.7 / 论文SSOT v0.1.3 / claim矩阵 v1.4 — 闭合CSMV/LAI-GAI有限反应适配、Video2Reaction条件准入、closest-prior查新、target chain、failure tree与Task40开发预注册；冻结Dirichlet后验净收益、response thinning、五种子、90% coverage主终点、Holm与test禁令；核心开发不需要新数据，Oracle改为Task40创建后首个止损门
+- [2026-08-05] Task40创建记录 v1.0 / 总控交接S41 / Task Registry v1.15 — 创建Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`与总控04 `019fd19d-b8ef-71f2-82b3-433168211358`；两任务在FINAL_ANCHOR前只读，科学合同、G门、formal-test禁令和Task30负边界不变

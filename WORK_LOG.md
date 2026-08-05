@@ -12169,3 +12169,52 @@ S38及本条追加在记录时未暂存、未提交、未推送；基线`main/or
 
 - `scripts/validate_work_log.py`返回267条、0错误、latest=`WR-20260805-007`、exit 0；`git diff --check` exit 0。
 - `scripts/run_preparation_checks.py`耗时27.0秒、exit 0、`blocking_checks=[]`；继续保留`formal_model_work_ready=false`、`faiss_available=false`和`g2_asset_ready=false`。
+
+## WR-20260805-008 — Task40创建、总控04创建与S41迁移
+- 时间：2026-08-05 19:11:03 +08:00
+- 类型：TASK_CREATION | CONTROL_MIGRATION | HANDOFF | SSOT
+- 任务/门：00总控 / Task40 development启动 / 总控03→总控04
+- 状态：两个任务已创建；只读等待最终锚点；迁移记录待提交推送
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+用户明确要求“现在创建任务40，并且创建总控04，任务交接”。本批从`HEAD=origin/main=51686ee5fe1f46b13745820840666ac3ccb3d853`开始，按`AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`创建独立Task40，并创建总控04接替总控03；在控制台账提交前，两任务均被明确限制为只读。
+
+### 实际变更
+
+- 使用Codex任务创建工具在Git项目的独立worktree创建Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`，标题为“40-CARM可信净收益路由开发”。其提示词绑定9个授权hash、P0—P5串行门、五种子、thinning、统计终点、formal-test禁令和必须回交项。
+- 创建总控04 `019fd19d-b8ef-71f2-82b3-433168211358`，标题为“00-T-AFFC总控04”，明确其不是Task40执行代理，须等`TOTAL_CONTROL_04_FINAL_ANCHOR`后只读接管并独立监督。
+- 新增`TASK00_TASK40_CREATION_AND_CONTROL04_MIGRATION_20260805.md`和`.light/handoff/S41-total-control-04-migration.md`；更新总纲当前状态、Task Registry v1.15、passport state revision 18、project card、两份决策日志与版本史。
+- S41 SHA-256=`6435b5c9f489d71a8df3eca24b2ab5d5e31e1f1a3cda52880fc2463ee2586703`；创建迁移记录SHA-256=`a6302fd1aba53a099f40ba439f44be8898b67b95034fffe88dbcc3559995fbe9`。
+
+### 验证与证据
+
+- `codex_app__wait_threads(timeoutMs=0)`现场确认两个新任务均为active：Task40报告HEAD/origin/main=`51686ee5...`、worktree clean、只读核验中；总控04明确仍等待总控03 final且未写入。
+- S41直接合同首次exit 1，原因是第三项下一步“检查”不匹配动作词正则；改为“验证”后再次运行返回`handoff contract PASS`、exit 0。失败未删除。
+- Python YAML解析passport返回stage=40、state revision=18、status=`created_readonly_pending_final_anchor`；`git diff --check` exit 0。
+- Task40创建前已逐项核对授权绑定的9个SHA-256全部一致；本批未修改这9个绑定文件。
+- 最终WORK_LOG validator、综合准备门、暂存范围、commit/push与FINAL_ANCHOR发送结果将在本批后续忠实追加，未完成前不写成已交接完成。
+
+### 影响与边界
+
+- Task40从“已授权未创建”转为“已创建、只读等待最终锚点”；其科学/统计权限没有扩大，仍只允许development-only。
+- 总控04从创建后开始继承总控职责，但在最终锚点前不写SSOT；最终锚点发送后，总控03停止后续SSOT写入。
+- 创建任务不升级C1—C3，不改变G1—G3、Task20、Task30、I3D风险、formal test或Task50状态。
+
+### 风险、问题与阻塞
+
+- 两个新worktree起点为创建时main；必须在迁移提交推送后fetch并核对新commit/S41，不能继续依赖`51686ee5...`。
+- Task40当前正式模型环境准备度仍须在自身worktree诚实核查；主仓综合门中的`formal_model_work_ready=false`不得被迁移掩盖。
+- Task40与总控04必须严格分工，避免在同一分支并发修改实验核心或SSOT；Task40不得直接合入main。
+- 用户未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`继续排除。
+
+### 下一步
+
+1. 验证WORK_LOG、S41、passport、准备门与Git差异。
+2. 只暂存本批控制/迁移文件，提交并推送main。
+3. 向Task40和总控04发送包含最终40位main commit的对应FINAL_ANCHOR，然后停止总控03后续写入。
+
+### Git状态
+
+记录时主工作区相对`origin/main@51686ee5fe1f46b13745820840666ac3ccb3d853`为本批控制文件dirty、尚未提交推送；三个用户目录仍未跟踪且未暂存。

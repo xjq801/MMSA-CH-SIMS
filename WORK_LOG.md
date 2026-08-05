@@ -12265,3 +12265,66 @@ S38及本条追加在记录时未暂存、未提交、未推送；基线`main/or
 ### Git状态
 
 本条写入前`HEAD=origin/main=89572f33bd8899cb424785c5fcf5db1af69e3c83`且仅用户目录未跟踪；写入后只允许`WORK_LOG.md`为受控dirty文件。
+
+## WR-20260805-010 — 总控04独立审核并关闭Task40主JSD开发门
+- 时间：2026-08-05 21:16:21 +08:00
+- 类型：INDEPENDENT_REVIEW | GATE_DECISION | CLAIM_BOUNDARY | SSOT | HANDOFF
+- 任务/门：00总控04 / Task40 P0—P5串行开发门
+- 状态：`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`；Task50未创建
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+Task40请求总控04从annotated tag独立复核最终交付，并裁定是否按P3/P4主JSD门关闭。审核严格只读Task40分支：不代跑新增实验、不materialize formal test、不创建Task50、不向Task40改变合同。总控04工作区从`origin/main@6b4015e16aca6b6cd5a41540255e0f977413632e`开始。
+
+### 实际变更
+
+- 从`refs/tags/task40-carm-cnbr-development-20260805`解引用到`c0fe21dc472b508e52ff6c29b8ea54afd7322e0e`，复核clean状态、相对upstream ahead 15、annotated tag对象、40个变更路径与失败运行祖先链。
+- 重新计算`HANDOFF_40.md`、P3/P4 machine、两份paired JSONL、人读报告和P5未执行报告的六项交付SHA-256，均与Task40回交值一致。
+- 逐seed重算两份paired evidence的444视频、400回答、选择memory次数与JSD差；主credible-minus-strongest-control五个差值全部为正，五个CI均跨0，0/5满足CI上界小于0。
+- 确认机读对象内重复`seed=1364847620`是冻结bootstrap重采样seed，不是模型seed被覆盖。
+- 独立运行Task40 25项测试、P0/P1/P2/P3-P4四个validator、Task40 WORK_LOG validator与diff检查；通用准备门如实复现data-free相对`HUMAN_GOLD`缺失失败。
+- 新增`TASK00_TASK40_FINAL_INDEPENDENT_REVIEW_20260805.md`；更新总纲v1.23当前态、Task Registry v1.16、Claim矩阵v1.5、决策日志、风险登记、项目卡与版本史；裁定commit=`ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`。
+- 新增`.light/handoff/S42-task40-closed-not-passed.md`，SHA-256=`d0ca363b31267c5985563d69787c4139f6ad023131c5d0aa49cb313aecfa42c4`；passport升至revision 19并将stage 40标为`gate_failed`/`FAILED`。
+
+### 验证与证据
+
+- `git status --short --branch`：Task40分支clean、`codex/task40-carm-cnbr...origin/main [ahead 15]`；HEAD/tag dereference均为`c0fe21d...`。
+- 交付hash：HANDOFF=`6e427c34...`、machine=`8b8ca7b...`、主paired=`07fb1117...`、direct paired=`e24befd4...`、人读报告=`3f1d4055...`、P5未执行=`c747f7ae...`，与回交精确一致。
+- 25/25 Task40 unittest通过；P0、P1、P2与P3-P4 validator均exit 0/PASS。P3-P4 validator重算`main_gate.pass=false`、`passing_seeds=0/5`、负迁移固定顺序未检验、formal-test事件0。
+- Task40 `validate_work_log.py`返回285条、0错误、latest=`WR-20260805-025`；`git diff --check 6b4015e...tag` exit 0。
+- Task40 `run_preparation_checks.py` exit 1，唯一现场trace为独立worktree缺`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`的`FileNotFoundError`；未绕过且不改变四个专项validator结果。
+- `rg.exe`首次检索因本机执行权限拒绝而失败，随后使用PowerShell `Select-String`完成同一只读检索；失败未隐匿。
+- 本批最终总控WORK_LOG、handoff、passport、准备门、commit/push结果将在提交前后继续忠实补齐。
+
+### 影响与边界
+
+- 接受P0泄漏门、P1受控错位和P2 Oracle headroom开发证据，但它们不能覆盖P3/P4失败。
+- Task40以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭；可信负迁移未检验，P5未执行，Task50不创建，不授权修复/追分/替代实验。
+- C2不升级且活动credible router候选关闭；C3只能写固定顺序未检验，不得写成三源无效或区域未校准；C1不由本批升级。论文继续`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`。
+- G1—G3、Task20永久NON_T0/INELIGIBLE和2026-08-31受限存储截止、Task30关闭、I3D UNKNOWN/禁止再分发均不变。
+
+### 风险、问题与阻塞
+
+- 原C2可信历史路由方法链未建立，当前CARM完整方法论文缺少活动正式实验路径；在任何新授权前只能做可发表性/降级选项审计。
+- P5因固定顺序未执行，三源不可辨识与预测区域coverage风险没有被实验解决；不得把缺失结果包装成阴性证据。
+- Task40通用准备门在其data-free worktree失败；专项证据可复核，但不能把该通用门写成PASS。
+- Task20受限存储定时风险和I3D权利方证据UNKNOWN仍是最高外部风险。
+
+### 下一步
+
+1. 验证S42、passport、总控WORK_LOG、SSOT一致性与Git差异。
+2. 提交并推送handoff/passport/日志closure，使origin/main包含Task40关闭裁定。
+3. 不授权实验；下一会话只做论文路线可发表性/降级审计和既有风险监督。
+
+### Git状态
+
+SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，尚未推送；S42、passport与本条WORK_LOG为待验证closure文件。Task40分支保持未push、未merge。
+
+### 最终门结果
+
+- 总控`validate_work_log.py`返回270条、0错误、latest=`WR-20260805-010`、exit 0。
+- passport YAML独立解析返回`PASSPORT_PASS 40 19 gate_failed TASK40_CLOSED_NOT_PASSED_NO_TASK50`；S42六个必需章节与SHA-256直接合同返回`S42_PASS d0ca363b...`。
+- `git diff --check` exit 0。
+- `validate_manuscript_ssot.py` exit 1，报告两个既有稿件骨架缺口：blueprint citation registry缺`FINITE_RESPONSE_DISTRIBUTION_UNCERTAINTY`，main result shell未保留`C4=TO_VERIFY`。本批未修改论文SSOT/blueprint，也不把该门写成PASS；缺口留给后续路线可发表性审计。
+- `run_preparation_checks.py` exit 1，与Task40工作树相同，在`m2_data_engineering`读取本独立worktree相对`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`时触发`FileNotFoundError`；未绕过、未重试包装器、未把失败写成通过。

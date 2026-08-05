@@ -2,13 +2,13 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-05T19:11:03+08:00"
+updated: "2026-08-05T21:16:21+08:00"
 current_stage: 40
-state_revision: 18
-state_hash: "sha256:6435b5c9f489d71a8df3eca24b2ab5d5e31e1f1a3cda52880fc2463ee2586703"
-evidence_state: PLANNED
-next_action: total control 03 must push S41 and send FINAL_ANCHOR to Task40 019fd19c-abf3-7bf0-8530-759e38c3a6ab and total control 04 019fd19d-b8ef-71f2-82b3-433168211358; Task40 then starts hash and leakage audit while control 04 independently supervises
-delivery_status: TASK40_AND_TOTAL_CONTROL_04_CREATED_READONLY_PENDING_FINAL_ANCHORS
+state_revision: 19
+state_hash: "sha256:d0ca363b31267c5985563d69787c4139f6ad023131c5d0aa49cb313aecfa42c4"
+evidence_state: FAILED
+next_action: total control 04 must preserve the Task40 closed boundary, create no Task50 or new experiment, audit publication/downgrade options, and continue Task20 supplement and restricted-storage deadline supervision
+delivery_status: TASK40_CLOSED_NOT_PASSED_NO_TASK50
 delivery_authorization_id: AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805
 stages:
   - stage: 10
@@ -43,12 +43,12 @@ stages:
     gaps: [formal H1 was not adjudicated on formal test; privileged supervision was positive versus soft distribution for 3 of 3 seeds but only 2 of 3 versus ordinary KD and mismatch teacher; LAI-GAI lacks native comment-teacher fields; Video2Reaction native H1 is NOT_APPLICABLE_DATA_NOT_RELEASED; I3D external license revision and rightsholder fixity remain UNKNOWN; master plan v1.23 keeps Task30 retired from the active claim set]
   - stage: 40
     depends_on: [30]
-    status: created_readonly_pending_final_anchor
+    status: gate_failed
     node_kind: pipeline
-    evidence_state: PLANNED
+    evidence_state: FAILED
     skill: light-experiment-coding
     input: "v1.23 preregistration package, frozen Task20 content-only/evaluator interface, Task30 archived negative boundary"
-    output: "development-only credible net-benefit memory package; no formal test"
-    artifacts: [TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md, TASK00_TASK40_CREATION_AND_CONTROL04_MIGRATION_20260805.md, TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md, TASK10_CARM_RESPONSE_SUPPORT_DATA_FITNESS_ADDENDUM_20260805.md, TASK00_CARM_ROUTE_CLOSEST_PRIOR_SEARCH_20260805.md, experiments/CARM_UNIFIED_ROUTE_EXPERIMENT_MATRIX_20260805.md, .light/carm-v123-target-chain.json, .light/carm-v123-failure-tree.json, .light/carm-v123-data-identity-fitness.json, .light/handoff/S41-total-control-04-migration.md]
-    gate: {type: confirm, result: PENDING, evidence: "sha256:a6302fd1aba53a099f40ba439f44be8898b67b95034fffe88dbcc3559995fbe9", timestamp: "2026-08-05T19:11:03+08:00", notes: Task40 019fd19c-abf3-7bf0-8530-759e38c3a6ab and total control 04 019fd19d-b8ef-71f2-82b3-433168211358 are created in independent worktrees and remain read-only until their FINAL_ANCHOR messages; after release the first Task40 gate is hash and leakage audit then mismatch and Oracle headroom, evidence_state: PLANNED, fresh: true}
-    gaps: [Task40 and total control 04 final anchors not yet sent; no Oracle result; no router result; formal test not materialized; Video2Reaction native track conditional; second comment-bearing HUMAN_GOLD video set absent but not required]
+    output: "auditable development package closed as CLOSED_NOT_PASSED_ROUTER_MAIN_JSD; P0/P1/P2 passed, P3/P4 main JSD 0/5, negative migration not tested, P5 not executed, no formal test"
+    artifacts: [TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md, TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md, HANDOFF_40.md, TASK40_P3_P4_POINT_CREDIBLE_FAIR_COMPARISON_REPORT_20260805.md, TASK40_P5_THINNING_THREE_SOURCE_REGIONS_NOT_EXECUTED_REPORT_20260805.md, TASK00_TASK40_FINAL_INDEPENDENT_REVIEW_20260805.md, .light/handoff/S42-task40-closed-not-passed.md]
+    gate: {type: confirm, result: FAIL, evidence: "sha256:ae1f890fbbeb1625fdbaf4e95b3998d46bc715e8d3416daa21b36f3f0d27f42e", timestamp: "2026-08-05T21:16:21+08:00", notes: total control 04 independently verified annotated tag c0fe21d, all fixity, 25 tests, four validators, paired differences, failed-run ancestry and zero formal-test events; Task40 closed at P3/P4 main JSD 0/5 and Task50 remains not created, evidence_state: FAILED, fresh: true}
+    gaps: [formal H2b was not adjudicated on formal test; C2 development candidate is closed and unsupported; negative migration was not tested; P5 thinning, three-source uncertainty and prediction regions were not executed; C3 is untested rather than refuted; Video2Reaction native track remains unauthorized and conditional]

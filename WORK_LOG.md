@@ -11750,3 +11750,175 @@ Task30冻结ref已通过合并commit `26df7c6fc305d5d57dbff3bfc107dadcc3f33185`�
 ### Git状态
 
 S36与本条在记录时尚未提交或推送；决策SSOT已在`main@60a56ba7fce36b6a97790cf4d5321fdafc9876b7`提交。
+
+## WR-20260804-004 — 侧对话观众反应研究构想交接总控03
+
+- 时间：2026-08-04 19:59:56 +08:00
+- 类型：DOC | HANDOFF | RESEARCH_REVIEW
+- 任务/门：00总控 / T-AFFC CARM候选方法查新与范围守卫
+- 状态：完成文档，待总控03只读吸收与独立裁定
+- 负责人：侧对话Codex（用户授权最小文档交付）
+
+### 背景与目标
+
+用户要求把侧对话中关于“视频内容预测群体观众反应”的八篇前作、两个原始创新点、可行性判断、审稿风险与新候选方案制成交接文档，并交给总控03阅读吸收。目标是保留可复核的研究推理，同时防止头脑风暴被误写为路线批准、实验结果或论文正式claim。
+
+### 实际变更
+
+- 新建`.light/handoff/S37-audience-reaction-idea-side-review.md`，父卡为S36；记录八篇前作的任务/方法/碰撞/审稿风险和公开地址。
+- 将用户的“历史经验适用性路由”重述为反应可迁移性问题，并形成out-of-fold transfer gain、Oracle router、routing regret、grouped OOD与kill criteria合同。
+- 将likes/replies创新限定为engagement-conditioned affect amplification measurement，明确缺少impression/ranking logs、回复内容与时间信息时不得声称曝光或因果社会极化贡献。
+- 登记优先候选“内容—反应错位的反例引导学习”、三个备选方向、统一假设、数据门、查新门与claim边界；未更新passport、project card、Registry、总纲、论文SSOT或实验矩阵。
+
+### 验证与证据
+
+- 造卡前`git status --short --branch`显示`main...origin/main`，仅有用户自有未跟踪`NEmoP/`、`__MACOSX/`、`tmp/`；`git rev-parse HEAD`与`git rev-parse origin/main`均为`e51621a18f87b2648d8b1a6f8770d5a41d98e74f`。
+- 定向在线核查定位八篇前作的arXiv、出版社DOI或会议官方页面；该核查用于准确交接链接，不构成穷尽式新颖性证明。
+- 独立`handoff_contract.py`首次运行exit 1并报告5项结构错误：两个选项缺少机器可识别的影响/权衡，三条已完成项缺验证证据；已补写`影响：`字段及`在线检索验证`/`人工核对`证据措辞，失败输出保留于本记录。
+- 第二次`handoff_contract.py`运行exit 1，仅剩1条已完成项缺机器可识别验证证据；已为S37产物补写人工逐节核对和敏感内容检查结果，该失败同样保留。
+- 第三次`handoff_contract.py`运行仍exit 1，原因是另一条候选定义项使用了校验器词表外的“人工一致性核对”措辞；已改为机器合同识别的“人工确认”，未改变科学内容。
+- 第四次`handoff_contract.py`运行仍exit 1，定位到S37产物项使用“人工逐节核对确认”而非校验器要求的连续词“人工确认”；已做纯合同措辞修正，失败如实保留。
+- 第五次`handoff_contract.py --card .light/handoff/S37-audience-reaction-idea-side-review.md --as-of 2026-08-04`返回`handoff contract PASS`、exit 0。
+- `scripts/validate_work_log.py`返回260条、0错误、latest=`WR-20260804-004`、exit 0；`git diff --check`返回exit 0。
+- `scripts/run_preparation_checks.py`首次最终运行耗时81.3秒、exit 0、`blocking_checks=[]`；同时诚实保留`formal_model_work_ready=false`、`faiss_available=false`、`g2_asset_ready=false`和I3D许可/revision待证明状态。
+- 本条追加后继续运行修正后的独立handoff合同、`scripts/validate_work_log.py`、`scripts/run_preparation_checks.py`与`git diff --check`；真实结果将在同一工作批次完成后交付，不删除任何失败输出。
+
+### 影响与边界
+
+- 新增的只是研究备忘和追加式工作记录，不改变G1—G3、Task30 `CLOSED_NOT_PASSED`、H1状态、Task40/50未创建状态、I3D UNKNOWN或Task20 NON_T0/INELIGIBLE边界。
+- 没有修改实验代码、数据、受限资产、模型、正式论文claim或任务执行授权；未触碰用户自有未跟踪目录。
+- S37明确要求总控03独立核查后再决定是否进入正式SSOT；侧对话定向检索不得被表述为“前人从未做过”的证明。
+
+### 风险、问题与阻塞
+
+- 普通gate、MoE、迁移性预测、点赞加权和时间建模均有相邻前作，单独包装为创新存在高拒稿风险。
+- 内容—反应hard pairs可能由标签噪声或movie/creator/time混杂造成；未完成人工审计和自然grouped OOD前不能作为既成现象。
+- likes/replies不等于曝光，reply count不等于极化；数据不足时只能保留描述性代理结论。
+- 本文档尚未提交或推送，需总控03先只读吸收并决定是否纳入正式控制面。
+
+### 下一步
+
+1. 运行S37独立handoff合同、WORK_LOG validator、准备门和diff检查，保留真实结果。
+2. 计算S37 SHA-256并把精确路径、hash、Git锚点和边界直接发送到“总控03”线程。
+3. 等待总控03回传接受、拒绝和待核查清单；未经用户路线选择不更新SSOT或授权实验。
+
+### Git状态
+
+本记录与S37在写入时未暂存、未提交、未推送；基线`main/origin/main@e51621a18f87b2648d8b1a6f8770d5a41d98e74f`。用户自有未跟踪目录保持不变。
+
+## WR-20260805-001 — 三idea统一路线只读查新、数据门与一般实验初审
+
+- 时间：2026-08-05 12:52:40 +08:00
+- 类型：RESEARCH_REVIEW | DATA | DECISION | HANDOFF
+- 任务/门：00总控 / CARM候选重路由查新与数据可行性前置门
+- 状态：完成只读初审；候选`PROMISING_CONDITIONAL_NOT_GO`
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+用户要求把T0目标评论不可用、历史经验适用性判断、可预测性与三源不确定性/预测区域统一起来，判断前作覆盖、数据获取难度、实验可行性、T-AFFC创新强度并形成一般实验方案。该请求不构成实验授权或正式路线变更。
+
+### 实际变更
+
+- 新建`.light/handoff/S38-three-idea-feasibility-review.md`，记录前作碰撞、数据角色、统一问题、分阶段实验与kill criteria。
+- 未修改master plan、passport、project card、Registry、论文SSOT、实验代码、数据、模型或正式claim；未重开Task30或创建Task40/50。
+- 保留S37与本条开始前已有的用户/侧对话未提交变更，不覆盖、不暂存用户自有未跟踪目录。
+
+### 验证与证据
+
+- 开工`git fetch origin`成功；`git status --short --branch`显示`main...origin/main`及既有`WORK_LOG.md`修改、S37和用户未跟踪目录；`HEAD`与`origin/main`均为`e51621a18f87b2648d8b1a6f8770d5a41d98e74f`。
+- 读取总纲v1.21第2—7、10、11、17节、S37、DATA_CARD、DATA_SOURCE_LEDGER和论文SSOT；定向核查Video2Reaction、T-BPPM、AAAI synthetic live-comment features、SCRAG、RAMER/RAER、LEEP/LogME、uncertainty routing、conformal affect recognition与有限标注不确定性前作。
+- PowerShell只读核算CSMV `video_labels.v1.jsonl`：8210项、评论数2—20、中位数14、1959项少于10条；LAI-GAI `canonical.jsonl`：847项、响应数58—96、中位数75。
+- `rg`读取memory registry时因本机`rg.exe` Access denied失败一次，随后使用`Select-String`完成搜索；失败未被改写为通过。
+- S38首次运行独立`handoff_contract.py`返回FAIL并报告缺少五个必需区段、完成项证据格式与下一步动作词等错误；已按错误逐项补齐并安排重跑，首次失败如实保留。
+- S38第二次独立handoff合同仍返回FAIL，唯一错误为“工作区状态”段落未采用校验器可识别的列表格式；已改为具体项目符号后重跑，科学内容未变。
+
+### 影响与边界
+
+- 初审把三个idea收敛为“历史净效用驱动的使用历史/纯内容回退/拒答”统一候选；训练评论首先只承担标签与计数角色，Task30失败的评论特权KD不被恢复。
+- 本轮检索是定向多源核查，不是穷尽式系统综述；只能说尚未定位完全同构组合，不能声称世界首创。
+- G1—G3、Task30关闭状态、H1失败门、I3D UNKNOWN、Task20 NON_T0/INELIGIBLE与删除截止均不变。
+
+### 风险、问题与阻塞
+
+- 普通T0、video-to-reaction distribution、retrieval、gate、uncertainty decomposition与conformal prediction均有直接或相邻前作；只有统一机制与判别实验可能形成创新。
+- CSMV缺time/topic/publisher且响应支持量偏小；Video2Reaction未冻结revision/hash且是银标；MVIndEmo所列仓库404。
+- Oracle headroom、内容—反应错位自然性和三源可识别性尚未实验验证，因此不能放行路线。
+
+### 下一步
+
+1. 向用户交付前作覆盖、数据难度、T-AFFC初判与一般实验方案。
+2. 等用户决定是否授权版本化系统查新与数据fitness门。
+3. 若获授权，先冻结question/estimand、OOF效用、primary endpoint、停止规则和formal-test禁止项，再决定是否创建新任务。
+
+### Git状态
+
+S38及本条追加在记录时未暂存、未提交、未推送；基线`main/origin/main@e51621a18f87b2648d8b1a6f8770d5a41d98e74f`。既有S37、WORK_LOG修改和用户未跟踪目录保持原状。
+
+### 补充验证失败证据
+
+- S38第三次独立`handoff_contract.py`仍返回FAIL；定位到工作区状态里的Git跟踪简写含三个连续句点，被校验器当作占位符。已改写为“本地main跟踪origin/main且两者一致”，事实未改变，失败记录保留。
+- S38第四次独立`handoff_contract.py`仍返回FAIL；工作区事实虽已写明，但缺少校验器要求的`dirty/commit/unpushed`机器词。已补入相同事实，未把脏工作树改写为clean。
+- S38第五次独立`handoff_contract.py --card .light/handoff/S38-three-idea-feasibility-review.md --as-of 2026-08-05`返回`handoff contract PASS`、exit 0。
+- 收尾验证：`scripts/validate_work_log.py`返回261条、0错误、latest=`WR-20260805-001`；`git diff --check` exit 0；`scripts/run_preparation_checks.py`耗时41.3秒、exit 0、`blocking_checks=[]`，同时诚实保留`formal_model_work_ready=false`、`faiss_available=false`与`g2_asset_ready=false`。
+
+## WR-20260805-002 — 三idea统一路线总纲v1.22、研究方案与实验矩阵冻结
+
+- 时间：2026-08-05 18:00:00 +08:00
+- 类型：DECISION | MASTER_PLAN | RESEARCH_PLAN | DATA | EXPERIMENT_MATRIX | SSOT
+- 任务/门：00总控 / CARM无teacher重路由方案冻结与Task40创建前置门
+- 状态：方案已冻结，执行未授权；Task40/50未创建
+- 负责人：00-T-AFFC总控03
+
+### 背景与目标
+
+用户在S38只读初审后明确要求给出三个idea的具体实验方案、步骤、数据集并合入唯一总纲。本批将“发布时无目标评论”“历史经验适用性判断”“可预测性与三源不确定性/分布预测区域”统一为可证伪路线，同时保持Task30负结果、formal-test禁令和既有G门/资产边界。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升为v1.22、第17节规格升为v1.6，新增`SC-20260805-01`、H2a—H2c、无teacher三动作路由、Oracle headroom、数据角色、停止规则、G4与Task40/50顺序；把第4月Task30改为已提前执行且`CLOSED_NOT_PASSED`的历史开发门。
+- 新建`TASK00_CARM_UNIFIED_ROUTE_RESEARCH_PLAN_20260805.md`，冻结question/estimand、`Delta_i`训练折内OOF定义、`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`动作、P0—P6步骤、数据准入、主要终点与Task40创建/止损门。
+- 新建`experiments/CARM_UNIFIED_ROUTE_EXPERIMENT_MATRIX_20260805.md`，列出EXP-00至EXP-03、ABL-01至ABL-04、CAL-01和GEN-01的假设、数据、baseline、指标、负对照、五种子占位与可量化完成判定；具体seed值留待预注册冻结，未虚构。
+- 更新`AGENTS.md`、`TASK_REGISTRY.md`、`.light/terminology.md`、`.light/project_card.md`、`.light/passport.yaml`、`.light/decision_log.md`、`DECISION_LOG.md`、`.light/version_history.md`和`RISK_REGISTER.md`，传播v1.22、Task40=`NOT_CREATED_PLAN_AUTHORIZED_AWAITING_PREREGISTRATION_GATES`、OOF泄漏、三源可识别性与预测区域边界。
+- 吸收并准备随本批透明提交S37/S38两张研究交接卡及其既有追加式日志；未读取、修改、暂存或删除用户自有未跟踪目录`NEmoP/`、`__MACOSX/`、`tmp/`。
+- 未修改`paper/TAFFC_CARM_MANUSCRIPT_SSOT.md`：其v0.1.2继续为`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`，待数据/预注册门通过后另行受控升版，不能把计划写成验证结果。
+
+### 数据与实验边界
+
+- CSMV是主机制/HUMAN_GOLD数据；LAI-GAI只承担图像域人工分布、有限样本、校准/OOD中可同构部分；Video2Reaction只在revision/fixity/许可/movie-disjoint准入后作SILVER外部表；MVIndEmo当前入口未闭合，不进入正式矩阵。
+- 评论只允许在训练期构造标签、计数和历史反应分布；T0查询不见目标评论。v1.22不恢复Task30评论teacher/KD，也不materialize其formal test。
+- Task40创建前必须闭合系统查新、数据identity/fitness、target chain、failure tree、Oracle headroom、OOF泄漏审计、强通用门、具体五种子和formal-test不可见合同，并另有精确创建授权。
+
+### 验证与证据
+
+- `plan_lint.py`首次因矩阵缺少校验器要求的“对应假设/数据集/baseline/指标/完成判定”统一表结构失败；改为机器可读矩阵后仍因`EXP-U#`不符合`^[A-Z]{2,4}-?\d+$`失败，再改为数字ID；随后因H2a/H2b/H2c不匹配`H\d+`失败，补写`H2（H2a/H2b/H2c）`。最终检查10个实验行，四要素齐全、严谨性计数评分100/100、exit 0。所有失败均保留在本记录。
+- `consistency_audit.py`的Markdown覆盖审计完成6份材料、9项发现：0项术语替换/近形冲突/指标数值冲突/claim强度漂移，1项`AUTHORITY_COVERAGE` WARN和8项一般覆盖INFO；生成标准`light.findings.v1`报告时因本机`_shared/findings_schema`不可导入而exit 1。未重复调用已知会失败的`pm.py`，未把部分覆盖写成全量PASS；临时debug JSON已删除。
+- 底层`passport.py validate --file .light/passport.yaml`为WARN，唯一告警仍是历史stage 10的PASS占位缺hash/timestamp；当前state hash闭合，Task30 evidence_state仍为FAILED。
+- `git diff --check`通过；最终WORK_LOG、handoff、准备门、Git提交与推送结果将在本工作批次的追加式收尾记录中如实登记。
+
+### 影响与边界
+
+- `SC-20260805-01`批准的是研究方案和预注册准备，不是实验执行授权、Task40创建授权或论文正式claim验收。
+- G1=`PASS`、G2=`PASS_WITH_ACCEPTED_ASSET_RISK`、G3=`PASS_WITH_LIMITATIONS`不变；I3D许可/revision/权利方身份/fixity继续UNKNOWN且禁止再分发。
+- Task30继续`CLOSED_NOT_PASSED`，H1开发门继续`NOT_PASSED_MECHANISM_NOT_STABLE`，formal H1仍未在test裁定；Task20永久NON_T0/INELIGIBLE且2026-08-31删除截止不延长。
+
+### 风险、问题与阻塞
+
+- 当前尚无Oracle headroom、自然内容—反应错位、学习路由或三源可识别性的实验结果；任一核心门失败必须降级，不能追加模块掩盖。
+- Video2Reaction尚未完成版本/fixity/许可与movie split准入；不能预算为完整原始模态或HUMAN_GOLD。
+- `.light/consistency`四份结构化事实源尚不存在，本次只能给出Markdown部分覆盖；论文SSOT尚未吸收v1.22，必须保持计划/证据分离。
+
+### 下一步
+
+1. 完成P0数据identity/fitness与冻结系统查新，特别是Video2Reaction准入。
+2. 冻结target chain、failure tree、具体五种子、主可靠性终点与formal-test materialization合同。
+3. 只在train/dev先验证内容强基线、EXP-00自然错位与EXP-01 Oracle headroom；全部创建门通过后再由00书面裁定是否创建Task40。
+
+### Git状态
+
+本记录落盘时`HEAD=origin/main=e51621a18f87b2648d8b1a6f8770d5a41d98e74f`，工作树为`dirty/unpushed`；本批控制文件、S37/S38和日志尚未提交推送，用户自有未跟踪目录保持不变。
+
+### 收尾门补充
+
+- `.\.venv\Scripts\python.exe scripts\validate_work_log.py`返回262条、0错误、latest=`WR-20260805-002`、exit 0。
+- `.\.venv\Scripts\python.exe scripts\run_preparation_checks.py`耗时81.7秒、exit 0、`blocking_checks=[]`；同时诚实保留`formal_model_work_ready=false`、`faiss_available=false`、`g2_asset_ready=false`，I3D状态仍为`QUARANTINE_ACQUIRED_LICENSE_REVISION_ATTESTATION_PENDING`，没有因方案文档升版而获得正式模型执行资格。

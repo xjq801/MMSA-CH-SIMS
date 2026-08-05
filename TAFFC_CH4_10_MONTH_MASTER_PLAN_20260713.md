@@ -1,7 +1,7 @@
 # IEEE T-AFFC 第四章研究十个月总纲（项目唯一主路线）
 
-> 版本：v1.21（基于v1.20加入Video2Reaction公开资产边界与双轨强基线执行合同；v1.17已撤回且不恢复）  
-> 冻结日期：2026-07-28  
+> 版本：v1.22（基于v1.21吸收三idea统一重路由：历史净效用、三源不确定性与经验分布预测区域；v1.17已撤回且不恢复）  
+> 冻结日期：2026-08-05  
 > 执行周期：2026-07-13—2027-05-12  
 > 首要目标：在2027-05-12前形成可直接提交 IEEE Transactions on Affective Computing（T-AFFC）的CARM群体情绪预测论文、代码、数据说明和完整证据链。  
 > 研究范围：只继承毕业论文第四章“基于多模态感知与检索的群体情绪预测”；第三章传播链、Temporal GNN 和传播拓扑不作为新论文的方法贡献。  
@@ -135,6 +135,19 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 
 `D:\桌面\谢剑秋工作报告\总纲\论文修改总纲要（合体版）.docx`是2026-07-16的v1.14双路线历史派生快照，包含已迁出的IJCV任务和过期G门，不是当前事实源。后续只能从已提交的本Markdown总纲单向生成带Git commit与SHA-256的新Word副本；不得在旧Word和仓库总纲之间双向合并。具体回填与逐节验收见`WORD_MASTER_BACKFILL_PLAN_20260724.md`。
 
+### 0.12 三idea统一重路由与Task30负结果后的主路线（v1.22，`SC-20260805-01`）
+
+用户于2026-08-05授权把三项想法统一并写入总纲：严格T0时目标评论不可见；模型先判断历史反应经验是否适用于当前内容；以群体分歧、有限反应抽样和模型/OOD三源不确定性控制使用历史、回退纯内容或拒答。完整研究与实验合同见`TASK00_CARM_UNIFIED_ROUTE_RESEARCH_PLAN_20260805.md`。
+
+- Task30继续为`CLOSED_NOT_PASSED`，H1开发门继续为`NOT_PASSED_MECHANISM_NOT_STABLE`，正式H1未在formal test裁定。v1.22不恢复评论文本teacher/KD，不materialize Task30 formal test，不把Task30开发数值升级为论文证据。
+- 主路线的评论角色收缩为训练样本的经验反应分布、响应支持量与历史记忆标签；部署模型和收益路由器始终不能读取目标评论。
+- 核心候选机制改为：用train内部cross-fitting产生逐样本历史净效用`Delta_i=JSD(y_i,f0)-JSD(y_i,fH)`，只凭T0查询与train-only邻居诊断预测历史是否有益，并在`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`间选择。
+- 三源不确定性必须分别验证：群体真实分歧对held-out/split-half反应，有限抽样对评论下采样稳定性，模型/OOD对自然group-held-out错误。不得用单一Dirichlet浓度同时解释三源。
+- 预测区域首先只对可观察的经验反应分布提供80%/90%/95%校准coverage；不得外推沉默观看者、潜在总体情绪或因果社会效应，也不得把conformal集合大小直接写成群体真实分歧。
+- 路线顺序固定为数据/查新门→内容—反应错位现象门→Oracle headroom门→OOF收益路由→三源不确定性/预测区域→外部验证→Task50正式统计。前两项核心门失败时停止router，不得增加模块追分。
+- CSMV承担唯一核心机制验证；LAI-GAI只承担HUMAN_GOLD分布/抽样/校准边界；Video2Reaction在完成独立intake后承担双轨直接前作与银标外验；MVIndEmo当前入口未闭合，不进入必需路线。
+- 本次授权批准路线与总纲升版，但不自动创建Task40或Task50。Task40须先通过版本化系统查新、数据identity/fitness、目标链、失败树、公平基线和formal-test禁令的00独立审核，并另有精确创建授权。
+
 这条路线与第四章的对应关系是：
 
 | 第四章原设计 | 新论文升级 |
@@ -211,15 +224,17 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 
 注意：公众诱发情绪和分布预测已有直接前作，Video2Reaction还已直接从视频内容预测受众反应分布；不能声称“首次提出任务”“首次video-to-reaction-distribution”或以严格划分替代方法创新。C1只能作为协议与系统证据贡献。
 
-### C2：评论特权教师 + 可拒绝的受众反应记忆
+### C2：收益感知的train-only受众反应记忆与三源可靠性
 
-- 教师模型在训练期读取评论和内容，学习个体反应与视频级经验分布；
-- 内容学生在训练和推理时只依赖允许的内容模态；
+- 主路线不依赖Task30评论文本teacher；评论只构造训练样本的经验反应分布、响应支持量和历史记忆标签；
+- 内容专家在训练和推理时只依赖允许的T0内容模态；
 - 记忆库只存训练视频的内容表示、经验反应分布和置信信息；
-- 检索器找“内容相似且受众反应有预测价值”的历史案例；
-- 可靠性路由器根据相似度、邻居分歧、域距离、时间距离和模态缺失决定融合、降权或拒绝检索，避免负迁移。
+- train内部cross-fitting生成历史专家相对content-only的逐样本净效用，不允许in-sample效用标签；
+- 路由器只凭T0查询、train-only邻居相似度/分歧/支持量、合法域距离和模型不确定性预测历史是否有益；
+- 群体分歧、有限响应抽样和模型/OOD不确定性分别验证，并共同支持使用历史、回退content-only或拒答；
+- 对经验反应分布构造校准预测区域，coverage对象与总体人群解释严格分开。
 
-这不是用检索“伪造缺失图像”，也不是一般RAG问答；必须与RAMER、RAER等直接前作做差异实验。评论teacher/蒸馏和检索/拒绝均已有前作，C2只有在学习检索显著优于随机与普通近邻、且可靠性机制能识别并减少OOD或污染邻居造成的负迁移时，才可作为完整方法候选；否则必须降级为协议、特权监督或负结果研究。
+这不是用检索“伪造缺失图像”，也不是一般RAG问答；必须与RAMER、RAER、普通gate/transferability估计、selective prediction和情感conformal prediction前作做差异实验。检索、gate、不确定性分解与预测区域各自均已有前作；C2只有在自然内容—反应错位和Oracle headroom成立、OOF收益路由优于强generic gate并减少自然OOD负迁移、三源各有独立验证时才可作为完整方法候选，否则降级为content-only可靠性测量、协议或负结果研究。
 
 ### C3：分布偏移、自然缺失与选择性可靠性证据
 
@@ -286,23 +301,20 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 ## 5. 最小模型结构
 
 ```text
-训练期评论 ──> 反应教师 ──> 个体反应/视频级分布 ──┐
-                                                   ├─> 蒸馏与分布监督
-内容文本/图像/视频 ──> 模态编码器 ──> 内容学生 ──┘
-                                   │
-                                   ├─> train-only反应记忆检索
-                                   │       ├─ 内容相似度
-                                   │       ├─ 历史反应分布
-                                   │       └─ 域/时间/模态质量
-                                   │
-                                   └─> 可靠性路由器 ──> 分布 + 分歧 + 不确定性 + 可选风险
+训练样本评论标签/计数 ──> 经验反应分布与支持量 ──> train-only反应记忆
+内容文本/图像/视频 ──> 模态编码器 ──> content expert f0 ─────────────┐
+                                   └─> memory expert fH ─────────────┤
+OOF(f0,fH) ──> 历史净效用Delta ──> 收益感知路由器 ─────────────────┤
+群体分歧 / 有限抽样 / ensemble-OOD ──> 三源不确定性 ────────────────┤
+                                                                    └─> 历史融合 / 纯内容回退 / 拒答
+                                                                        + 经验分布预测区域
 ```
 
 实现纪律：
 
 - 编码器优先冻结或LoRA：文本用强预训练文本编码器；图像用CLIP/SigLIP；视频优先复用官方VideoMAE特征；
 - 不从头训练大型视频模型或72B MLLM；单卡12—24GB应能完成主实验；
-- 输出先用softmax/Dirichlet两种简单头比较，不提前堆复杂生成模块；
+- 输出先用softmax与简单分布头比较；Dirichlet若使用，只能承担明确的一类统计角色，不得自动等同三源分解；
 - 模态缺失用mask、modality dropout和可靠性估计处理；原型库仅作为可选对照，不作为标题创新；
 - StepFun/其他闭源LLM只能作离线教师或对比，提示词、模型版本、缓存和人工审核必须留档；主系统不得依赖不可复现API；
 - CatBoost/HGB可接冻结深度特征作为混合基线，深度学习并不因CatBoost随机划分高分而被排除。
@@ -311,12 +323,14 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 
 | ID | 假设 | 主检验 | 反证/止损条件 |
 |---|---|---|---|
-| H1 | 评论特权教师能改善内容学生对未来群体反应分布的预测 | CSMV的JS/NLL；第二集仅在存在同构评论证据时检验 | CSMV相对最强content-only基线无稳定改善，或提升只来自随机划分；第二集缺同构字段时记`NOT_APPLICABLE_BY_DESIGN` |
-| H2 | train-only反应记忆在相关域中有效，可靠性路由能减少错误/错域检索造成的OOD负迁移 | learned retrieval vs no/random/BM25/CLIP-kNN；去路由/去拒绝；错域邻居；AURC/ECE/risk-coverage | 随机检索同样好，固定融合与路由无差异，或跨话题/时间/平台下校准和分布误差更差且不能拒绝 |
+| H1（历史开发假设，已关闭未通过） | 评论特权教师能稳定改善内容学生对未来群体反应分布的预测 | Task30仅在dev按冻结合同检验，formal test未materialize | `CLOSED_NOT_PASSED` / `NOT_PASSED_MECHANISM_NOT_STABLE`；v1.22不恢复teacher、不给正式H1结论、不进入主实验 |
+| H2a | 内容相似不保证反应相似，不同样本对历史记忆存在可选择的真实净收益差异 | 控制支持量/source family/抽样不稳定性的连续错位分析；Oracle headroom | 控制混杂后错位消失，或Oracle相对最强单专家/固定融合无稳定headroom：停止训练router |
+| H2b | train内部OOF净效用路由能在T0提前识别有害历史，并在匹配coverage下减少负迁移 | learned retrieval vs no/random/BM25/表示kNN；固定融合/相似度/熵/OOD/generic gate/SelectiveNet；AURC与负迁移率 | 不优于最强简单/generic gate，优势只在人工hard pairs，或自然group OOD下不能减少负迁移 |
+| H2c | 群体分歧、有限响应抽样和模型/OOD不确定性可被分别验证，并支持校准的经验分布预测区域 | held-out/split-half反应、评论下采样、ensemble/group-OOD错误；80/90/95% JS区域coverage | 三源不能分别对应各自判据，或预测区域系统性失配：删除三源分解/coverage claim |
 | H3（条件性） | 在同一样本至少含两个T0合法、冻结、实际可得输入模态的协议上，质量/缺失感知可使单一模型平稳退化 | 仅在合格协议上比较`ALL_AVAILABLE_INPUTS`、单模态和随机/自然缺失；CSMV音频记`NOT_APPLICABLE_AUDIO_UNAVAILABLE_BY_DATASET_DESIGN` | 不优于简单late fusion/zero-fill/近期缺失模态基线；若无合格协议则整体降级为`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL` |
 | H4（增强） | 配对模态条件能帮助预测加入图像后受众反应分布的变化 | NEmo+上的 `p_TI-p_T`、`p_TI-p_I` | 无法超过独立预测两个分布后相减的简单基线 |
 
-主成功门：CSMV以视频为单位、第二公开人工集以其原生内容单元为单位执行paired bootstrap 95%置信区间。CSMV承担核心机制主张；第二集承担独立人工真值上的跨域分布、校准/OOD和适用的缺失模态证据。不得把第二集不适用的H1/H2记为通过，也不得要求虚构同构实验。单个随机split高分不算成功；G4/G6仍须据证据降级后的真实充分性决定投稿。
+主成功门：CSMV以视频为单位、第二公开人工集以其原生内容单元为单位执行paired bootstrap 95%置信区间。CSMV承担H2a/H2b核心机制主张；第二集承担独立人工真值上的分布、有限抽样、校准/OOD和适用的H2c/H3边界。不得把第二集不适用的H2a/H2b记为通过，也不得要求虚构同构实验；H1已作为Task30开发负结果关闭，不属于v1.22成功门。单个随机split高分不算成功；G4/G6仍须据证据降级后的真实充分性决定投稿。
 
 ## 7. 实验矩阵
 
@@ -340,9 +354,9 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 |---|---|---|
 | E0 | 数据/划分sanity check | 检测重复视频、同源事件、目标评论、未来候选泄漏 |
 | E1 | 实际单输入与`ALL_AVAILABLE_INPUTS` | 证明实际可得输入的增量；仅一模态时记`NOT_APPLICABLE_SINGLE_AVAILABLE_INPUT_MODALITY` |
-| E2 | 去memory并比较检索方式 | content-only/no-memory vs random/BM25/CLIP-kNN/learned，隔离历史反应记忆贡献 |
-| E3 | 去teacher/去蒸馏 | hard/soft/普通KD/comment-privileged KD/错配评论，隔离特权监督贡献 |
-| E4 | 去router/固定权重/去rejection | 分离路由决策与选择性拒绝，验证是否真正减少负迁移 |
+| E2 | 现象、Oracle与memory检索 | 连续内容—反应错位、Oracle headroom；content-only/no-memory vs random/BM25/表示kNN/learned，先证明存在可选择空间 |
+| E3 | Task30历史负结果边界 | hard/soft/普通KD/comment-privileged KD/错配评论只作已关闭开发证据；v1.22主路线不恢复teacher，不进入正式主表 |
+| E4 | OOF收益路由与三源不确定性 | 固定融合、相似度/熵/OOD/generic gate/SelectiveNet；去router/去rejection及逐一去三源，匹配coverage验证负迁移与预测区域 |
 | E5 | 合格协议上的缺失模式和缺失率 | 仅对同一样本至少两个实际T0输入运行缺一/自然/10/30/50/70%缺失；CSMV音频结构性缺失不进入随机删失实验 |
 | E6 | 严格分布偏移 | movie/group、topic/hashtag、publisher/source、time、platform held-out及跨数据域 |
 | E7 | 检索污染与信息隔离负对照 | random/错域/低相似邻居、库缩小、top-k；目标/未来候选注入必须被门拒绝 |
@@ -356,6 +370,8 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 - 分歧：真实分布熵与预测分布熵的MAE/相关；若定义极化，需另做构念验证；
 - 校准：Brier、ECE/ACE、risk-coverage、AURC；
 - 检索：Recall@K/nDCG@K、检索邻居反应分布一致性、负迁移率；
+- 路由：OOF效用回归/分类、routing regret、有害检索AUROC/AUPRC、被避免负迁移比例；
+- 三源与区域：split-half/下采样稳定性、OOD高误差识别、80/90/95%经验分布coverage与区域效率；
 - 统计：至少5个随机种子；按数据集原生内容单元（CSMV视频、第二集图像）做paired bootstrap 95%CI；配对检验与多重比较校正；
 - 不把seed或fold数量当独立样本量。
 
@@ -439,33 +455,28 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 
 退出门G3：至少一个官方/强基线被可信复现；所有基线用同一split与评测器。未过门不得开发复杂新模型。
 
-### 第4月：评论特权教师与内容学生（2026-10-13—2026-11-12）
+### 第4月：Task30评论特权监督开发门（已提前执行并关闭）
 
-任务：
+状态：`CLOSED_NOT_PASSED`。Task30在dev完成hard label、soft distribution、普通KD、comment-privileged KD与错配teacher比较；相对soft distribution为3/3种子正向，但相对ordinary KD与错配teacher均仅2/3，未建立跨种子稳定的评论特权机制。formal test未materialize，正式H1未裁定。
 
-- 训练评论反应teacher，聚合视频级分布；
-- 实现只看内容的student和最简单分布蒸馏；
-- 对比hard label、soft distribution、comment-privileged supervision；
-- 增加普通KD、错配评论和teacher-only上界，确认收益来自特权响应监督而非软标签或参数量；
-- 分析样本评论数、标签噪声和teacher置信度的影响。
+已冻结交付物：Task30开发代码、H1开发结果、数据流图、`HANDOFF_30.md`和`TASK00_TASK30_H1_FINAL_INDEPENDENT_REVIEW_20260804.md`。这些只属于`DEVELOPMENT_EVIDENCE_ONLY`，不进入v1.22正式主表。
 
-交付物：teacher/student-v1、H1主实验、单变量消融、误差案例。
-
-止损：teacher不能在开发集形成稳定有效的分布监督，先修标签和聚合，不叠加检索。
+止损已触发：不继续调参、不创建修复批次、不恢复teacher/KD、不用Task30负结果阻止无teacher新路线的独立计划审核。第5月路线改由H2a Oracle headroom先行决定是否值得创建Task40。
 
 ### 第5月：train-only受众反应记忆（2026-11-13—2026-12-12）
 
 任务：
 
-- 建立train-only memory和严格索引生命周期；
-- 实现BM25/CLIP-kNN与可学习检索；
-- 实现查询—邻居反应分布融合；
-- 加入相似度、邻居分歧、域/时间距离和模态质量驱动的可靠性路由；
-- 分别去除memory、router和rejection，并用随机/错误域/低质量邻居检验模型是否真的利用了有效证据。
+- 先完成内容—反应错位的连续分析和人工审计，再运行Oracle headroom门；任一失败即停止router；
+- 建立train-only memory和严格索引生命周期，实现BM25/表示kNN与可学习检索；
+- 用train内部cross-fitting生成`Delta`效用标签，训练只读T0查询与邻居诊断的收益路由；
+- 实现`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`，并与固定融合、相似度/熵/OOD/generic gate/SelectiveNet公平比较；
+- 分别验证群体分歧、有限响应抽样和模型/OOD三源，校准经验分布预测区域；
+- 分别去除memory、benefit target、router、rejection和每个不确定性源，用随机/错误域/低质量邻居检验机制。
 
-交付物：CARM-v1、H2结果、检索可视化、负迁移分析、top-k研究。
+交付物：现象与Oracle报告、CARM-v1、OOF效用manifest、H2a—H2c结果、三源验证与预测区域报告、检索可视化、负迁移分析、top-k研究。
 
-止损：随机检索与学习检索无差异，或检索在OOD上持续伤害且无法被拒绝机制识别，则撤掉检索创新，转为comment-privileged distribution forecasting论文。
+止损：错位/Oracle门失败、随机检索与学习检索无差异、收益路由不优于强generic gate、三源不可分别验证，或检索在自然OOD上持续伤害且无法拒绝，均撤掉完整路由创新，转为content-only可靠性测量、协议或负结果论文；不得恢复Task30 teacher掩盖失败。
 
 ### 第6月：第一次正式Go/No-Go（2026-12-13—2027-01-12）
 
@@ -476,7 +487,7 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 - 与最强公平baseline比较，完成第一次审稿人式内部评审；
 - 冻结是否加入NEmo+配对模态增强，避免继续扩张。
 
-退出门G4：H1/H2至少一条在CSMV成立；第二公开人工集对其适用的跨域分布、校准/OOD或H3边界提供独立证据。`NOT_APPLICABLE_BY_DESIGN`不得写成通过，随机split不是唯一优势，校准不恶化。否则降低目标、重构问题或转数据/评测贡献，不再堆模块。
+退出门G4：v1.22主路线要求H2a的自然错位与Oracle headroom成立，且H2b/H2c至少一条在CSMV形成强对照支持；第二公开人工集对其适用的分布、抽样、校准/OOD或H3边界提供独立证据。H1开发负结果和`NOT_APPLICABLE_BY_DESIGN`不得写成通过，随机split不是唯一优势，校准不恶化。否则降低目标、重构问题或转可靠性测量/数据评测贡献，不再堆模块。
 
 ### 第7月：跨话题、跨平台与中文外部验证（2027-01-13—2027-02-12）
 
@@ -567,6 +578,7 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 8. 代码、配置、split、日志、预测文件和可发布数据全部可追溯；
 9. Video2Reaction作为closest/direct prior已被公平比较或形成经00接受的不可执行审计，claim blacklist回扫无活动命中；
 10. 模拟审稿中不再存在“任务已被前作提出、构念错位、未来泄漏、模块拼接、随机划分高分”Critical问题。
+11. 若保留v1.22完整路由主张，内容—反应错位、Oracle headroom、OOF效用、强generic gate、三源独立验证与经验分布预测区域均有可追溯证据；任一缺失不得用模块拼接替代。
 
 ## 12. 项目总览思维导图
 
@@ -633,9 +645,11 @@ flowchart TD
     G --> H["M3：强基线与统一评测"]
     H --> I{"基线可信、split无泄漏？"}
     I -->|否| G
-    I -->|是| J["M4：评论teacher + 内容student"]
-    J --> K["M5：train-only反应记忆 + 可拒绝检索"]
-    K --> L{"M6：两主集稳定增益或可靠性优势？"}
+    I -->|是| J["M4：评论teacher开发门（已关闭未通过）"]
+    J --> K{"v1.22计划/数据/创建门通过？"}
+    K -->|否| U["保持Task40未创建"]
+    K -->|是| T["M5：OOF净效用memory + 三源可靠性"]
+    T --> L{"M6：两主集稳定增益或可靠性优势？"}
     L -->|否| M["止损：缩小方法或转数据评测贡献"]
     L -->|是| N["M7：跨话题/平台 + 中文外验"]
     N --> O["M8：完整消融、统计、结果冻结"]
@@ -688,7 +702,7 @@ flowchart TD
 从下一项任务起，开工前必须写清：
 
 ```text
-主纲版本：v1.21（2026-07-28）
+主纲版本：v1.22（2026-08-05）
 所属月份/工作包：M? / E?
 服务假设：H?
 数据版本与split：...
@@ -717,11 +731,11 @@ flowchart TD
 
 ## 17. Codex任务树详细执行规格
 
-> 规格版本：v1.5  
-> 初次并入：2026-07-14；本次修订：2026-07-28  
+> 规格版本：v1.6  
+> 初次并入：2026-07-14；本次修订：2026-08-05  
 > 权威性：本节是总纲的一部分，负责规定00—60各Codex任务的启动条件、执行步骤、质量水平、退出门和交接要求。  
 > 独立文件 `CODEX_TASK_TREE_EXECUTION_SPEC.md` 仅作为便捷副本；若与本节冲突，以本总纲第17节为准。
-> v1.5修订边界：保留v1.4收益感知路由合同，并把Video2Reaction落实为“CSMV公平适配 + 原生外部验证”双轨强基线；不改变G1—G3、任务20冻结接口、I3D风险或Task30创建状态，也不恢复v1.17的3%/5%/8%硬效应门。
+> v1.6修订边界：保留Video2Reaction双轨强基线，把Task30负结果后的主路线收敛为无teacher的历史净效用路由、三源不确定性与经验分布预测区域；不改写Task30失败，不改变G1—G3、任务20冻结接口或I3D风险，也不恢复v1.17的3%/5%/8%硬效应门。
 
 ### 1. 全任务统一规则
 
@@ -731,10 +745,11 @@ flowchart TD
 00-总控与决策（持续存在）
   └─ 10-M1–M2 数据与协议（已创建）
        └─ G1 + G2通过后创建 20-M3 基线与统一评测
-            └─ G3通过后创建 30-M4 评论教师与内容学生
-                 └─ H1开发门通过后创建 40-M5 反应记忆与可靠性检索
-                      └─ CARM-v1冻结后创建 50-M6–M8 正式实验与结果冻结
-                           └─ G6通过后创建 60-M9–M10 T-AFFC论文与投稿
+            └─ G3通过后创建 30-M4 评论教师与内容学生（已CLOSED_NOT_PASSED）
+                 └─ 用户批准v1.22无teacher重路由 + 00计划/数据门通过 + 独立创建授权
+                      └─ 创建40-M5 净效用反应记忆与三源可靠性
+                           └─ H2a—H2c开发门通过并冻结CARM-v1后创建50
+                                └─ G6通过后创建60-M9–M10 T-AFFC论文与投稿
 ```
 
 后续任务不得提前创建。若上游门失败，应在上游任务修复或执行止损，不以“先开下一个任务”绕过问题。
@@ -744,7 +759,7 @@ flowchart TD
 每个任务首次回复和每个正式实验必须填写：
 
 ```text
-主纲版本：v1.21（2026-07-28）
+主纲版本：v1.22（2026-08-05）
 任务编号与名称：
 所属月份/工作包：M? / E?
 服务假设：H? / C?
@@ -870,7 +885,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 3.3 当前输入
 
-- 总纲v1.21；
+- 总纲v1.22；
 - `T0_INPUT_POLICY.md`；
 - `DATA_SOURCE_LEDGER.md`；
 - `ENVIRONMENT_LOCK.md`与`requirements-lock.txt`；
@@ -1090,74 +1105,78 @@ task_timepoint：T0 或独立的 T+Δ
 
 ---
 
-### 6. 任务40：M5 反应记忆与可靠性检索
+### 6. 任务40：M5 净效用反应记忆与三源可靠性
 
 #### 6.1 定位
 
-只验证H2并为C3准备机制：历史案例检索是否提供真实有效证据，以及收益感知路由能否在看不到目标响应的条件下，根据相似度、邻居分歧、域/时间距离和模态质量，预判检索相对content-only是否有益，并据此融合、降权或拒绝负迁移。核心不是“再加一个门控模块”，而是检验模型能否提前识别历史反应证据何时值得信任。
+验证H2a—H2c并为C3准备机制：先证明内容—反应错位和Oracle可选择空间真实存在，再检验OOF收益路由能否只凭T0查询与train-only邻居诊断提前识别历史反应证据何时有益，最后分别验证群体分歧、有限反应抽样和模型/OOD三源不确定性并形成对经验分布的校准预测区域。核心不是增加gate或uncertainty模块数量，而是建立“历史证据净收益→动作→选择性风险”的可证伪机制链。
 
 #### 6.2 对应总纲
 
-- M5；H2；C2后半；
-- E2、E4、E7；
-- train-only memory、可学习检索、收益感知可靠性路由、选择性拒绝与错误邻居负对照。
+- M5；H2a—H2c；C2后半；
+- E2、E4、E6、E7；
+- 内容—反应错位、Oracle headroom、train-only memory、OOF净效用路由、三源不确定性、经验分布预测区域、选择性拒绝与错误邻居负对照。
 
 #### 6.3 启动条件
 
-- H1开发门通过，或00任务明确批准降级为无teacher的检索路线；
-- teacher/student-v1和evaluation-kit-v1冻结；
+- 用户已通过`SC-20260805-01`批准v1.22无teacher统一路线，但该决策本身不创建Task40；
+- Task30保持`CLOSED_NOT_PASSED`，不得恢复teacher/KD或其formal test；content-only接口和evaluation-kit-v1冻结；
 - split与T0政策不再变动。
-- 在实现路由器前冻结H2预注册：content-only与memory预测的公平预算、train内部cross-fitting/out-of-fold效用标签、路由输入、阈值选择、比较族、成功/失败/无结论条件均须明确；不得以test表现定义效用或阈值。
+- 00须先独立确认`TASK00_CARM_UNIFIED_ROUTE_RESEARCH_PLAN_20260805.md`、系统查新、数据identity/fitness、目标链、失败树、公平基线与formal-test禁令全部闭合，并另行形成精确Task40创建授权。
+- 在任何模型运行前冻结：content-only与memory预测的公平预算、train内部cross-fitting/out-of-fold效用标签、路由输入、三源操作化、预测区域coverage、阈值选择、比较族及success/failure/inconclusive条件；不得以test表现定义效用、阈值或不确定性组合。
 
 #### 6.4 具体工作步骤
 
-1. 读取`HANDOFF_30.md`，冻结student表示和输出头接口。
-2. 设计memory schema：train sample ID、内容表示、经验反应分布、置信度、域、时间和模态质量。
+1. 读取Task30最终独立审核、`HANDOFF_30.md`与v1.22研究计划；只继承T0 content-only接口和负结果边界，不继承teacher机制claim。
+2. 设计memory schema：train sample ID、内容表示、经验反应分布、响应支持量、置信度和真实可得的域/质量字段；CSMV无time/topic/publisher时不得伪造。
 2a. memory与router接口须支持数据集特定标签head；Video2Reaction原生分支只允许把其train split公开内容表示与反应分布建库，不读取原始评论、不跨split共享邻居，也不把银标域结果并入人工金标主表。
 3. 严格实现“先split后建库”；索引manifest保存成员ID、配置、hash和创建时间。
 4. 有可靠时间时强制`candidate_time < query_time`；无可靠时间时只声称train-only。
 5. 实现无检索和随机检索负对照。
 6. 实现BM25/TF-IDF稀疏检索和CLIP/SBERT kNN稠密检索。
 7. 定义检索相关性评估：内容相关、反应分布一致性、Recall@K/nDCG@K和人工可审计案例。
-8. 实现最小查询—邻居交互和反应分布融合，不先堆复杂模块。
-9. 实现可学习检索或重排，训练只使用train，调参只使用dev。
-10. 构造可靠性特征：相似度、邻居分歧、域距离、时间距离、模态质量和缺失掩码。
-11. 仅用train内部cross-fitting/out-of-fold预测构造逐样本检索效用标签，例如`u_i=L(content-only_i,y_i)-L(memory_i,y_i)`；`u_i>0`表示检索更有益。效用标签manifest必须记录fold、模型、损失、样本ID和hash，禁止使用test或目标评论正文训练路由器。
-12. 训练收益感知路由器预测`u_i`或`P(u_i>0)`；推理输入只能包含T0查询表示与第10步可靠性特征，不能读取真实标签、目标响应或评测后误差。
-13. 实现融合/降权/拒绝决策，输出预测效用、融合权重、拒绝分数、邻居来源和解释字段；阈值只在dev上按预注册规则选择。
-14. 跑E2：learned retrieval对比no/random/BM25/CLIP-kNN，并给予可比调参预算。
-15. 跑E4：收益感知路由分别对比固定融合、相似度阈值、预测熵阈值和SelectiveNet式拒绝；比较拒绝方法时匹配coverage或风险预算，再分别去router、去rejection，不能合并成一次消融。
-16. 跑E7：random、错误域、低相似邻居、库缩小、top-k扫描和检索污染；目标/未来候选注入必须被泄漏门拒绝，不得形成可报告结果。
-17. 同时报告检索负迁移率、路由识别有害检索的AUROC/AUPRC、预测效用与真实效用的相关、被避免的负迁移比例、risk-coverage、AURC、ECE和分布误差；不得只报告平均JSD。
-18. 在movie/group、topic/source、time/platform开发划分及错域污染上检查“邻居质量下降→效用下降→路由降权/拒绝→负迁移减少”的机制链。
-19. 生成检索案例可视化，展示查询、邻居、反应分布、预测/真实效用、可靠性和最终决策。
-20. 冻结CARM-v1、索引版本、效用标签版本、路由阈值和H2开发结果。
-21. 执行止损审查：若学习检索不优于random/BM25/CLIP-kNN，或在匹配coverage与公平预算后收益感知路由不优于固定融合、相似度阈值、预测熵或SelectiveNet式拒绝，或OOD负迁移不能减少，则撤掉“收益感知路由/完整检索创新”主张，保留为普通融合或负结果。
+8. 在训练折内先做连续内容相似度—反应距离分析，控制响应支持量、source family和评论重采样不稳定性；hard pairs只作固定子集审计。
+9. 以相同预算训练content-only、memory-only、固定融合，并仅用OOF预测计算Oracle headroom；Oracle没有稳定headroom时停止，不训练router。
+10. 实现最小查询—邻居交互和反应分布融合，不先堆复杂模块；可学习检索只使用train，调参只使用dev。
+11. 构造真实可得的可靠性特征：相似度、邻居分歧、响应支持量、域距离、模态质量、缺失掩码和ensemble/OOD诊断。
+12. 仅用train内部cross-fitting/out-of-fold预测构造逐样本效用`u_i=L(content-only_i,y_i)-L(memory_i,y_i)`；manifest记录fold、模型、损失、样本ID和hash，禁止使用test或目标评论正文。
+13. 训练收益感知路由器预测`u_i`或`P(u_i>0)`；推理输入只能包含T0查询与第11步诊断，动作固定为使用历史、回退content-only或拒答。
+14. 分别操作化三源：经验分布熵/held-out反应验证群体分歧，评论下采样/后验验证有限抽样，ensemble/group-OOD错误验证模型不确定性；不得由一个浓度参数自我证明。
+15. 在独立dev calibration子集校准80/90/95% JS经验分布预测区域，报告总体/分组coverage与区域效率；不外推总体人口。
+16. 跑E2：现象、Oracle及learned retrieval对比no/random/BM25/表示kNN，并给予可比调参预算。
+17. 跑E4：收益路由对比固定融合、相似度/预测熵/OOD阈值、generic MLP/MoE gate和SelectiveNet；匹配coverage或风险预算，分别去benefit target、router、rejection和每个不确定性源。
+18. 跑E7：random、错误域、低相似邻居、库缩小、top-k和检索污染；目标/未来候选注入必须被泄漏门拒绝，不得形成可报告性能。
+19. 报告负迁移率、routing regret、有害检索AUROC/AUPRC、预测—真实效用相关、被避免负迁移比例、risk-coverage、AURC、ECE、JSD及prediction-region coverage；不得只报平均JSD。
+20. 只在字段真实存在的自然group/source-family与外部域检查“邻居质量下降→效用下降→路由回退/拒绝→负迁移减少”；CSMV不得声称不可用的time/topic/publisher协议。
+21. 生成案例可视化，冻结CARM-v1、索引、OOF效用、三源定义、区域校准、路由阈值和H2a—H2c开发结果。
+22. 执行止损：现象/Oracle任一失败、学习检索不优于普通近邻、收益路由不优于强generic gate、三源不可分别验证、区域失配或自然OOD负迁移不能减少，均删除完整路由主张；不得恢复Task30 teacher掩盖失败。
 
 #### 6.5 必须产出
 
 - memory schema、索引构建器、索引manifest和泄漏测试；
 - 无/随机/稀疏/稠密/可学习检索实现；
 - train内部cross-fitting效用标签manifest、收益感知路由器、阈值与输入不可达测试；
-- CARM-v1及固定融合、相似度阈值、预测熵和SelectiveNet式路由对照；
-- E2/E4/E7结果、top-k研究、效用预测、coverage匹配和负迁移分析；
+- 内容—反应错位连续分析与人工审计、Oracle headroom报告；
+- CARM-v1及固定融合、相似度/熵/OOD、generic gate和SelectiveNet式路由对照；
+- 三源不确定性验证、经验分布预测区域、E2/E4/E7结果、top-k、效用预测、coverage匹配和负迁移分析；
 - 检索案例图和效率初测；
 - `HANDOFF_40.md`及H2/止损报告。
 
 #### 6.6 达标水平
 
 **最低合格（L1）**：索引生命周期可审计，所有候选合法，检索与融合可重跑。  
-**进入正式实验的L2门**：有效检索在冻结开发种子上稳定优于random/BM25/CLIP-kNN；收益感知路由在匹配coverage与公平预算后优于固定融合、相似度阈值、预测熵或SelectiveNet式拒绝中的强者，并在低质量/OOD邻居下减少负迁移或改善选择性风险；收益不能只来自随机split、同发布者捷径或in-sample效用标签。  
-**优秀水平**：检索质量、真实效用、预测效用、路由动作和拒绝行为形成一致证据链，能用负对照回答“模型是否真正识别历史案例何时有益”。
+**进入正式实验的L2门**：自然错位与Oracle headroom先通过；有效检索稳定优于random/BM25/表示kNN；收益路由在匹配coverage与公平预算后优于固定融合、相似度/熵/OOD/generic gate/SelectiveNet中的强者，并在自然低质量/OOD邻居下减少负迁移或改善选择性风险；三源分别通过各自外部/重采样判据，经验分布区域达到预设coverage。收益不能只来自随机split、同源捷径、人工hard pairs或in-sample效用标签。  
+**优秀水平**：内容—反应错位、检索质量、真实/预测效用、三源不确定性、路由动作、区域宽度和拒绝行为形成一致证据链，能回答“历史经验何时值得信任，以及不值得信任时系统知道什么”。
 
 #### 6.7 止损与禁止
 
-- 随机检索与学习检索无差异：撤掉检索创新，转为comment-privileged distribution forecasting；
+- 现象/Oracle门失败或随机检索与学习检索无差异：撤掉检索创新，转为content-only可靠性测量、协议或负结果研究；
 - 检索持续伤害OOD且无法拒绝：不得以CARM完整方法进入任务50；
 - 效用标签不是train内部out-of-fold生成、路由输入包含标签/目标响应、或阈值看过test：立即`LEAKAGE_BLOCKED`；
 - 只与固定权重弱基线比较、没有coverage匹配或没有报告负迁移率：不得声称收益感知路由有效；
 - 不使用test/未来样本建库；
 - 不把一般RAG问答或“伪造缺失模态”描述为本方法。
+- 不把prediction-region coverage写成所有潜在观众总体保证，不把集合大小直接写成群体真实分歧。
 
 ---
 
@@ -1191,21 +1210,21 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 7.5 工作包B：M6两主集主实验与G4
 
-6. 在两个公开人工标注主集运行content-only、teacher/student、CARM和最强公平基线；CSMV主表必须包含Video2Reaction式VLM直接微调/LDL的可比适配基线，或提供经00接受的输入、标签、split、许可、资源和预算不可执行审计。
+6. 在两个公开人工标注主集运行各自适用的content-only、无teacher CARM和最强公平基线；Task30 teacher/student只作为已关闭开发负结果，不进入v1.22正式主表。CSMV主表必须包含Video2Reaction式直接内容模型/LDL的可比适配基线，或提供经00接受的输入、标签、split、许可、资源和预算不可执行审计。
 7. content-only、memory-only、完整收益感知路由及最强公平基线完成同一五种子；不得只给目标方法五种子而给路由对照单种子，也不以最佳种子代替均值与区间。
-8. 在CSMV完成H1、H2关键消融；H2须同时比较no/random/BM25/CLIP-kNN/learned retrieval与固定融合、相似度阈值、预测熵、SelectiveNet式拒绝，并按预注册coverage或风险预算公平匹配。
+8. 在CSMV完成H2a—H2c关键判别实验；须先报告自然错位与Oracle headroom，再比较no/random/BM25/表示kNN/learned retrieval与固定融合、相似度/熵/OOD、generic gate和SelectiveNet式拒绝，并按预注册coverage或风险预算公平匹配；三源须逐一消融并各自绑定外部/重采样判据。
 9. 两集均按各自原生内容单元完成paired bootstrap 95%CI；对H2额外bootstrap逐样本检索效用差、负迁移率差和AURC/risk-coverage差，第二集不适用的机制实验记`NOT_APPLICABLE_BY_DESIGN`。
 10. 报告JS、NLL、EMD、Macro-F1、Balanced Accuracy、Brier、ECE/ACE、AURC，以及H2的效用识别、负迁移率和被避免负迁移比例。
 11. 仅在同一样本至少有两个T0合法、冻结、实际可得输入模态的数据协议上，完成`ALL_AVAILABLE_INPUTS`、单模态、缺一/缺二及随机缺失率10/30/50/70%；CSMV音频结构性不可得，不进入该随机删失实验。
 12. 比较最强公平baseline，检查分布误差改善是否伴随校准恶化；分别给出success、failure和inconclusive分支，不用方向一致但CI跨零的结果宣称成立。
 13. 进行第一次审稿人式内部评审，逐条质疑构念、泄漏、基线、公平性和统计。
-14. 执行G4：H1/H2至少一条在CSMV成立，第二集对适用的跨域分布、校准/OOD或H3提供独立证据；否则降级或转数据/评测贡献。
+14. 执行G4：H2a自然错位与Oracle门必须通过，H2b/H2c至少一条在CSMV成立；第二集对适用的分布、抽样、校准/OOD或H3提供独立证据；否则降级为content-only可靠性测量、协议/负结果或数据评测贡献。
 15. 只在G4支持且资源允许时决定是否加入NEmo+的H4配对模态增强。
 
 #### 7.5A 工作包B2：Video2Reaction双轨直接前作对比
 
 15a. 在任何下载或运行前生成`VIDEO2REACTION_DATA_INTAKE.md`与`data/manifests/video2reaction-source-v1.manifest.json`，冻结Hugging Face revision、文件树、split、字节数、SHA-256、许可层、公开字段、原始媒体恢复率和不可再分发边界；只下载公开且无需绕过访问控制的资产。  
-15b. A轨在CSMV冻结split上实现至少一个Video2Reaction式直接内容模型和一个LDL基线；两者使用相同T0 I3D输入、CSMV标签、评测器、五种子、模型选择规则和可比调参预算，与content-only、teacher/student、memory、固定融合、router/rejection同表比较。  
+15b. A轨在CSMV冻结split上实现至少一个Video2Reaction式直接内容模型和一个LDL基线；两者使用相同T0 I3D输入、CSMV标签、评测器、五种子、模型选择规则和可比调参预算，与content-only、memory、固定融合、generic gate及收益路由/rejection同表比较；Task30 teacher/student负结果不进入正式主表。  
 15c. A轨不得引用Video2Reaction论文原生Top-3 F1作为CSMV性能目标，也不得因CSMV只有冻结I3D视觉输入而虚构音频或文本；不可适配的VLM输入差异逐项登记。  
 15d. B轨先在官方split和公开派生特征上复现至少一个作者LDL/直接模型，输出`VIDEO2REACTION_REPRODUCTION_REPORT.md`；若原始视频合法恢复率不足，原始VLM复现记限制，但公开特征基线仍按可得范围执行。  
 15e. 以`imdbid`/movie identity审计官方train/val/test重叠，输出`VIDEO2REACTION_MOVIE_SPLIT_AUDIT.md`；存在movie overlap时另建movie-disjoint split，与官方split分表报告，不把对方split缺陷当作本稿主要贡献。  
@@ -1250,7 +1269,7 @@ task_timepoint：T0 或独立的 T+Δ
 
 #### 7.9 达标水平
 
-**G4/L2**：至少H1/H2之一在CSMV成立；若保留H2收益感知主张，必须在五种子、原生内容单元CI、强检索/路由对照、匹配coverage及OOD/污染负对照下证明其减少负迁移或形成选择性风险优势；第二集在适用的跨域分布、校准/OOD或H3上形成独立证据或明确边界；校准不恶化；随机split不是唯一优势。  
+**G4/L2**：H2a自然错位与Oracle headroom通过，且H2b/H2c至少一条在CSMV成立；若保留完整收益路由主张，必须在五种子、原生内容单元CI、强检索/generic gate对照、匹配coverage、三源独立验证及自然OOD/污染负对照下证明其减少负迁移或形成选择性风险/预测区域优势；第二集在适用的分布、抽样、校准/OOD或H3上形成独立证据或明确边界；校准不恶化；随机split或人工hard pairs不是唯一优势。  
 **G5/L2**：跨话题/来源/时间/平台的失败可量化、解释或被拒绝机制识别。  
 **G6/L3**：E0—E9、两个人工金标主集各自适用的五种子实验、按原生内容单元的CI、Video2Reaction A轨公平适配与B轨原生外部验证、强基线、公平预算、完整统计、效率、失败案例和中文压力测试全部冻结且可追溯；不适用项有预注册说明。  
 **T-AFFC目标水平**：在主要分布指标上对最强公平基线有统计支持的优势且校准不恶化，或形成“分布误差不劣、OOD校准/选择性风险更优”的清晰Pareto优势。
@@ -1290,7 +1309,7 @@ task_timepoint：T0 或独立的 T+Δ
 2. 冻结标题、摘要核心claim和三项贡献上限；CARM名称查重未完成前不用作正式名；逐项执行`TAFFC_CLAIM_BLACKLIST_20260724.md`。
 3. 引言按痛点、Video2Reaction直接前作、未解决的可靠性问题、核心洞察和贡献组织，不以模块列表代替科学问题。建议关系句为：*Concurrent Video2Reaction research establishes the feasibility of directly predicting induced audience-reaction distributions from video. Our work instead investigates whether such predictions remain reliable when target responses are unavailable and test content deviates from training domains.*
 4. Related Work把Video2Reaction列为closest/direct prior，并覆盖公众诱发情绪、评论特权监督、检索增强预测、缺失模态与可靠性拒绝。
-5. 方法节明确T0信息边界、teacher/student、memory、检索、路由和输出。
+5. 方法节明确T0信息边界、Task30 teacher负结果后的无teacher主路线、memory、OOF效用、三源不确定性、路由、预测区域和输出；不得把已关闭teacher分支画成活动主方法。
 6. 实验节先写协议、数据、split、基线、公平预算、指标和统计，再写结果。
 7. 所有数值和结论从claim-evidence-map引用，不手工抄写无来源数字。
 8. 贡献措辞与证据强度匹配，不声称“首次提出公众诱发情绪任务”。
@@ -1361,7 +1380,7 @@ task_timepoint：T0 或独立的 T+Δ
 | 00 | 全部 | 总纲版本、门状态、决策和风险 | 00可做只读监督，不与执行任务同时改代码 |
 | 10 | 20 | dataset/split/label lineage、泄漏测试、G1/G2 | 不可并行开发正式基线；可并行做只读文献整理 |
 | 20 | 30 | evaluation-kit、强基线、G3 | 不可并行改评测器和teacher主线 |
-| 30 | 40 | teacher/student-v1、H1门 | 不可提前建正式memory，避免表示漂移 |
+| 30/00 | 40 | Task30负结果边界、冻结content-only接口、v1.22计划/数据/预注册门与独立创建授权 | Task30不再修改；Task40获授权前不可建正式memory或训练router |
 | 40 | 50 | CARM-v1、索引、H2与止损结论 | 不可边改方法边跑正式五种子 |
 | 50 | 60 | 冻结结果、统计、claim-evidence、G6 | 写作骨架可早建，但主结果/结论不得提前定稿 |
 | 60 | 00 | submission-ready包和Go证据 | 由00执行最终Go/No-Go |
@@ -1373,7 +1392,8 @@ task_timepoint：T0 或独立的 T+Δ
 3. 任务10先完成许可与可用性审计；未获用户授权前不下载大数据。
 4. 任务10已通过G1与`G2_PROTOCOL_DATA`；任务20正式核心已获G3=`PASS_WITH_LIMITATIONS`，其VC-CSA运行永久为`NON_T0/INELIGIBLE`探索，不能支持后续论文主张。
 5. 任务20正式核心和既有探索已由00接受收尾，状态为`CLOSED_ACTIVE_TIME_BOUND_RETENTION`；唯一后续是2026-08-31 23:59:59 +08:00前后的受限存储可见层删除验收，当前不得写成已删除。
-6. 任务30已创建并由00完成最终独立审核，状态为`CLOSED_NOT_PASSED`：H1开发机制跨种子不稳定，正式test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`。本轮不授权修复，任务40状态为`NOT_CREATED_BLOCKED_H1_NOT_PASSED`，任务50未创建；任何未来方法重路由须由用户另行决定并由00事前预注册。本条是v1.21当前态勘误，不改变G1—G3、Task20边界或版本化科学合同。
+6. 任务30已由00以`CLOSED_NOT_PASSED`关闭：H1开发机制跨种子不稳定，formal test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`，不授权修复。
+7. 用户已通过`SC-20260805-01`批准v1.22无teacher统一重路由并要求写入总纲；该批准不自动创建Task40。Task40状态为`NOT_CREATED_PLAN_AUTHORIZED_AWAITING_PREREGISTRATION_GATES`，须先闭合系统查新、数据identity/fitness、目标链、失败树、公平基线与formal-test禁令，并由00另行形成精确创建授权；Task50未创建。
 
 ### 11. 每个任务的完成定义
 

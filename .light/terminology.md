@@ -6,8 +6,11 @@
 | 构念观测边界 | 评论者公开表达的诱发反应分布 | — | publicly expressed induced-reaction distribution among commenters | 不代表所有观看者内在心理状态或总体人口参数 |
 | 方法工作代号 | 受众反应记忆 | CARM | Audience-Response Memory | 仅历史工作包代号；完整方法尚未验证，且CARM重名，不得作为正式标题或首创标识 |
 | C1贡献边界 | 严格T0受众反应分布预测协议与证据 | — | strict-T0 audience-reaction distribution protocol and evidence | Video2Reaction已覆盖任务层目标；禁止“首次video-to-reaction-distribution” |
-| C2候选差异 | 评论特权监督与train-only历史反应记忆 | — | comment-privileged supervision and train-only historical response memory | 组件已有前作；只有随机/普通近邻对照和负迁移拒绝证据成立才可作完整方法claim |
-| C2核心候选机制 | 收益感知可靠性路由 | — | benefit-aware reliability routing | 用train内部OOF误差差学习检索相对content-only是否有益；推理只看T0查询与邻居诊断；须优于固定融合、相似度/熵阈值和SelectiveNet式拒绝并减少负迁移，不能称模块首创 |
+| C2候选差异 | train-only历史反应净效用与三源可靠性 | — | train-only historical-reaction utility and tri-source reliability | Task30评论teacher保持关闭；组件各有前作，只有统一判别实验通过才可作完整方法claim |
+| C2核心候选机制 | OOF收益感知可靠性路由 | — | out-of-fold benefit-aware reliability routing | 用train内部OOF误差差学习历史相对content-only是否有益；推理只看T0查询与邻居诊断；须优于固定融合、相似度/熵/OOD/generic gate和SelectiveNet并减少自然负迁移 |
+| 三源不确定性 | 群体分歧、有限响应抽样与模型/OOD不确定性 | — | group disagreement, finite-response sampling, and epistemic/OOD uncertainty | 三源必须各有held-out、重采样或自然OOD判据；不得由单一浓度参数自证 |
+| 预测区域 | 经验反应分布预测区域 | — | prediction region for the empirical reaction distribution | 报告80/90/95% coverage；不保证沉默观看者或总体人口潜在情绪；集合大小不直接等同群体分歧 |
+| 路由动作 | 使用历史/纯内容回退/拒答 | — | use memory / fall back to content / abstain | 阈值仅在dev预注册规则下选择，formal test不可用于选择 |
 | 论文定位 | 分布偏移与目标响应不可用下的可靠内容到受众反应分布预测 | — | reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses | Video2Reaction为closest/direct prior |
 | 直接前作 | Video2Reaction | V2R | Video2Reaction | 共同任务必须承认；workshop展示确认、归档状态待核；ECCV为作者报告待正式条目 |
 | V2R标签层级 | LLM生成且人工核验银标 | SILVER_LLM_HUMAN_VERIFIED | LLM-derived, human-verified silver labels | 不是逐样本HUMAN_GOLD，不替代CSMV/LAI-GAI主测试 |

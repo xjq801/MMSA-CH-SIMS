@@ -17,3 +17,4 @@
 - [2026-08-02] Task20 Epoch 1—3恢复复跑合同 v1.0 — 用户选择B后批准唯一attempt2；冻结新实例/资产/运行hash与逐step证据合同，只允许在展示层把新Epoch 1—3和原Epoch 4—120断开并列，永久排除正式证据链
 - [2026-08-02] Task20 Epoch 1—3恢复复跑审查 v1.0 — 00绑定`main@da9c52a`确认运行/断开展示实质一致但裁定`SUPPLEMENT_REQUIRED_NO_ACCEPTANCE_YET`；要求追加时间勘误、登记状态修正、逐step时间戳缺口披露和私有证据非秘密hash索引，不授权复跑或提升证据等级
 - [2026-08-04] Task30 H1最终独立审核 v1.0 / Task Registry v1.12 — 00只导入冻结ref `9086bd537b36cad5635eaa9db81aaeb6756b4088`，接受可审计开发负结果并以`CLOSED_NOT_PASSED`关闭Task30；H1机制稳定性门未通过，正式H1未裁定，不授权修复且Task40保持未创建
+- [2026-08-05] 总纲 v1.22 / 第17节规格 v1.6 / 统一路线方案与实验矩阵 v1.0 — 移除评论特权teacher作为活动路线，以训练折内OOF历史净收益、三动作可靠性路由和aleatoric/epistemic/transfer-retrieval三源不确定性统一三个idea；加入数据角色、Oracle headroom、强通用门、coverage匹配、分布预测区域与停止规则；只冻结方案，不自动创建Task40或运行实验，不改变G1—G3及既有风险

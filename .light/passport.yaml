@@ -2,12 +2,12 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-04T00:17"
+updated: "2026-08-05T00:00"
 current_stage: 30
-state_revision: 15
-state_hash: "sha256:86d6968e93fec8233608250b0847aa093877c04c51496ef2bcba83b5dc9dfd7e"
+state_revision: 16
+state_hash: "sha256:ce28fb8dba1675ae3ed037a9fa85d78b56be446a221d9375f58b25c4b1a3ea12"
 evidence_state: FAILED
-next_action: total-control-03 independently reviews Task10 manuscript data/protocol sections and Task20 recovery supplement; Task40 remains not created
+next_action: close v1.22 data and preregistration gates, then decide whether Task40 may be created; meanwhile review Task10 manuscript sections and Task20 supplement
 delivery_status: IN_PROGRESS
 delivery_authorization_id: ~
 stages:
@@ -40,4 +40,4 @@ stages:
     output: auditable Task30 development package closed as CLOSED_NOT_PASSED; H1 mechanism stability not established
     artifacts: [TASK00_TASK30_CREATION_AUTHORIZATION_20260801.md, HANDOFF_30.md, TASK30_H1_DEVELOPMENT_REPORT_20260801.md, TASK30_DATA_FLOW.md, experiments/task30-h1-development-v1/completion-freeze.json, TASK00_TASK30_H1_FINAL_INDEPENDENT_REVIEW_20260804.md]
     gate: {type: confirm, result: FAIL, evidence: "sha256:c92e62c44e338e59b50f37c4ec22fd4bf33cae81baea7e2b3e5701d94ad59dd5", timestamp: "2026-08-04T00:15:30+08:00", notes: Task30 closed not passed at the H1 development gate; formal test was not materialized and no repair batch is authorized, evidence_state: FAILED, fresh: true}
-    gaps: [formal H1 was not adjudicated on formal test; privileged supervision was positive versus soft distribution for 3 of 3 seeds but only 2 of 3 versus ordinary KD and mismatch teacher; LAI-GAI lacks native comment-teacher fields; Video2Reaction native H1 is NOT_APPLICABLE_DATA_NOT_RELEASED; I3D external license revision and rightsholder fixity remain UNKNOWN]
+    gaps: [formal H1 was not adjudicated on formal test; privileged supervision was positive versus soft distribution for 3 of 3 seeds but only 2 of 3 versus ordinary KD and mismatch teacher; LAI-GAI lacks native comment-teacher fields; Video2Reaction native H1 is NOT_APPLICABLE_DATA_NOT_RELEASED; I3D external license revision and rightsholder fixity remain UNKNOWN; master plan v1.22 freezes a no-teacher OOF net-benefit routing and tri-source uncertainty plan but Task40 remains not created until data and preregistration gates pass]

@@ -161,6 +161,8 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 
 系统查新、CSMV/LAI-GAI identity/fitness、Video2Reaction公开intake、target chain、failure tree、公平基线和formal-test禁令已形成v1.23文档包。Video2Reaction定位在HF revision `75278468c91c51ff54cf709d61ee881ca5c37c9b`，但HF数据卡与GitHub仓库级许可表述存在未解决差异，故仍为`CONDITIONAL_EXTERNAL_VALIDATION_NOT_CORE_REQUIRED`，不下载、不阻断Task40核心开发。第二个comment-bearing HUMAN_GOLD视频集会加强H2a/H2b外验，但不是当前必需数据。Oracle headroom是Task40创建后、router训练前的第一开发止损门，不得再循环写成Task40创建前提。
 
+**2026-08-05执行回执（不改变v1.23预注册定义）**：Task40在development-only、formal-test零事件条件下完成串行门。P0、P1与P2通过；P3/P4可信router相对每seed最强control的90% coverage主JSD差5/5为正且95% CI均跨0，预注册主门0/5通过，故以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭。可信负迁移按固定顺序未检验，P5 thinning/三源/预测区域未执行，Task50不创建。详见`TASK00_TASK40_FINAL_INDEPENDENT_REVIEW_20260805.md`；不得用P1/P2覆盖router失败或把P5未执行写成三源无效。
+
 这条路线与第四章的对应关系是：
 
 | 第四章原设计 | 新论文升级 |
@@ -1409,7 +1411,7 @@ task_timepoint：T0 或独立的 T+Δ
 4. 任务10已通过G1与`G2_PROTOCOL_DATA`；任务20正式核心已获G3=`PASS_WITH_LIMITATIONS`，其VC-CSA运行永久为`NON_T0/INELIGIBLE`探索，不能支持后续论文主张。
 5. 任务20正式核心和既有探索已由00接受收尾，状态为`CLOSED_ACTIVE_TIME_BOUND_RETENTION`；唯一后续是2026-08-31 23:59:59 +08:00前后的受限存储可见层删除验收，当前不得写成已删除。
 6. 任务30已由00以`CLOSED_NOT_PASSED`关闭：H1开发机制跨种子不稳定，formal test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`，不授权修复。
-7. `SC-20260805-01/02`已批准v1.23无teacher可信净收益路线并闭合文档门；Task40已按`AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805`创建为独立任务`019fd19c-abf3-7bf0-8530-759e38c3a6ab`，当前状态为`CREATED_DEVELOPMENT_ONLY_READONLY_PENDING_FINAL_ANCHOR`。Oracle是其收到最终锚点后的首个模型开发止损门；formal test仍未materialize，Task50未创建。总控04 `019fd19d-b8ef-71f2-82b3-433168211358`接替总控03负责独立监督，不代跑Task40。
+7. Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`已由总控04独立审核并以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭：P0/P1/P2通过，P3/P4主JSD门0/5；可信负迁移未检验，P5未执行，formal test零事件，Task50保持未创建且当前被固定顺序阻断。总控04不代跑Task40，也不授权修复、追分或替代实验；后续先做claim降级与项目路线级复核。
 
 ### 11. 每个任务的完成定义
 

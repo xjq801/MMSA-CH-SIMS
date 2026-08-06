@@ -12477,3 +12477,62 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 ### Git状态
 
 本条写入前`HEAD=origin/main=8a5ab2c2c543051e00427154db205bb3937de2bf`且工作树clean；当前授权/台账/日志尚未提交或推送。
+
+## WR-20260806-003 — Task45独立任务创建与S43 FINAL_ANCHOR准备
+
+- 时间：2026-08-06 13:26:18 +08:00
+- 类型：TASK_CREATION | HANDOFF | SSOT | ACCESS_CONTROL
+- 任务/门：00总控04 / Task45创建closure
+- 状态：`CREATED_READONLY_PENDING_FINAL_ANCHOR`
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+执行用户批准的Task40失败后重新规划：在已推送的v1.24计划和精确授权上创建一个独立Task45诊断任务，但不把它误作Task40修复、两阶段路由训练或formal-test授权。创建后先保持只读，待总控04把包含S43与线程身份的closure推送main并发送FINAL_ANCHOR。
+
+### 实际变更
+
+- 通过Codex任务创建接口从`origin/main@560a3dc86116cf5b60471fe55b105b6778a44354`创建独立Task45；正式task/thread ID=`019fd586-628b-74f0-85ae-b44fa60968ff`，worktree=`C:/Users/86183/.codex/worktrees/5096/MMSA-CH-SIMS`，创建HEAD=`560a3dc86116cf5b60471fe55b105b6778a44354`且为detached。
+- 创建提示精确声明FINAL_ANCHOR前只读；收到后只允许P0→P1→P2 train-only可学习性诊断，禁止路由训练、旧DEV、TRAIN_ROUTER_CONFIRM、formal test、负迁移、P5和Task46/50创建。
+- Task Registry升至v1.18；passport升至revision 22；更新项目卡、两份决策日志和版本史，并新增`.light/handoff/S43-task45-diagnostic-authorization.md`。
+- Task40继续`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`；Task46/50不创建；formal test继续零事件。
+
+### 验证与证据
+
+- Codex任务列表返回Task45正式ID、`hostId=local`、`cwd=C:\\Users\\86183\\.codex\\worktrees\\5096\\MMSA-CH-SIMS`和`status=active`；未把临时`client-new-thread`句柄冒充正式ID。
+- `git worktree list --porcelain`确认Task45 worktree存在、HEAD=`560a3dc...`、detached；创建授权文件在新worktree可见。
+- S43 SHA-256=`c427b52f575cd049b4f9e71498e4730be0ff76eef1f7c6b4a34b87d3568d0e83`；授权文件重算SHA-256=`9733559fd2a6f162576e43119698108be3ea521dbd4507f2e01113cd66a5d098`。
+- 创建前本总控worktree的`HEAD=origin/main=560a3dc86116cf5b60471fe55b105b6778a44354`且clean；本批只修改SSOT/交接/日志，不运行模型、不materialize任何数据角色。
+
+### 影响与边界
+
+- Task45现在已创建但仍只读；只有收到总控04随后发送的精确`TASK45_DIAGNOSTIC_FINAL_ANCHOR`才可从P0开始。
+- Task45任一PASS/FAIL/INCONCLUSIVE都必须停止回交，不得自行升级Task46；Task46需要新的预注册、总控审核和用户授权。
+- 论文继续`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`且C1—C3=`TO_VERIFY`；Task45诊断不得进入正式结果主表或覆盖Task40失败。
+- G1—G3、Task10/20/30、I3D UNKNOWN/禁止再分发及Task20受限存储截止均不变。
+
+### 风险、问题与阻塞
+
+- 最大科学风险仍是一般utility routing的新颖性碰撞；即使Task45通过，也只产生窄领域可学习性诊断证据。
+- 旧DEV、TRAIN_ROUTER_CONFIRM或formal test越界访问将造成不可修复的确认污染；P0必须先建立零访问账。
+- Light package的`PLAN_FINDINGS_SCHEMA_GAP`与`PLAN_FINDINGS_GATE_GAP`仍是已记录基础设施例外，不得被写成package gate PASS，也不豁免任何科学门。
+
+### 下一步
+
+1. 运行WORK_LOG validator、S43/passport/Registry定向断言和`git diff --check`。
+2. 提交并推送creation closure到main，记录最终origin/main锚点。
+3. 向Task45发送`TASK45_DIAGNOSTIC_FINAL_ANCHOR`；随后总控只审计P0证据与零访问账，不代跑实验。
+
+### Git状态
+
+本条写入前`HEAD=origin/main=560a3dc86116cf5b60471fe55b105b6778a44354`且工作树clean；当前S43、passport、Registry、项目卡、决策/版本日志与本条WORK_LOG尚未提交或推送。
+
+### 补充验证结果
+
+- 规定的相对`./.venv/Scripts/python.exe`入口在本独立worktree不存在；`validate_work_log.py`与`run_preparation_checks.py`两次调用均为PowerShell `CommandNotFoundException`，未获得可伪称的exit code。该事实与WR-20260806-001记录的本worktree无`.venv`一致。
+- bundled Python运行`validate_work_log.py`返回274条、0错误、latest=`WR-20260806-003`、exit 0。
+- 首次S43/passport断言尝试因bundled Python缺`yaml`返回`ModuleNotFoundError`/exit 1；第二次纯Python命令因PowerShell引号转义形成`SyntaxError`/exit 1。随后改用PowerShell原生字符串与SHA-256断言，返回`S43_PASSPORT_REGISTRY_PASS c427b52f...`、exit 0；失败过程未删除。
+- `git diff --check`返回exit 0。通用准备门在WR-20260806-001已通过最小PyYAML注入推进至同一data-free `HUMAN_GOLD`缺失`FileNotFoundError`/exit 1；本批无新mitigation，不重复包装器或把该门写成PASS。
+- 提交前默认沙箱内`git fetch origin`因共享主仓库gitdir的`FETCH_HEAD`权限拒绝返回exit 255；本地`HEAD`与已有`origin/main`引用仍同为`560a3dc...`。该关键刷新将按受控提权重试，不把失败写成远端无漂移证明。
+- 受控提权重试`git fetch origin`成功、exit 0；刷新后`HEAD=origin/main=560a3dc86116cf5b60471fe55b105b6778a44354`，确认creation closure提交前远端未漂移。
+- 默认沙箱内首次`git add`因共享主仓库gitdir无法创建`index.lock`而失败；没有文件被暂存。将对精确列出的8个closure文件按受控提权重试，不扩大提交范围。

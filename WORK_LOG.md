@@ -12432,3 +12432,48 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 - 同一最小PyYAML注入下，bundled Python成功加载PyYAML 6.0.3和其自身NumPy 2.3.5；`run_preparation_checks.py`推进到既有data-free阻塞后，因本worktree缺`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`返回FileNotFoundError/exit 1。未绕过、未把失败写成通过。
 - 原项目`D:\MMSA-CH-SIMS\.venv\Scripts\python.exe`自身入口绑定已不存在的Python 3.8，三次调用均exit 101；本worktree相对`.venv`不存在。替代bundled WORK_LOG validator返回272条、0错误、latest=`WR-20260806-001`。
 - 最终package gate已消除handoff/术语问题，只剩技能包缺`_shared`导致无法生成`producer=research-plan`的`light.findings.v1`两项schema/gate错误；底层target/failure/lint与plan-gate事实均保留，不制造适配文件绕门。
+
+## WR-20260806-002 — Task45计划锚点推送与精确创建授权
+- 时间：2026-08-06 13:20:27 +08:00
+- 类型：GIT | AUTHORIZATION | TASK_CREATION_PREFLIGHT
+- 任务/门：00总控04 / Task45创建门
+- 状态：`AUTHORIZED_READONLY_PENDING_CREATION_FINAL_ANCHOR`
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+为已冻结的v1.24诊断计划形成远端事实锚点，并在不创建Task46/50、不恢复Task40的条件下签发Task45独立创建与P0→P2诊断授权。
+
+### 实际变更
+
+- 计划/SSOT commit=`8a5ab2c2c543051e00427154db205bb3937de2bf`，已推送`origin/main`；推送前确认远端仍为`96079401518576250c383e2eac5eda81e4769760`。
+- 初次commit遗漏被`.gitignore`排除的实验矩阵；在未推送状态使用`git add -f`纳入并amend，最终远端commit包含29个文件。失败/修正过程未隐匿。
+- 新增`TASK00_TASK45_CREATION_AND_DIAGNOSTIC_EXECUTION_AUTHORIZATION_20260806.md`，SHA-256=`9733559fd2a6f162576e43119698108be3ea521dbd4507f2e01113cd66a5d098`；绑定计划锚点、12项工件hash、串行P0/P1/P2、访问禁令、两条AND主门、固定预算、交付物与tag。
+- Registry改为`AUTHORIZED_READONLY_PENDING_CREATION_FINAL_ANCHOR`；passport升revision 21。Task45尚未创建，线程ID仍为空。
+
+### 验证与证据
+
+- 计划锚点推送回显`9607940..8a5ab2c HEAD -> main`，exit 0。
+- 授权前最终工件hash全部从工作树重算并写入授权；实验矩阵hash=`6da934ca...`，研究方案=`43146a29...`，预注册=`e9778586...`。
+- 计划锚点提交后工作树clean；本授权批次写入后将在创建任务前再次运行WORK_LOG validator、target/failure/lint、hash与diff检查。
+
+### 影响与边界
+
+- Task45可被创建，但收到总控04的`TASK45_DIAGNOSTIC_FINAL_ANCHOR`前只读。
+- Task45唯一执行范围是原train的可学习性诊断；不训练两阶段路由，不访问旧DEV、router-confirm或formal test。
+- Task40、Task30、Task20、G1—G3、I3D和论文claim边界不变；Task46/50仍未创建。
+
+### 风险、问题与阻塞
+
+- 创建后的任务必须精确落在含授权文件的main锚点；若worktree基线漂移或授权hash不符，不得开跑。
+- `light.findings.v1`因技能包`_shared`缺失仍无法生成；该基础设施缺口已在授权第8节显式接受为工具例外，不是科学门豁免。
+
+### 下一步
+
+1. 验证并提交/推送本授权批次。
+2. 创建独立Task45任务，记录线程ID并生成S43。
+3. 推送creation closure，发送FINAL_ANCHOR后Task45才可从P0开始。
+
+### Git状态
+
+本条写入前`HEAD=origin/main=8a5ab2c2c543051e00427154db205bb3937de2bf`且工作树clean；当前授权/台账/日志尚未提交或推送。

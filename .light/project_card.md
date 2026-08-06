@@ -7,7 +7,7 @@ created: 2026-07-17
 ```yaml
 project_name: MMSA-CH-SIMS T-AFFC 总控
 goal: 2027-05-12前形成可直接提交IEEE T-AFFC的CARM群体情绪预测论文、代码、数据说明与证据链
-current_stage: M5b Task45诊断路线已冻结、待独立任务创建；Task40仍关闭，Task46/50未创建，formal test封存
+current_stage: M5b Task45诊断已精确授权、待创建与FINAL_ANCHOR；Task40仍关闭，Task46/50未创建，formal test封存
 confirmed_idea: 无目标评论与分布偏移下的可靠内容到评论者公开表达反应分布预测；Task40原可信路由已失败。v1.24先检验T0诊断能否同时预测历史收益概率与幅度；通过后才可能另行预注册两阶段效用路由。Video2Reaction及一般utility-routing工作均为closest prior，方法首创被阻断
 data_status: G1 PASS；CSMV 8210视频与LAI-GAI 847图两个HUMAN_GOLD主集冻结；G2协议/数据通过；I3D资产外部证明为DEFERRED_ACCEPTED_RISK
 method_status: 任务20保持G3 PASS_WITH_LIMITATIONS；Task30仍CLOSED_NOT_PASSED；Task40仍`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`。Task45只获train-only可学习性诊断资格，不是路由修复；Task46未创建

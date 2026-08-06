@@ -1,6 +1,6 @@
 # IEEE T-AFFC 第四章研究十个月总纲（项目唯一主路线）
 
-> 版本：v1.24（Task40负结果不变；冻结Task45 train-only T0收益可学习性诊断与未来Task46条件边界；v1.17已撤回且不恢复）  
+> 版本：v1.25（Task40/45负结果不变；将未来候选Task46重构为后验效用分布学习与风险约束选择性利用；Task46/50仍未创建，v1.17已撤回且不恢复）  
 > 冻结日期：2026-08-06  
 > 执行周期：2026-07-13—2027-05-12  
 > 首要目标：在2027-05-12前形成可直接提交 IEEE Transactions on Affective Computing（T-AFFC）的CARM群体情绪预测论文、代码、数据说明和完整证据链。  
@@ -171,8 +171,45 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 - 新建独立Task45，只用CSMV原始train。按source-group固定hash分为`TRAIN_DIAG_FIT=3404`、`TRAIN_DIAG_CONFIRM=1154`、`TRAIN_ROUTER_CONFIRM=1140`；最后一部分在Task45完全封存。
 - Task45在FIT内做nested group OOF，只在DIAG_CONFIRM一次性检验`P(Delta>0)`的Brier与`E[max(Delta,0)]`的MAE是否同时优于同容量content-only特征诊断器；响应支持量、`Q05(Delta)`和五seed零`USE_MEMORY`只作机制解释，不能挽救主门。
 - 原DEV_SELECT、DEV_CALIBRATE与formal test不得作为确认集；Task40仍`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`，Task50不创建，旧门不得放宽。
-- Task45通过后也必须停止并交总控。未来Task46只有在新预注册、同预算同coverage强基线、expected-regret/risk-budget三动作与`TRAIN_ROUTER_CONFIRM`一次性门全部冻结后才可能创建；Task46现未创建。主JSD通过前不得检验负迁移或P5。
+- Task45已按原合同停止并回交，因shuffled-target阴性对照异常通过而报告`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY_AWAITING_00_REVIEW`。v1.25不改判Task45；未来Task46只有在新预注册、同预算同coverage强基线、有效跨组负控、expected-regret/risk-budget三动作与`TRAIN_ROUTER_CONFIRM`一次性门全部冻结后才可能创建。Task46现未创建，主JSD通过前不得检验负迁移或P5。
 - 精确合同见`TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md`、预注册、实验矩阵、`.light/carm-v124-*`机读文件与Task45创建授权。
+
+### 0.15 Task45负控失效后的效用学习与风险约束选择（v1.25，`SC-20260806-02`）
+
+用户于2026-08-06明确要求把Task45暴露出的弱排序信号转化为新的科学问题与实验方向：不再把核心问题写成“二分类router能否直接预测`USE_MEMORY`”，而是研究**有限受众响应噪声下，严格T0信息能否估计历史受众反应知识对当前样本的可迁移效用分布，并在风险预算下选择使用历史、回退content或拒答**。该决定批准v1.25路线规划，但不恢复Task40、不把Task45改判为通过、不创建或训练Task46，也不materialize formal test。
+
+#### 0.15.1 Task45结果的允许解释
+
+- Task45代理已从annotated tag回交：相对同容量G0 content-only，`P(Delta>0)`的Brier差为`-0.003122656`、95%CI `[-0.005103636,-0.001159598]`且5/5 seed为负；`E[max(Delta,0)]`的MAE差为`-0.0000674363`、95%CI `[-0.000110523,-0.0000239202]`且5/5 seed为负；secondary Spearman约`0.247—0.291`，预测top decile的平均获益概率高于总体。
+- 但Task45预注册阴性对照异常通过：shuffled-target相对constant的PROB Brier差为`-0.003992584`、MAG MAE差为`-0.003506802`，两者CI均完全小于0。FIT的3404个视频对应3304个source group，绝大多数组为singleton，使旧“组内shuffle”几乎没有改变target。故Task45必须保持`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY`；上述正向量只能标为`EXPLORATORY_SUGGESTIVE_SIGNAL`，不能写成“T0可学习性已证明”或升级C2。
+- Task45的科学信息是：收益概率/幅度可能含弱排序结构，且`P(Delta>0)`与动作价值并不等价；它没有证明动作routing可行，也没有证明弱信号来自合法T0诊断而非无效负控/模型结构。
+
+#### 0.15.2 新问题、estimand与最小方法
+
+- 核心量仍为`Delta_i(theta)=JSD(theta,f0)-JSD(theta,fH)`，其中正值表示memory优于content。不得把符号相反的“损失”混写为负成本。
+- 候选Task46不直接学习二元动作，而分别估计：`p_i(tau)=P(Delta_i>tau)`、后验均值`mu_i=E[Delta_i]`、正收益幅度`m_i+=E[max(Delta_i-tau,0)]`、负收益幅度`m_i-=E[max(-Delta_i-tau_h,0)]`以及`Q05/CVaR`尾部风险。`tau/tau_h`必须在新结果可见前由最小有意义JSD差和风险预算冻结，不能沿用看到Task45后挑选的方便阈值。
+- `theta_i|c_i~Dirichlet(c_i+0.5)`与200 draws保持主分析，`c_i+1`只作敏感性；后验mean/variance/quantile是label，不是查询输入。查询响应数、查询评论、真实`Delta`及任何确认集标签派生量继续禁止进入T0特征。
+- 决策策略只消费OOF校准的效用分布：当净效用下置信界为正且尾部损失在风险预算内时`USE_MEMORY`；净效用非正时`FALLBACK_CONTENT`；方向或风险不可分辨时`ABSTAIN`。`Q05`只作风险约束/否决证据，不再作为唯一监督量迫使模型退化为全fallback。
+- 模型优先最小化：constant、内容置信启发式、相似度+邻居一致性启发式、同容量G0 content-only、HGB/MLP效用预测器；Transformer只在同预算、单变量必要性证据成立后作为补充，不使用MoE或叠加复杂gate追分。
+
+#### 0.15.3 数据身份、负控与确认边界
+
+- CSMV继续承担唯一核心机制开发，不因Task45关闭更换主数据。8210视频、有限响应计数、train-only memory与既有专家接口全部保留。
+- source-group单例只否定“组内shuffle”这个阴性对照，**不否定source-group作为泄漏隔离/cluster bootstrap单位**。主开发继续source-group-disjoint；禁止为提高样本量改成可同源穿越的video-level随机split。
+- 新阴性对照必须跨source group做保边际的derangement/分层置换，并在模型运行前冻结有效性门：target改变率至少95%、置换前后相关接近0（候选硬门`|rho|<=0.10`）、零跨role碰撞且shuffled模型不得优于constant。门未通过即停止，不得消费确认角色。
+- topic或CLIP embedding cluster只能在数据身份、fit-only聚类和跨role零泄漏审计后作secondary稳健性切片；不得用看过label/结果的k-means替代主source-group身份，也不得把“100 clusters”写成未经审计的固定真值。
+- 旧`DEV_SELECT`、旧`DEV_CALIBRATE`和已一次性打开的`TRAIN_DIAG_CONFIRM`均不得再作确认集。`TRAIN_ROUTER_CONFIRM=1140`继续封存；只有未来Task46计划、代码、阈值、负控和公平基线全部冻结并获新精确创建/执行授权后，才可一次性打开。formal test继续零事件。
+
+#### 0.15.4 固定证据顺序与不能降低的成功门
+
+1. `U0_IDENTITY_CONTROL`：独立接受Task45关闭边界；重算FIT/ROUTER_CONFIRM身份、source-group/fold零重叠、旧DEV/DIAG_CONFIRM/formal-test零访问与跨组置换有效性。任一失败即停止。
+2. `U1_UTILITY_LEARNABILITY`：只在`TRAIN_DIAG_FIT`做nested group OOF，比较constant、G0 content-only、G1检索几何/局部密度、G2邻居证据质量/后验不确定性、G3专家分歧/融合偏移及完整模型；primary同时要求效用概率/幅度相对G0改善、有效shuffled-target不异常、五seed方向稳定。Spearman/Pearson、top-10%/20%真实gain和uplift曲线是排序证据，不得单独放行策略。
+3. `U2_POLICY_FREEZE`：在FIT nested OOF内冻结校准器、`tau/tau_h`、expected-regret、风险预算、coverage和三动作规则；不得在`TRAIN_ROUTER_CONFIRM`调阈值。
+4. `U3_ONE_SHOT_POLICY`：一次性打开`TRAIN_ROUTER_CONFIRM`，在同数据、同候选、同预算、同90% coverage下比较always-content、always-memory、fixed fusion、content-entropy selective、Task40 point router、generic gate、SelectiveNet与新策略。最终主门仍是相对每seed最强control的视频级paired JSD差及预注册CI/seed一致性；不能用“Spearman>0”“top-20%有收益”或“coverage 20%优于always-memory”等更容易的代理指标替代。
+5. `U4_NEGATIVE_TRANSFER`：只有U3主JSD通过，才检验负迁移率、routing regret、risk-coverage/AURC与错误邻居/OOD；主JSD失败时固定为`NOT_TESTED`。
+6. `U5_THREE_SOURCE_P5`：只有U3/U4均通过，才执行response thinning、三源不确定性、80/90/95%经验分布区域和条件性Video2Reaction外验；否则P5继续不执行。
+
+Task46状态固定为`PLANNED_NOT_CREATED_PENDING_TASK45_INDEPENDENT_REVIEW_AND_V125_PREREGISTRATION`。创建前必须另有完整target chain、failure tree、公平基线、访问边界、预注册、hash-bound授权与用户明确执行许可。Task50仍`NOT_CREATED_FIXED_ORDER_BLOCKED`。当前论文可使用的叙事方向是“learning the transferable utility of historical audience reactions under risk”，但一般utility prediction、selective prediction和learning-to-defer均已有前作，不能把换头或三动作本身写成方法首创。
 
 这条路线与第四章的对应关系是：
 
@@ -256,12 +293,12 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 - 内容专家在训练和推理时只依赖允许的T0内容模态；
 - 记忆库只存训练视频的内容表示、经验反应分布和置信信息；
 - train内部cross-fitting生成历史专家相对content-only的逐样本净效用，不允许in-sample效用标签；
-- 对可重建的有限响应计数建立后验净收益，以正收益概率和5%下分位区分“平均看起来有用”与“有足够证据值得使用”；
-- 路由器只凭T0查询、train-only邻居相似度/分歧/支持量、合法域距离和模型不确定性预测历史是否有益；
+- 对可重建的有限响应计数建立后验净收益，分别估计正收益概率、期望收益、正/负收益幅度与尾部风险；Task45正向结果因阴性对照失效只作为探索性路线信号；
+- 效用预测器只凭T0查询、train-only邻居相似度/分歧/支持量、合法域距离和模型不确定性学习历史证据的可迁移价值；动作由另行冻结的expected-regret/risk-budget策略产生，不再把`USE_MEMORY`二分类当核心学习问题；
 - 群体分歧、有限响应抽样和模型/OOD不确定性分别验证，并共同支持使用历史、回退content-only或拒答；
 - 对经验反应分布构造校准预测区域，coverage对象与总体人群解释严格分开。
 
-这不是用检索“伪造缺失图像”，也不是一般RAG问答；必须与RAMER、RAER、普通gate/transferability估计、selective prediction和情感conformal prediction前作做差异实验。检索、gate、不确定性分解与预测区域各自均已有前作；C2只有在自然内容—反应错位和Oracle headroom成立、OOF收益路由优于强generic gate并减少自然OOD负迁移、三源各有独立验证时才可作为完整方法候选，否则降级为content-only可靠性测量、协议或负结果研究。
+这不是用检索“伪造缺失图像”，也不是一般RAG问答；必须与RAMER、RAER、普通gate/transferability估计、uplift/value modeling、selective prediction和情感conformal prediction前作做差异实验。检索、效用预测、risk-budget决策、不确定性分解与预测区域各自均已有前作；C2只有在自然内容—反应错位和Oracle headroom成立、严格T0效用分布学习通过有效负控、风险策略在匹配coverage下优于强generic/selective基线并减少自然OOD负迁移、三源各有独立验证时才可作为完整方法候选，否则降级为content-only可靠性测量、协议或负结果研究。
 
 ### C3：分布偏移、自然缺失与选择性可靠性证据
 
@@ -352,7 +389,7 @@ OOF(f0,fH) ──> 历史净效用Delta ──> 收益感知路由器 ───�
 |---|---|---|---|
 | H1（历史开发假设，已关闭未通过） | 评论特权教师能稳定改善内容学生对未来群体反应分布的预测 | Task30仅在dev按冻结合同检验，formal test未materialize | `CLOSED_NOT_PASSED` / `NOT_PASSED_MECHANISM_NOT_STABLE`；v1.23不恢复teacher、不给正式H1结论、不进入主实验 |
 | H2a | 内容相似不保证反应相似，不同样本对历史记忆存在可选择的真实净收益差异 | 控制支持量/source family/抽样不稳定性的连续错位分析；Oracle headroom | 控制混杂后错位消失，或Oracle相对最强单专家/固定融合无稳定headroom：停止训练router |
-| H2b | train内部OOF净效用路由能在T0提前识别有害历史，并在匹配coverage下减少负迁移 | Task40候选已在主JSD门0/5关闭；只有Task45同时证明概率与幅度可学习，且未来另行授权Task46后，才可重新检验同预算强基线、AURC与负迁移率 | Task45任一主诊断不通过/不确定，或未来路由不优于最强简单/generic gate：关闭替代路线 |
+| H2b | train内部OOF后验效用分布能否在严格T0被学习，并经expected-regret/risk-budget策略在匹配coverage下降低历史证据负迁移 | Task40二元/下分位router已在主JSD门0/5关闭；Task45正Brier/MAE与排序相关只作探索性信号且阴性对照失效；未来Task46须先通过跨组负控与nested-OOF效用学习，再在一次性`TRAIN_ROUTER_CONFIRM`上比较同预算强基线、主JSD、AURC与负迁移率 | 有效负控失败、完整T0不优于G0、排序证据不能转化为相对最强control的主JSD改善，或风险策略持续全fallback/伤害：关闭替代路线 |
 | H2c | 群体分歧、有限响应抽样和模型/OOD不确定性可被分别验证，并支持校准的经验分布预测区域 | held-out/split-half反应、评论下采样、ensemble/group-OOD错误；80/90/95% JS区域coverage | 三源不能分别对应各自判据，或预测区域系统性失配：删除三源分解/coverage claim |
 | H3（条件性） | 在同一样本至少含两个T0合法、冻结、实际可得输入模态的协议上，质量/缺失感知可使单一模型平稳退化 | 仅在合格协议上比较`ALL_AVAILABLE_INPUTS`、单模态和随机/自然缺失；CSMV音频记`NOT_APPLICABLE_AUDIO_UNAVAILABLE_BY_DATASET_DESIGN` | 不优于简单late fusion/zero-fill/近期缺失模态基线；若无合格协议则整体降级为`NOT_APPLICABLE_NO_ELIGIBLE_MULTIMODAL_PROTOCOL` |
 | H4（增强） | 配对模态条件能帮助预测加入图像后受众反应分布的变化 | NEmo+上的 `p_TI-p_T`、`p_TI-p_I` | 无法超过独立预测两个分布后相减的简单基线 |
@@ -368,7 +405,7 @@ OOF(f0,fH) ──> 历史净效用Delta ──> 收益感知路由器 ───�
 3. CSMV官方VC-CSA及数据集官方基线；
 4. Video2Reaction双轨强基线：CSMV同split/T0/评测/预算的直接内容模型与LDL公平适配为主对比；其公开原生协议复现与movie-disjoint审计为外部验证；不能执行时提交输入、标签、split、许可、资源与预算差异审计；
 5. 冻结CLIP/SigLIP/VideoMAE + MLP、late fusion、cross-attention；
-6. content-only、memory-only、fixed-fusion、Oracle开发上界、点收益路由与可信净收益路由；
+6. content-only、memory-only、fixed-fusion、Oracle开发上界、Task40点/可信净收益路由，以及候选Task46的constant/G0/效用分布预测与risk-budget策略；
 7. 无检索、随机检索、BM25/TF-IDF、CLIP/SBERT kNN、可学习检索；
 8. RAMER式检索适配；仅在存在至少两个实际T0输入模态的合格协议时运行至少两个缺失模态强基线，否则登记`NOT_APPLICABLE`；
 9. 开源小型MLLM零/少样本参考（仅作对照，不作为公平训练基线的替代）。
@@ -386,6 +423,7 @@ OOF(f0,fH) ──> 历史净效用Delta ──> 收益感知路由器 ───�
 | E4 | OOF点/后验收益路由与三源不确定性 | 固定融合、相似度/熵/OOD/generic gate/SelectiveNet/点收益路由；去router/去rejection及逐一去三源，匹配coverage验证负迁移与预测区域 |
 | E4a | 有限响应稀释与后验敏感性 | CSMV `2/4/8/all`、LAI-GAI边际`8/16/32/all`；Dirichlet(0.5/1)与bootstrap，检查收益符号和路由动作稳定性 |
 | E4b | T0收益可学习性诊断桥 | Task45仅在原train的FIT→DIAG_CONFIRM上检验`P(Delta>0)` Brier与正收益幅度MAE；G0—G3逐组消融与shuffled-target；封存router-confirm |
+| E4c | 后验效用分布学习与风险约束选择 | 候选Task46先在FIT nested group OOF修复跨组负控并学习`p(tau)/mu/m+/m-/Q05或CVaR`，冻结expected-regret/risk-budget三动作；仅在全部选择冻结后一次性使用`TRAIN_ROUTER_CONFIRM`检验matched-coverage主JSD |
 | E5 | 合格协议上的缺失模式和缺失率 | 仅对同一样本至少两个实际T0输入运行缺一/自然/10/30/50/70%缺失；CSMV音频结构性缺失不进入随机删失实验 |
 | E6 | 严格分布偏移 | movie/group、topic/hashtag、publisher/source、time、platform held-out及跨数据域 |
 | E7 | 检索污染与信息隔离负对照 | random/错域/低相似邻居、库缩小、top-k；目标/未来候选注入必须被门拒绝 |
@@ -399,7 +437,7 @@ OOF(f0,fH) ──> 历史净效用Delta ──> 收益感知路由器 ───�
 - 分歧：真实分布熵与预测分布熵的MAE/相关；若定义极化，需另做构念验证；
 - 校准：Brier、ECE/ACE、risk-coverage、AURC；
 - 检索：Recall@K/nDCG@K、检索邻居反应分布一致性、负迁移率；
-- 路由：OOF效用回归/分类、routing regret、有害检索AUROC/AUPRC、被避免负迁移比例；
+- 效用学习与路由：Brier/MAE或预注册的proper loss、Spearman/Pearson、top-k真实gain/uplift、后验校准、routing regret、有害检索AUROC/AUPRC、被避免负迁移比例；排序/富集只作U1证据，最终U3仍以matched-coverage视频级JSD为主门；
 - 三源与区域：split-half/下采样稳定性、OOD高误差识别、80/90/95%经验分布coverage与区域效率；
 - 统计：Task40开发种子冻结为`1364847620/426925854/1839464886/1138176833/484191872`；按数据集原生内容单元（CSMV视频、第二集图像）做paired bootstrap 95%CI；主可靠性终点为90% coverage下可信路由相对最强点/generic router的负迁移率差；三源家族内用Holm校正；
 - 不把seed或fold数量当独立样本量。
@@ -498,14 +536,14 @@ OOF(f0,fH) ──> 历史净效用Delta ──> 收益感知路由器 ───�
 
 - 先完成内容—反应错位的连续分析和人工审计，再运行Oracle headroom门；任一失败即停止router；
 - 建立train-only memory和严格索引生命周期，实现BM25/表示kNN与可学习检索；
-- 用train内部cross-fitting生成`Delta`效用标签，训练只读T0查询与邻居诊断的收益路由；
-- 实现`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`，并与固定融合、相似度/熵/OOD/generic gate/SelectiveNet公平比较；
+- 用train内部cross-fitting生成`Delta`后验效用分布标签；Task40二元/下分位router负结果保持归档，候选Task46先修复跨组阴性对照并诊断T0能否学习概率、幅度、均值与尾部风险；
+- 只有效用学习门通过，才在FIT nested OOF冻结expected-regret/risk-budget的`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`，并在一次性未污染确认角色上与固定融合、相似度/熵/OOD/generic gate/SelectiveNet公平比较；
 - 分别验证群体分歧、有限响应抽样和模型/OOD三源，校准经验分布预测区域；
 - 分别去除memory、benefit target、router、rejection和每个不确定性源，用随机/错误域/低质量邻居检验机制。
 
-交付物：现象与Oracle报告、CARM-v1、OOF效用manifest、H2a—H2c结果、三源验证与预测区域报告、检索可视化、负迁移分析、top-k研究。
+交付物：Task40/45关闭证据、跨组负控有效性报告、OOF后验效用manifest、效用ranking/校准/uplift诊断、风险预算策略冻结、H2a—H2c适用结果、条件性三源验证与预测区域报告、检索可视化、负迁移分析、top-k研究。
 
-止损：错位/Oracle门失败、随机检索与学习检索无差异、收益路由不优于强generic gate、三源不可分别验证，或检索在自然OOD上持续伤害且无法拒绝，均撤掉完整路由创新，转为content-only可靠性测量、协议或负结果论文；不得恢复Task30 teacher掩盖失败。
+止损：跨组负控无效、完整T0效用预测不优于同容量content-only、排序信号不能转化为相对最强control的matched-coverage主JSD改善、三源不可分别验证，或检索在自然OOD上持续伤害且无法拒绝，均撤掉完整路由创新，转为content-only可靠性测量、协议或负结果论文；不得以增加seed、放宽coverage/JSD门或恢复Task30 teacher掩盖失败。
 
 ### 第6月：第一次正式Go/No-Go（2026-12-13—2027-01-12）
 
@@ -727,6 +765,7 @@ flowchart TD
 | 2026-07-28 | `SC-20260728-01`批准Video2Reaction双轨强基线合同 | 它是最新且最直接前作，公开特征/标签足以原生复现，但原始媒体、评论、许可层和银标性质不允许把它直接当第三人工金标主集 | 只引用论文数值；把银标写成人工金标；用原生Top-3 F1与CSMV横比；追溯改写Task20/G3 | A轨在CSMV同协议公平适配；B轨冻结公开revision后做原生复现、movie-disjoint与适用CARM组件；分表报告并保持G1—G3不变 |
 | 2026-08-05 | `SC-20260805-02`冻结有限反应后验净收益与Task40开发预注册 | CSMV聚合分布可精确重建计数，新数据不是核心必需；点收益忽略有限响应噪声 | 先跑Oracle才允许创建Task40的循环门；强制下载Video2Reaction；伪造LAI-GAI联合受试者向量 | 冻结种子、OOF、response thinning、主终点、Holm序列与test禁令；Oracle为Task40内首个开发止损门 |
 | 2026-08-06 | `SC-20260806-01`批准Task45 T0收益可学习性诊断桥并发布v1.24 | Task40有Oracle headroom但五seed零USE_MEMORY且主JSD 0/5；旧DEV已看过；新增近邻阻断一般两阶段utility-router新颖性 | 恢复Task40、在旧DEV_CALIBRATE调阈值、立即训练双头路由、增加seed或放宽旧门 | 三分原train，Task45只做概率+幅度可学习性诊断；router-confirm封存，Task46须另行预注册/授权，Task50与formal test仍阻断 |
+| 2026-08-06 | `SC-20260806-02`发布v1.25，将候选Task46重构为后验效用分布学习与风险约束选择性利用 | Task45的Brier/MAE和排序统计呈探索性正信号，但组内shuffle因source-group几乎全为singleton而失效；`P(Delta>0)`不等于动作价值，Task40的Q05监督又退化为全fallback | 把Task45改判PASS；用video-level随机split；在已看过的DIAG_CONFIRM调阈值；以Spearman/top-k替代最终JSD；增加复杂gate/MoE追分 | Task45保持not-passed；CSMV/source-group主身份不变，负控改跨组有效置换；先nested-OOF学习`p/magnitude/mean/risk`，再冻结expected-regret/risk-budget三动作；Task46仅规划未创建，formal test与Task50继续阻断 |
 
 ## 15. 后续每项任务的引用格式
 
@@ -762,11 +801,11 @@ flowchart TD
 
 ## 17. Codex任务树详细执行规格
 
-> 规格版本：v1.8  
+> 规格版本：v1.9  
 > 初次并入：2026-07-14；本次修订：2026-08-06  
 > 权威性：本节是总纲的一部分，负责规定00—60各Codex任务的启动条件、执行步骤、质量水平、退出门和交接要求。  
 > 独立文件 `CODEX_TASK_TREE_EXECUTION_SPEC.md` 仅作为便捷副本；若与本节冲突，以本总纲第17节为准。
-> v1.8修订边界：保留Task40关闭事实；新增Task45 train-only可学习性诊断与封存`TRAIN_ROUTER_CONFIRM`，未来Task46须另行预注册和授权。不改写Task30/40失败、G1—G3、Task20或I3D风险，不恢复v1.17硬效应门。
+> v1.9修订边界：保留Task40/45关闭事实；把未来Task46从二元动作分类重构为后验效用分布学习、有效跨组负控与expected-regret/risk-budget选择性策略，仍须另行预注册、精确授权和独立任务。不改写Task30/40/45失败、G1—G3、Task20或I3D风险，不恢复v1.17硬效应门。
 
 ### 1. 全任务统一规则
 
@@ -779,8 +818,8 @@ flowchart TD
             └─ G3通过后创建 30-M4 评论教师与内容学生（已CLOSED_NOT_PASSED）
                  └─ 40-M5净效用反应记忆已CLOSED_NOT_PASSED_ROUTER_MAIN_JSD
                       └─ 用户批准v1.24诊断方向 + 00计划/数据/查新门 + 独立创建授权
-                           └─ 45-M5b T0历史收益可学习性诊断
-                                └─ 仅Task45通过且00另行预注册/授权时才可创建46；50仍被阻断
+                           └─ 45-M5b T0历史收益可学习性诊断已回交CLOSED_NOT_PASSED、待00独立终审
+                                └─ 用户批准v1.25效用分布方向；46仅规划，须新预注册/精确授权后才可创建；50仍被阻断
 ```
 
 后续任务不得提前创建。若上游门失败，应在上游任务修复或执行止损，不以“先开下一个任务”绕过问题。
@@ -790,7 +829,7 @@ flowchart TD
 每个任务首次回复和每个正式实验必须填写：
 
 ```text
-主纲版本：v1.24（2026-08-06）
+主纲版本：v1.25（2026-08-06）
 任务编号与名称：
 所属月份/工作包：M? / E?
 服务假设：H? / C?
@@ -1226,7 +1265,7 @@ Task45是Task40关闭后的独立诊断桥，不是修复批次。它只检验�
 
 #### 6A.3 退出门
 
-只有概率Brier差和幅度MAE差的source-group cluster-bootstrap 95%CI上界均小于0、各自至少4/5 seed方向为负、shuffled-target不异常优于constant且所有guardrail通过，才可标`PASS_LEARNABILITY_DIAGNOSTIC`。失败或不确定均不得创建Task46；通过也不自动创建Task46、训练路由器、访问`TRAIN_ROUTER_CONFIRM`或materialize formal test。
+只有概率Brier差和幅度MAE差的source-group cluster-bootstrap 95%CI上界均小于0、各自至少4/5 seed方向为负、shuffled-target不异常优于constant且所有guardrail通过，才可标`PASS_LEARNABILITY_DIAGNOSTIC`。Task45实际两条primary表面通过，但两条shuffled-target均异常优于constant，故必须按原预注册标`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY`，不得事后改判。v1.25允许总控基于用户新方向另行规划Task46，不代表Task45通过，也不自动授权训练、访问`TRAIN_ROUTER_CONFIRM`或materialize formal test。
 
 #### 6A.4 禁止
 
@@ -1234,6 +1273,59 @@ Task45是Task40关闭后的独立诊断桥，不是修复批次。它只检验�
 - 禁止增加seed、改变primary metric、放宽CI门、交换三角色或在DIAG_CONFIRM调参；
 - 禁止执行`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`路由、matched-coverage主JSD、负迁移或P5；
 - 禁止把通用效用路由、拒答或概率+幅度双头写成方法首创。
+
+#### 6A.5 执行回执与证据边界
+
+- Task45代理已交付annotated tag `task45-t0-benefit-learnability-development-20260806`和`HANDOFF_45.md`，状态为`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY_AWAITING_00_REVIEW`；总控04尚须独立复核hash、one-shot、validators、线程数偏差与零访问账后才能接受行政关闭。
+- Brier/MAE改善、Spearman约0.247—0.291、top-decile enrichment及G3消融只允许标为探索性路线信号；阴性对照失效后不能支持可学习性、路由、C2/C3或论文正式结果。
+- `TRAIN_DIAG_CONFIRM`已经看过，永久不得复用为确认集；`TRAIN_ROUTER_CONFIRM`仍保持零访问、未materialize和封存。
+
+---
+
+### 6B. 候选任务46：后验效用分布学习与风险约束选择性利用
+
+#### 6B.1 定位与状态
+
+Task46回答的不是“能否直接分类`USE_MEMORY`”，而是“严格T0诊断能否估计历史受众反应知识的可迁移效用分布，以及该估计能否在冻结风险预算下改善相对最强content/selective基线的实际分布预测”。工作标题方向为`Learning When Historical Audience Reactions Are Trustworthy for Affect Distribution Forecasting`，但标题和方法名均为候选，不构成首创或有效性claim。
+
+当前状态：`PLANNED_NOT_CREATED_PENDING_TASK45_INDEPENDENT_REVIEW_AND_V125_PREREGISTRATION`。本总纲只批准方向设计；创建和执行必须另有用户明确授权、00 hash-bound创建合同及独立worktree。Task40不得恢复，Task45不得补跑。
+
+#### 6B.2 创建前必须冻结
+
+1. Task45独立关闭审核与阴性对照根因报告；
+2. CSMV原train角色、FIT folds和`TRAIN_ROUTER_CONFIRM`零访问hash；
+3. 跨source-group derangement/分层置换算法及至少95% target变化、`|rho|<=0.10`、零role碰撞和shuffled不得优于constant的有效性门；
+4. question→estimand→endpoint→falsifier→action target chain，以及success/failure/inconclusive failure tree；
+5. `tau/tau_h`、SESOI、posterior draws、proper loss、comparison family、expected-regret/risk-budget、coverage与一次性打开规则；
+6. constant、always-content、always-memory、G0 content-only、similarity/agreement heuristic、fixed fusion、content-entropy selective、Task40 point router、generic gate、SelectiveNet及新效用策略的同数据/同容量/同调参预算合同；
+7. 代码、配置、环境、种子、artifact hash、访问账和失败运行保留规则。
+
+#### 6B.3 串行步骤
+
+1. **P0身份/负控门**：只读重算FIT与ROUTER_CONFIRM身份、fold/source-group零重叠、旧DEV/DIAG_CONFIRM/formal-test零事件；在FIT上验证跨组负控改变率、相关和边际保持。失败立即关闭，不能打开ROUTER_CONFIRM。
+2. **P1后验效用target**：只在FIT的expert OOF预测上生成`Delta`posterior draws、`p(tau)`、`mu`、`m+`、`m-`和`Q05/CVaR`；记录response-support分层但不把查询支持量作为T0输入。
+3. **P2 nested-OOF可学习性**：固定五seed，在source-group nested OOF内比较constant/G0/启发式/完整G0—G3/diagnostics-only/有效shuffled/random-neighbor；primary要求概率与幅度proper loss相对G0有预注册CI改善、五seed方向稳定且所有负控合格。Spearman/Pearson、top-10%/20% gain、uplift曲线和posterior校准同时全量报告，但不能单独放行。
+4. **P3策略冻结**：仅在FIT OOF内完成校准、`tau/tau_h`、expected-regret、risk budget、LCB/CVaR约束和三动作映射；阈值不得以期望动作比例或确认集性能反推。
+5. **P4一次性确认**：所有选择与hash冻结后仅打开一次`TRAIN_ROUTER_CONFIRM`；在相同90% coverage和固定五seed下做视频级paired JSD相对每seed最强control的主比较。主门与Task40公平标准同强度，不得因为Task40失败而放宽。
+6. **P5固定顺序**：P4主JSD通过后才检验可信负迁移、routing regret、risk-coverage/AURC、错误邻居/OOD；这些再通过才执行response thinning、三源不确定性、预测区域和条件性Video2Reaction外验。
+7. **回交**：任何PASS/FAIL/INCONCLUSIVE均停止，交付annotated tag、machine/human reports、paired evidence、全部失败运行、hash、tests/validators和零formal-test账，等待00独立裁定；不得自行创建Task50。
+
+#### 6B.4 机制化特征组与消融
+
+- G0 content state：预测分布、entropy、margin、序列长度与合法missing mask；
+- G1 retrieval geometry：top-k similarity、margin、local density、effective-neighbor count、hubness/source diversity与fit-only top-k扰动稳定性；
+- G2 historical evidence quality：仅train-neighbor响应支持、后验方差、邻居反应分布离散度及support-weighted uncertainty；
+- G3 expert interaction：content/memory预测差、expert JSD/L1、最大类别偏移、fusion shift与entropy difference。
+
+每组必须对应一个可证伪机制假设和单变量消融。Task45去G3后误差上升只能用于安排优先级，不能当作已确认贡献。新增特征组必须先证明T0可得和独立机制价值；不得以Transformer、MoE或更多模块数量替代证据。
+
+#### 6B.5 成功、失败与claim影响
+
+- `P2_PASS_UTILITY_LEARNABILITY`只说明合法T0诊断对后验效用具有超出content-only与有效负控的有限预测/排序信息；不等于动作有效。
+- `P4_PASS_POLICY_MAIN_JSD`要求新策略在匹配coverage下相对每seed最强control满足预注册的视频级JSD CI和seed一致性门；这是进入负迁移/P5的必要门。
+- P2通过而P4失败：论文只允许报告探索性utility measurement/negative policy result，不得声称选择性利用有效。
+- P2失败或负控失败：关闭Task46，不改数据、不增加seed、不换metric、不在确认角色调阈值。
+- P4/P5通过仍只是development evidence；Task50/formal test须用户另行授权，C1—C3继续`TO_VERIFY`直至正式证据验收。
 
 ---
 
@@ -1439,8 +1531,8 @@ Task45是Task40关闭后的独立诊断桥，不是修复批次。它只检验�
 | 20 | 30 | evaluation-kit、强基线、G3 | 不可并行改评测器和teacher主线 |
 | 30/00 | 40 | Task30负结果边界、冻结content-only接口、v1.23计划/数据/预注册门与独立创建授权 | Task30不再修改；Task40获授权前不可建正式memory或训练router |
 | 40/00 | 45 | Task40负结果、v1.24诊断计划、三角色隔离与精确创建授权 | Task40保持关闭；Task45不得读取旧DEV或训练路由 |
-| 45/00 | 46（条件） | 两条可学习性primary、零访问账与独立审核 | Task45通过也须另行预注册/授权；Task46当前未创建 |
-| 46（条件） | 50 | 新路由主JSD、负迁移、P5与完整冻结结论 | 46不存在或任一前序门失败时50保持阻断 |
+| 45/00 | 46（候选） | Task45 not-passed关闭包、探索性弱信号、失效负控根因、零访问账与00独立审核 | v1.25只批准重规划；Task45不得改判或补跑，Task46须新预注册/精确授权且当前未创建 |
+| 46（候选） | 50 | 有效跨组负控、效用学习门、一次性policy主JSD、负迁移、P5与完整冻结结论 | 46不存在或任一前序门失败时50保持阻断 |
 | 50 | 60 | 冻结结果、统计、claim-evidence、G6 | 写作骨架可早建，但主结果/结论不得提前定稿 |
 | 60 | 00 | submission-ready包和Go证据 | 由00执行最终Go/No-Go |
 
@@ -1453,8 +1545,8 @@ Task45是Task40关闭后的独立诊断桥，不是修复批次。它只检验�
 5. 任务20正式核心和既有探索已由00接受收尾，状态为`CLOSED_ACTIVE_TIME_BOUND_RETENTION`；唯一后续是2026-08-31 23:59:59 +08:00前后的受限存储可见层删除验收，当前不得写成已删除。
 6. 任务30已由00以`CLOSED_NOT_PASSED`关闭：H1开发机制跨种子不稳定，formal test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`，不授权修复。
 7. Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`已由总控04独立审核并以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭：P0/P1/P2通过，P3/P4主JSD门0/5；可信负迁移未检验，P5未执行，formal test零事件。
-8. 用户已批准v1.24重新规划方向；00完成可发表性/数据身份/可学习性审计后创建独立Task45，只执行train内部nested group OOF诊断。Task45不得修复Task40、读取旧DEV/`TRAIN_ROUTER_CONFIRM`/formal test或训练两阶段路由器。
-9. Task46与Task50当前均未创建。Task45两条primary通过后仍须00另行预注册并由用户授权Task46；未来Task46主JSD通过前不得检验负迁移或P5，formal test继续封存。
+8. Task45已回交`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY_AWAITING_00_REVIEW`：两条primary表面改善，但两条shuffled-target阴性对照异常通过；总控须独立审核后关闭，禁止补跑或把探索性Brier/MAE/Spearman写成已证明。
+9. 用户以`SC-20260806-02`批准v1.25后验效用分布学习与风险约束选择方向；00下一步应冻结Task46的可发表性/数据身份/跨组负控/target chain/failure tree/公平基线/访问边界与预注册。Task46与Task50当前均未创建；未经新精确授权不得训练或打开`TRAIN_ROUTER_CONFIRM`，formal test继续封存。
 
 ### 11. 每个任务的完成定义
 

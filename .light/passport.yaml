@@ -2,14 +2,14 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-06T13:32:45+08:00"
+updated: "2026-08-06T23:48:46+08:00"
 current_stage: 45
-state_revision: 23
-state_hash: "sha256:c427b52f575cd049b4f9e71498e4730be0ff76eef1f7c6b4a34b87d3568d0e83"
+state_revision: 24
+state_hash: "sha256:a0bf3de35b6554ec38e04719ebc4b6dca11078d41b91b993397c82592bb20085"
 evidence_state: PLANNED
-next_action: independently audit Task45 P0 identity, role counts, zero-overlap and zero-access evidence before allowing the already-frozen sequence to continue; do not execute Task45 core work
-delivery_status: TASK45_FINAL_ANCHOR_DELIVERED_P0_ONLY
-delivery_authorization_id: AUTH-00-TASK45-T0-BENEFIT-LEARNABILITY-20260806
+next_action: independently audit the Task45 annotated-tag closeout including invalid negative-control root cause, one-shot evidence, hashes, validators, thread-count deviation and zero-access ledger; then freeze the full v1.25 Task46 preregistration package without creating or executing Task46
+delivery_status: IN_PROGRESS
+delivery_authorization_id: null
 stages:
   - stage: 10
     status: delivered
@@ -54,12 +54,12 @@ stages:
     gaps: [formal H2b was not adjudicated on formal test; C2 development candidate is closed and unsupported; negative migration was not tested; P5 thinning, three-source uncertainty and prediction regions were not executed; C3 is untested rather than refuted; Video2Reaction native track remains unauthorized and conditional]
   - stage: 45
     depends_on: [40]
-    status: active_p0_only_final_anchor_delivered
-    node_kind: diagnostic_bridge
-    evidence_state: PLANNED
+    status: gate_failed
+    node_kind: pipeline
+    evidence_state: FAILED
     skill: light-research-plan
     input: "v1.24 publishability/data/target/failure/preregistration package, original CSMV train identity, frozen Task40 negative boundary"
-    output: "strict-T0 posterior benefit-probability and positive-benefit-magnitude learnability diagnosis only"
-    artifacts: [TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md, TASK00_TASK45_CREATION_AND_DIAGNOSTIC_EXECUTION_AUTHORIZATION_20260806.md, experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md, .light/carm-v124-data-identity-fitness.json, .light/carm-v124-target-chain.json, .light/carm-v124-failure-tree.json, .light/carm-v124-access-boundary.json]
-    gate: {type: confirm, result: PENDING_EXECUTION, evidence: "sha256:43146a2952128df25001f3e7476c44dc54db3e9f3d2ac68c1839dbc7a9065ddf", timestamp: "2026-08-06T00:00:00+08:00", notes: both Brier and MAE primary endpoints must pass; no router training, old dev, router-confirm or formal test, evidence_state: PLANNED, fresh: true}
-    gaps: [Task45 P0 not yet independently audited; learnability untested; Task46 not created; formal test remains sealed; I3D external license revision and rightsholder fixity remain UNKNOWN]
+    output: "agent-delivered CLOSED_NOT_PASSED T0 learnability diagnostic; real Brier/MAE and ranking signals remain exploratory because both shuffled-target controls abnormally passed"
+    artifacts: [TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md, TASK00_TASK45_CREATION_AND_DIAGNOSTIC_EXECUTION_AUTHORIZATION_20260806.md, experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md, .light/carm-v124-data-identity-fitness.json, .light/carm-v124-target-chain.json, .light/carm-v124-failure-tree.json, .light/carm-v124-access-boundary.json, HANDOFF_45.md]
+    gate: {type: confirm, result: FAIL, evidence: "sha256:e1e8a45bfd6ba9fc725d099b7d500584d6ba39c390602d48f48b78690580aa5a", timestamp: "2026-08-06T23:48:46+08:00", notes: agent-delivered closeout is awaiting final independent hash review; both primary endpoints superficially passed but both shuffled-target negative controls abnormally passed; Task45 remains CLOSED_NOT_PASSED and cannot be rerun or reclassified, evidence_state: FAILED, fresh: true}
+    gaps: [total control 04 has not yet completed the final annotated-tag hash and validator audit; within-source-group shuffle was ineffective because nearly all FIT groups are singletons; actual torch thread count differed from config; Task46 not created; formal test remains sealed; I3D external license revision and rightsholder fixity remain UNKNOWN]

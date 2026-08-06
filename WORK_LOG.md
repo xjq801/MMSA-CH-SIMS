@@ -12584,3 +12584,59 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 ### Git状态
 
 本条写入前`HEAD=origin/main=1c95a3514a82fdb69797deb56d6cd7b957f722c7`且工作树clean；本条行政closure及对应台账更新尚未提交或推送。
+
+## WR-20260807-001 — 总纲v1.25后验效用学习路线冻结
+
+- 时间：2026-08-07 00:01:33 +08:00
+- 类型：DECISION | RESEARCH_PLAN | SSOT | CLAIM_BOUNDARY | HANDOFF
+- 任务/门：00总控04 / Task45负控失效解释与Task46创建前路线门
+- 状态：路线已合并；Task45最终独立审核与Task46完整预注册待完成
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+用户明确要求把Task40/45讨论转化为新思路和实验方向并合并进总纲：保留CSMV，把直接`USE_MEMORY`二分类改成先预测历史反应memory的效用分布，再按风险预算做选择性利用。总控须同时防止把Task45弱相关信号误写成已证明可学习性，或把本次路线决定误作Task46立即创建/训练授权。
+
+### 实际变更
+
+- 将`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升至v1.25、第17节任务规范v1.9，新增`SC-20260806-02`、Task45负控失效边界与候选Task46 U0—U5串行设计。
+- 冻结后验效用目标：`p_tau`、`mu_Delta`、正负尾幅度及`Q05/CVaR`候选；估值层先过有效负控、校准和排序门，决策层再按expected regret/risk budget产生`USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`。
+- 保留CSMV及source-group-disjoint主身份；source-group单例只否定组内shuffle，不授权video random split。未来负控要求跨source-group derangement/permutation并预冻结至少95% target改变、`|rho|<=0.10`；topic/CLIP cluster只允许作FIT内secondary robustness。
+- 明确Spearman、MAE/Brier、top-k enrichment和uplift只支撑learnability/ranking诊断，不能替代最终matched-coverage主JSD；Task40仍永久`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`。
+- 将Task45真实标签Brier/MAE及Spearman结果限定为`EXPLORATORY_SUGGESTIVE_SIGNAL`：两条shuffle负控均异常优于constant，Task45保持`CLOSED_NOT_PASSED`且不得重跑或用已看DIAG_CONFIRM修补。
+- 同步`AGENTS.md`、`TASK_REGISTRY.md` v1.20、`CLAIM_EVIDENCE_MATRIX.md` v1.7、`RISK_REGISTER.md`、两份decision log、`.light/project_card.md`、`.light/terminology.md`、`.light/version_history.md`和`.light/passport.yaml` revision 24。
+- 新增`.light/handoff/S44-v125-utility-learning-route.md`；Task46仅`PLANNED_NOT_CREATED`，没有训练、数据角色访问、formal-test materialization或Task50创建。
+
+### 验证与证据
+
+- 开工基线刷新为`HEAD=origin/main=fdaaf117e67eb442c412303969d33dd31ce09b01`；`git log -3`确认最近三条为`fdaaf11/1c95a35/560a3dc`。
+- 底层`passport.py validate --file .light/passport.yaml`最终返回verdict `WARN`/exit 0，state hash=`sha256:a0bf3de35b6554ec38e04719ebc4b6dca11078d41b91b993397c82592bb20085`；唯一WARN是既有stage10 PASS占位缺hash/timestamp。首次校验曾因草案使用非schema状态枚举与占位hash返回FAIL，已改为合法`gate_failed/pipeline/FAIL`并从passport移除未创建的stage46节点，失败过程未隐匿。
+- `light-consistency`以`.light/terminology.md`为事实源扫描8份核心材料，exit 0：0 substitution、0 variant/metric/claim-strength/contribution硬冲突；1项Markdown事实源部分覆盖WARN与11项coverage INFO，不冒充完整claim/metric registry审计。
+- `handoff_contract.py --card .light/handoff/S44-v125-utility-learning-route.md --as-of 2026-08-06`前两轮因缺v2 frontmatter/标准章节及验证/动作措辞返回FAIL；按模板补齐后最终PASS/exit 0，S44 SHA-256=`2daf5696cbbba6a3b39a9a4b43565fbce1eec9140bbd4ba7f31efacdb9b00ca0`。
+- `git diff --check`在S44形成前后均exit 0。
+- AGENTS规定的相对`.venv`入口不存在，两条命令均为PowerShell `CommandNotFoundException`，无可用exit code；替代系统Python运行`validate_work_log.py`在追加本条前返回275条、0错误、latest=`WR-20260806-004`、exit 0。
+- 系统Python运行`run_preparation_checks.py`仍在`m2_data_engineering`因本独立data-free worktree缺`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`返回`FileNotFoundError`/exit 1；未绕过、未重复`pm.py`包装器、未写成PASS。
+
+### 影响与边界
+
+- 论文故事候选从“动作router”调整为“估计历史受众反应的可迁移效用并进行风险约束选择”，但论文仍是`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`且C1—C3=`TO_VERIFY`。
+- 本批不创建Task46；创建前仍需Task45最终独立审核、完整数据身份/target/failure/公平基线/access/有效负控/预注册、用户新执行授权与hash-bound锚点。
+- G1—G3、Task10/20/30、I3D许可/revision/权利方身份/fixity UNKNOWN及禁止再分发、Task20受限存储截止`2026-08-31 23:59:59 +08:00`均不变。
+- 旧DEV、`TRAIN_ROUTER_CONFIRM`与formal test保持封存，Task50不创建。
+
+### 风险、问题与阻塞
+
+- Task45两条shuffle负控异常通过，弱信号可能来自折分/身份/目标结构；在有效跨组负控通过前不得声称T0效用可学习。
+- 排序相关性与top-k富集不保证matched-coverage JSD净收益；memory误用损失不对称可能继续导致全fallback。
+- 已看旧DEV和DIAG_CONFIRM不可再作为确认集；未来新确认身份必须在Task46创建前冻结，且不得用video random split掩盖source identity问题。
+- 通用准备门仍受data-free HUMAN_GOLD缺失阻塞；本批无新mitigation。
+
+### 下一步
+
+1. 从Task45 annotated tag独立复核全部hash、validator、失败run、线程数偏差与零访问账，签发最终关闭裁定。
+2. 冻结Task46完整machine-readable预注册包，但继续保持任务未创建、未授权和未训练。
+3. 仅在用户另行明确执行授权后签发hash-bound Task46创建合同；继续封存Task50与formal test。
+
+### Git状态
+
+本条写入前分支为`codex/total-control04-task45-plan`，`HEAD=origin/main=fdaaf117e67eb442c412303969d33dd31ce09b01`；总纲v1.25、同步SSOT、本S44和本条WORK_LOG均为未提交、未推送变更，不得写成远端已同步。

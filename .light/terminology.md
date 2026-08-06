@@ -6,15 +6,18 @@
 | 构念观测边界 | 评论者公开表达的诱发反应分布 | — | publicly expressed induced-reaction distribution among commenters | 不代表所有观看者内在心理状态或总体人口参数 |
 | 方法工作代号 | 受众反应记忆 | CARM | Audience-Response Memory | 仅历史工作包代号；完整方法尚未验证，且CARM重名，不得作为正式标题或首创标识 |
 | C1贡献边界 | 严格T0受众反应分布预测协议与证据 | — | strict-T0 audience-reaction distribution protocol and evidence | Video2Reaction已覆盖任务层目标；禁止“首次video-to-reaction-distribution” |
-| C2候选差异 | train-only历史反应净效用与三源可靠性 | — | train-only historical-reaction utility and tri-source reliability | Task30评论teacher保持关闭；组件各有前作，只有统一判别实验通过才可作完整方法claim |
-| C2核心候选机制 | OOF收益感知可靠性路由 | — | out-of-fold benefit-aware reliability routing | 用train内部OOF误差差学习历史相对content-only是否有益；推理只看T0查询与邻居诊断；须优于固定融合、相似度/熵/OOD/generic gate和SelectiveNet并减少自然负迁移 |
+| C2候选差异 | train-only历史反应后验效用与风险约束选择 | — | train-only posterior utility of historical reactions and risk-controlled selection | Task30/40/45负边界保持；一般utility/selective routing各有前作，只有领域测量、有效负控和实际策略证据链通过才可作完整方法claim |
+| C2核心候选机制 | OOF后验效用分布学习与风险预算策略 | — | out-of-fold posterior utility-distribution learning with a risk-budget policy | 先学习`p(tau)/mu/m+/m-/Q05或CVaR`，再由expected-regret/risk budget映射三动作；推理只看T0查询与train-only邻居诊断；须通过有效跨组负控并优于固定融合、content-entropy/generic gate和SelectiveNet |
 | 三源不确定性 | 群体分歧、有限响应抽样与模型/OOD不确定性 | — | group disagreement, finite-response sampling, and epistemic/OOD uncertainty | 三源必须各有held-out、重采样或自然OOD判据；不得由单一浓度参数自证 |
 | 预测区域 | 经验反应分布预测区域 | — | prediction region for the empirical reaction distribution | 报告80/90/95% coverage；不保证沉默观看者或总体人口潜在情绪；集合大小不直接等同群体分歧 |
 | 路由动作 | 使用历史/纯内容回退/拒答 | — | use memory / fall back to content / abstain | 阈值仅在dev预注册规则下选择，formal test不可用于选择 |
 | Task45主目标 | 后验获益概率 | b | posterior probability of positive historical benefit | `P(Delta>0)`；是训练target，不是T0输入 |
 | Task45主目标 | 后验正收益幅度 | m | posterior expected positive-benefit magnitude | `E[max(Delta,0)]`；与概率组成AND诊断门 |
 | Task45角色 | 诊断拟合/诊断确认/路由确认 | — | TRAIN_DIAG_FIT / TRAIN_DIAG_CONFIRM / TRAIN_ROUTER_CONFIRM | Task45只可用前两者；最后一者完全封存 |
-| 可发表性边界 | T0历史收益可学习性诊断 | — | strict-T0 historical-benefit learnability diagnosis | 一般两阶段utility router不是方法首创；Task45结果不升级正式claim |
+| Task45结果边界 | 探索性弱效用信号、可学习性未通过 | — | exploratory weak utility signal; learnability not passed | Brier/MAE/Spearman因shuffled-target负控失效不能支持正式可学习性；Task45不得改判或补跑 |
+| Task46候选目标 | 后验历史效用分布 | — | posterior distribution of historical-reaction utility | `Delta=JSD(content)-JSD(memory)`；估计`p(tau)/mu/m+/m-/Q05或CVaR`，label不是T0输入 |
+| Task46候选策略 | 期望后悔与风险预算选择 | — | expected-regret and risk-budget selection | `USE_MEMORY/FALLBACK_CONTENT/ABSTAIN`由冻结策略产生；Q05只作风险约束，不作为唯一动作监督 |
+| 可发表性边界 | 有限受众响应噪声下的T0历史效用测量与选择性利用 | — | strict-T0 historical-utility measurement and selective use under finite-response noise | 一般utility prediction/selection不是方法首创；Task45结果不升级正式claim，Task46仍未创建 |
 | 论文定位 | 分布偏移与目标响应不可用下的可靠内容到受众反应分布预测 | — | reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses | Video2Reaction为closest/direct prior |
 | 直接前作 | Video2Reaction | V2R | Video2Reaction | 共同任务必须承认；workshop展示确认、归档状态待核；ECCV为作者报告待正式条目 |
 | V2R标签层级 | LLM生成且人工核验银标 | SILVER_LLM_HUMAN_VERIFIED | LLM-derived, human-verified silver labels | 不是逐样本HUMAN_GOLD，不替代CSMV/LAI-GAI主测试 |

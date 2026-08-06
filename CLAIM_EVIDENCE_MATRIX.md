@@ -1,12 +1,12 @@
 # Claim—Evidence矩阵
 
-> 版本：v1.6；日期：2026-08-06  
+> 版本：v1.7；日期：2026-08-06  
 > 原则：没有证据的主张保持`TO_VERIFY`，不得写成论文结论；`TO_VERIFY`不等于仍有实验授权。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
 |---|---|---|---|---|---|
 | C1 | 无泄漏T0协议能形成可审计的公众公开表达诱发反应分布预测证据 | 两个公开人工标注集、内容单元划分、物理泄漏隔离、Data Card | G1/G2、E0、`T0_INPUT_POLICY.md` | TO_VERIFY | 仅可描述协议/证据贡献；任务与分布输出均不称首创 |
-| C2 | train-only反应记忆的OOF效用能否在严格T0被学习，并在未来另行冻结的路由中减少错误历史证据负迁移 | Task45先独立检验`P(Delta>0)` Brier与正收益幅度MAE；只有通过后，未来Task46才可比较content-entropy/point/generic/SelectiveNet/fixed fusion与matched coverage主JSD | H2a/H2b、E2/E4/E4b/E7、Task40关闭证据、Task45 v1.24预注册 | TO_VERIFY | Task40候选已关闭；Task45只是诊断且不得升级C2。两阶段utility router不是方法首创；Task46/50均未创建 |
+| C2 | train-only历史反应的后验效用分布能否在严格T0被学习，并经风险预算选择在匹配coverage下减少错误历史证据负迁移 | Task45 not-passed包只提供探索性Brier/MAE/排序信号；未来Task46须先通过有效跨组负控和FIT nested-OOF概率/幅度/均值/风险学习，再一次性比较content-entropy/point/generic/SelectiveNet/fixed fusion与matched-coverage主JSD及负迁移 | H2a/H2b、E2/E4/E4b/E4c/E7、Task40关闭证据、Task45关闭包、总纲v1.25 | TO_VERIFY | Task40/45候选均已关闭或待行政终审；探索性ranking不是动作证据。一般utility/selective router不是方法首创；Task46/50均未创建 |
 | C3 | 群体分歧、有限反应抽样和模型/迁移不确定性能被分别验证，并支持校准的经验反应分布预测区域与选择性可靠性 | held-out/split-half反应；2/4/8/all与8/16/32/all thinning；ensemble/自然group-OOD；单源消融；80/90/95% coverage+width；严格分组与外部边界 | H2c、E4/E5/E6、CAL-01；Task40 P5未执行报告 | TO_VERIFY | 固定顺序阻断后只能写“未检验”；不得宣称三源无效、区域未校准、区域保证、所有观众或因果效应 |
 | H1-R | Task30评论特权teacher开发假设 | 冻结Task30开发包；未触及formal test | Task30 | RETIRED_FROM_ACTIVE_CLAIM_SET_DEVELOPMENT_NOT_PASSED | 不得写为正式H1被反驳；不得恢复主方法或进入正式表 |
 
@@ -24,9 +24,17 @@
 
 - 用户批准重新规划，不等于恢复Task40。Task40状态与旧主JSD失败永久保留。
 - Task45只在CSMV原train三角色中使用FIT与DIAG_CONFIRM；`TRAIN_ROUTER_CONFIRM`、旧DEV和formal test事件必须为0。
-- 两条primary是`P(Delta>0)` Brier与正收益幅度MAE相对同容量content-only特征的AND门。`Q05`、响应支持量和五seed零动作只作secondary解释。
-- Task45 PASS也只允许总控考虑新Task46预注册，不支持路由有效性、负迁移、P5、C2或C3升级。
+- 两条primary相对同容量content-only的Brier/MAE均表面改善且5/5方向为负，但两条shuffled-target阴性对照也异常优于constant；Task45须保持`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY`，等待00独立行政终审。
+- Spearman约0.247—0.291、top-decile enrichment、支持量、Q05和逐组消融只允许写成`EXPLORATORY_SUGGESTIVE_SIGNAL`，不能支持“收益可预测”、路由有效、负迁移、P5、C2或C3升级。
 - 增量closest-prior已阻断“一般两阶段utility router为新算法”的措辞；允许上限是受众响应有限样本下的领域诊断贡献。
+
+## 2026-08-06 v1.25候选Task46边界
+
+- 用户批准把未来科学问题改写为“估计历史受众反应知识的后验可迁移效用，再在风险预算下选择性利用”，但这只是路线决定和预注册准备，不是Task46创建/训练授权。
+- source-group singleton只使旧组内shuffle失效，不支持video-level随机split；主身份继续source-group-disjoint，未来负控必须跨组有效置换并满足预冻结改变率/相关/constant门。
+- U1效用学习证据至少需要相对G0 content-only的预注册proper-loss改善、五seed方向稳定、有效shuffled/random-neighbor负控及排序/校准全报告。Spearman>0或top-k富集不能单独升级C2。
+- U3策略证据仍需一次性`TRAIN_ROUTER_CONFIRM`、同预算同90% coverage、相对每seed最强control的视频级paired JSD主门；该门通过前负迁移/P5固定`NOT_TESTED`。
+- 任何Task46成功仍是development evidence；formal test和Task50另需用户授权，C1—C3继续`TO_VERIFY`。
 
 ## 2026-07-14 前作约束（不改变实验支持状态）
 

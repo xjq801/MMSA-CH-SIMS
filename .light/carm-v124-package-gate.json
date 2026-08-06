@@ -1,0 +1,61 @@
+{
+  "schema": "light.research_plan_package_gate.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "mode": "draft",
+  "verdict": "FAIL",
+  "issues": [
+    {
+      "severity": "error",
+      "code": "RESEARCH_PLAN_TERM_GAP",
+      "loc": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md:fair_baseline",
+      "message": "研究方案缺少 fair_baseline 相关内容",
+      "fix": "方案必须覆盖 question/estimand、反证、对照公平、预注册、预算与风险，不能只写宏观路线。"
+    },
+    {
+      "severity": "error",
+      "code": "RESEARCH_PLAN_TERM_GAP",
+      "loc": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md:preregistration",
+      "message": "研究方案缺少 preregistration 相关内容",
+      "fix": "方案必须覆盖 question/estimand、反证、对照公平、预注册、预算与风险，不能只写宏观路线。"
+    },
+    {
+      "severity": "error",
+      "code": "PLAN_FINDINGS_SCHEMA_GAP",
+      "loc": ".light/carm-v124-plan-gate.json",
+      "message": "plan_findings 不是 producer=research-plan 的 light.findings.v1"
+    },
+    {
+      "severity": "error",
+      "code": "PLAN_FINDINGS_GATE_GAP",
+      "loc": ".light/carm-v124-plan-gate.json",
+      "message": "plan_findings 缺 fair_baseline/falsifiable stage-5 critical 门名"
+    },
+    {
+      "severity": "warn",
+      "code": "HANDOFF_STAGE_GAP",
+      "loc": "manifest.handoff.next_stage",
+      "message": "缺少下一站 experiment-coding/stage-6 声明",
+      "fix": "最终交付前要明确交给 experiment-coding，而不是让总控自己继续乱跑。"
+    },
+    {
+      "severity": "warn",
+      "code": "HANDOFF_AUTHORIZATION_GAP",
+      "loc": "manifest.handoff.user_authorized",
+      "message": "最终研究计划交接缺用户授权",
+      "fix": "方案定型/预注册/进入实验编码前必须停下让用户确认。"
+    }
+  ],
+  "artifacts": {
+    "research_plan": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md",
+    "preregistration": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md",
+    "experiment_matrix": "experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md",
+    "target_chain_report": ".light/carm-v124-target-chain-report.json",
+    "failure_tree_report": ".light/carm-v124-failure-tree-report.json",
+    "plan_findings": ".light/carm-v124-plan-gate.json",
+    "reproducibility_checklist": "TASK45_REPRODUCIBILITY_CHECKLIST_20260806.md",
+    "data_identity_fitness": ".light/carm-v124-data-identity-fitness.json",
+    "access_boundary": ".light/carm-v124-access-boundary.json",
+    "closest_prior_search": "TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md"
+  },
+  "honesty": "本门只核计划包完整性、既有机器门报告、失败树/guardrail、预注册/复现字段、warning 决策与用户授权；PASS 不证明领域设计最优、因果识别成立、IRB/伦理/统计专家已批准。"
+}

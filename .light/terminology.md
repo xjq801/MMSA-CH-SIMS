@@ -11,6 +11,10 @@
 | 三源不确定性 | 群体分歧、有限响应抽样与模型/OOD不确定性 | — | group disagreement, finite-response sampling, and epistemic/OOD uncertainty | 三源必须各有held-out、重采样或自然OOD判据；不得由单一浓度参数自证 |
 | 预测区域 | 经验反应分布预测区域 | — | prediction region for the empirical reaction distribution | 报告80/90/95% coverage；不保证沉默观看者或总体人口潜在情绪；集合大小不直接等同群体分歧 |
 | 路由动作 | 使用历史/纯内容回退/拒答 | — | use memory / fall back to content / abstain | 阈值仅在dev预注册规则下选择，formal test不可用于选择 |
+| Task45主目标 | 后验获益概率 | b | posterior probability of positive historical benefit | `P(Delta>0)`；是训练target，不是T0输入 |
+| Task45主目标 | 后验正收益幅度 | m | posterior expected positive-benefit magnitude | `E[max(Delta,0)]`；与概率组成AND诊断门 |
+| Task45角色 | 诊断拟合/诊断确认/路由确认 | — | TRAIN_DIAG_FIT / TRAIN_DIAG_CONFIRM / TRAIN_ROUTER_CONFIRM | Task45只可用前两者；最后一者完全封存 |
+| 可发表性边界 | T0历史收益可学习性诊断 | — | strict-T0 historical-benefit learnability diagnosis | 一般两阶段utility router不是方法首创；Task45结果不升级正式claim |
 | 论文定位 | 分布偏移与目标响应不可用下的可靠内容到受众反应分布预测 | — | reliable content-to-audience affect distribution forecasting under distribution shift and unavailable target responses | Video2Reaction为closest/direct prior |
 | 直接前作 | Video2Reaction | V2R | Video2Reaction | 共同任务必须承认；workshop展示确认、归档状态待核；ECCV为作者报告待正式条目 |
 | V2R标签层级 | LLM生成且人工核验银标 | SILVER_LLM_HUMAN_VERIFIED | LLM-derived, human-verified silver labels | 不是逐样本HUMAN_GOLD，不替代CSMV/LAI-GAI主测试 |

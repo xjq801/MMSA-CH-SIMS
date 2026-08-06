@@ -1,0 +1,49 @@
+{
+  "schema": "taffc.carm.task45_access_boundary.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "dataset_revision": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+  "source_manifest": "refs/tags/task40-carm-cnbr-development-20260805:experiments/task40-carm-cnbr-v1/p0-train-oof-index-membership.manifest.json",
+  "source_manifest_sha256": "b556c3824d56e8edafee656541eba2b6e57d814da325931cae17c9a01e3389a9",
+  "role_algorithm": {
+    "salt": "CARM-v124-task45-train-role-v1",
+    "hash_input": "dataset_revision|source_group_id|salt",
+    "uniform": "u64be(SHA256(hash_input))/2^64",
+    "thresholds": {
+      "TRAIN_DIAG_FIT": "u < 0.6",
+      "TRAIN_DIAG_CONFIRM": "0.6 <= u < 0.8",
+      "TRAIN_ROUTER_CONFIRM": "u >= 0.8"
+    }
+  },
+  "frozen_counts": {
+    "source_groups": 5541,
+    "videos": 5698,
+    "roles": {
+      "TRAIN_DIAG_FIT": {"source_groups": 3304, "videos": 3404, "oof_fold_videos": {"0": 640, "1": 676, "2": 739, "3": 654, "4": 695}},
+      "TRAIN_DIAG_CONFIRM": {"source_groups": 1126, "videos": 1154, "oof_fold_videos": {"0": 252, "1": 211, "2": 240, "3": 240, "4": 211}},
+      "TRAIN_ROUTER_CONFIRM": {"source_groups": 1111, "videos": 1140, "oof_fold_videos": {"0": 220, "1": 232, "2": 258, "3": 227, "4": 203}}
+    }
+  },
+  "task45_allowed": [
+    "TRAIN_DIAG_FIT item IDs content features aggregate counts and train-only candidate history",
+    "TRAIN_DIAG_CONFIRM item IDs content features aggregate counts only after all fit-side choices are frozen",
+    "Task40 annotated tag source code and tracked reports as read-only prior evidence"
+  ],
+  "task45_prohibited": [
+    "TRAIN_ROUTER_CONFIRM IDs features labels predictions or aggregates",
+    "old DEV_SELECT IDs features labels predictions or aggregates",
+    "old DEV_CALIBRATE IDs features labels predictions or aggregates",
+    "formal-test IDs features labels predictions or aggregates",
+    "Task40 ignored prediction or feature caches",
+    "query response support target comments future interactions or realized benefit as model inputs"
+  ],
+  "required_zero_event_families": [
+    "old_dev_access",
+    "router_confirm_access",
+    "formal_test_access",
+    "formal_test_label",
+    "formal_test_feature",
+    "formal_test_prediction",
+    "formal_test_ids"
+  ],
+  "on_violation": "STOP_FAIL_CLOSED_INVALIDATE_DEPENDENT_RUNS_AND_NOTIFY_TOTAL_CONTROL"
+}

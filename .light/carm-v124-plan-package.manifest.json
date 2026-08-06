@@ -1,0 +1,32 @@
+{
+  "schema": "light.research_plan_package.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "plan_state": "FROZEN_TASK45_DIAGNOSTIC_ONLY_NO_ROUTER_NO_FORMAL_TEST",
+  "artifacts": {
+    "research_plan": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md",
+    "preregistration": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md",
+    "experiment_matrix": "experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md",
+    "target_chain_report": ".light/carm-v124-target-chain-report.json",
+    "failure_tree_report": ".light/carm-v124-failure-tree-report.json",
+    "plan_findings": ".light/carm-v124-plan-gate.json",
+    "reproducibility_checklist": "TASK45_REPRODUCIBILITY_CHECKLIST_20260806.md",
+    "data_identity_fitness": ".light/carm-v124-data-identity-fitness.json",
+    "access_boundary": ".light/carm-v124-access-boundary.json",
+    "consistency_audit": ".light/carm-v124-consistency-audit.json",
+    "closest_prior_search": "TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md"
+  },
+  "frozen_seeds": [1364847620, 426925854, 1839464886, 1138176833, 484191872],
+  "formal_test": "NOT_MATERIALIZED_TASK45_PROHIBITED",
+  "handoff": {
+    "next_stage": "experiment-coding",
+    "user_authorized": true,
+    "authorized_at": "2026-08-06T00:00:00+08:00",
+    "claim_scope": "C1-C3 remain TO_VERIFY; Task40 closed; Task45 diagnostic only; Task46 and Task50 not created"
+  },
+  "warning_decisions": [
+    {"source": "idea-critique blind protocol", "decision": "Unavailable because the user supplied the direction before the audit", "claim_impact": "Conservative diagnostic-only verdict; no method novelty pass", "authorized_by": "user direction and total control 04"},
+    {"source": "data-identity skill wrapper", "decision": "Wrapper cannot locate its packaged _shared root; direct identity contract and independent JSON/hash checks used", "claim_impact": "No claim that the wrapper gate passed", "authorized_by": "total control 04 fail-honest fallback"},
+    {"source": "plan findings producer", "decision": "Current packaged _shared is unavailable; plan_gate JSON records lint 100 and findings_available=false", "claim_impact": "Human total-control review remains authoritative; no fabricated light.findings.v1", "authorized_by": "total control 04 fail-honest fallback"},
+    {"source": "general utility-routing novelty", "decision": "Method novelty blocked by strong closest priors", "claim_impact": "Only domain-specific learnability diagnosis may proceed", "authorized_by": "total control 04 closest-prior audit"}
+  ]
+}

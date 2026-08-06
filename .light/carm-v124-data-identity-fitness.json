@@ -1,0 +1,62 @@
+{
+  "schema": "light.data_identity_fitness.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "as_of": "2026-08-06T00:00:00+08:00",
+  "datasets": [
+    {
+      "dataset_id": "CSMV-HUMAN-GOLD-V1-ORIGINAL-TRAIN-ONLY",
+      "title": "CSMV original-train video-level aggregate audience reactions",
+      "version": "CSMV@99d14240254b1381dde0b9c56add140381f65117",
+      "source_locator": "data/manifests/dataset-v1.manifest.json and Task40 P0 train membership manifest",
+      "source_type": "TRACKED_AGGREGATE_WITH_RESTRICTED_I3D_INPUT_ASSET",
+      "raw_sha256": "434eb1f84153be2f71d8db79351acc78cb2cae28691b4d4189f5165f22178869",
+      "rows": 5698,
+      "unit_of_observation": "video/source group",
+      "permissions": {
+        "license": {
+          "status": "PARTIAL_LAYERED_UNKNOWN_FOR_I3D",
+          "allows_research": true,
+          "allows_derivatives": false,
+          "allows_redistribution": false
+        },
+        "consent": {"status": "SECONDARY_DATASET_SOURCE_RULES"},
+        "dua": {"status": "NOT_APPLICABLE_OR_UNKNOWN"},
+        "ethics_review": {"status": "FINAL_INSTITUTIONAL_DETERMINATION_PENDING"}
+      },
+      "split_threat_model": {
+        "scheme": "deterministic source-group three-role hash split inside original train",
+        "unit": "source_group_id",
+        "split_artifact_sha256": "FORMULA_BOUND_IN_CARM_V124_ACCESS_BOUNDARY",
+        "threats": {
+          "GROUP_OVERLAP": "MUST_EQUAL_ZERO",
+          "ENTITY_OVERLAP": "MUST_EQUAL_ZERO",
+          "TARGET_LEAKAGE": "FAIL_CLOSED_ZERO_TOLERANCE",
+          "PREPROCESSING_BEFORE_SPLIT": "ONLY_FROZEN_CONTENT_FEATURES_AND_TRAIN_AGGREGATES",
+          "DEV_REUSE": "PROHIBITED_OLD_DEV_SELECT_AND_DEV_CALIBRATE",
+          "FORMAL_TEST_ACCESS": "PROHIBITED",
+          "ROUTER_CONFIRM_ACCESS": "PROHIBITED_IN_TASK45"
+        }
+      },
+      "fitness": {
+        "research_question": "Whether strict-T0 diagnostics predict posterior historical-memory benefit probability and magnitude",
+        "intended_use": "Task45 diagnostic-only learnability assessment",
+        "target_population": "Original CSMV train content units under the frozen sampling and construct boundary",
+        "measurement_quality": {"status": "FIT_WITH_FINITE_RESPONSE_MODEL"},
+        "label_quality": {"status": "HUMAN_GOLD_AGGREGATE_WITH_FINITE_SUPPORT"},
+        "missingness": {"status": "TRAIN_MEMBERSHIP_FROZEN_ONE_GLOBAL_EMOTION_LABEL_MISSING_IN_FULL_DATASET"},
+        "sample_power": {"status": "FIXED_N_CLUSTER_BOOTSTRAP_PRECISION_REPORTED_NO_SEED_INFLATION"},
+        "bias_representativeness": {"status": "COMMENTER_SELECTION_NOT_ALL_VIEWERS"},
+        "staleness": {"status": "FROZEN_LOCAL_CANONICAL"},
+        "limitations": [
+          "I3D license official revision rightsholder identity and external fixity remain UNKNOWN",
+          "no query response support is available at T0",
+          "old development partitions have been seen and are excluded",
+          "no redistribution"
+        ]
+      },
+      "decision": "FIT_FOR_TASK45_WITH_ACCEPTED_ASSET_AND_CONSTRUCT_LIMITATIONS"
+    }
+  ],
+  "new_dataset_decision": "NOT_REQUIRED_AND_NOT_AUTHORIZED_FOR_TASK45"
+}
+

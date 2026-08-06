@@ -1,0 +1,39 @@
+{
+  "schema": "light.research_failure_tree.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "plan_state": "AUTHORIZED",
+  "hypotheses": [
+    {
+      "id": "H45-LEARNABILITY-AND",
+      "claim": "Both posterior benefit probability and positive-benefit magnitude are learnable from strict-T0 diagnostics beyond content-only features",
+      "primary_endpoint": {"metric": "Brier(full)-Brier(G0) AND MAE(full)-MAE(G0)", "unit": "source-group/video", "timepoint": "one-shot TRAIN_DIAG_CONFIRM"},
+      "branches": {
+        "success": {"condition": "Both 95% CI upper bounds < 0 and each endpoint has at least 4 of 5 seed point differences < 0", "action_kind": "PROCEED_SECONDARY", "claim_impact": "Allows total control to consider a separately preregistered Task46; no router claim yet"},
+        "failure": {"condition": "Either primary point difference >= 0 or shuffled-target control has 95% CI upper bound < 0 versus constant", "action_kind": "STOP_NO_GO", "claim_impact": "Close T0 benefit-learnability route; no Task46 and no C2 upgrade"},
+        "inconclusive": {"condition": "Either primary point difference < 0 but 95% CI includes 0 or seed negative-direction count < 4", "action_kind": "REPORT_INCONCLUSIVE", "claim_impact": "Report insufficient precision; no Task46 and no affirmative learnability wording"}
+      }
+    }
+  ],
+  "guardrails": [
+    {"id": "G45-ACCESS", "metric": "sum of prohibited role old-dev and formal-test access events", "direction": "<=", "threshold": "0", "monitored_during": "all Task45 stages", "kill_action": "stop and invalidate dependent runs", "claim_impact": "No Task45 evidence is admissible"},
+    {"id": "G45-OVERLAP", "metric": "source-group overlaps across FIT DIAG_CONFIRM ROUTER_CONFIRM", "direction": "<=", "threshold": "0", "monitored_during": "P0 and every run", "kill_action": "stop and repair identity only before any outcome access", "claim_impact": "No learnability conclusion"},
+    {"id": "G45-BUDGET", "metric": "absolute trial-count difference between full and G0 models", "direction": "<=", "threshold": "0", "monitored_during": "nested tuning", "kill_action": "mark comparison ineligible and stop", "claim_impact": "No superiority wording"},
+    {"id": "G45-SHUFFLE", "metric": "shuffled-target loss improvement versus constant", "direction": ">=", "threshold": "95% CI lower bound 0", "monitored_during": "confirmation", "kill_action": "stop for leakage or implementation audit", "claim_impact": "No learnability conclusion"}
+  ],
+  "stopping": {
+    "rule": "Fixed-data fixed-seed one-shot confirmation with no optional stopping",
+    "limit": "4 trials per target per feature set; 5 fixed seeds; 10000 cluster-bootstrap replicates",
+    "action_on_exhaustion": "Report failure or inconclusive; do not add seeds models data or endpoints"
+  },
+  "amendment_policy": {
+    "post_data_changes": "EXPLORATORY_ONLY",
+    "authorization_required": true,
+    "deviation_log": "WORK_LOG.md and a versioned Task45 preregistration amendment"
+  },
+  "authorization": {
+    "actor": "user",
+    "authorization_id": "SC-20260806-01",
+    "authorized_at": "2026-08-06",
+    "plan_sha256": "sha256:43146a2952128df25001f3e7476c44dc54db3e9f3d2ac68c1839dbc7a9065ddf"
+  }
+}

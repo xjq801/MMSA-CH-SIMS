@@ -1,0 +1,46 @@
+{
+  "schema": "light.research_target_chain.v1",
+  "plan_state": "AUTHORIZED",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "nodes": [
+    {"node_id": "Q45P", "type": "QUESTION", "statement": "Can strict-T0 diagnostics predict posterior probability that historical memory beats content-only?"},
+    {"node_id": "E45P", "type": "ESTIMAND", "statement": "Held-out probability learnability contrast", "timing": "PRE_DATA", "population": "Frozen TRAIN_DIAG_CONFIRM CSMV videos", "treatment_or_exposure": "Full G0-G3 T0 diagnostics versus same-capacity G0 content-only features", "outcome": "Brier loss for posterior benefit probability", "summary_measure": "Mean paired loss difference", "statistical_unit": "source group/video", "randomization_unit": "algorithm seed for stability only", "analysis_unit": "source group/video", "unit_mismatch_rationale": "Seeds and folds are not inferential sample units"},
+    {"node_id": "H45P", "type": "HYPOTHESIS", "statement": "Full T0 diagnostics reduce held-out Brier loss relative to content-only features"},
+    {"node_id": "P45P", "type": "PRIMARY_ENDPOINT", "statement": "Confirmation Brier loss difference", "timing": "PRE_DATA", "measurement_instrument": "Frozen posterior target generator and paired evaluator", "operational_definition": "Brier(full)-Brier(G0) on one-shot TRAIN_DIAG_CONFIRM", "unit": "per-video paired squared-error difference clustered by source group", "minimally_meaningful_effect": "95% CI upper bound < 0 and at least 4 of 5 seed point differences < 0", "missingness_policy": "No silent row deletion; invalid history falls back to declared invalid-row audit"},
+    {"node_id": "A45P", "type": "ANALYSIS_FAMILY", "statement": "Probability primary analysis", "timing": "PRE_DATA", "method": "10000-replicate source-group cluster paired bootstrap plus fixed five-seed direction check", "assumptions": ["source groups are the inferential clusters", "confirmation role was not used for tuning"], "multiplicity": "Both probability and magnitude primary endpoints must pass as an AND gate", "independence_assumption": "Comments folds posterior draws and seeds are not independent n"},
+    {"node_id": "F45P", "type": "FALSIFIER", "statement": "Probability is not learnable beyond content-only", "observation": "Point difference is nonnegative or 95% CI crosses zero or fewer than 4 of 5 seed directions are negative", "threshold": "upper CI >= 0 or negative-seed-count < 4"},
+    {"node_id": "D45P", "type": "ACTION", "statement": "Probability branch decision", "if_supported": "Proceed only to the magnitude AND gate", "if_falsified": "Close Task45 route and do not create Task46"},
+
+    {"node_id": "Q45M", "type": "QUESTION", "statement": "Can strict-T0 diagnostics predict posterior positive historical-benefit magnitude?"},
+    {"node_id": "E45M", "type": "ESTIMAND", "statement": "Held-out magnitude learnability contrast", "timing": "PRE_DATA", "population": "Frozen TRAIN_DIAG_CONFIRM CSMV videos", "treatment_or_exposure": "Full G0-G3 T0 diagnostics versus same-capacity G0 content-only features", "outcome": "MAE for posterior expected positive benefit magnitude", "summary_measure": "Mean paired loss difference", "statistical_unit": "source group/video", "randomization_unit": "algorithm seed for stability only", "analysis_unit": "source group/video", "unit_mismatch_rationale": "Seeds and folds are not inferential sample units"},
+    {"node_id": "H45M", "type": "HYPOTHESIS", "statement": "Full T0 diagnostics reduce held-out magnitude MAE relative to content-only features"},
+    {"node_id": "P45M", "type": "PRIMARY_ENDPOINT", "statement": "Confirmation magnitude MAE difference", "timing": "PRE_DATA", "measurement_instrument": "Frozen posterior target generator and paired evaluator", "operational_definition": "MAE(full)-MAE(G0) on one-shot TRAIN_DIAG_CONFIRM", "unit": "per-video paired absolute-error difference clustered by source group", "minimally_meaningful_effect": "95% CI upper bound < 0 and at least 4 of 5 seed point differences < 0", "missingness_policy": "No silent row deletion; invalid history falls back to declared invalid-row audit"},
+    {"node_id": "A45M", "type": "ANALYSIS_FAMILY", "statement": "Magnitude primary analysis", "timing": "PRE_DATA", "method": "10000-replicate source-group cluster paired bootstrap plus fixed five-seed direction check", "assumptions": ["source groups are the inferential clusters", "confirmation role was not used for tuning"], "multiplicity": "Both probability and magnitude primary endpoints must pass as an AND gate", "independence_assumption": "Comments folds posterior draws and seeds are not independent n"},
+    {"node_id": "F45M", "type": "FALSIFIER", "statement": "Magnitude is not learnable beyond content-only", "observation": "Point difference is nonnegative or 95% CI crosses zero or fewer than 4 of 5 seed directions are negative", "threshold": "upper CI >= 0 or negative-seed-count < 4"},
+    {"node_id": "D45M", "type": "ACTION", "statement": "Magnitude branch decision", "if_supported": "Return PASS candidate to total control without training a router", "if_falsified": "Close Task45 route and do not create Task46"}
+  ],
+  "edges": [
+    {"from": "Q45P", "to": "E45P"}, {"from": "E45P", "to": "H45P"}, {"from": "H45P", "to": "P45P"}, {"from": "P45P", "to": "A45P"}, {"from": "A45P", "to": "F45P"}, {"from": "F45P", "to": "D45P"},
+    {"from": "Q45M", "to": "E45M"}, {"from": "E45M", "to": "H45M"}, {"from": "H45M", "to": "P45M"}, {"from": "P45M", "to": "A45M"}, {"from": "A45M", "to": "F45M"}, {"from": "F45M", "to": "D45M"}
+  ],
+  "comparative_study": true,
+  "baseline_fairness": {
+    "data": "Identical FIT and DIAG_CONFIRM roles and target draws",
+    "compute": "Identical HGB implementation grid trials seeds and iterations",
+    "tuning": "FIT-only nested group CV; DIAG_CONFIRM one-shot",
+    "evaluation_protocol": "Same paired Brier or MAE evaluator and cluster bootstrap"
+  },
+  "amendments": [],
+  "risk_register": [
+    {"risk_id": "R45-LEAK", "likelihood": "medium", "severity": "critical", "mitigation": "role and source-group fail-closed validator", "owner": "Task45 and total control 04", "trigger": "any prohibited access or overlap event > 0"},
+    {"risk_id": "R45-NOISE", "likelihood": "high", "severity": "high", "mitigation": "posterior b and m targets with support-stratified secondary audit", "owner": "Task45", "trigger": "primary CI crosses zero or support strata reverse"},
+    {"risk_id": "R45-NOVELTY", "likelihood": "high", "severity": "high", "mitigation": "diagnostic measurement claim only and rolling closest-prior review", "owner": "total control 04", "trigger": "new isomorphic utility-routing prior or attempted method-first wording"}
+  ],
+  "authorization": {
+    "actor": "user",
+    "authorization_id": "SC-20260806-01",
+    "scope": "Task45 train-only diagnostic plan; no router no old dev no formal test",
+    "authorized_at": "2026-08-06",
+    "plan_sha256": "sha256:4364dfd037e00877b3ecaacefe841bf04d27a477d80e0b20da27ce84fd53778f"
+  }
+}

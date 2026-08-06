@@ -1,0 +1,106 @@
+[
+  {
+    "kind": "AUTHORITY_COVERAGE",
+    "severity": "warn",
+    "location": "C:\\Users\\86183\\.codex\\worktrees\\9d11\\MMSA-CH-SIMS\\.light\\terminology.md:0",
+    "line": "",
+    "detail": "当前事实源为 Markdown 覆盖档：可做术语/贡献覆盖与近形变体检查，但没有 forbidden/confusable、指标权威 records、claim 证据档，不能据此宣称数值与主张已核",
+    "suggestion": "由 memory-pm 在人工确认后建立 .light/consistency 四份 YAML；未建立前保留“部分覆盖”结论"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "CLAIM_EVIDENCE_MATRIX.md:0",
+    "line": "",
+    "detail": "一般术语术语 'T0历史收益可学习性诊断' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK_REGISTRY.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md']，但在 ['CLAIM_EVIDENCE_MATRIX.md', 'project_card.md'] 缺席",
+    "suggestion": "确认 ['CLAIM_EVIDENCE_MATRIX.md', 'project_card.md'] 是否应包含 'T0历史收益可学习性诊断'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md:0",
+    "line": "",
+    "detail": "一般术语术语 '公众诱发受众情绪' 出现在 ['CLAIM_EVIDENCE_MATRIX.md']，但在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 '公众诱发受众情绪'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md:0",
+    "line": "",
+    "detail": "一般术语术语 '经验反应分布预测区域' 出现在 ['CLAIM_EVIDENCE_MATRIX.md']，但在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 '经验反应分布预测区域'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md:0",
+    "line": "",
+    "detail": "一般术语术语 'Video2Reaction' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md']，但在 ['TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 'Video2Reaction'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 '评论者公开表达的诱发反应分布' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'CLAIM_EVIDENCE_MATRIX.md']，但在 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 '评论者公开表达的诱发反应分布'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 '受众反应记忆' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md']，但在 ['TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 '受众反应记忆'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 '后验获益概率' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md']，但在 ['TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md'] 是否应包含 '后验获益概率'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 'CSMV公平适配' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'CLAIM_EVIDENCE_MATRIX.md']，但在 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 'CSMV公平适配'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 'Video2Reaction原生外部验证' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'CLAIM_EVIDENCE_MATRIX.md']，但在 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 'Video2Reaction原生外部验证'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 'T0内容预测' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md']，但在 ['TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'CLAIM_EVIDENCE_MATRIX.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 'T0内容预测'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 '人工金标' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'CLAIM_EVIDENCE_MATRIX.md']，但在 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 '人工金标'；若应包含则补齐措辞"
+  },
+  {
+    "kind": "COVERAGE_GAP",
+    "severity": "info",
+    "location": "TASK_REGISTRY.md:0",
+    "line": "",
+    "detail": "一般术语术语 '银标' 出现在 ['TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md', 'CLAIM_EVIDENCE_MATRIX.md']，但在 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 缺席",
+    "suggestion": "确认 ['TASK_REGISTRY.md', 'project_card.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md', 'TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md'] 是否应包含 '银标'；若应包含则补齐措辞"
+  }
+]

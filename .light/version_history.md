@@ -21,3 +21,4 @@
 - [2026-08-05] 总纲 v1.23 / 第17节规格 v1.7 / 论文SSOT v0.1.3 / claim矩阵 v1.4 — 闭合CSMV/LAI-GAI有限反应适配、Video2Reaction条件准入、closest-prior查新、target chain、failure tree与Task40开发预注册；冻结Dirichlet后验净收益、response thinning、五种子、90% coverage主终点、Holm与test禁令；核心开发不需要新数据，Oracle改为Task40创建后首个止损门
 - [2026-08-05] Task40创建记录 v1.0 / 总控交接S41 / Task Registry v1.15 — 创建Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`与总控04 `019fd19d-b8ef-71f2-82b3-433168211358`；两任务在FINAL_ANCHOR前只读，科学合同、G门、formal-test禁令和Task30负边界不变
 - [2026-08-05] Task40最终独立审核 v1.0 / Claim矩阵 v1.5 / Task Registry v1.16 — 总控04从annotated tag独立复核25项测试、四个validator、配对证据、失败运行与formal-test零事件；接受P0/P1/P2但因P3/P4主JSD 0/5以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭Task40，负迁移未检验、P5未执行、Task50不创建
+- [2026-08-06] 总纲 v1.24 / 第17节规格 v1.8 / Claim矩阵 v1.6 / Task Registry v1.17 — 用户批准Task40后重新规划；增量查新阻断一般两阶段utility-router方法首创，冻结Task45原train三角色、概率+幅度AND诊断门、机制特征组、公平低容量基线与旧DEV/router-confirm/formal-test零访问；Task40仍关闭，Task46/50未创建

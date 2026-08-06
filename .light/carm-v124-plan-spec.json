@@ -1,0 +1,14 @@
+{
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "matrix_file": "experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md",
+  "hypotheses": [
+    {"id": "H45-PROB", "statement": "Full T0 diagnostics improve posterior benefit-probability prediction", "falsifier": "Brier loss paired-difference 95% CI upper bound >= 0 or fewer than 4 of 5 seed directions < 0"},
+    {"id": "H45-MAG", "statement": "Full T0 diagnostics improve positive-benefit-magnitude prediction", "falsifier": "MAE paired-difference 95% CI upper bound >= 0 or fewer than 4 of 5 seed directions < 0"}
+  ],
+  "baselines": [
+    {"name": "G0 content-only same-capacity diagnostic", "fairness": "ok:identical data folds model grid trials seeds and evaluator"},
+    {"name": "prevalence or mean constant", "fairness": "ok:fitted on TRAIN_DIAG_FIT only and evaluated on the same confirmation items"},
+    {"name": "shuffled-target negative control", "fairness": "ok:same model budget and frozen group-wise permutation"}
+  ]
+}
+

@@ -1,0 +1,82 @@
+{
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK45",
+  "lint": {
+    "ok": true,
+    "rigor_score": 100,
+    "rigor_breakdown": {
+      "form_complete": true,
+      "quantifiable_verdicts": true,
+      "verdict_metric_aligned": true,
+      "ablation_coverage": true,
+      "confound_coverage": true,
+      "power_under_correction": true,
+      "n_hard_gaps": 0,
+      "n_semantic_warnings": 0,
+      "scoring": "计数扣分制(非真值/非语义认知评审)"
+    },
+    "checked_rows": 9,
+    "missing_columns": [],
+    "n_hypothesis_tests": 1,
+    "sem_backend": null,
+    "findings": [],
+    "warnings": [],
+    "hypotheses": {
+      "H451": [
+        "ABL-4501",
+        "ABL-4502",
+        "ABL-4503",
+        "ABL-4504",
+        "DIAG-4501",
+        "DIAG-4502",
+        "EXP-4500",
+        "EXP-4501"
+      ],
+      "H452": [
+        "ABL-4501",
+        "ABL-4502",
+        "ABL-4503",
+        "ABL-4504",
+        "DIAG-4501",
+        "DIAG-4502",
+        "EXP-4500",
+        "EXP-4502"
+      ]
+    }
+  },
+  "baselines": [
+    {
+      "name": "G0 content-only same-capacity diagnostic",
+      "level": "ok",
+      "note": "identical data folds model grid trials seeds and evaluator"
+    },
+    {
+      "name": "prevalence or mean constant",
+      "level": "ok",
+      "note": "fitted on TRAIN_DIAG_FIT only and evaluated on the same confirmation items"
+    },
+    {
+      "name": "shuffled-target negative control",
+      "level": "ok",
+      "note": "same model budget and frozen group-wise permutation"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H45-PROB",
+      "statement": "Full T0 diagnostics improve posterior benefit-probability prediction",
+      "falsifier": "Brier loss paired-difference 95% CI upper bound >= 0 or fewer than 4 of 5 seed directions < 0",
+      "has_falsifier": true,
+      "falsifier_quant": true
+    },
+    {
+      "id": "H45-MAG",
+      "statement": "Full T0 diagnostics improve positive-benefit-magnitude prediction",
+      "falsifier": "MAE paired-difference 95% CI upper bound >= 0 or fewer than 4 of 5 seed directions < 0",
+      "has_falsifier": true,
+      "falsifier_quant": true
+    }
+  ],
+  "power": null,
+  "findings": null,
+  "findings_available": false
+}

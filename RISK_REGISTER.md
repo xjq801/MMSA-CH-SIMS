@@ -1,7 +1,7 @@
 # 项目风险登记
 
 > 维护任务：00-总控与决策  
-> 当前快照：2026-08-05  
+> 当前快照：2026-08-06  
 > 规则：风险关闭必须链接到可复核证据；`UNKNOWN`不能按通过处理。
 
 | 风险ID | 风险 | 当前证据 | 影响 | 当前控制 | 状态/恢复条件 |
@@ -26,3 +26,6 @@
 | `R-MEASUREMENT-001` | aleatoric、epistemic与transfer/retrieval三源不确定性不可辨识，或把经验预测集合夸大成有保证的置信区域 | Task40在前序router主JSD门失败，P5三源消融与80/90/95%区域均未执行 | 不能形成三源机制或校准区域claim，也不能把未执行误写成阴性结果 | CLAIM矩阵明确标为固定顺序未检验；不补跑P5、不报告不存在的p值/coverage/width | OPEN_INACTIVE_NOT_TESTED；只有未来另经用户授权的新路线才能重开，当前删除三源/区域有效性表述 |
 | `R-ROUTE-001` | OOF收益标签泄漏或历史路由没有可利用的真实净收益 | P0泄漏门通过且P2有Oracle headroom；但P3/P4可信router五seed均0次USE_MEMORY，相对最强control主JSD差全为正且CI跨0，主门0/5 | 已排除明显泄漏但可学习router未利用Oracle空间，原C2机制链失败 | 00绑定annotated tag、配对JSONL和四个validator独立复核；固定顺序停止负迁移与P5，不授权修复 | CLOSED_TASK40_ROUTER_MAIN_JSD_NOT_PASSED；不得恢复本router或创建Task50，未来新路线须新授权 |
 | `R-MEASUREMENT-002` | 点收益标签把有限反应抽样噪声当成真实历史净效用 | 点/credible公平直接比较已完成且credible未优于point；但主JSD失败后thinning与Dirichlet(0.5/1)符号敏感性未执行 | 不能判断有限响应噪声是否导致退化，也不能声称后验稳健性 | 保留P5未执行报告和固定顺序；不得用事后thinning挽救router或宣称噪声原因已证实 | OPEN_INACTIVE_NOT_TESTED；“可信净收益”强claim已从当前活动路线删除 |
+| `R-ROUTE-002` | 旧DEV知识污染或在同一train上先发现再确认新的两阶段路由 | Task40已看过DEV_SELECT/DEV_CALIBRATE；用户要求改为train nested OOF；若Task45用尽全部train，未来路由仍无独立开发确认 | 结果驱动修复、选择偏差和不可审计的“确认”会使替代路线失效 | 原train按source group固定分为3404 FIT、1154 DIAG_CONFIRM、1140 ROUTER_CONFIRM；Task45只用前两者且后者完全封存 | CONTROLLED_OPEN；任一跨role/旧DEV/router-confirm事件>0即fail-closed并关闭相关证据 |
+| `R-NOVELTY-003` | 把获益概率+幅度、expected-regret/risk-budget三动作写成新算法 | SelectiveNet、learning-to-defer、Adaptive-RAG、expected-reward routing、retrieval utility prediction、R3AG与value-of-escalation覆盖通用机制 | T-AFFC方法新颖性不足，易被判模块拼接或结果驱动换头 | v1.24只允许有限受众响应噪声下的T0收益可学习性诊断；一般路由不作首创；投稿前滚动查新 | OPEN_HIGH_METHOD_NOVELTY_BLOCKED；只有领域特异测量证据与公平结果可支持窄claim |
+| `R-MEASUREMENT-003` | 响应支持量或`Q05(Delta)`被用作查询T0输入，或secondary分层挽救primary | 查询响应数在部署T0不可得；Task40可信头五seed零USE_MEMORY；有限支持会影响target精度 | 形成目标泄漏、事后子组挑选或错误因果解释 | 查询支持量仅作标签可靠性分层；primary固定为b的Brier与m的MAE AND门；Q05和支持量不得改判 | CONTROLLED_OPEN_TASK45；任何非法输入或secondary改判使Task45不合格 |

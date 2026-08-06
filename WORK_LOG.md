@@ -12372,3 +12372,63 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 ### Git状态
 
 本条写入前`HEAD=origin/main=beff95ffa5036c3e556580af84fca387e062fb1e`且工作树clean；写入后仅`WORK_LOG.md`为受控dirty文件。
+
+## WR-20260806-001 — Task45可发表性审计、v1.24诊断预注册与创建前冻结
+- 时间：2026-08-06 00:00:00 +08:00
+- 类型：DECISION | RESEARCH_PLAN | PREREGISTRATION | SSOT
+- 任务/门：00总控04 / Task45创建前计划门
+- 状态：`DIAGNOSTIC_PLAN_FROZEN_CREATION_AUTHORIZATION_PENDING`
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+用户明确批准Task40后续五项重新规划方向，但要求不得误作Task40修复或立即训练授权。总控04从`origin/main@96079401518576250c383e2eac5eda81e4769760`开始，先完成可发表性、数据身份、可学习性、target chain、failure tree、公平baseline、访问边界和预注册；Task40保持关闭，Task50与formal test保持阻断。
+
+### 实际变更
+
+- 发布总纲v1.24/第17节v1.8，新增`SC-20260806-01`与Task45诊断桥；更新AGENTS、Task Registry v1.17、Claim矩阵v1.6、决策/风险/术语/项目卡/passport revision 20/版本史。
+- 新增可发表性与closest-prior审计，裁定`CONDITIONAL_GO_DIAGNOSTIC_ONLY_METHOD_NOVELTY_BLOCKED`：一般两阶段utility routing已有强近邻，不能作方法首创。
+- 新增Task45研究方案、LOCAL-ONLY预注册、9行实验矩阵、复现清单、数据identity、access boundary、target chain、failure tree、plan spec与plan package manifest。
+- 从Task40 annotated tag的冻结原train manifest只读重算三角色：5541 source group/5698视频；FIT=3304/3404、DIAG_CONFIRM=1126/1154、ROUTER_CONFIRM=1111/1140。固定salt=`CARM-v124-task45-train-role-v1`，不按结果交换。
+- 固定两条AND primary：完整T0诊断相对同容量G0 content-only的后验获益概率Brier差与正收益幅度MAE差；各自要求cluster-bootstrap 95%CI上界小于0且至少4/5 seed方向为负。Q05、响应支持量和零USE_MEMORY退化只作secondary。
+- Task45只可FIT→DIAG_CONFIRM；旧DEV、ROUTER_CONFIRM与formal test事件必须为0。Task45不训练router；未来Task46必须另行预注册/授权，现不创建。
+
+### 验证与证据
+
+- `target_chain.py`对v1.24 target chain返回PASS；`failure_tree_gate.py --as-of 2026-08-06`返回PASS。
+- `plan_lint.py`检查9行，四要素、量化判定、指标对齐、消融和负对照全部通过，rigor score=100/100。
+- `plan_gate.py`确认三类baseline公平声明与两条可量化反证；因技能包缺`_shared`，`findings_available=false`，未伪造`light.findings.v1`。
+- `research_package_gate.py --final`仅因上述`plan_findings` schema/gate缺失和初次handoff枚举不匹配失败；handoff枚举随后已修为`experiment-coding`，`_shared`阻塞保留在最终报告中，不写成PASS。
+- `data_identity_fitness.py`因技能包无法定位`_shared`根而在参数解析前RuntimeError；按已知包装布局问题不重复，改用底层JSON、hash和总控独立审查。
+- `consistency_audit.py --help`因当前bundled Python缺PyYAML退出2；不安装依赖、不伪称运行成功，后续使用定向SSOT断言与人工复核。
+- 全部11个`carm-v124-*.json`可解析；`git diff --check` exit 0。
+
+### 影响与边界
+
+- 本批是用户授权的路线规划与Task45创建前冻结，不是Task40修复。Task40仍`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`；旧主JSD失败不被改写。
+- Task45结果只属于开发诊断，不升级C1—C3，不进入正式结果主表；论文继续`MANUSCRIPT_SCAFFOLD_NO_FORMAL_RESULTS`。
+- G1、G2与G3不变；I3D许可/revision/权利方身份-fixity仍UNKNOWN、禁止再分发；Task20与Task30边界及2026-08-31受限存储截止不变。
+
+### 风险、问题与阻塞
+
+- 最大科学风险是一般效用路由的新颖性碰撞；只能以有限受众响应下的领域可学习性诊断争取窄贡献。
+- 旧DEV已看过，故Task45若越界读取旧DEV或封存router-confirm会造成不可修复的确认污染。
+- 有限响应支持影响target精度；支持量分层不能作为查询输入或事后挽救primary。
+- Light技能包当前缺`_shared`/PyYAML，完整package gate保持fail-honest；底层target/failure/lint/JSON门与总控人工审核承担创建裁定。
+
+### 下一步
+
+1. 完成定向一致性断言、WORK_LOG/准备门和Git差异验证。
+2. 提交并推送v1.24计划锚点；随后签发精确Task45创建/诊断授权。
+3. 创建独立Task45 worktree并发送FINAL_ANCHOR；Task46/50不创建。
+
+### Git状态
+
+当前分支`codex/total-control04-task45-plan`，基线`origin/main@96079401518576250c383e2eac5eda81e4769760`。本条记录的是尚未提交/推送的计划与SSOT变更；不得写成远端已同步。
+
+### 补充验证结果
+
+- 使用原项目venv的纯Python `yaml`包作为只读依赖注入后，`light-consistency`成功扫描6份核心材料：0 substitution、0 variant conflict、0 metric name/value conflict、0 claim-strength/contribution drift；1条authority-coverage WARN和12条跨材料INFO覆盖提示。其结论为部分覆盖，不冒充完整claim/metric registry审计。
+- 同一最小PyYAML注入下，bundled Python成功加载PyYAML 6.0.3和其自身NumPy 2.3.5；`run_preparation_checks.py`推进到既有data-free阻塞后，因本worktree缺`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`返回FileNotFoundError/exit 1。未绕过、未把失败写成通过。
+- 原项目`D:\MMSA-CH-SIMS\.venv\Scripts\python.exe`自身入口绑定已不存在的Python 3.8，三次调用均exit 101；本worktree相对`.venv`不存在。替代bundled WORK_LOG validator返回272条、0错误、latest=`WR-20260806-001`。
+- 最终package gate已消除handoff/术语问题，只剩技能包缺`_shared`导致无法生成`producer=research-plan`的`light.findings.v1`两项schema/gate错误；底层target/failure/lint与plan-gate事实均保留，不制造适配文件绕门。

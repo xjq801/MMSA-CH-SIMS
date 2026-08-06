@@ -2,14 +2,14 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-05T21:16:21+08:00"
-current_stage: 40
-state_revision: 19
-state_hash: "sha256:d0ca363b31267c5985563d69787c4139f6ad023131c5d0aa49cb313aecfa42c4"
-evidence_state: FAILED
-next_action: total control 04 must preserve the Task40 closed boundary, create no Task50 or new experiment, audit publication/downgrade options, and continue Task20 supplement and restricted-storage deadline supervision
-delivery_status: TASK40_CLOSED_NOT_PASSED_NO_TASK50
-delivery_authorization_id: AUTH-00-TASK40-CNBR-DEVELOPMENT-20260805
+updated: "2026-08-06T00:00:00+08:00"
+current_stage: 45
+state_revision: 20
+state_hash: "sha256:43146a2952128df25001f3e7476c44dc54db3e9f3d2ac68c1839dbc7a9065ddf"
+evidence_state: PLANNED
+next_action: total control 04 must issue the exact Task45 creation authorization and create one independent diagnostic-only worktree; Task45 may start only at P0 and Task46/50 remain not created
+delivery_status: TASK45_DIAGNOSTIC_PLAN_FROZEN_CREATION_AUTHORIZATION_PENDING
+delivery_authorization_id: SC-20260806-01
 stages:
   - stage: 10
     status: delivered
@@ -52,3 +52,14 @@ stages:
     artifacts: [TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md, TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md, HANDOFF_40.md, TASK40_P3_P4_POINT_CREDIBLE_FAIR_COMPARISON_REPORT_20260805.md, TASK40_P5_THINNING_THREE_SOURCE_REGIONS_NOT_EXECUTED_REPORT_20260805.md, TASK00_TASK40_FINAL_INDEPENDENT_REVIEW_20260805.md, .light/handoff/S42-task40-closed-not-passed.md]
     gate: {type: confirm, result: FAIL, evidence: "sha256:ae1f890fbbeb1625fdbaf4e95b3998d46bc715e8d3416daa21b36f3f0d27f42e", timestamp: "2026-08-05T21:16:21+08:00", notes: total control 04 independently verified annotated tag c0fe21d, all fixity, 25 tests, four validators, paired differences, failed-run ancestry and zero formal-test events; Task40 closed at P3/P4 main JSD 0/5 and Task50 remains not created, evidence_state: FAILED, fresh: true}
     gaps: [formal H2b was not adjudicated on formal test; C2 development candidate is closed and unsupported; negative migration was not tested; P5 thinning, three-source uncertainty and prediction regions were not executed; C3 is untested rather than refuted; Video2Reaction native track remains unauthorized and conditional]
+  - stage: 45
+    depends_on: [40]
+    status: authorized_pending_creation
+    node_kind: diagnostic_bridge
+    evidence_state: PLANNED
+    skill: light-research-plan
+    input: "v1.24 publishability/data/target/failure/preregistration package, original CSMV train identity, frozen Task40 negative boundary"
+    output: "strict-T0 posterior benefit-probability and positive-benefit-magnitude learnability diagnosis only"
+    artifacts: [TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md, experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md, .light/carm-v124-data-identity-fitness.json, .light/carm-v124-target-chain.json, .light/carm-v124-failure-tree.json, .light/carm-v124-access-boundary.json]
+    gate: {type: confirm, result: PENDING_EXECUTION, evidence: "sha256:43146a2952128df25001f3e7476c44dc54db3e9f3d2ac68c1839dbc7a9065ddf", timestamp: "2026-08-06T00:00:00+08:00", notes: both Brier and MAE primary endpoints must pass; no router training, old dev, router-confirm or formal test, evidence_state: PLANNED, fresh: true}
+    gaps: [Task45 task/thread not yet created; learnability untested; Task46 not created; formal test remains sealed; I3D external license revision and rightsholder fixity remain UNKNOWN]

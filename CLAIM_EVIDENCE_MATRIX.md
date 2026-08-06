@@ -1,12 +1,12 @@
 # Claim—Evidence矩阵
 
-> 版本：v1.5；日期：2026-08-05  
+> 版本：v1.6；日期：2026-08-06  
 > 原则：没有证据的主张保持`TO_VERIFY`，不得写成论文结论；`TO_VERIFY`不等于仍有实验授权。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
 |---|---|---|---|---|---|
 | C1 | 无泄漏T0协议能形成可审计的公众公开表达诱发反应分布预测证据 | 两个公开人工标注集、内容单元划分、物理泄漏隔离、Data Card | G1/G2、E0、`T0_INPUT_POLICY.md` | TO_VERIFY | 仅可描述协议/证据贡献；任务与分布输出均不称首创 |
-| C2 | train-only反应记忆的OOF后验净收益路由能比点收益或强generic gate更稳定地减少错误历史证据的负迁移 | 内容—反应错位与Oracle门；5-fold group OOF；`Delta`、`P(Delta>0)`与5%下分位；点路由/generic gate/固定融合/SelectiveNet；90% coverage；响应稀释与负迁移率 | H2a/H2b、E2/E4/E7、MEAS-01、Task40 tag与最终独立审核 | TO_VERIFY | Task40开发候选已因主JSD 0/5关闭；不得宣称可信净收益、路由增益或伤害避免，也不得暗示Task50待执行 |
+| C2 | train-only反应记忆的OOF效用能否在严格T0被学习，并在未来另行冻结的路由中减少错误历史证据负迁移 | Task45先独立检验`P(Delta>0)` Brier与正收益幅度MAE；只有通过后，未来Task46才可比较content-entropy/point/generic/SelectiveNet/fixed fusion与matched coverage主JSD | H2a/H2b、E2/E4/E4b/E7、Task40关闭证据、Task45 v1.24预注册 | TO_VERIFY | Task40候选已关闭；Task45只是诊断且不得升级C2。两阶段utility router不是方法首创；Task46/50均未创建 |
 | C3 | 群体分歧、有限反应抽样和模型/迁移不确定性能被分别验证，并支持校准的经验反应分布预测区域与选择性可靠性 | held-out/split-half反应；2/4/8/all与8/16/32/all thinning；ensemble/自然group-OOD；单源消融；80/90/95% coverage+width；严格分组与外部边界 | H2c、E4/E5/E6、CAL-01；Task40 P5未执行报告 | TO_VERIFY | 固定顺序阻断后只能写“未检验”；不得宣称三源无效、区域未校准、区域保证、所有观众或因果效应 |
 | H1-R | Task30评论特权teacher开发假设 | 冻结Task30开发包；未触及formal test | Task30 | RETIRED_FROM_ACTIVE_CLAIM_SET_DEVELOPMENT_NOT_PASSED | 不得写为正式H1被反驳；不得恢复主方法或进入正式表 |
 
@@ -19,6 +19,14 @@
 - P3/P4可信router相对最强control主JSD门0/5，五个观察差均为正且95% CI均跨0；活动可信净收益router候选以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭，C2不升级。
 - 可信负迁移按固定顺序未检验，P5 thinning、三源与预测区域未执行；C3保持无支持证据，正确边界是“未检验”而不是“被反驳”。
 - Task50未创建且当前无授权；任何替代路线必须重新冻结计划并由用户明确授权。证据：`TASK00_TASK40_FINAL_INDEPENDENT_REVIEW_20260805.md`。
+
+## 2026-08-06 Task45诊断边界
+
+- 用户批准重新规划，不等于恢复Task40。Task40状态与旧主JSD失败永久保留。
+- Task45只在CSMV原train三角色中使用FIT与DIAG_CONFIRM；`TRAIN_ROUTER_CONFIRM`、旧DEV和formal test事件必须为0。
+- 两条primary是`P(Delta>0)` Brier与正收益幅度MAE相对同容量content-only特征的AND门。`Q05`、响应支持量和五seed零动作只作secondary解释。
+- Task45 PASS也只允许总控考虑新Task46预注册，不支持路由有效性、负迁移、P5、C2或C3升级。
+- 增量closest-prior已阻断“一般两阶段utility router为新算法”的措辞；允许上限是受众响应有限样本下的领域诊断贡献。
 
 ## 2026-07-14 前作约束（不改变实验支持状态）
 

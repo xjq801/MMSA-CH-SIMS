@@ -24,3 +24,4 @@
 - [2026-08-06] 总纲 v1.24 / 第17节规格 v1.8 / Claim矩阵 v1.6 / Task Registry v1.17 — 用户批准Task40后重新规划；增量查新阻断一般两阶段utility-router方法首创，冻结Task45原train三角色、概率+幅度AND诊断门、机制特征组、公平低容量基线与旧DEV/router-confirm/formal-test零访问；Task40仍关闭，Task46/50未创建
 - [2026-08-06] Task45精确授权 v1.0 / passport revision 21 — 绑定`origin/main@8a5ab2c...`计划锚点与12项SHA-256，授权创建独立Task45并只执行P0→P2诊断；FINAL_ANCHOR前只读，Task46/50不创建
 - [2026-08-06] Task45创建记录 v1.0 / Task Registry v1.18 / passport revision 22 / S43 — 创建Task45 `019fd586-628b-74f0-85ae-b44fa60968ff`及独立worktree，创建HEAD=`560a3dc...`；等待总控04 FINAL_ANCHOR后仅从P0开始
+- [2026-08-06] Task45 FINAL_ANCHOR回执 v1.0 / Task Registry v1.19 / passport revision 23 — 向Task45送达`origin/main@1c95a35...`及S43/授权hash，只开放P0且不扩大冻结合同

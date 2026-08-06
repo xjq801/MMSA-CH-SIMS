@@ -2,13 +2,13 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-06T13:26:18+08:00"
+updated: "2026-08-06T13:32:45+08:00"
 current_stage: 45
-state_revision: 22
+state_revision: 23
 state_hash: "sha256:c427b52f575cd049b4f9e71498e4730be0ff76eef1f7c6b4a34b87d3568d0e83"
 evidence_state: PLANNED
-next_action: total control 04 must push the Task45 creation closure and send TASK45_DIAGNOSTIC_FINAL_ANCHOR; Task45 may then start P0 only, while Task46/50 remain not created
-delivery_status: TASK45_CREATED_READONLY_PENDING_FINAL_ANCHOR
+next_action: independently audit Task45 P0 identity, role counts, zero-overlap and zero-access evidence before allowing the already-frozen sequence to continue; do not execute Task45 core work
+delivery_status: TASK45_FINAL_ANCHOR_DELIVERED_P0_ONLY
 delivery_authorization_id: AUTH-00-TASK45-T0-BENEFIT-LEARNABILITY-20260806
 stages:
   - stage: 10
@@ -54,7 +54,7 @@ stages:
     gaps: [formal H2b was not adjudicated on formal test; C2 development candidate is closed and unsupported; negative migration was not tested; P5 thinning, three-source uncertainty and prediction regions were not executed; C3 is untested rather than refuted; Video2Reaction native track remains unauthorized and conditional]
   - stage: 45
     depends_on: [40]
-    status: created_readonly_pending_final_anchor
+    status: active_p0_only_final_anchor_delivered
     node_kind: diagnostic_bridge
     evidence_state: PLANNED
     skill: light-research-plan
@@ -62,4 +62,4 @@ stages:
     output: "strict-T0 posterior benefit-probability and positive-benefit-magnitude learnability diagnosis only"
     artifacts: [TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md, TASK00_TASK45_CREATION_AND_DIAGNOSTIC_EXECUTION_AUTHORIZATION_20260806.md, experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md, .light/carm-v124-data-identity-fitness.json, .light/carm-v124-target-chain.json, .light/carm-v124-failure-tree.json, .light/carm-v124-access-boundary.json]
     gate: {type: confirm, result: PENDING_EXECUTION, evidence: "sha256:43146a2952128df25001f3e7476c44dc54db3e9f3d2ac68c1839dbc7a9065ddf", timestamp: "2026-08-06T00:00:00+08:00", notes: both Brier and MAE primary endpoints must pass; no router training, old dev, router-confirm or formal test, evidence_state: PLANNED, fresh: true}
-    gaps: [Task45 final anchor not yet delivered; learnability untested; Task46 not created; formal test remains sealed; I3D external license revision and rightsholder fixity remain UNKNOWN]
+    gaps: [Task45 P0 not yet independently audited; learnability untested; Task46 not created; formal test remains sealed; I3D external license revision and rightsholder fixity remain UNKNOWN]

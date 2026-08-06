@@ -12536,3 +12536,51 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 - 提交前默认沙箱内`git fetch origin`因共享主仓库gitdir的`FETCH_HEAD`权限拒绝返回exit 255；本地`HEAD`与已有`origin/main`引用仍同为`560a3dc...`。该关键刷新将按受控提权重试，不把失败写成远端无漂移证明。
 - 受控提权重试`git fetch origin`成功、exit 0；刷新后`HEAD=origin/main=560a3dc86116cf5b60471fe55b105b6778a44354`，确认creation closure提交前远端未漂移。
 - 默认沙箱内首次`git add`因共享主仓库gitdir无法创建`index.lock`而失败；没有文件被暂存。将对精确列出的8个closure文件按受控提权重试，不扩大提交范围。
+
+## WR-20260806-004 — Task45 FINAL_ANCHOR送达与行政closure
+
+- 时间：2026-08-06 13:32:45 +08:00
+- 类型：GIT | DELIVERY | ACCESS_CONTROL | FINAL_CONTROL_CLOSURE
+- 任务/门：00总控04 / Task45 P0启动边界
+- 状态：`FINAL_ANCHOR_DELIVERED_P0_ONLY`
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+把WR-20260806-003的Task45创建事实、S43和实时task/thread ID形成远端锚点，并只向Task45开放冻结串行合同的第一步P0。本条记录实际push与消息回执，不扩大训练、数据或任务创建权限。
+
+### 实际变更
+
+- creation closure commit=`1c95a3514a82fdb69797deb56d6cd7b957f722c7`，消息`docs: create Task45 diagnostic task`；包含8个SSOT/交接/日志文件。
+- `git push origin HEAD:main`成功，远端回显`560a3dc..1c95a35 HEAD -> main`；推送后`HEAD=origin/main=1c95a3514a82fdb69797deb56d6cd7b957f722c7`且工作树clean。
+- 向Task45 `019fd586-628b-74f0-85ae-b44fa60968ff`发送`TASK45_DIAGNOSTIC_FINAL_ANCHOR: origin/main@1c95a3514a82fdb69797deb56d6cd7b957f722c7`及S43/授权hash；消息接口返回同一正式thread ID。
+- Task Registry升至v1.19、passport升至revision 23并将Task45标为`ACTIVE_P0_ONLY_FINAL_ANCHOR_DELIVERED`；项目卡、决策日志和版本史同步实际状态。
+
+### 验证与证据
+
+- creation closure提交前bundled WORK_LOG validator返回274条、0错误、latest=`WR-20260806-003`；S43 SHA-256=`c427b52f575cd049b4f9e71498e4730be0ff76eef1f7c6b4a34b87d3568d0e83`，passport state_hash精确一致；`git diff --check` exit 0。
+- 受控提权`git add`只暂存8个精确closure文件；`git diff --cached --check` exit 0。commit成功且push成功。
+- FINAL_ANCHOR消息再次声明：P0失败立即停止；P0未通过不得P1；P1未完成不得P2；旧DEV、TRAIN_ROUTER_CONFIRM、formal test、Task40 ignored cache、路由训练、matched-coverage主JSD、负迁移、P5及Task46/50创建全部禁止。
+
+### 影响与边界
+
+- Task45已从只读变为仅可执行P0；总控04不得代跑P0或并发修改其实验核心，只审核commit/ref、hash、测试、身份与访问账。
+- Task40继续`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`；Task46/50仍未创建；formal test仍为零事件。
+- Task45结果仍是development diagnostic；不自动升级C1—C3、论文正式结果或两阶段utility-router授权。
+- G1—G3、Task10/20/30、I3D UNKNOWN/禁止再分发和Task20受限存储截止均不变。
+
+### 风险、问题与阻塞
+
+- Task45 P0尚未由总控独立审核；当前不得把“已启动”误写成数据身份、零泄漏或可学习性已通过。
+- 后续若Task45报告任一越界访问、hash不符、角色计数/重叠异常，必须立即停止并回交，不能在原任务内修补后继续。
+- Light package findings基础设施缺口与本worktree通用准备门data-free失败均未被本次Git交付消除。
+
+### 下一步
+
+1. 等待Task45提交P0身份/角色/零重叠/零访问证据，不授权越级。
+2. 总控04独立复核P0 commit/ref、hash、validator与失败运行；未PASS不允许P1。
+3. 继续保持Task46/50未创建、formal test封存，并监督Task20受限存储截止。
+
+### Git状态
+
+本条写入前`HEAD=origin/main=1c95a3514a82fdb69797deb56d6cd7b957f722c7`且工作树clean；本条行政closure及对应台账更新尚未提交或推送。

@@ -1,0 +1,17 @@
+{
+  "schema": "taffc.carm.task46_data_identity_fitness.v1",
+  "plan_state": "P0_FREEZE_PENDING_TASK_CREATION",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK46",
+  "dataset": "CSMV",
+  "dataset_role": "core mechanism development; original train only",
+  "primary_identity": "source_group",
+  "roles": {
+    "TRAIN_DIAG_FIT": {"status": "REBUILD_REQUIRED_IN_NEW_TASK", "provenance": "old role cannot be reused as confirmation"},
+    "TRAIN_DIAG_CONFIRM": {"status": "PERMANENTLY_VIEWED_NOT_CONFIRMATION", "provenance": "Task45 one-shot opened"},
+    "TRAIN_ROUTER_CONFIRM": {"status": "SEALED_ZERO_ACCESS_REQUIRED", "count_expected": 1140},
+    "FORMAL_TEST": {"status": "SEALED_ZERO_ACCESS_REQUIRED"}
+  },
+  "required_checks": ["role_hash", "source_group_disjoint", "fold_disjoint", "old_dev_zero_access", "diag_confirm_zero_reuse", "router_confirm_zero_access", "formal_test_zero_access"],
+  "stop_on": ["role_collision", "identity_hash_mismatch", "prohibited_access", "formal_test_event"],
+  "authorization_ref": "USER-20260807-EXECUTE-SHARED-TASK46-PLAN"
+}

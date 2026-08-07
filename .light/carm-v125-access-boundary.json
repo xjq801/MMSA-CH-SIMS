@@ -1,0 +1,10 @@
+{
+  "schema": "taffc.carm.task46_access_boundary.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK46",
+  "allowed_before_confirmation": ["new FIT-only role materialization", "train-only memory members", "OOF expert predictions", "posterior target generation", "synthetic/FIT negative-control validation", "FIT nested OOF features/models/policy freeze"],
+  "confirmation_once": "TRAIN_ROUTER_CONFIRM only after U0-U2 hashes and U3 freeze are accepted",
+  "always_prohibited": ["old DEV_SELECT", "old DEV_CALIBRATE", "TRAIN_DIAG_CONFIRM as confirmation", "formal test IDs/features/labels/predictions", "query response count/comments/labels", "future interactions", "Task40 ignored cache", "Task50 creation"],
+  "zero_event_families": ["old_dev_access", "diag_confirm_reuse", "router_confirm_early_access", "formal_test_access", "formal_test_label", "formal_test_feature", "formal_test_prediction", "formal_test_ids"],
+  "on_violation": "STOP_FAIL_CLOSED_INVALIDATE_DEPENDENT_RUNS_NOTIFY_TOTAL_CONTROL",
+  "authorization_ref": "USER-20260807-EXECUTE-SHARED-TASK46-PLAN"
+}

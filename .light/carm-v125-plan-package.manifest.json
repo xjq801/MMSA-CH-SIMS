@@ -1,0 +1,34 @@
+{
+  "schema": "taffc.carm.task46_plan_package_manifest.v1",
+  "package_state": "P0_FROZEN_PENDING_INDEPENDENT_WORKTREE",
+  "anchor": "origin/main@0aa8232f8c9586da36c3379ed5256c06a491e3ef",
+  "authorization_ref": "USER-20260807-EXECUTE-SHARED-TASK46-PLAN",
+  "source_docx": {"path": "D:/桌面/任务安排.docx", "sha256": "FE28A804C4656E0F57916256C3C84953AC21217945C6F2DA9BD3A5906920513E"},
+  "source_chat": "https://chatgpt.com/share/6a753eb2-05c4-83e8-937b-8c5226a1c19a",
+  "files": [
+    "TASK00_TASK45_FINAL_INDEPENDENT_REVIEW_20260807.md",
+    "TASK00_TASK46_V125_RESEARCH_PLAN_20260807.md",
+    "TASK00_TASK46_V125_PREREGISTRATION_20260807.md",
+    "TASK00_TASK46_CREATION_AUTHORIZATION_20260807.md",
+    ".light/carm-v125-data-identity-fitness.json",
+    ".light/carm-v125-target-chain.json",
+    ".light/carm-v125-failure-tree.json",
+    ".light/carm-v125-fair-baselines.json",
+    ".light/carm-v125-access-boundary.json",
+    ".light/handoff/S45-task45-independent-review.md"
+  ],
+  "file_sha256": {
+    "TASK00_TASK45_FINAL_INDEPENDENT_REVIEW_20260807.md": "fbe60b103bd4c93c3309c71ba08cb17b0f08649d1c97891b0a40c2695d3bd4fd",
+    "TASK00_TASK46_V125_RESEARCH_PLAN_20260807.md": "54a602cab9755f03bcbf06ac13a68cd09ae8fb57df3d5c4d1f4acff7966a0ab5",
+    "TASK00_TASK46_V125_PREREGISTRATION_20260807.md": "4325f88ba56724b607e240d8c31d7b2a168f83560da596d1f48471038f6abff6",
+    "TASK00_TASK46_CREATION_AUTHORIZATION_20260807.md": "5fbaa5e534e83f6caddd8956eb77b0c616760d8c0a541fad4aa382a7c56f0352",
+    ".light/carm-v125-data-identity-fitness.json": "87e5162f1501b1092fb5db08b3c36ff3854af981ae3cb6ea4e39577b9f755a1b",
+    ".light/carm-v125-target-chain.json": "af92bd04da77a27d9abb0087ad59234692a05d715055d54256f969fcc149b58e",
+    ".light/carm-v125-failure-tree.json": "0cbb0c8729703754e1ebdd9e186871d065e4f256160ca61d9978c6693b8141d6",
+    ".light/carm-v125-fair-baselines.json": "bf02df3c3b8dd4b97c14121115d7018dfe253c4ec5090d51c1e3eac2c67abc03",
+    ".light/carm-v125-access-boundary.json": "9b9978e0e5ec5c48b96f8a1ad57856b65977b142ce08875bef04f303706a80b7",
+    ".light/handoff/S45-task45-independent-review.md": "8b28b9a54c560921795c2774d206522cd71bcc5cc4fde6d2e7e6fc5cbf73dda9"
+  },
+  "required_pre_execution_gates": ["task45_independent_close", "role_hash", "cross_group_negative_control", "target_chain", "failure_tree", "fair_baselines", "access_boundary", "all_hashes_frozen"],
+  "forbidden_until_p4": ["TRAIN_ROUTER_CONFIRM", "formal_test", "old_DEV", "TRAIN_DIAG_CONFIRM", "Task50"]
+}

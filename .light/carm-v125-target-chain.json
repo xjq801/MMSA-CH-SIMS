@@ -1,0 +1,16 @@
+{
+  "schema": "light.research_target_chain.v1",
+  "plan_state": "P0_FREEZE_PENDING_TASK_CREATION",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK46",
+  "nodes": [
+    {"id": "Q46", "type": "QUESTION", "statement": "Can strict-T0 diagnostics estimate transferable historical-reaction utility and support safer policy decisions?"},
+    {"id": "E46", "type": "ESTIMAND", "statement": "OOF posterior utility distribution Delta=JSD(theta,f0)-JSD(theta,fH), with p_tau, mu, m+, m-, Q05/CVaR", "unit": "video clustered by source_group"},
+    {"id": "Y46A", "type": "PRIMARY_ENDPOINT", "statement": "Probability and positive-magnitude proper-loss contrast versus same-capacity G0 in FIT nested OOF", "timing": "pre-confirm"},
+    {"id": "Y46B", "type": "PRIMARY_POLICY_ENDPOINT", "statement": "Video-level paired JSD of risk-budget three-action policy versus strongest matched-coverage control", "timing": "one-shot TRAIN_ROUTER_CONFIRM"},
+    {"id": "F46", "type": "FALSIFIER", "statement": "Valid cross-group null fails, full T0 does not beat G0/null, or policy JSD does not improve", "action": "stop and downgrade/close"},
+    {"id": "A46", "type": "ACTION", "statement": "Only after U0-U3 freeze may enter U4/U5; never materialize formal test from this task"}
+  ],
+  "edges": [["Q46","E46"],["E46","Y46A"],["Y46A","Y46B"],["Y46B","F46"],["F46","A46"]],
+  "comparative_study": true,
+  "pre_data_freeze": ["tau=0", "tau_h=0", "coverage=0.90", "five_seeds", "same_budget_baselines", "Holm_and_cluster_bootstrap"]
+}

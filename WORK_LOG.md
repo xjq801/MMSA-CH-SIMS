@@ -12639,4 +12639,43 @@ SSOT裁定已在本地commit `ce147280d4cbaec6b7d1f4dfa2f72956ff5f0653`形成，
 
 ### Git状态
 
-本条写入前分支为`codex/total-control04-task45-plan`，`HEAD=origin/main=fdaaf117e67eb442c412303969d33dd31ce09b01`；总纲v1.25、同步SSOT、本S44和本条WORK_LOG均为未提交、未推送变更，不得写成远端已同步。
+本条写入前分支为`codex/total-control04-task45-plan`，`HEAD=origin/main=0aa8232f8c9586da36c3379ed5256c06a491e3ef`；总纲v1.25、同步SSOT、本S44和本条WORK_LOG均为未提交、未推送变更，不得写成远端已同步。
+
+## WR-20260807-002 — Task45独立关闭与Task46 v1.25 P0冻结
+- 时间：2026-08-07 10:45:00 +08:00
+- 类型：REVIEW | DECISION | RESEARCH_PLAN | ACCESS_CONTROL | HANDOFF
+- 任务/门：00总控04 / Task45最终审查、Task46候选P0
+- 状态：部分完成（Task45关闭；Task46 P0包冻结，独立任务未创建）
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+用户要求定位共享对话和《任务安排.docx》中的下一步实验方案并直接执行。先从 annotated tag 独立审查 Task45，再把旧方案中与 v1.25 冲突的复用 DIAG_CONFIRM、固定10% memory和无 ABSTAIN 约束改成新角色重建、跨组有效负控、FIT nested OOF、0.90 non-abstain coverage与三动作 risk-budget 合同。
+
+### 实际变更
+- 新增 `TASK00_TASK45_FINAL_INDEPENDENT_REVIEW_20260807.md`，接受Task45 P0/P1/P2 hash、one-shot、validator、失败运行、线程数偏差和零访问账，并裁定 `CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY`。
+- 新增 `TASK00_TASK46_V125_RESEARCH_PLAN_20260807.md`、`TASK00_TASK46_V125_PREREGISTRATION_20260807.md`、`TASK00_TASK46_CREATION_AUTHORIZATION_20260807.md`。
+- 新增 `.light/carm-v125-{data-identity-fitness,target-chain,failure-tree,fair-baselines,access-boundary}.json` 与 `.light/carm-v125-plan-package.manifest.json`；新增 `.light/handoff/S45-task45-independent-review.md`。
+- 同步 `TASK_REGISTRY.md` v1.21、`.light/project_card.md`、`.light/passport.yaml` revision 25、`.light/DECISION_LOG.md` 与 `CLAIM_EVIDENCE_MATRIX.md`；Task40/Task45失败边界、Task50/formal-test封存未改变。
+
+### 验证与证据
+- `git fetch origin; git status --short --branch; git log -3 --oneline; git rev-parse HEAD; git rev-parse origin/main`：fetch成功；写入前 `HEAD=origin/main=0aa8232f8c9586da36c3379ed5256c06a491e3ef`。
+- Task45 tag `task45-t0-benefit-learnability-development-20260806` peeled commit `5a842de375873ee5c5794f06b2a5c555f3a91194`；machine report primary/negative-control数值与零访问账同 `HANDOFF_45.md`；按Windows CRLF归一化重算 machine=`e1e8a45bfd6ba9fc725d099b7d500584d6ba39c390602d48f48b78690580aa5a`、paired=`0ae90e3d0410eddeda96ec31effebf5bbe01334d5a45ecc4a2839b11a9735500`、access=`b03934d14e230fd084208b375400970908a948bb14980312ceed702b33e4da6a`、manifest=`6ad89890156a35df1cdfd5227c13d26a87aed50b9ff09585618fd49eba1f08e7`、one-shot=`53b53e6153a1ef7cb4d6e79b90bf82268610be4dd273109a4fe8da75ecab2c6a`。
+- Task45 machine report `torch_threads=14` 而配置声明4；已按交付偏差保留，不补跑。
+- 新增 v1.25 JSON 经 bundled Python `json.load` 全部通过；`passport.py validate --file .light/passport.yaml` 返回 `WARN/exit 0`，唯一既有WARN为 stage10 PASS占位无hash/timestamp；`git diff --check` 通过。
+- 《任务安排.docx》只读解析 1102段、0表格、1节；SHA-256=`FE28A804C4656E0F57916256C3C84953AC21217945C6F2DA9BD3A5906920513E`。
+
+### 影响与边界
+Task45探索性正信号不升级为可学习性或动作claim。Task46仍未创建、未训练、未打开 `TRAIN_ROUTER_CONFIRM`；旧DEV、DIAG_CONFIRM、formal test和Task50全部封存。仅允许后续独立worktree执行P0→P3；P4需全部hash冻结后一次性门，formal test仍需另行授权。
+
+### 风险、问题与阻塞
+- 负控根因尚未由新跨source-group derangement验证；U0失败即关闭Task46。
+- 当前worktree data-free，通用 `run_preparation_checks.py` 的 HUMAN_GOLD 相对路径缺失仍是既有阻塞；不得伪称PASS或重复pm.py包装器。
+- 共享回答中旧10% coverage与DIAG_CONFIRM复用不能直接执行，已在P0合同中修正并记录。
+
+### 下一步
+1. 将本批P0包提交并推送到 origin/main，生成hash-bound独立Task46创建锚点。
+2. 仅在新任务中执行P0身份/负控门，门未通过不进入P1或读取任何确认角色。
+3. 继续维护Task20受限存储截止、I3D UNKNOWN和Task50/formal-test零事件。
+
+### Git状态
+本条写入后工作树包含未提交的P0包与SSOT同步变更；提交/推送前必须再次刷新HEAD、运行WORK_LOG validator和准备门，并如实记录 data-free `FileNotFoundError`（若仍发生）。

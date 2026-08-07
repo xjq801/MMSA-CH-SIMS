@@ -1,0 +1,14 @@
+{
+  "schema": "light.research_failure_tree.v1",
+  "project": "MMSA-CH-SIMS-TAFFC-CARM-TASK46",
+  "branches": [
+    {"id": "U0", "condition": "identity/access/negative-control failure", "decision": "INVALID_LEAKAGE_BLOCKED", "next": "stop; no confirmation"},
+    {"id": "U1", "condition": "utility proper-loss or valid-null gate fails", "decision": "FAIL_LEARNABILITY", "next": "close Task46; no policy claim"},
+    {"id": "U2", "condition": "calibration/risk/coverage/config not frozen before confirmation", "decision": "INVALID_NOT_FROZEN", "next": "stop; no confirmation"},
+    {"id": "U3", "condition": "policy paired JSD fails versus strongest control", "decision": "FAIL_POLICY_MAIN_JSD", "next": "U4/U5 NOT_TESTED; no Task50"},
+    {"id": "U4", "condition": "negative transfer/risk gate fails after U3", "decision": "FAIL_RISK_TRANSFER", "next": "U5 NOT_EXECUTED"},
+    {"id": "PASS", "condition": "U0-U3 pass", "decision": "UTILITY_AND_POLICY_DEVELOPMENT_PASS", "next": "U4 then U5 in fixed order only"}
+  ],
+  "inconclusive": "Any primary CI crossing zero or unresolved reproducibility issue is INCONCLUSIVE and cannot be upgraded by secondary metrics",
+  "amendment_policy": "No post-confirm metric, seed, threshold, coverage, model or baseline changes"
+}

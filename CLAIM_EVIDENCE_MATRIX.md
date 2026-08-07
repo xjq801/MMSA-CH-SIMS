@@ -36,6 +36,13 @@
 - U3策略证据仍需一次性`TRAIN_ROUTER_CONFIRM`、同预算同90% coverage、相对每seed最强control的视频级paired JSD主门；该门通过前负迁移/P5固定`NOT_TESTED`。
 - 任何Task46成功仍是development evidence；formal test和Task50另需用户授权，C1—C3继续`TO_VERIFY`。
 
+## 2026-08-07 Task45独立关闭与Task46执行边界
+
+- 总控04已从 `task45-t0-benefit-learnability-development-20260806` 独立复核 P0/P1/P2、CRLF归一化hash、one-shot marker、异常shuffled-target、线程数偏差和零访问账；Task45正式登记为`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY`。
+- Task45的Brier/MAE/Spearman/top-decile只保留`EXPLORATORY_SUGGESTIVE_SIGNAL`，不支持“T0收益已被证明可学习”、动作routing、负迁移改善、P5或C2/C3升级。
+- 用户明确要求执行共享对话与《任务安排.docx》中的下一步方案后，00只冻结v1.25 Task46 P0/P1/P2/P3合同；旧文档的复用DIAG_CONFIRM、固定10% memory和无ABSTAIN规则被当前SSOT的重建角色、跨组有效负控、0.90 non-abstain coverage和三动作risk-budget规则替代。
+- Task46未创建前不产生任何确认集或formal证据；`TRAIN_ROUTER_CONFIRM`只有在U0—U2与策略hash全部冻结后才可一次性打开，主JSD通过前负迁移/P5固定`NOT_TESTED`，Task50仍未创建。
+
 ## 2026-07-14 前作约束（不改变实验支持状态）
 
 | Claim/边界 | 已核前作 | 对允许措辞的限制 | 证据文件 |

@@ -1,0 +1,28 @@
+{
+  "schema": "taffc.carm.task46_fair_baselines.v1",
+  "comparison_contract": {
+    "data": "same rebuilt FIT OOF and one-shot TRAIN_ROUTER_CONFIRM",
+    "split": "source_group_disjoint",
+    "seeds": [1364847620, 426925854, 1839464886, 1138176833, 484191872],
+    "coverage": 0.90,
+    "tuning": "FIT nested OOF only",
+    "compute_budget": "same trial count and wall-clock class; no post-confirm selection",
+    "primary_metric": "video-level paired JSD clustered by source_group"
+  },
+  "baselines": [
+    "constant",
+    "always_content",
+    "always_memory",
+    "fixed_fusion",
+    "similarity_heuristic",
+    "neighbor_agreement_heuristic",
+    "content_entropy_selective",
+    "task40_point_router",
+    "generic_gate",
+    "selectivenet",
+    "g0_content_only",
+    "new_risk_budget_utility_policy",
+    "oracle_development_upper_bound"
+  ],
+  "forbidden_substitutions": ["fixed_10_percent_memory_top_k", "spearman_as_policy_gate", "top_k_gain_as_policy_gate", "post_confirm_threshold_search"]
+}

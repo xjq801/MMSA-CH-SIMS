@@ -12679,3 +12679,48 @@ Task45探索性正信号不升级为可学习性或动作claim。Task46仍未创
 
 ### Git状态
 本条写入后工作树包含未提交的P0包与SSOT同步变更；提交/推送前必须再次刷新HEAD、运行WORK_LOG validator和准备门，并如实记录 data-free `FileNotFoundError`（若仍发生）。
+
+## WR-20260807-003 — Task46独立执行线程创建与P0-P3边界交接
+
+- 时间：2026-08-07 11:05:00 +08:00
+- 类型：EXECUTION_AUTHORIZATION | ACCESS_CONTROL | HANDOFF
+- 任务/门：00总控04 / 按用户“直接执行”创建Task46独立worktree
+- 状态：已创建并运行；当前仅授权P0→P3，P4/formal test/Task50均未授权
+- 负责人：00-T-AFFC总控04；执行线程：独立Task46代理
+
+### 背景与目标
+
+用户要求将共享讨论和《任务安排.docx》中的下一步实验方案直接落地；总控04已按总纲v1.25修正旧方案冲突，并需要把Task46交给独立worktree执行，避免总控与实验核心并发修改。
+
+### 实际变更
+
+- 创建工具：Codex app `create_thread`；项目 `MMSA-CH-SIMS`，Git worktree，起始分支 `main`。
+- 创建返回：clientThreadId=`client-new-thread:3746e1c7-39ae-4865-a02a-41f579c45cda`，随后就绪线程=`019fda1c-0f78-7053-9ad1-769f0bd5e899`，host=`local`。
+- 执行锚点：要求代理先校验 `origin/main@e3a7864de6ae8fa13221b710011b53833dc2af0d`，并读取Task45独立关闭材料、Task46 v1.25计划/预注册/创建授权及六份机读合同。
+- 访问边界：仅P0数据身份/跨source-group derangement与零事件门、P1 posterior utility target、P2 FIT nested OOF learnability、P3 FIT-OOF policy simulation；不得访问旧DEV/DIAG_CONFIRM/ROUTER_CONFIRM/formal test，不得重跑Task40/45，不得创建Task50。
+
+### 验证与证据
+
+- 创建后通过 `codex_app.list_threads` 看到目标线程状态 `active`，cwd为独立worktree `C:\Users\86183\.codex\worktrees\dfba\MMSA-CH-SIMS`。
+- 创建前后Git主线仍为 `HEAD=origin/main=e3a7864de6ae8fa13221b710011b53833dc2af0d`；Task46代理尚未回写本总控worktree。
+- 本条不宣称P0或后续实验已通过；所有阶段必须以代理回交的machine/human报告、失败运行、零访问账与SHA-256为准，并由总控逐门审核。
+
+### 影响与边界
+
+Task46仍仅处于独立执行线程的P0→P3阶段；本总控未访问任何确认集或formal test，未创建Task50，也未改变Task40/Task45关闭结论。P4、正式结果和论文claim均保持未授权/TO_VERIFY。
+
+### 风险、问题与阻塞
+
+- 新worktree预计仍为data-free；若通用`run_preparation_checks.py`因HUMAN_GOLD缺失返回`FileNotFoundError`，必须原样保留，不得绕过或改写为PASS。
+- Task45双shuffle异常优于constant的阴性控制仍是论文claim边界；不得把Task46 P0-P3的探索性结果写成正式收益或action claim。
+- P4必须等待总控04书面放行；formal test继续零materialization，Task50继续不存在。
+
+### 下一步
+
+1. 监控独立线程，先收取P0交付；若P0任一身份、derangement、角色冲突或零事件门失败，立即关闭Task46并要求交回失败证据。
+2. 仅当P0→P3完整证据链通过总控复核后，另行决定是否签发P4一次性门授权；不自动训练或调整阈值。
+3. 继续维护Task40/Task45关闭状态、Task20受限存储截止和formal-test零事件。
+
+### Git状态
+
+本条记录对应已推送的`e3a7864de6ae8fa13221b710011b53833dc2af0d`；新增工作发生在独立Task46 worktree，不改变本总控工作树。

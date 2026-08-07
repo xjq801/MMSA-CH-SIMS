@@ -1,7 +1,7 @@
 # IEEE T-AFFC 第四章研究十个月总纲（项目唯一主路线）
 
-> 版本：v1.25（Task40/45负结果不变；将未来候选Task46重构为后验效用分布学习与风险约束选择性利用；Task46/50仍未创建，v1.17已撤回且不恢复）  
-> 冻结日期：2026-08-06  
+> 版本：v1.26（Task40/45负结果不变；Task46 P0已接受但P1因内容资产准入阻塞；新增条件性平台情绪偏移可行性审计，不替换CARM主线、不创建Task35/50）  
+> 冻结日期：2026-08-07  
 > 执行周期：2026-07-13—2027-05-12  
 > 首要目标：在2027-05-12前形成可直接提交 IEEE Transactions on Affective Computing（T-AFFC）的CARM群体情绪预测论文、代码、数据说明和完整证据链。  
 > 研究范围：只继承毕业论文第四章“基于多模态感知与检索的群体情绪预测”；第三章传播链、Temporal GNN 和传播拓扑不作为新论文的方法贡献。  
@@ -171,7 +171,7 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 - 新建独立Task45，只用CSMV原始train。按source-group固定hash分为`TRAIN_DIAG_FIT=3404`、`TRAIN_DIAG_CONFIRM=1154`、`TRAIN_ROUTER_CONFIRM=1140`；最后一部分在Task45完全封存。
 - Task45在FIT内做nested group OOF，只在DIAG_CONFIRM一次性检验`P(Delta>0)`的Brier与`E[max(Delta,0)]`的MAE是否同时优于同容量content-only特征诊断器；响应支持量、`Q05(Delta)`和五seed零`USE_MEMORY`只作机制解释，不能挽救主门。
 - 原DEV_SELECT、DEV_CALIBRATE与formal test不得作为确认集；Task40仍`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`，Task50不创建，旧门不得放宽。
-- Task45已按原合同停止并回交，因shuffled-target阴性对照异常通过而报告`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY_AWAITING_00_REVIEW`。v1.25不改判Task45；未来Task46只有在新预注册、同预算同coverage强基线、有效跨组负控、expected-regret/risk-budget三动作与`TRAIN_ROUTER_CONFIRM`一次性门全部冻结后才可能创建。Task46现未创建，主JSD通过前不得检验负迁移或P5。
+- Task45已按原合同停止并回交，因shuffled-target阴性对照异常通过而报告`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY_AWAITING_00_REVIEW`。v1.25不改判Task45；Task46随后按独立v1.25预注册与创建授权建立，现已完成P0并由00接受，P1因无hash-bound准入T0内容表示阻塞；主JSD通过前不得检验负迁移或P5。
 - 精确合同见`TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md`、预注册、实验矩阵、`.light/carm-v124-*`机读文件与Task45创建授权。
 
 ### 0.15 Task45负控失效后的效用学习与风险约束选择（v1.25，`SC-20260806-02`）
@@ -209,7 +209,31 @@ Nguyen et al.于2026-07-08公开arXiv:2607.06875 *Video2Reaction: Mapping Video 
 5. `U4_NEGATIVE_TRANSFER`：只有U3主JSD通过，才检验负迁移率、routing regret、risk-coverage/AURC与错误邻居/OOD；主JSD失败时固定为`NOT_TESTED`。
 6. `U5_THREE_SOURCE_P5`：只有U3/U4均通过，才执行response thinning、三源不确定性、80/90/95%经验分布区域和条件性Video2Reaction外验；否则P5继续不执行。
 
-Task46状态固定为`PLANNED_NOT_CREATED_PENDING_TASK45_INDEPENDENT_REVIEW_AND_V125_PREREGISTRATION`。创建前必须另有完整target chain、failure tree、公平基线、访问边界、预注册、hash-bound授权与用户明确执行许可。Task50仍`NOT_CREATED_FIXED_ORDER_BLOCKED`。当前论文可使用的叙事方向是“learning the transferable utility of historical audience reactions under risk”，但一般utility prediction、selective prediction和learning-to-defer均已有前作，不能把换头或三动作本身写成方法首创。
+Task46当前状态为`P0_ACCEPTED_P1_BLOCKED_CONTENT_ASSET_ADMISSIBILITY`。P0只证明身份、跨组负控和零访问门可审计，不证明utility可学习或policy有效；P1前仍不得训练、打开确认角色或进入P2/P3。Task50仍`NOT_CREATED_FIXED_ORDER_BLOCKED`。当前论文可使用的叙事方向是“learning the transferable utility of historical audience reactions under risk”，但一般utility prediction、selective prediction和learning-to-defer均已有前作，不能把换头或三动作本身写成方法首创。
+
+### 0.16 v1.26条件性平台情绪偏移分支（`SC-20260807-01`）
+
+用户提供的《v1.26_TAFFC路线修改提案》提出一个有价值但尚未可执行的邻接问题：同一内容在不同社交平台是否产生稳定的评论者公开表达反应分布偏移，以及平台生态信息能否解释这种偏移。该问题可作为CARM的外部压力测试/失效解释分支，但**不替换CSMV核心机制路线，不把CUC-IGPE-v2升级为已合格主数据，不恢复Task40/45，不创建Task50**。
+
+#### 0.16.1 现状审计与不可越过的事实
+
+- CUC-IGPE-v2当前canonical为2,787行（SHA-256=`407d68d96071dd11a850be59b42879e725026493d58b44220d4cfb79f571a415`），manifest为`UNKNOWN_LOCAL_ONLY`（manifest与完整SHA-256见本次预审报告）；历史2,815版manifest缺失，28行漂移未解释，221条label conflict、1,904条缺发布时间。
+- 逐行schema审计未发现独立`platform`字段；仅有`publisher_id/source_domain`等标识，不能把发布者ID未经来源证明当作平台处理，也不能由其推断平台因果效应。
+- 2,787行均为`SILVER`、`label_source=silver_legacy_vector_binary_label`、`available_at_t0=false`，48维legacy特征均为`legacy_features_available_at_t0=false`；该表没有可支持核心T0平台效应结论的独立人工金标或已闭合许可/再发布链。
+- 因此当前状态固定为`PLATFORM_SHIFT_FEASIBILITY_BLOCKED_NO_PLATFORM_FIELD_T0_GOLD_OR_LICENSE`。本次只完成只读预审，不计算或报告平台间JSD为科学结果，不创建Task35-Pilot执行线程。
+
+#### 0.16.2 允许的条件性问题与estimand
+
+- 只有在平台字段来源、同内容跨平台匹配、T0内容表示、标签/响应窗口、许可与逐资产fixity全部闭合后，才可预注册平台条件分布差：`JSD(p(y|content, platform=a), p(y|content, platform=b))`，并以内容/主题/时间分层、同内容配对或层级模型区分观测平台混杂；不能把跨平台均值差写成平台因果效应。
+- Phase 0只回答“是否存在可识别且可复核的平台条件分布差异”，不是训练Platform Encoder、Context Adapter或跨平台模型；若没有足够的同内容跨平台支持、标签金标或T0输入，则停止。
+- 若Phase 0未来通过，Phase 1/2才可在独立授权下比较content-only、content+platform和轻量adapter，并以publisher/topic/time held-out检验迁移；若失败，关闭该分支并保持CARM主线，不以换数据逃避Task46 P1阻塞。
+- CARM在该分支中的角色仅是后续“平台条件下历史reaction可靠性”的解释模块；不得把平台编码器、三动作或一般shift-aware adapter写成方法首创。所有主要结论仍需公开人工金标或明确标注为银标/压力测试。
+
+#### 0.16.3 当前下一步与授权边界
+
+- 00仅执行`TASK00_CUC_PLATFORM_SHIFT_FEASIBILITY_PREAUDIT_20260807.md`规定的只读身份/字段/许可预审，并保留`S47-cuc-platform-shift-preaudit.md`交接；该审计不访问formal test、不读取I3D、不改变Task46 P0/P1状态。
+- 未来如要创建`Task35-Pilot`，必须先由用户明确批准、另签hash-bound创建合同和独立worktree；其最小P0应重新核对canonical identity、platform provenance、同内容跨平台覆盖、T0可得输入、人工/银标角色、许可/隐私/平台条款与停止门。当前不得创建、训练或把CUC字段加入Task46。
+- Task46继续`P0_ACCEPTED_P1_BLOCKED_CONTENT_ASSET_ADMISSIBILITY`；在P1资产合同闭合前不得进入P2/P3、不得打开`TRAIN_ROUTER_CONFIRM`。Task40/45、formal test和Task50边界不变。
 
 这条路线与第四章的对应关系是：
 
@@ -772,7 +796,7 @@ flowchart TD
 从下一项任务起，开工前必须写清：
 
 ```text
-主纲版本：v1.23（2026-08-05）
+主纲版本：v1.26（2026-08-07）
 所属月份/工作包：M? / E?
 服务假设：H?
 数据版本与split：...
@@ -801,11 +825,11 @@ flowchart TD
 
 ## 17. Codex任务树详细执行规格
 
-> 规格版本：v1.9  
-> 初次并入：2026-07-14；本次修订：2026-08-06  
+> 规格版本：v1.10  
+> 初次并入：2026-07-14；本次修订：2026-08-07  
 > 权威性：本节是总纲的一部分，负责规定00—60各Codex任务的启动条件、执行步骤、质量水平、退出门和交接要求。  
 > 独立文件 `CODEX_TASK_TREE_EXECUTION_SPEC.md` 仅作为便捷副本；若与本节冲突，以本总纲第17节为准。
-> v1.9修订边界：保留Task40/45关闭事实；把未来Task46从二元动作分类重构为后验效用分布学习、有效跨组负控与expected-regret/risk-budget选择性策略，仍须另行预注册、精确授权和独立任务。不改写Task30/40/45失败、G1—G3、Task20或I3D风险，不恢复v1.17硬效应门。
+> v1.10修订边界：保留Task40/45关闭事实；Task46 P0已接受但P1因内容资产准入阻塞；新增条件性Task35-Pilot平台情绪偏移可行性分支，当前只做00只读预审，不创建Task35、不改变CARM主线、不改写Task30/40/45失败、G1—G3、Task20或I3D风险，不恢复v1.17硬效应门。
 
 ### 1. 全任务统一规则
 
@@ -813,13 +837,14 @@ flowchart TD
 
 ```text
 00-总控与决策（持续存在）
+  ├─ 35-Pilot（条件性平台情绪偏移可行性审计；当前未创建，仅由00执行只读预审）
   └─ 10-M1–M2 数据与协议（已创建）
        └─ G1 + G2通过后创建 20-M3 基线与统一评测
             └─ G3通过后创建 30-M4 评论教师与内容学生（已CLOSED_NOT_PASSED）
                  └─ 40-M5净效用反应记忆已CLOSED_NOT_PASSED_ROUTER_MAIN_JSD
                       └─ 用户批准v1.24诊断方向 + 00计划/数据/查新门 + 独立创建授权
                            └─ 45-M5b T0历史收益可学习性诊断已回交CLOSED_NOT_PASSED、待00独立终审
-                                └─ 用户批准v1.25效用分布方向；46仅规划，须新预注册/精确授权后才可创建；50仍被阻断
+                                 └─ 用户批准v1.25效用分布方向；46已独立P0接受、P1内容资产阻塞；50仍被阻断
 ```
 
 后续任务不得提前创建。若上游门失败，应在上游任务修复或执行止损，不以“先开下一个任务”绕过问题。
@@ -829,7 +854,7 @@ flowchart TD
 每个任务首次回复和每个正式实验必须填写：
 
 ```text
-主纲版本：v1.25（2026-08-06）
+主纲版本：v1.26（2026-08-07）
 任务编号与名称：
 所属月份/工作包：M? / E?
 服务假设：H? / C?
@@ -1288,7 +1313,7 @@ Task45是Task40关闭后的独立诊断桥，不是修复批次。它只检验�
 
 Task46回答的不是“能否直接分类`USE_MEMORY`”，而是“严格T0诊断能否估计历史受众反应知识的可迁移效用分布，以及该估计能否在冻结风险预算下改善相对最强content/selective基线的实际分布预测”。工作标题方向为`Learning When Historical Audience Reactions Are Trustworthy for Affect Distribution Forecasting`，但标题和方法名均为候选，不构成首创或有效性claim。
 
-当前状态：`PLANNED_NOT_CREATED_PENDING_TASK45_INDEPENDENT_REVIEW_AND_V125_PREREGISTRATION`。本总纲只批准方向设计；创建和执行必须另有用户明确授权、00 hash-bound创建合同及独立worktree。Task40不得恢复，Task45不得补跑。
+当前状态：`P0_ACCEPTED_P1_BLOCKED_CONTENT_ASSET_ADMISSIBILITY`。Task46已在独立worktree按v1.25合同完成P0并由00接受；P1/P2/P3/P4仍未执行。解除P1前不得训练、打开确认角色或绕过内容资产准入；Task40不得恢复，Task45不得补跑。
 
 #### 6B.2 创建前必须冻结
 
@@ -1326,6 +1351,34 @@ Task46回答的不是“能否直接分类`USE_MEMORY`”，而是“严格T0诊
 - P2通过而P4失败：论文只允许报告探索性utility measurement/negative policy result，不得声称选择性利用有效。
 - P2失败或负控失败：关闭Task46，不改数据、不增加seed、不换metric、不在确认角色调阈值。
 - P4/P5通过仍只是development evidence；Task50/formal test须用户另行授权，C1—C3继续`TO_VERIFY`直至正式证据验收。
+
+---
+
+### 6C. 条件性任务35-Pilot：Platform Emotion Shift Feasibility Audit
+
+#### 6C.1 定位与状态
+
+Task35-Pilot是v1.26提出的CARM邻接可行性审计，不是新的主路线、不是Task46的内容资产替代，也不是正式实验任务。它只回答：现有CUC-IGPE-v2是否同时具备可证明的平台字段、同内容跨平台支持、T0输入、标签角色与许可链，从而值得另行预注册平台条件分布偏移研究。当前状态固定为`NOT_CREATED_CONDITIONAL_PREAUDIT_BLOCKED`；00本次只完成只读预审，不创建执行线程。
+
+#### 6C.2 P0只读前置门
+
+1. 固定canonical、历史manifest差异、逐行schema与逐文件SHA-256；解释2,815→2,787漂移、label conflict、缺失时间与重复源。
+2. 证明`platform`字段的来源、观测时间点和粒度；不得把`publisher_id/source_domain`直接当平台或因果处理。
+3. 证明同一内容跨平台配对/层级支持量和可比响应窗口；没有支持量就停止，不以跨平台均值差替代配对设计。
+4. 证明内容在T0可获得、标签为公开人工金标或明确受限银标，并完成许可、隐私、平台条款、再发布边界与fixity；`available_at_t0=false`或`legacy_features_available_at_t0=false`不得进入T0模型。
+5. P0任一项失败即标记`PLATFORM_SHIFT_FEASIBILITY_BLOCKED`，不计算科学JSD、不训练Platform Encoder/Adapter、不升级CUC为主数据。
+
+#### 6C.3 未来条件性阶段（仅P0通过后）
+
+- Phase 0预注册平台条件分布差`JSD(p(y|content,platform=a),p(y|content,platform=b))`，按内容/主题/时间分层或同内容配对；结果只解释观测shift，不宣称平台因果效应。
+- Phase 1比较content-only、content+platform与轻量adapter；Phase 2做publisher/topic/time held-out跨平台泛化；Phase 3才分析平台条件下CARM历史reaction可靠性。各阶段均需独立授权、同预算强基线和人工/银标角色声明。
+- 若P0或Phase 0失败，关闭该分支，保持CSMV/CARM路线与Task46 P1状态，不通过换数据逃避内容资产准入。
+
+#### 6C.4 创建、执行与claim边界
+
+- 创建Task35-Pilot须用户明确批准、单独hash-bound创建合同、独立worktree和交接卡；本总纲升版不等于创建或训练授权。
+- Task35不得读取formal test、Task40旧DEV、Task45 DIAG_CONFIRM、`TRAIN_ROUTER_CONFIRM`或真实I3D；不得创建Task50。CUC银标/无标签结果不得支撑核心准确率、校准或因果平台效应claim。
+- 可发表上限是“在合法可识别数据上测量平台条件反应偏移及其对历史reaction可靠性的影响”；Platform Encoder、Context Adapter、三动作或一般shift-aware模块不构成方法首创。
 
 ---
 
@@ -1531,7 +1584,8 @@ Task46回答的不是“能否直接分类`USE_MEMORY`”，而是“严格T0诊
 | 20 | 30 | evaluation-kit、强基线、G3 | 不可并行改评测器和teacher主线 |
 | 30/00 | 40 | Task30负结果边界、冻结content-only接口、v1.23计划/数据/预注册门与独立创建授权 | Task30不再修改；Task40获授权前不可建正式memory或训练router |
 | 40/00 | 45 | Task40负结果、v1.24诊断计划、三角色隔离与精确创建授权 | Task40保持关闭；Task45不得读取旧DEV或训练路由 |
-| 45/00 | 46（候选） | Task45 not-passed关闭包、探索性弱信号、失效负控根因、零访问账与00独立审核 | v1.25只批准重规划；Task45不得改判或补跑，Task46须新预注册/精确授权且当前未创建 |
+| 00 | 35-Pilot（条件性） | CUC canonical/平台字段/T0/标签/许可只读预审 | 当前仅00执行预审；P0任一资产或可识别性缺口即关闭，不阻断Task46且不得替代其P1 |
+| 45/00 | 46（候选） | Task45 not-passed关闭包、探索性弱信号、失效负控根因、零访问账与00独立审核 | v1.26接受Task46 P0但P1内容资产阻塞；Task45不得改判或补跑，未经新精确授权不得训练 |
 | 46（候选） | 50 | 有效跨组负控、效用学习门、一次性policy主JSD、负迁移、P5与完整冻结结论 | 46不存在或任一前序门失败时50保持阻断 |
 | 50 | 60 | 冻结结果、统计、claim-evidence、G6 | 写作骨架可早建，但主结果/结论不得提前定稿 |
 | 60 | 00 | submission-ready包和Go证据 | 由00执行最终Go/No-Go |
@@ -1546,7 +1600,8 @@ Task46回答的不是“能否直接分类`USE_MEMORY`”，而是“严格T0诊
 6. 任务30已由00以`CLOSED_NOT_PASSED`关闭：H1开发机制跨种子不稳定，formal test未materialize，证据仅为`DEVELOPMENT_EVIDENCE_ONLY`，不授权修复。
 7. Task40 `019fd19c-abf3-7bf0-8530-759e38c3a6ab`已由总控04独立审核并以`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`关闭：P0/P1/P2通过，P3/P4主JSD门0/5；可信负迁移未检验，P5未执行，formal test零事件。
 8. Task45已回交`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY_AWAITING_00_REVIEW`：两条primary表面改善，但两条shuffled-target阴性对照异常通过；总控须独立审核后关闭，禁止补跑或把探索性Brier/MAE/Spearman写成已证明。
-9. 用户以`SC-20260806-02`批准v1.25后验效用分布学习与风险约束选择方向；00下一步应冻结Task46的可发表性/数据身份/跨组负控/target chain/failure tree/公平基线/访问边界与预注册。Task46与Task50当前均未创建；未经新精确授权不得训练或打开`TRAIN_ROUTER_CONFIRM`，formal test继续封存。
+9. 用户以`SC-20260806-02`批准v1.25后验效用分布学习与风险约束选择方向；Task46 P0已接受、P1因内容资产准入阻塞，未经新精确授权不得训练或打开`TRAIN_ROUTER_CONFIRM`，formal test继续封存。
+10. 按`SC-20260807-01`仅由00完成Task35-Pilot只读平台情绪偏移预审；当前`PLATFORM_SHIFT_FEASIBILITY_BLOCKED_NO_PLATFORM_FIELD_T0_GOLD_OR_LICENSE`，不创建Task35、不把CUC字段加入Task46、不把平台差异写成科学结果。
 
 ### 11. 每个任务的完成定义
 

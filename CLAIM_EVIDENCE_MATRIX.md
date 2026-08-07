@@ -1,12 +1,12 @@
 # Claim—Evidence矩阵
 
-> 版本：v1.7；日期：2026-08-06  
+> 版本：v1.8；日期：2026-08-07  
 > 原则：没有证据的主张保持`TO_VERIFY`，不得写成论文结论；`TO_VERIFY`不等于仍有实验授权。
 
 | Claim ID | 核心主张 | 所需证据 | 对应实验/材料 | 当前状态 | 允许措辞 |
 |---|---|---|---|---|---|
 | C1 | 无泄漏T0协议能形成可审计的公众公开表达诱发反应分布预测证据 | 两个公开人工标注集、内容单元划分、物理泄漏隔离、Data Card | G1/G2、E0、`T0_INPUT_POLICY.md` | TO_VERIFY | 仅可描述协议/证据贡献；任务与分布输出均不称首创 |
-| C2 | train-only历史反应的后验效用分布能否在严格T0被学习，并经风险预算选择在匹配coverage下减少错误历史证据负迁移 | Task45 not-passed包只提供探索性Brier/MAE/排序信号；未来Task46须先通过有效跨组负控和FIT nested-OOF概率/幅度/均值/风险学习，再一次性比较content-entropy/point/generic/SelectiveNet/fixed fusion与matched-coverage主JSD及负迁移 | H2a/H2b、E2/E4/E4b/E4c/E7、Task40关闭证据、Task45关闭包、总纲v1.25 | TO_VERIFY | Task40/45候选均已关闭或待行政终审；探索性ranking不是动作证据。一般utility/selective router不是方法首创；Task46/50均未创建 |
+| C2 | train-only历史反应的后验效用分布能否在严格T0被学习，并经风险预算选择在匹配coverage下减少错误历史证据负迁移 | Task45 not-passed包只提供探索性Brier/MAE/排序信号；Task46 P0仅接受身份/负控/零事件，P1因T0内容资产阻塞，后续须通过FIT nested-OOF概率/幅度/均值/风险学习，再一次性比较content-entropy/point/generic/SelectiveNet/fixed fusion与matched-coverage主JSD及负迁移 | H2a/H2b、E2/E4/E4b/E4c/E7、Task40关闭证据、Task45关闭包、Task46 P0关闭证据、总纲v1.26 | TO_VERIFY | Task40/45已关闭；Task46 P1未通过，探索性ranking不是动作证据。一般utility/selective router不是方法首创；Task50未创建 |
 | C3 | 群体分歧、有限反应抽样和模型/迁移不确定性能被分别验证，并支持校准的经验反应分布预测区域与选择性可靠性 | held-out/split-half反应；2/4/8/all与8/16/32/all thinning；ensemble/自然group-OOD；单源消融；80/90/95% coverage+width；严格分组与外部边界 | H2c、E4/E5/E6、CAL-01；Task40 P5未执行报告 | TO_VERIFY | 固定顺序阻断后只能写“未检验”；不得宣称三源无效、区域未校准、区域保证、所有观众或因果效应 |
 | H1-R | Task30评论特权teacher开发假设 | 冻结Task30开发包；未触及formal test | Task30 | RETIRED_FROM_ACTIVE_CLAIM_SET_DEVELOPMENT_NOT_PASSED | 不得写为正式H1被反驳；不得恢复主方法或进入正式表 |
 
@@ -122,3 +122,11 @@
 | Task46 P0 伪特征 null sanity | `IMPLEMENTATION_SANITY_ONLY` | identity-hash pseudo-feature 不是 scientific T0 feature，不得写入论文结果或 claim |
 | I3D/VideoMAE 内容资产 | `UNKNOWN_NOT_ADMISSIBLE` | 本次真实读取为0；不确认、不再分发、不以其支撑任何结果 |
 | Task40/Task45、formal test、Task50 | `CLOSED_OR_SEALED` | Task40/45关闭结论不变；formal test零 materialization；Task50不创建 |
+
+## v1.26 条件性平台偏移分支（2026-08-07）
+
+| Claim/证据 | 当前状态 | 边界 |
+|---|---|---|
+| CUC-IGPE 平台条件反应分布偏移 | `BLOCKED_PLATFORM_FIELD_T0_GOLD_OR_LICENSE` | canonical无独立`platform`字段；publisher/source不得直接当平台处理；当前不计算平台JSD或因果效应 |
+| CUC-IGPE T0内容与标签角色 | `BLOCKED` | 2787/2787为SILVER且`available_at_t0=false`、legacy 48维全禁；人工金标、响应窗口、split与许可未闭合 |
+| Task35-Pilot | `NOT_CREATED_CONDITIONAL_PREAUDIT_BLOCKED` | 仅00完成只读预审；若未来用户另行授权，须先闭合平台provenance、同内容跨平台覆盖、T0输入、金标/银标角色、许可与fixity；不替代Task46 P1，不创建Task50 |

@@ -1,7 +1,7 @@
 # 项目风险登记
 
 > 维护任务：00-总控与决策  
-> 当前快照：2026-08-06  
+> 当前快照：2026-08-07  
 > 规则：风险关闭必须链接到可复核证据；`UNKNOWN`不能按通过处理。
 
 | 风险ID | 风险 | 当前证据 | 影响 | 当前控制 | 状态/恢复条件 |
@@ -34,3 +34,6 @@
 
 | `R-UTILITY-004` | Task46 P1 缺少可准入的 T0 内容表示，无法构造 scientific expert prediction | Task46 P0 已独立通过，但 I3D/VideoMAE 许可、官方 revision、权利方包身份与 fixity 仍 UNKNOWN；P1 阻塞 | 若绕过会把 response support 或身份伪特征误当内容输入，形成泄漏与不可复现 claim | 保持 `BLOCKED_P1_CONTENT_ASSET_ADMISSIBILITY`；另行冻结来源、许可、revision、覆盖、逐文件 SHA-256 和使用合同后再审；禁止读取真实 I3D、进入 P1/P2/P3、打开确认集或创建 Task50 | CONTROLLED_BLOCKED_UNTIL_ASSET_CONTRACT |
 | `R-CONTROL-002` | P0 外层 runner 超时可能被误写成成功 | 正式 P0 runner 外层 exit 124，但完整 artifact 已落盘并由独立 validator exit 0 重算通过 | 隐瞒失败会破坏可审计性并夸大实验可靠性 | 保留 exit 124 原文、无 `p0-failure.json` 事实及独立 validator 证据；不得删除失败运行 | CONTROLLED_WITH_FAILURE_EVIDENCE |
+
+| `R-SHIFT-001` | CUC-IGPE被误升级为跨平台主数据或把publisher差异写成平台效应 | v1.26只读预审发现canonical无独立platform字段，publisher/source语义未闭合；2,787行均为SILVER且split未分配 | 产生不可识别的平台处理、混杂或伪因果结论，且偏离CARM主线 | 状态固定`PLATFORM_SHIFT_FEASIBILITY_BLOCKED_NO_PLATFORM_FIELD_T0_GOLD_OR_LICENSE`；不计算平台JSD、不训练adapter；Task35须另行授权与P0合同 | CONTROLLED_BLOCKED_UNTIL_PLATFORM_PROVENANCE |
+| `R-DATA-005` | CUC-IGPE字段或legacy特征被误当作T0可用输入 | 逐行审计显示`available_at_t0=false`与`legacy_features_available_at_t0=false`均为2,787/2,787；许可为`UNKNOWN_LOCAL_ONLY` | 形成T0泄漏、银标冒充金标或不可复现数据主张 | 维持`T0_INPUT_POLICY.md` fail-closed；不把CUC字段加入Task46；未来Task35先完成T0/标签/许可/fixity合同 | CONTROLLED_BLOCKED_UNTIL_T0_AND_LICENSE |

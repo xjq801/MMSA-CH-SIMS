@@ -12808,3 +12808,95 @@ P0仅证明身份、负控算法和访问边界。由于没有另一个hash-boun
 ### Git状态
 
 本批总控SSOT更新待提交；Task46 P0实验代码与artifact保留在未推送提交 `6a1aa5c...`，本总控不将其误写成已同步main。
+
+## WR-20260807-006 — v1.26平台情绪偏移提案纳入总纲与CUC只读预审
+
+- 时间：2026-08-07 12:30:00 +08:00
+- 类型：PLAN | AUDIT | GATE | CLAIM_BOUNDARY | SSOT | HANDOFF
+- 任务/门：00总控04 / `SC-20260807-01` / Task35-Pilot条件性P0
+- 状态：`PLATFORM_SHIFT_FEASIBILITY_BLOCKED_NO_PLATFORM_FIELD_T0_GOLD_OR_LICENSE`；Task35未创建；Task46 P1继续阻塞
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+用户要求根据`v1.26_TAFFC路线修改提案 (1).docx`完善总纲并执行下一步。提案把平台诱发群体情绪偏移作为可能的新问题；总控需在不偏离CARM主线、不创建Task50、不访问formal test的前提下，判断该分支是否具备可执行数据基础。
+
+### 实际变更
+
+- 使用`C:\Users\86183\.codex\skills\light-file-reading\scripts\docx_read.py`读取DOCX的headings、paragraphs、runs、tables、layout和props；源文件SHA-256=`CF144F8D0CA8569784AF56FE8ED9A3CA82E5FE3769704EBD208DB2A095765249`。
+- 总纲`TAFFC_CH4_10_MONTH_MASTER_PLAN_20260713.md`升为v1.26，第17节升为v1.10；增加0.16和6C条件性Task35-Pilot分支、P0门、estimand、失败树与创建/claim边界；未修改Task40/45负结果、Task46 P0/P1、G1—G3或formal-test禁令。
+- 新增`TASK00_CUC_PLATFORM_SHIFT_FEASIBILITY_PREAUDIT_20260807.md`与`.light/handoff/S47-cuc-platform-shift-preaudit.md`；更新`TASK_REGISTRY.md` v1.23、`.light/project_card.md`、`.light/decision_log.md`、`.light/version_history.md`、`RISK_REGISTER.md`和`CLAIM_EVIDENCE_MATRIX.md`。
+- 对D盘CUC canonical只读统计：2,787行，SHA-256=`407D68D96071DD11A850BE59B42879E725026493D58B44220D4CFB79F571A415`；manifest SHA-256=`3A8E9CF24CF547A8F73259D89CD0FC787974FEB7ECDFE6C1636C4D81B035B3F7`；无独立`platform`字段；2,787/2,787为SILVER、`available_at_t0=false`和`legacy_features_available_at_t0=false`；publish_time缺失1,904行；split仍not_assigned。
+- 共享对话URL读取仅返回登录壳，未取得正文；不据不可读内容补造事实。
+
+### 验证与证据
+
+- `git diff --check`：exit 0。
+- `D:\MMSA-CH-SIMS\.venv\Scripts\python.exe scripts\validate_work_log.py`（追加前）：PASS，280 entries，0 errors。
+- `D:\MMSA-CH-SIMS\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 1，`FileNotFoundError`，当前data-free worktree缺少`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`；失败原文保留，未绕过。
+- `passport.py validate --file .light/passport.yaml`：WARN/exit 0；保留既有stage10/stage46占位与状态派生WARN，不伪称全PASS。
+- `handoff_contract.py --card .light/handoff/S47-cuc-platform-shift-preaudit.md --as-of 2026-08-07`：PASS。
+- `version_tag_reconcile.py --version-history .light/version_history.md --git-dir .`：exit 1，报告历史49条版本记录无对应Git tag（含本次v1.26/v1.10/v1.23），未新增tag或推送；该既有台账不一致保留，不冒充已对齐。
+
+### 影响与边界
+
+CUC平台偏移分支只进入条件性审计，不承担核心CARM结果。不得计算平台JSD、训练Platform Encoder/Adapter、把publisher/source当平台、把银标当人工金标或把平台差异写成因果效应。Task40仍`CLOSED_NOT_PASSED_ROUTER_MAIN_JSD`，Task45仍`CLOSED_NOT_PASSED_T0_BENEFIT_LEARNABILITY`，Task46为`P0_ACCEPTED_P1_BLOCKED_CONTENT_ASSET_ADMISSIBILITY`；旧DEV/DIAG_CONFIRM、`TRAIN_ROUTER_CONFIRM`、formal test与Task50继续封存/零事件。
+
+### 风险、问题与阻塞
+
+- CUC无独立platform字段，T0输入、人工金标、许可与同内容跨平台覆盖均未闭合；Task35-Pilot不可创建。
+- Task46 P1内容资产准入仍阻塞；I3D/VideoMAE许可/revision/fixity UNKNOWN，真实I3D读取保持0。
+- 准备门仍因data-free worktree缺少HUMAN_GOLD文件返回FileNotFoundError；不得绕过或改写失败。
+
+### 下一步
+
+1. 运行追加后的工作日志校验并保留entry计数；
+2. 提交v1.26总纲、只读预审与S47交接，等待用户是否另行授权Task35；
+3. 在Task46 P1内容资产合同闭合前不训练、不打开确认角色、不读取I3D。
+
+### Git状态
+
+本批SSOT与审计文件尚未提交/推送；Task46独立P0提交`6a1aa5cbe99addd5cc12075288f76db56925cf7f`仍未推送，未合并main。
+
+## WR-20260807-007 — v1.26交付后最终校验
+
+- 时间：2026-08-07 12:45:00 +08:00
+- 类型：VERIFY | HANDOFF | GATE
+- 任务/门：00总控04 / v1.26 SSOT与S47交付
+- 状态：工作日志、差异、项目卡与交接卡通过；综合准备门保留data-free缺失失败；passport保留既有WARN
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+完成v1.26总纲与S47只读预审交付后，按项目纪律对工作日志、交接链、项目卡、差异和综合准备门做最终可复核校验，确保失败与未知项未被静默覆盖。
+
+### 实际变更
+
+- 未新增科学结果；仅对v1.26总纲、S47交接、Task Registry、claim/risk/project台账的最终工作树状态做验证。
+
+### 验证与证据
+
+- `D:\MMSA-CH-SIMS\.venv\Scripts\python.exe scripts\validate_work_log.py`：PASS，281 entries，0 errors。
+- `git diff --check`：exit 0。
+- `handoff_contract.py --card .light/handoff/S47-cuc-platform-shift-preaudit.md --as-of 2026-08-07`：PASS。
+- `check_project_card.py --project-dir .`：PASS，0 findings。
+- `passport.py validate --file .light/passport.yaml`：WARN/exit 0；stage10/stage46既有占位与状态派生WARN未改写。
+- `D:\MMSA-CH-SIMS\.venv\Scripts\python.exe scripts\run_preparation_checks.py`：exit 1，`FileNotFoundError`缺少`data/processed/HUMAN_GOLD/csmv/video_labels.v1.jsonl`；失败保留，未绕过。
+
+### 影响与边界
+
+本次校验未新增实验或论文claim；Task35仍未创建，Task46 P1仍阻塞，Task40/45关闭、I3D真实读取0、formal test零事件和Task50禁止边界保持不变。
+
+### 风险、问题与阻塞
+
+综合准备门缺少data-free worktree中的HUMAN_GOLD文件，不能用该命令证明全项目准备通过；这不改变本次只读平台预审结论或Task46 P1内容资产阻塞。
+
+### 下一步
+
+1. 提交本批SSOT变更并记录真实commit；
+2. 将S47作为下一会话入口，等待用户对Task35是否另行授权的决定；
+3. 继续保持Task46 P1、I3D、formal test与Task50封存边界。
+
+### Git状态
+
+最终校验时本批仍未提交/推送；Task46独立P0提交未合并main。

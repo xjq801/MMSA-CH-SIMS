@@ -26,3 +26,4 @@
 - [2026-08-06] Task45创建记录 v1.0 / Task Registry v1.18 / passport revision 22 / S43 — 创建Task45 `019fd586-628b-74f0-85ae-b44fa60968ff`及独立worktree，创建HEAD=`560a3dc...`；等待总控04 FINAL_ANCHOR后仅从P0开始
 - [2026-08-06] Task45 FINAL_ANCHOR回执 v1.0 / Task Registry v1.19 / passport revision 23 — 向Task45送达`origin/main@1c95a35...`及S43/授权hash，只开放P0且不扩大冻结合同
 - [2026-08-06] 总纲 v1.25 / 第17节规格 v1.9 / Claim矩阵 v1.7 / Task Registry v1.20 / S44 — 保留Task40/45负结果，将未来候选Task46重构为严格T0后验效用分布学习与expected-regret/risk-budget选择；冻结跨source-group阴性对照、FIT nested OOF、ROUTER_CONFIRM一次性主JSD与固定顺序，当前不创建Task46/50、不materialize formal test
+- [2026-08-07] 总纲 v1.26 / 第17节规格 v1.10 / Task Registry v1.23 / S47 — 纳入v1.26平台情绪偏移提案为条件性CARM外部压力测试分支；完成CUC-IGPE只读身份/字段/T0/标签/许可预审并裁定`PLATFORM_SHIFT_FEASIBILITY_BLOCKED_NO_PLATFORM_FIELD_T0_GOLD_OR_LICENSE`；Task35-Pilot未创建，Task46 P1、Task40/45、formal test与Task50边界不变

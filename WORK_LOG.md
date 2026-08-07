@@ -12899,4 +12899,45 @@ CUC平台偏移分支只进入条件性审计，不承担核心CARM结果。不�
 
 ### Git状态
 
-最终校验时本批仍未提交/推送；Task46独立P0提交未合并main。
+最终校验时本批尚未提交/推送；随后总控提交`16414b04522f98489f9d94310ea338932254395e`并fast-forward推送到`origin/main`，Task46独立P0提交未合并main。
+
+## WR-20260807-008 — v1.26总控SSOT提交与origin/main同步
+
+- 时间：2026-08-07 13:00:00 +08:00
+- 类型：DELIVERY | GIT | HANDOFF
+- 任务/门：00总控04 / v1.26总纲与S47交付
+- 状态：`16414b04522f98489f9d94310ea338932254395e`已fast-forward推送`origin/main`；Task46实验提交仍未推送/未合并
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+将已验证的v1.26条件性平台偏移分支、CUC只读预审和S47交接卡写入主线SSOT，确保下一会话从远端主线可直接接续。
+
+### 实际变更
+
+- 推送总控文档提交`16414b04522f98489f9d94310ea338932254395e`：`git push origin HEAD:main`返回`f8c14d1..16414b0 HEAD -> main`。
+- 更新S47工作区状态为主线已同步；Task46独立P0提交`6a1aa5c...`继续保持未推送、未合并边界。
+
+### 验证与证据
+
+- `git fetch origin`后`git rev-parse HEAD`与`git rev-parse origin/main`均为`16414b04522f98489f9d94310ea338932254395e`。
+- `git status --short --branch`：工作树干净；`git diff --check`：exit 0。
+- S47 `handoff_contract.py`：PASS；`validate_work_log.py`在本条追加前为282 entries/0 errors。
+
+### 影响与边界
+
+仅同步总控SSOT和审计台账，不同步Task46实验代码或artifact；Task35未创建，Task46 P1、Task40/45关闭、I3D真实读取0、formal test零事件和Task50封存不变。
+
+### 风险、问题与阻塞
+
+Task46独立提交仍不在main；综合准备门的HUMAN_GOLD缺失失败与passport既有WARN继续保留。
+
+### 下一步
+
+1. 以`origin/main@16414b04522f98489f9d94310ea338932254395e`作为S47接续锚点；
+2. 等待用户决定是否另行授权Task35-Pilot，期间不执行平台偏移实验；
+3. 继续等待Task46 P1内容资产准入合同，不读取真实I3D或打开确认角色。
+
+### Git状态
+
+总控SSOT已推送到origin/main；当前工作树在推送前后均无未提交科学变更，Task46独立实验提交仍在其专用worktree。

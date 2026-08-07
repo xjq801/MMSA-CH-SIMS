@@ -12724,3 +12724,87 @@ Task46仍仅处于独立执行线程的P0→P3阶段；本总控未访问任何�
 ### Git状态
 
 本条记录对应已推送的`e3a7864de6ae8fa13221b710011b53833dc2af0d`；新增工作发生在独立Task46 worktree，不改变本总控工作树。
+
+## WR-20260807-004 — Task46 P0执行交付与P1阻塞回交
+
+- 时间：2026-08-07 11:12:05 +08:00
+- 类型：PROGRESS | TEST | ACCESS_CONTROL | DATA | HANDOFF
+- 任务/门：Task46 / P0 `U0_IDENTITY_CONTROL`
+- 状态：P0技术门通过；P1因内容资产准入阻塞，等待总控复核
+- 负责人：独立Task46执行代理
+
+### 背景与目标
+
+按用户授权从 `origin/main@e3a7864` 独立执行Task46 P0→P3；P0完成后必须停下，禁止把技术身份门误写成utility或action结果。
+
+### 实际变更
+
+- 新增P0身份重建、跨source-group derangement、零事件账、artifact validator、10项测试及P0交付报告；真实I3D读取、旧确认集、formal test和Task50均未发生。
+- P0交付裁定为 `PASS_P0_GATES_BLOCKED_P1_CONTENT_ASSET_ADMISSIBILITY`；P1/P2/P3未执行。外层runner exit 124与完整artifact落盘事实均保留。
+
+### 验证与证据
+
+- FIT=3404 videos/3304 source groups；200/200 derangement通过；最小改变率0.993537、最大|rho|0.049332；zero-event全0。
+- P0 artifact validator exit 0；10/10 tests OK；delivery payload 19/19 SHA一致；通用准备门在data-free worktree因HUMAN_GOLD缺失返回FileNotFoundError，未绕过。
+
+### 影响与边界
+
+P0仅支持身份和访问控制审计；无hash-bound准入T0 content representation时，不得进入P1/P2/P3，不得读取I3D或旧确认角色，不得打开formal test或创建Task50。
+
+### 风险、问题与阻塞
+
+I3D/VideoMAE许可、revision、权利方包身份与fixity仍UNKNOWN；response support和identity-hash pseudo-feature不能替代scientific T0内容输入。
+
+### 下一步
+
+等待总控04独立复核P0交付并决定是否维持P1阻塞；不得自行解锁后续阶段。
+
+### Git状态
+
+交付暂存于独立Task46 worktree，未推送；总控侧只接收证据，不把未合并状态写成main已同步。
+
+## WR-20260807-005 — Task46 P0独立复核接受与P1内容资产阻塞入账
+
+- 时间：2026-08-07 11:40:00 +08:00
+- 类型：REVIEW | GATE | CLAIM_BOUNDARY | SSOT | HANDOFF
+- 任务/门：00总控04 / Task46 P0→P1准入门
+- 状态：P0_ACCEPTED；P1_BLOCKED_P1_CONTENT_ASSET_ADMISSIBILITY；P2/P3/P4未执行
+- 负责人：00-T-AFFC总控04
+
+### 背景与目标
+
+用户明确要求把共享讨论和《任务安排.docx》的下一步方案直接执行。独立Task46线程按v1.25合同停在P0，总控需要独立复核其交付、保存失败证据并将阻塞原因写入SSOT，避免把P0技术门误写成utility或action结果。
+
+### 实际变更
+
+- 独立复核线程 `019fda1c-0f78-7053-9ad1-769f0bd5e899` 的本地提交 `6a1aa5cbe99addd5cc12075288f76db56925cf7f`；该提交父为 `e3a7864...`，未推送、未合并main。
+- 新增 `TASK00_TASK46_P0_INDEPENDENT_REVIEW_20260807.md` 与 `.light/handoff/S46-task46-p0-review.md`；更新 `TASK_REGISTRY.md` v1.22、`.light/project_card.md`、`.light/passport.yaml` revision 27、`.light/decision_log.md`、`CLAIM_EVIDENCE_MATRIX.md`、`RISK_REGISTER.md`。
+- 总控接受交付 manifest SHA-256=`488b632176a146d37843c3df6f66aff5911809e07e9450f984b38488a2978b33`、artifact-set SHA-256=`13e331a739d23228a56a670153555cb3ab0cd4b3c8743394e26e1e6d2779ad3d`。
+
+### 验证与证据
+
+- 在独立worktree复跑 `D:\MMSA-CH-SIMS\.venv\Scripts\python.exe scripts\validate_task46_p0.py`：exit 0，裁定 `PASS_P0_ARTIFACT_VALIDATION_BLOCKED_P1_ASSET`。
+- 复跑 `D:\MMSA-CH-SIMS\.venv\Scripts\python.exe -m unittest tests.test_task46_p0`：10/10 OK；`git diff --check` exit 0。
+- 独立重算 delivery payload：19/19 文件 SHA 一致；P0数值为FIT 3404/3304、200/200 derangement、最小改变率0.993537、最大|rho|0.049332、null CI全正；zero-event全0、真实I3D读取0、formal test未materialize、Task50未创建。
+- P0 runner 外层命令 exit 124 的失败证据保留；完整artifact已落盘且独立validator通过，不把超时伪写成成功。
+- `.light/passport.yaml` 通过底层 passport validate，结果 WARN/exit 0；仅保留既有stage10占位WARN及stage46无timestamp的WARN，不伪称为全PASS。系统准备门仍按data-free工作树的HUMAN_GOLD缺失返回FileNotFoundError，不绕过。
+
+### 影响与边界
+
+P0仅证明身份、负控算法和访问边界。由于没有另一个hash-bound且许可/revision/覆盖/fixity闭合的T0内容表示，P1被阻塞；不得使用response support、source hash pseudo-feature或I3D绕过。Task40/45关闭状态不变，旧DEV/DIAG_CONFIRM/ROUTER_CONFIRM/formal test继续封存，Task50不创建，C1—C3继续TO_VERIFY。
+
+### 风险、问题与阻塞
+
+- I3D/VideoMAE资产准入仍UNKNOWN；真实I3D读取必须维持0。
+- 若未来获得内容资产，必须先独立冻结来源、许可、官方revision、权利方包身份、覆盖、逐文件SHA-256和使用合同，再重新审P1；不得直接沿用本次P0伪特征。
+- P0外层超时若被隐藏会破坏审计，故失败运行和validator结果均保留。
+
+### 下一步
+
+1. 维持Task46 `P0_ACCEPTED_P1_BLOCKED_CONTENT_ASSET_ADMISSIBILITY`，不进入P1/P2/P3/P4。
+2. 仅审计新的T0内容资产准入材料；在准入前不训练、不调阈值、不访问任何确认集。
+3. 每次会话结束从S46交接继续；Task40/45、formal test零事件和Task50禁止边界不变。
+
+### Git状态
+
+本批总控SSOT更新待提交；Task46 P0实验代码与artifact保留在未推送提交 `6a1aa5c...`，本总控不将其误写成已同步main。

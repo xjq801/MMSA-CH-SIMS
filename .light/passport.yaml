@@ -2,14 +2,14 @@ schema: light.passport.v3
 project: MMSA-CH-SIMS T-AFFC 总控
 pipeline: TAFFC-CARM-00-60
 created: "2026-07-17T13:55:00+08:00"
-updated: "2026-08-07T10:45:00+08:00"
-current_stage: 45
-state_revision: 25
-state_hash: "sha256:fcd7554fc3d31c28abd96e6e49acee0b410419f1c7fa1b82c5160d1ef5e3ea46"
-evidence_state: PLANNED
-next_action: create an independent Task46 worktree from the frozen v1.25 P0 package and execute only P0-P3; keep ROUTER_CONFIRM, formal test and Task50 blocked until every hash-bound gate passes
+updated: "2026-08-07T11:39"
+current_stage: 46
+state_revision: 29
+state_hash: "sha256:6d9df027eef3909e8859ae92d5b7e457bc46119b4a52fcd57d1c0f9d2a95e28b"
+evidence_state: FAILED
+next_action: continue stage 46 from status gate_failed
 delivery_status: IN_PROGRESS
-delivery_authorization_id: null
+delivery_authorization_id: ~
 stages:
   - stage: 10
     status: delivered
@@ -50,7 +50,7 @@ stages:
     input: "v1.23 preregistration package, frozen Task20 content-only/evaluator interface, Task30 archived negative boundary"
     output: "auditable development package closed as CLOSED_NOT_PASSED_ROUTER_MAIN_JSD; P0/P1/P2 passed, P3/P4 main JSD 0/5, negative migration not tested, P5 not executed, no formal test"
     artifacts: [TASK00_TASK40_CREATION_AUTHORIZATION_20260805.md, TASK00_CARM_CREDIBLE_NET_BENEFIT_PREREGISTRATION_20260805.md, HANDOFF_40.md, TASK40_P3_P4_POINT_CREDIBLE_FAIR_COMPARISON_REPORT_20260805.md, TASK40_P5_THINNING_THREE_SOURCE_REGIONS_NOT_EXECUTED_REPORT_20260805.md, TASK00_TASK40_FINAL_INDEPENDENT_REVIEW_20260805.md, .light/handoff/S42-task40-closed-not-passed.md]
-    gate: {type: confirm, result: FAIL, evidence: "sha256:ae1f890fbbeb1625fdbaf4e95b3998d46bc715e8d3416daa21b36f3f0d27f42e", timestamp: "2026-08-05T21:16:21+08:00", notes: total control 04 independently verified annotated tag c0fe21d, all fixity, 25 tests, four validators, paired differences, failed-run ancestry and zero formal-test events; Task40 closed at P3/P4 main JSD 0/5 and Task50 remains not created, evidence_state: FAILED, fresh: true}
+    gate: {type: confirm, result: FAIL, evidence: "sha256:ae1f890fbbeb1625fdbaf4e95b3998d46bc715e8d3416daa21b36f3f0d27f42e", timestamp: "2026-08-05T21:16:21+08:00", notes: total control 04 independently verified annotated tag c0fe21d, all fixity: ~, 25 tests: ~, four validators: ~, paired differences: ~, failed-run ancestry and zero formal-test events; Task40 closed at P3/P4 main JSD 0/5 and Task50 remains not created: ~, evidence_state: FAILED, fresh: true}
     gaps: [formal H2b was not adjudicated on formal test; C2 development candidate is closed and unsupported; negative migration was not tested; P5 thinning, three-source uncertainty and prediction regions were not executed; C3 is untested rather than refuted; Video2Reaction native track remains unauthorized and conditional]
   - stage: 45
     depends_on: [40]
@@ -59,7 +59,18 @@ stages:
     evidence_state: FAILED
     skill: light-research-plan
     input: "v1.24 publishability/data/target/failure/preregistration package, original CSMV train identity, frozen Task40 negative boundary"
-    output: "agent-delivered CLOSED_NOT_PASSED T0 learnability diagnostic; real Brier/MAE and ranking signals remain exploratory because both shuffled-target controls abnormally passed"
+    output: agent-delivered CLOSED_NOT_PASSED T0 learnability diagnostic; real Brier/MAE and ranking signals remain exploratory because both shuffled-target controls abnormally passed
     artifacts: [TASK00_CARM_V124_PUBLISHABILITY_AND_CLOSEST_PRIOR_AUDIT_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_RESEARCH_PLAN_20260806.md, TASK00_TASK45_T0_BENEFIT_LEARNABILITY_PREREGISTRATION_20260806.md, TASK00_TASK45_CREATION_AND_DIAGNOSTIC_EXECUTION_AUTHORIZATION_20260806.md, experiments/TASK45_T0_BENEFIT_LEARNABILITY_EXPERIMENT_MATRIX_20260806.md, .light/carm-v124-data-identity-fitness.json, .light/carm-v124-target-chain.json, .light/carm-v124-failure-tree.json, .light/carm-v124-access-boundary.json, HANDOFF_45.md, TASK00_TASK45_FINAL_INDEPENDENT_REVIEW_20260807.md, .light/handoff/S45-task45-independent-review.md]
     gate: {type: confirm, result: FAIL, evidence: "sha256:e1e8a45bfd6ba9fc725d099b7d500584d6ba39c390602d48f48b78690580aa5a", timestamp: "2026-08-07T10:45:00+08:00", notes: total control 04 independently accepted the annotated-tag package; primary endpoints superficially passed but both shuffled-target negative controls abnormally passed; Task45 is CLOSED_NOT_PASSED and cannot be rerun or reclassified, evidence_state: FAILED, fresh: true}
     gaps: [within-source-group shuffle was ineffective because nearly all FIT groups are singletons; actual torch thread count differed from config but is disclosed; Task46 P0 package is frozen pending independent worktree; formal test remains sealed; I3D external license revision and rightsholder fixity remain UNKNOWN]
+  - stage: 46
+    depends_on: [45]
+    status: gate_failed
+    node_kind: pipeline
+    evidence_state: FAILED
+    skill: light-experiment-coding
+    input: Task46 v1.25 P0 package and admitted CSMV labels
+    output: P0 accepted; P1 blocked by content asset admissibility; P2/P3 not executed
+    artifacts: [TASK00_TASK46_P0_INDEPENDENT_REVIEW_20260807.md, .light/handoff/S46-task46-p0-review.md]
+    gate: {type: confirm, result: WARN, notes: P0 identity/derangement/zero-event gates accepted; P1 blocked because no separately admissible hash-bound T0 content representation exists. I3D UNKNOWN; no real I3D read. P2/P3/P4/formal test/Task50 remain closed., evidence_state: FAILED, fresh: true}
+    gaps: [T0 content representation license/revision/coverage/fixity/hash-bound contract missing, P1/P2/P3 not executed, formal test and Task50 prohibited]

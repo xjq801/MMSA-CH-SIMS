@@ -112,3 +112,13 @@
 | J-C3 | 分布几何保持能在标签空间不完全同构时支持跨域视觉迁移 | 预注册跨域estimand、数据集特定head、source-only/fine-tune/域适配对照 | JH3、J6/J8、任务25 | TO_VERIFY | 不得声称统一标签空间或跨域有效 |
 
 迁出边界：J-C1—J-C3及其后续证据只在`D:\MMSA-CH-SIMS - IJCV方向`维护；本项目不得把其主实验、主表或方法改名复用。历史方案文件仅用于解释范围变化，当前执行事实源为T-AFFC总纲v1.15。
+
+## Task46 P0 独立复核（2026-08-07）
+
+| Claim/证据 | 当前状态 | 边界 |
+|---|---|---|
+| Task46 FIT 身份、跨 source-group 有效负控与零访问门 | `P0_ACCEPTED` | 仅证明角色重建、置换算法和访问控制可审计；不证明 utility 可学习或 policy 有效 |
+| 后验 utility prediction / nested OOF / risk-budget policy | `BLOCKED_P1_CONTENT_ASSET_ADMISSIBILITY` | 没有第二个 hash-bound、许可/revision/fixity 已闭合的 T0 内容表示；P1/P2/P3 未执行 |
+| Task46 P0 伪特征 null sanity | `IMPLEMENTATION_SANITY_ONLY` | identity-hash pseudo-feature 不是 scientific T0 feature，不得写入论文结果或 claim |
+| I3D/VideoMAE 内容资产 | `UNKNOWN_NOT_ADMISSIBLE` | 本次真实读取为0；不确认、不再分发、不以其支撑任何结果 |
+| Task40/Task45、formal test、Task50 | `CLOSED_OR_SEALED` | Task40/45关闭结论不变；formal test零 materialization；Task50不创建 |
